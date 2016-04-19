@@ -1,0 +1,5 @@
+[ 50%] Built target raspistill
+Linking CXX executable testmain
+CMakeFiles/testmain.dir/build.make:385: recipe for target 'testmain' failed
+CMakeFiles/Makefile2:95: recipe for target 'CMakeFiles/testmain.dir/all' failed
+Makefile:117: recipe for target 'all' failed

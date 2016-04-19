@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="interface">
+        <df name="khronos">
+          <df name="common">
+            <df name="linux">
+              <in>khrn_client_platform_linux.c</in>
+              <in>khrn_client_rpc_linux.c</in>
+            </df>
+            <df name="openwfc">
+              <in>khrn_client_platform_openwfc.c</in>
+            </df>
+            <in>khrn_client.c</in>
+            <in>khrn_client_cache.c</in>
+            <in>khrn_client_cr.c</in>
+            <in>khrn_client_global_image_map.c</in>
+            <in>khrn_client_pointermap.c</in>
+            <in>khrn_client_vector.c</in>
+            <in>khrn_int_generic_map.c</in>
+            <in>khrn_int_hash.c</in>
+            <in>khrn_int_hash_asm.s</in>
+            <in>khrn_int_image.c</in>
+            <in>khrn_int_util.c</in>
+            <in>khrn_options.c</in>
+          </df>
+          <df name="egl">
+            <in>egl_client.c</in>
+            <in>egl_client_config.c</in>
+            <in>egl_client_config_cr.c</in>
+            <in>egl_client_context.c</in>
+            <in>egl_client_cr.c</in>
+            <in>egl_client_get_proc.c</in>
+            <in>egl_client_surface.c</in>
+          </df>
+          <df name="ext">
+            <in>egl_brcm_driver_monitor_client.c</in>
+            <in>egl_brcm_flush_client.c</in>
+            <in>egl_brcm_global_image_client.c</in>
+            <in>egl_brcm_perf_monitor_client.c</in>
+            <in>egl_khr_image_client.c</in>
+            <in>egl_khr_lock_surface_client.c</in>
+            <in>egl_khr_sync_client.c</in>
+            <in>egl_openmaxil_client.c</in>
+            <in>ext_gl_debug_marker.c</in>
+            <in>gl_oes_draw_texture_client.c</in>
+            <in>gl_oes_egl_image_client.c</in>
+            <in>gl_oes_framebuffer_object.c</in>
+            <in>gl_oes_map_buffer.c</in>
+            <in>gl_oes_matrix_palette_client.c</in>
+            <in>gl_oes_query_matrix_client.c</in>
+          </df>
+          <df name="glxx">
+            <in>glxx_client.c</in>
+          </df>
+          <df name="vg">
+            <in>vg_client.c</in>
+            <in>vg_int_mat3x3.c</in>
+          </df>
+          <df name="wf">
+            <in>wfc_client.c</in>
+            <in>wfc_client_ipc.c</in>
+            <in>wfc_client_server_api.c</in>
+            <in>wfc_client_stream.c</in>
+          </df>
+        </df>
+        <df name="mmal">
+          <df name="client">
+            <df name="brcmjpeg">
+              <in>brcmjpeg.c</in>
+              <in>brcmjpeg_test.c</in>
+            </df>
+          </df>
+          <df name="components">
+            <in>aaf_audio_render.cpp</in>
+            <in>aggregator.c</in>
+            <in>android_media_codec.cpp</in>
+            <in>artificial_camera.c</in>
+            <in>avcodec_audio_decoder.c</in>
+            <in>avcodec_video_decoder.c</in>
+            <in>clock.c</in>
+            <in>container_reader.c</in>
+            <in>copy.c</in>
+            <in>null_sink.c</in>
+            <in>passthrough.c</in>
+            <in>scheduler.c</in>
+            <in>sdl_audio_render.c</in>
+            <in>sdl_video_render.c</in>
+            <in>spdif.c</in>
+            <in>splitter.c</in>
+          </df>
+          <df name="core">
+            <in>mmal_buffer.c</in>
+            <in>mmal_clock.c</in>
+            <in>mmal_component.c</in>
+            <in>mmal_events.c</in>
+            <in>mmal_format.c</in>
+            <in>mmal_logging.c</in>
+            <in>mmal_pool.c</in>
+            <in>mmal_port.c</in>
+            <in>mmal_port_clock.c</in>
+            <in>mmal_queue.c</in>
+          </df>
+          <df name="openmaxil">
+            <in>mmalomx_buffer.c</in>
+            <in>mmalomx_commands.c</in>
+            <in>mmalomx_core.c</in>
+            <in>mmalomx_logging.c</in>
+            <in>mmalomx_marks.c</in>
+            <in>mmalomx_parameters.c</in>
+            <in>mmalomx_registry.c</in>
+            <in>mmalomx_roles.c</in>
+            <in>mmalomx_util_params.c</in>
+            <in>mmalomx_util_params_audio.c</in>
+            <in>mmalomx_util_params_camera.c</in>
+            <in>mmalomx_util_params_misc.c</in>
+            <in>mmalomx_util_params_video.c</in>
+          </df>
+          <df name="test">
+            <df name="examples">
+              <in>example_basic_1.c</in>
+              <in>example_basic_2.c</in>
+              <in>example_connections.c</in>
+              <in>example_graph.c</in>
+            </df>
+          </df>
+          <df name="util">
+            <in>mmal_component_wrapper.c</in>
+            <in>mmal_connection.c</in>
+            <in>mmal_graph.c</in>
+            <in>mmal_il.c</in>
+            <in>mmal_list.c</in>
+            <in>mmal_param_convert.c</in>
+            <in>mmal_util.c</in>
+            <in>mmal_util_params.c</in>
+            <in>mmal_util_rational.c</in>
+          </df>
+          <df name="vc">
+            <in>mmal_vc_api.c</in>
+            <in>mmal_vc_api_drm.c</in>
+            <in>mmal_vc_client.c</in>
+            <in>mmal_vc_diag.c</in>
+            <in>mmal_vc_msgnames.c</in>
+            <in>mmal_vc_opaque_alloc.c</in>
+            <in>mmal_vc_shm.c</in>
+          </df>
+        </df>
+        <df name="usbdk">
+          <df name="test">
+            <in>stubs.c</in>
+          </df>
+          <df name="vmcs_rpc_client">
+            <in>message_dispatch.c</in>
+            <in>platform.c</in>
+          </df>
+        </df>
+        <df name="vchiq_arm">
+          <in>vchiq_lib.c</in>
+          <in>vchiq_test.c</in>
+          <in>vchiq_util.c</in>
+        </df>
+        <df name="vcos">
+          <df name="generic">
+            <in>vcos_abort.c</in>
+            <in>vcos_cmd.c</in>
+            <in>vcos_generic_blockpool.c</in>
+            <in>vcos_generic_event_flags.c</in>
+            <in>vcos_generic_named_sem.c</in>
+            <in>vcos_generic_reentrant_mtx.c</in>
+            <in>vcos_generic_safe_string.c</in>
+            <in>vcos_init.c</in>
+            <in>vcos_logcat.c</in>
+            <in>vcos_mem_from_malloc.c</in>
+            <in>vcos_msgqueue.c</in>
+          </df>
+          <df name="glibc">
+            <in>vcos_backtrace.c</in>
+          </df>
+          <df name="pthreads">
+            <in>vcos_dlfcn.c</in>
+            <in>vcos_pthreads.c</in>
+          </df>
+        </df>
+        <df name="vmcs_host">
+          <df name="linux">
+            <df name="vcfiled">
+              <in>vcfiled.c</in>
+              <in>vcfiled_check.c</in>
+              <in>vcfiled_lock_test.c</in>
+            </df>
+            <in>vcfilesys.c</in>
+            <in>vcmisc.c</in>
+          </df>
+          <in>vc_service_common.c</in>
+          <in>vc_vchi_cecservice.c</in>
+          <in>vc_vchi_dispmanx.c</in>
+          <in>vc_vchi_filesys.c</in>
+          <in>vc_vchi_gencmd.c</in>
+          <in>vc_vchi_tvservice.c</in>
+          <in>vcilcs.c</in>
+          <in>vcilcs_common.c</in>
+          <in>vcilcs_in.c</in>
+          <in>vcilcs_out.c</in>
+        </df>
+      </df>
+      <df name="libs">
+        <df name="bcm_host">
+          <in>bcm_host.c</in>
+        </df>
+        <df name="debug_sym">
+          <in>debug_sym.c</in>
+        </df>
+        <df name="sm">
+          <in>user-vcsm.c</in>
+        </df>
+      </df>
+      <df name="raspicam">
+        <df name="build">
+          <df name="CMakeFiles">
+            <df name="3.0.2">
+              <df name="CompilerIdC">
+                <in>CMakeCCompilerId.c</in>
+              </df>
+              <df name="CompilerIdCXX">
+                <in>CMakeCXXCompilerId.cpp</in>
+              </df>
+            </df>
+          </df>
+        </df>
+        <df name="CMakeFiles">
+          <df name="3.0.2">
+            <df name="CompilerIdC">
+              <in>CMakeCCompilerId.c</in>
+            </df>
+            <df name="CompilerIdCXX">
+              <in>CMakeCXXCompilerId.cpp</in>
+            </df>
+          </df>
+        </df>
+        <df name="gl_scenes">
+          <in>mirror.c</in>
+          <in>models.c</in>
+          <in>sobel.c</in>
+          <in>square.c</in>
+          <in>teapot.c</in>
+          <in>yuv.c</in>
+        </df>
+        <df name="imv_examples">
+          <in>imv2pgm.c</in>
+          <in>imv2txt.c</in>
+        </df>
+        <in>RaspiCLI.c</in>
+        <in>RaspiCamControl.c</in>
+        <in>RaspiPreview.c</in>
+        <in>RaspiStill.c</in>
+        <in>RaspiTex.c</in>
+        <in>RaspiTexUtil.c</in>
+        <in>testmain.cpp</in>
+        <in>tga.c</in>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>nbproject/private/launcher.properties</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile></projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>echo build</buildCommand>
+          <cleanCommand>echo clean</cleanCommand>
+          <executablePath></executablePath>
+        </makeTool>
+        <preBuild>
+          <preBuildCommandWorkingDir>.</preBuildCommandWorkingDir>
+          <preBuildCommand></preBuildCommand>
+        </preBuild>
+      </makefileType>
+      <item path="interface/khronos/common/khrn_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_client_cache.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_client_cr.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_client_global_image_map.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_client_pointermap.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_client_vector.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_int_generic_map.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_int_hash.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_int_hash_asm.s"
+            ex="false"
+            tool="4"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_int_image.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_int_util.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/khrn_options.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/linux/khrn_client_platform_linux.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/linux/khrn_client_rpc_linux.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/common/openwfc/khrn_client_platform_openwfc.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/egl/egl_client.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/khronos/egl/egl_client_config.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/egl/egl_client_config_cr.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/egl/egl_client_context.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/egl/egl_client_cr.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/egl/egl_client_get_proc.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/egl/egl_client_surface.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/egl_brcm_driver_monitor_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/egl_brcm_flush_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/egl_brcm_global_image_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/egl_brcm_perf_monitor_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/egl_khr_image_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/egl_khr_lock_surface_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/egl_khr_sync_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/egl_openmaxil_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/ext_gl_debug_marker.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/gl_oes_draw_texture_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/gl_oes_egl_image_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/gl_oes_framebuffer_object.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/gl_oes_map_buffer.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/gl_oes_matrix_palette_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/ext/gl_oes_query_matrix_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/glxx/glxx_client.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/vg/vg_client.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/khronos/vg/vg_int_mat3x3.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/wf/wfc_client.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/khronos/wf/wfc_client_ipc.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/wf/wfc_client_server_api.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/khronos/wf/wfc_client_stream.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/client/brcmjpeg/brcmjpeg.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/client/brcmjpeg/brcmjpeg_test.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/aaf_audio_render.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/aggregator.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/android_media_codec.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/artificial_camera.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/avcodec_audio_decoder.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/avcodec_video_decoder.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/clock.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/components/container_reader.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/copy.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/components/null_sink.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/passthrough.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/scheduler.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/sdl_audio_render.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/sdl_video_render.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/components/spdif.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/components/splitter.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/core/mmal_buffer.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/core/mmal_clock.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/core/mmal_component.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/core/mmal_events.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/core/mmal_format.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/core/mmal_logging.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/core/mmal_pool.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/core/mmal_port.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/core/mmal_port_clock.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/core/mmal_queue.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_buffer.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_commands.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_core.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_logging.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_marks.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_parameters.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_registry.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_roles.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_util_params.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_util_params_audio.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_util_params_camera.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_util_params_misc.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/openmaxil/mmalomx_util_params_video.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/test/examples/example_basic_1.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/test/examples/example_basic_2.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/test/examples/example_connections.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/test/examples/example_graph.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/util/mmal_component_wrapper.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/util/mmal_connection.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/util/mmal_graph.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/util/mmal_il.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/util/mmal_list.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/util/mmal_param_convert.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/util/mmal_util.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/util/mmal_util_params.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/util/mmal_util_rational.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/vc/mmal_vc_api.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/vc/mmal_vc_api_drm.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/vc/mmal_vc_client.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/vc/mmal_vc_diag.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/mmal/vc/mmal_vc_msgnames.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/vc/mmal_vc_opaque_alloc.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/mmal/vc/mmal_vc_shm.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/usbdk/test/stubs.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/usbdk/vmcs_rpc_client/message_dispatch.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/usbdk/vmcs_rpc_client/platform.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vchiq_arm/vchiq_lib.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/vchiq_arm/vchiq_test.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/vchiq_arm/vchiq_util.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_abort.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_cmd.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_generic_blockpool.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_generic_event_flags.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_generic_named_sem.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_generic_reentrant_mtx.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_generic_safe_string.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_init.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_logcat.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_mem_from_malloc.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/generic/vcos_msgqueue.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/glibc/vcos_backtrace.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/pthreads/vcos_dlfcn.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vcos/pthreads/vcos_pthreads.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/linux/vcfiled/vcfiled.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/linux/vcfiled/vcfiled_check.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/linux/vcfiled/vcfiled_lock_test.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/linux/vcfilesys.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/linux/vcmisc.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/vc_service_common.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/vc_vchi_cecservice.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/vc_vchi_dispmanx.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/vc_vchi_filesys.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/vc_vchi_gencmd.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/vc_vchi_tvservice.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/vcilcs.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/vcilcs_common.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/vcilcs_in.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="interface/vmcs_host/vcilcs_out.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="libs/bcm_host/bcm_host.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="libs/debug_sym/debug_sym.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="libs/sm/user-vcsm.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="raspicam/CMakeFiles/3.0.2/CompilerIdCXX/CMakeCXXCompilerId.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="raspicam/RaspiCLI.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/RaspiCamControl.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/RaspiPreview.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/RaspiStill.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/RaspiTex.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/RaspiTexUtil.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c"
+            ex="false"
+            tool="0"
+            flavor2="0">
+      </item>
+      <item path="raspicam/build/CMakeFiles/3.0.2/CompilerIdCXX/CMakeCXXCompilerId.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="raspicam/gl_scenes/mirror.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/gl_scenes/models.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/gl_scenes/sobel.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/gl_scenes/square.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/gl_scenes/teapot.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/gl_scenes/yuv.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/imv_examples/imv2pgm.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/imv_examples/imv2txt.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/testmain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="raspicam/tga.c" ex="false" tool="0" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

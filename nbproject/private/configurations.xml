@@ -1,0 +1,819 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="97">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df root="." name="0">
+      <df name="interface">
+        <df name="khronos">
+          <df name="common">
+            <df name="abstract">
+              <in>khrn_client_platform_filler_abstract.h</in>
+            </df>
+            <df name="direct">
+              <in>khrn_client_platform_filler_direct.h</in>
+            </df>
+            <df name="linux">
+              <in>khrn_client_platform_linux.c</in>
+              <in>khrn_client_rpc_linux.c</in>
+            </df>
+            <df name="openwfc">
+              <in>khrn_client_platform_openwfc.c</in>
+            </df>
+            <df name="vcos">
+              <in>khrn_client_platform_filler_vcos.h</in>
+            </df>
+            <df name="vcos_vchiq">
+              <in>khrn_client_platform_filler_vcos_vchiq.h</in>
+            </df>
+            <in>khrn_client.c</in>
+            <in>khrn_client.h</in>
+            <in>khrn_client_cache.c</in>
+            <in>khrn_client_cache.h</in>
+            <in>khrn_client_check_types.h</in>
+            <in>khrn_client_cr.c</in>
+            <in>khrn_client_global_image_map.c</in>
+            <in>khrn_client_global_image_map.h</in>
+            <in>khrn_client_mangle.h</in>
+            <in>khrn_client_platform.h</in>
+            <in>khrn_client_pointermap.c</in>
+            <in>khrn_client_pointermap.h</in>
+            <in>khrn_client_rpc.h</in>
+            <in>khrn_client_unmangle.h</in>
+            <in>khrn_client_vector.c</in>
+            <in>khrn_client_vector.h</in>
+            <in>khrn_int_color.h</in>
+            <in>khrn_int_common.h</in>
+            <in>khrn_int_generic_map.c</in>
+            <in>khrn_int_generic_map.h</in>
+            <in>khrn_int_hash.c</in>
+            <in>khrn_int_hash.h</in>
+            <in>khrn_int_hash_asm.s</in>
+            <in>khrn_int_ids.h</in>
+            <in>khrn_int_image.c</in>
+            <in>khrn_int_image.h</in>
+            <in>khrn_int_math.h</in>
+            <in>khrn_int_misc_impl.h</in>
+            <in>khrn_int_util.c</in>
+            <in>khrn_int_util.h</in>
+            <in>khrn_int_util_cr.h</in>
+            <in>khrn_options.c</in>
+            <in>khrn_options.h</in>
+          </df>
+          <df name="egl">
+            <in>egl_client.c</in>
+            <in>egl_client_config.c</in>
+            <in>egl_client_config.h</in>
+            <in>egl_client_config_cr.c</in>
+            <in>egl_client_context.c</in>
+            <in>egl_client_context.h</in>
+            <in>egl_client_cr.c</in>
+            <in>egl_client_get_proc.c</in>
+            <in>egl_client_surface.c</in>
+            <in>egl_client_surface.h</in>
+            <in>egl_int.h</in>
+            <in>egl_int_config.h</in>
+            <in>egl_int_impl.h</in>
+          </df>
+          <df name="ext">
+            <in>egl_brcm_driver_monitor_client.c</in>
+            <in>egl_brcm_driver_monitor_client.h</in>
+            <in>egl_brcm_flush_client.c</in>
+            <in>egl_brcm_global_image_client.c</in>
+            <in>egl_brcm_perf_monitor_client.c</in>
+            <in>egl_brcm_perf_monitor_client.h</in>
+            <in>egl_khr_image_client.c</in>
+            <in>egl_khr_lock_surface_client.c</in>
+            <in>egl_khr_sync_client.c</in>
+            <in>egl_khr_sync_client.h</in>
+            <in>egl_openmaxil_client.c</in>
+            <in>egl_openmaxil_client.h</in>
+            <in>ext_gl_debug_marker.c</in>
+            <in>gl_oes_draw_texture_client.c</in>
+            <in>gl_oes_egl_image_client.c</in>
+            <in>gl_oes_framebuffer_object.c</in>
+            <in>gl_oes_map_buffer.c</in>
+            <in>gl_oes_matrix_palette_client.c</in>
+            <in>gl_oes_query_matrix_client.c</in>
+          </df>
+          <df name="glxx">
+            <in>gl11_int_config.h</in>
+            <in>gl11_int_impl.h</in>
+            <in>gl20_int_impl.h</in>
+            <in>glxx_client.c</in>
+            <in>glxx_client.h</in>
+            <in>glxx_int_attrib.h</in>
+            <in>glxx_int_config.h</in>
+            <in>glxx_int_impl.h</in>
+          </df>
+          <df name="include">
+            <df name="EGL">
+              <in>egl.h</in>
+              <in>eglext.h</in>
+              <in>eglext_android.h</in>
+              <in>eglext_brcm.h</in>
+              <in>eglext_nvidia.h</in>
+              <in>eglplatform.h</in>
+            </df>
+            <df name="GLES">
+              <in>gl.h</in>
+              <in>glext.h</in>
+              <in>glplatform.h</in>
+            </df>
+            <df name="GLES2">
+              <in>gl2.h</in>
+              <in>gl2ext.h</in>
+              <in>gl2platform.h</in>
+            </df>
+            <df name="KHR">
+              <in>khrplatform.h</in>
+            </df>
+            <df name="VG">
+              <in>openvg.h</in>
+              <in>vgext.h</in>
+              <in>vgplatform.h</in>
+              <in>vgu.h</in>
+            </df>
+            <df name="WF">
+              <in>wfc.h</in>
+              <in>wfcplatform.h</in>
+            </df>
+          </df>
+          <df name="vg">
+            <in>vg_client.c</in>
+            <in>vg_client.h</in>
+            <in>vg_int.h</in>
+            <in>vg_int_config.h</in>
+            <in>vg_int_impl.h</in>
+            <in>vg_int_mat3x3.c</in>
+            <in>vg_int_mat3x3.h</in>
+            <in>vg_int_util.h</in>
+          </df>
+          <df name="wf">
+            <in>wfc_client.c</in>
+            <in>wfc_client_ipc.c</in>
+            <in>wfc_client_ipc.h</in>
+            <in>wfc_client_server_api.c</in>
+            <in>wfc_client_stream.c</in>
+            <in>wfc_client_stream.h</in>
+            <in>wfc_int.h</in>
+            <in>wfc_ipc.h</in>
+            <in>wfc_server_api.h</in>
+          </df>
+        </df>
+        <df name="mmal">
+          <df name="client">
+            <df name="brcmjpeg">
+              <in>brcmjpeg.c</in>
+              <in>brcmjpeg.h</in>
+              <in>brcmjpeg_test.c</in>
+            </df>
+          </df>
+          <df name="components">
+            <in>aaf_audio_render.cpp</in>
+            <in>aggregator.c</in>
+            <in>android_media_codec.cpp</in>
+            <in>artificial_camera.c</in>
+            <in>avcodec_audio_decoder.c</in>
+            <in>avcodec_video_decoder.c</in>
+            <in>clock.c</in>
+            <in>container_reader.c</in>
+            <in>copy.c</in>
+            <in>null_sink.c</in>
+            <in>passthrough.c</in>
+            <in>scheduler.c</in>
+            <in>sdl_audio_render.c</in>
+            <in>sdl_video_render.c</in>
+            <in>spdif.c</in>
+            <in>splitter.c</in>
+          </df>
+          <df name="core">
+            <in>mmal_buffer.c</in>
+            <in>mmal_buffer_private.h</in>
+            <in>mmal_clock.c</in>
+            <in>mmal_clock_private.h</in>
+            <in>mmal_component.c</in>
+            <in>mmal_component_private.h</in>
+            <in>mmal_core_private.h</in>
+            <in>mmal_events.c</in>
+            <in>mmal_events_private.h</in>
+            <in>mmal_format.c</in>
+            <in>mmal_logging.c</in>
+            <in>mmal_pool.c</in>
+            <in>mmal_port.c</in>
+            <in>mmal_port_clock.c</in>
+            <in>mmal_port_private.h</in>
+            <in>mmal_queue.c</in>
+          </df>
+          <df name="openmaxil">
+            <in>mmalomx.h</in>
+            <in>mmalomx_buffer.c</in>
+            <in>mmalomx_buffer.h</in>
+            <in>mmalomx_commands.c</in>
+            <in>mmalomx_commands.h</in>
+            <in>mmalomx_core.c</in>
+            <in>mmalomx_logging.c</in>
+            <in>mmalomx_logging.h</in>
+            <in>mmalomx_marks.c</in>
+            <in>mmalomx_marks.h</in>
+            <in>mmalomx_parameters.c</in>
+            <in>mmalomx_parameters.h</in>
+            <in>mmalomx_registry.c</in>
+            <in>mmalomx_registry.h</in>
+            <in>mmalomx_roles.c</in>
+            <in>mmalomx_roles.h</in>
+            <in>mmalomx_util_params.c</in>
+            <in>mmalomx_util_params.h</in>
+            <in>mmalomx_util_params_audio.c</in>
+            <in>mmalomx_util_params_camera.c</in>
+            <in>mmalomx_util_params_common.h</in>
+            <in>mmalomx_util_params_misc.c</in>
+            <in>mmalomx_util_params_video.c</in>
+          </df>
+          <df name="test">
+            <df name="examples">
+              <in>example_basic_1.c</in>
+              <in>example_basic_2.c</in>
+              <in>example_connections.c</in>
+              <in>example_graph.c</in>
+            </df>
+          </df>
+          <df name="util">
+            <in>mmal_component_wrapper.c</in>
+            <in>mmal_component_wrapper.h</in>
+            <in>mmal_connection.c</in>
+            <in>mmal_connection.h</in>
+            <in>mmal_default_components.h</in>
+            <in>mmal_graph.c</in>
+            <in>mmal_graph.h</in>
+            <in>mmal_il.c</in>
+            <in>mmal_il.h</in>
+            <in>mmal_list.c</in>
+            <in>mmal_list.h</in>
+            <in>mmal_param_convert.c</in>
+            <in>mmal_param_convert.h</in>
+            <in>mmal_util.c</in>
+            <in>mmal_util.h</in>
+            <in>mmal_util_params.c</in>
+            <in>mmal_util_params.h</in>
+            <in>mmal_util_rational.c</in>
+            <in>mmal_util_rational.h</in>
+          </df>
+          <df name="vc">
+            <in>mmal_vc_api.c</in>
+            <in>mmal_vc_api.h</in>
+            <in>mmal_vc_api_drm.c</in>
+            <in>mmal_vc_api_drm.h</in>
+            <in>mmal_vc_client.c</in>
+            <in>mmal_vc_client_priv.h</in>
+            <in>mmal_vc_dbglog.h</in>
+            <in>mmal_vc_diag.c</in>
+            <in>mmal_vc_msgnames.c</in>
+            <in>mmal_vc_msgnames.h</in>
+            <in>mmal_vc_msgs.h</in>
+            <in>mmal_vc_opaque_alloc.c</in>
+            <in>mmal_vc_opaque_alloc.h</in>
+            <in>mmal_vc_shm.c</in>
+            <in>mmal_vc_shm.h</in>
+          </df>
+          <in>mmal.h</in>
+          <in>mmal_buffer.h</in>
+          <in>mmal_clock.h</in>
+          <in>mmal_common.h</in>
+          <in>mmal_component.h</in>
+          <in>mmal_encodings.h</in>
+          <in>mmal_events.h</in>
+          <in>mmal_format.h</in>
+          <in>mmal_logging.h</in>
+          <in>mmal_metadata.h</in>
+          <in>mmal_parameters.h</in>
+          <in>mmal_parameters_audio.h</in>
+          <in>mmal_parameters_camera.h</in>
+          <in>mmal_parameters_clock.h</in>
+          <in>mmal_parameters_common.h</in>
+          <in>mmal_parameters_video.h</in>
+          <in>mmal_pool.h</in>
+          <in>mmal_port.h</in>
+          <in>mmal_queue.h</in>
+          <in>mmal_types.h</in>
+        </df>
+        <df name="peer">
+          <in>vc_touch_api_types.h</in>
+          <in>vc_touchsrv_defs.h</in>
+          <in>vc_vchi_dispmanx_common.h</in>
+        </df>
+        <df name="usbdk">
+          <df name="test">
+            <in>stubs.c</in>
+          </df>
+          <df name="vmcs_rpc_client">
+            <in>message_dispatch.c</in>
+            <in>message_dispatch.h</in>
+            <in>platform.c</in>
+          </df>
+        </df>
+        <df name="vchi">
+          <df name="common">
+            <in>endian.h</in>
+          </df>
+          <df name="connections">
+            <in>connection.h</in>
+          </df>
+          <df name="message_drivers">
+            <in>message.h</in>
+          </df>
+          <in>vchi.h</in>
+          <in>vchi_cfg.h</in>
+          <in>vchi_cfg_internal.h</in>
+          <in>vchi_common.h</in>
+          <in>vchi_mh.h</in>
+        </df>
+        <df name="vchiq_arm">
+          <in>vchiq.h</in>
+          <in>vchiq_cfg.h</in>
+          <in>vchiq_if.h</in>
+          <in>vchiq_ioctl.h</in>
+          <in>vchiq_lib.c</in>
+          <in>vchiq_test.c</in>
+          <in>vchiq_test.h</in>
+          <in>vchiq_test_if.h</in>
+          <in>vchiq_util.c</in>
+          <in>vchiq_util.h</in>
+        </df>
+        <df name="vcos">
+          <df name="generic">
+            <in>vcos_abort.c</in>
+            <in>vcos_cmd.c</in>
+            <in>vcos_common.h</in>
+            <in>vcos_deprecated.h</in>
+            <in>vcos_generic_blockpool.c</in>
+            <in>vcos_generic_blockpool.h</in>
+            <in>vcos_generic_event_flags.c</in>
+            <in>vcos_generic_event_flags.h</in>
+            <in>vcos_generic_named_sem.c</in>
+            <in>vcos_generic_named_sem.h</in>
+            <in>vcos_generic_quickslow_mutex.h</in>
+            <in>vcos_generic_reentrant_mtx.c</in>
+            <in>vcos_generic_reentrant_mtx.h</in>
+            <in>vcos_generic_safe_string.c</in>
+            <in>vcos_generic_tls.h</in>
+            <in>vcos_init.c</in>
+            <in>vcos_joinable_thread_from_plain.h</in>
+            <in>vcos_latch_from_sem.h</in>
+            <in>vcos_logcat.c</in>
+            <in>vcos_mem_from_malloc.c</in>
+            <in>vcos_mem_from_malloc.h</in>
+            <in>vcos_msgqueue.c</in>
+            <in>vcos_mutexes_are_reentrant.h</in>
+            <in>vcos_thread_reaper.h</in>
+          </df>
+          <df name="glibc">
+            <in>vcos_backtrace.c</in>
+          </df>
+          <df name="pthreads">
+            <in>vcos_dlfcn.c</in>
+            <in>vcos_futex_mutex.h</in>
+            <in>vcos_platform.h</in>
+            <in>vcos_platform_types.h</in>
+            <in>vcos_pthreads.c</in>
+          </df>
+          <in>user_nodefs.h</in>
+          <in>vcos.h</in>
+          <in>vcos_assert.h</in>
+          <in>vcos_atomic_flags.h</in>
+          <in>vcos_attr.h</in>
+          <in>vcos_blockpool.h</in>
+          <in>vcos_build_info.h</in>
+          <in>vcos_cfg.h</in>
+          <in>vcos_cmd.h</in>
+          <in>vcos_ctype.h</in>
+          <in>vcos_dlfcn.h</in>
+          <in>vcos_event.h</in>
+          <in>vcos_event_flags.h</in>
+          <in>vcos_init.h</in>
+          <in>vcos_inttypes.h</in>
+          <in>vcos_isr.h</in>
+          <in>vcos_legacy_isr.h</in>
+          <in>vcos_logging.h</in>
+          <in>vcos_logging_control.h</in>
+          <in>vcos_lowlevel_thread.h</in>
+          <in>vcos_mem.h</in>
+          <in>vcos_mempool.h</in>
+          <in>vcos_msgqueue.h</in>
+          <in>vcos_mutex.h</in>
+          <in>vcos_named_semaphore.h</in>
+          <in>vcos_once.h</in>
+          <in>vcos_queue.h</in>
+          <in>vcos_quickslow_mutex.h</in>
+          <in>vcos_reentrant_mutex.h</in>
+          <in>vcos_semaphore.h</in>
+          <in>vcos_stdbool.h</in>
+          <in>vcos_stdint.h</in>
+          <in>vcos_string.h</in>
+          <in>vcos_thread.h</in>
+          <in>vcos_thread_attr.h</in>
+          <in>vcos_timer.h</in>
+          <in>vcos_tls.h</in>
+          <in>vcos_types.h</in>
+        </df>
+        <df name="vctypes">
+          <in>vc_display_types.h</in>
+          <in>vc_image_types.h</in>
+        </df>
+        <df name="vmcs_host">
+          <df name="khronos">
+            <df name="IL">
+              <in>OMX_Audio.h</in>
+              <in>OMX_Broadcom.h</in>
+              <in>OMX_Component.h</in>
+              <in>OMX_Core.h</in>
+              <in>OMX_ILCS.h</in>
+              <in>OMX_IVCommon.h</in>
+              <in>OMX_Image.h</in>
+              <in>OMX_Index.h</in>
+              <in>OMX_Other.h</in>
+              <in>OMX_Types.h</in>
+              <in>OMX_Video.h</in>
+            </df>
+          </df>
+          <df name="linux">
+            <df name="vcfiled">
+              <df name="etc">
+                <df name="init.d">
+                </df>
+              </df>
+              <in>vcfiled.c</in>
+              <in>vcfiled_check.c</in>
+              <in>vcfiled_check.h</in>
+              <in>vcfiled_lock_test.c</in>
+            </df>
+            <in>vcfilesys.c</in>
+            <in>vchost_config.h</in>
+            <in>vcmisc.c</in>
+          </df>
+          <in>vc_cec.h</in>
+          <in>vc_cecservice.h</in>
+          <in>vc_cecservice_defs.h</in>
+          <in>vc_cma.h</in>
+          <in>vc_dispmanx.h</in>
+          <in>vc_dispmanx_types.h</in>
+          <in>vc_dispservice_defs.h</in>
+          <in>vc_dispservice_x_defs.h</in>
+          <in>vc_fileservice_defs.h</in>
+          <in>vc_gencmd_defs.h</in>
+          <in>vc_hdmi.h</in>
+          <in>vc_hdmi_property.h</in>
+          <in>vc_hostreq_defs.h</in>
+          <in>vc_ilcs_defs.h</in>
+          <in>vc_imageconv_defs.h</in>
+          <in>vc_sdtv.h</in>
+          <in>vc_service_common.c</in>
+          <in>vc_service_common.h</in>
+          <in>vc_tvservice.h</in>
+          <in>vc_tvservice_defs.h</in>
+          <in>vc_vchi_audioserv_defs.h</in>
+          <in>vc_vchi_bufman.h</in>
+          <in>vc_vchi_bufman_defs.h</in>
+          <in>vc_vchi_cecservice.c</in>
+          <in>vc_vchi_dispmanx.c</in>
+          <in>vc_vchi_dispmanx.h</in>
+          <in>vc_vchi_fileservice_defs.h</in>
+          <in>vc_vchi_filesys.c</in>
+          <in>vc_vchi_filesys.h</in>
+          <in>vc_vchi_gencmd.c</in>
+          <in>vc_vchi_gencmd.h</in>
+          <in>vc_vchi_tvservice.c</in>
+          <in>vcfilesys.h</in>
+          <in>vcfilesys_defs.h</in>
+          <in>vcgencmd.h</in>
+          <in>vchost.h</in>
+          <in>vchostreq.h</in>
+          <in>vcilcs.c</in>
+          <in>vcilcs.h</in>
+          <in>vcilcs_common.c</in>
+          <in>vcilcs_common.h</in>
+          <in>vcilcs_in.c</in>
+          <in>vcilcs_out.c</in>
+        </df>
+      </df>
+      <df name="libs">
+        <df name="bcm_host">
+          <df name="include">
+            <in>bcm_host.h</in>
+          </df>
+          <in>bcm_host.c</in>
+        </df>
+        <df name="debug_sym">
+          <in>debug_sym.c</in>
+          <in>debug_sym.h</in>
+        </df>
+        <df name="sm">
+          <in>user-vcsm.c</in>
+          <in>user-vcsm.h</in>
+        </df>
+      </df>
+      <df name="raspicam">
+        <df name="build">
+          <df name="CMakeFiles">
+            <df name="3.0.2">
+              <df name="CompilerIdC">
+                <in>CMakeCCompilerId.c</in>
+              </df>
+              <df name="CompilerIdCXX">
+                <in>CMakeCXXCompilerId.cpp</in>
+              </df>
+            </df>
+            <df name="CMakeTmp">
+            </df>
+            <df name="raspistill.dir">
+              <df name="gl_scenes">
+              </df>
+            </df>
+            <df name="raspivid.dir">
+            </df>
+            <df name="raspividyuv.dir">
+            </df>
+            <df name="raspiyuv.dir">
+            </df>
+            <df name="testmain.dir">
+              <df name="gl_scenes">
+              </df>
+            </df>
+          </df>
+        </df>
+        <df name="CMakeFiles">
+          <df name="3.0.2">
+            <df name="CompilerIdC">
+              <in>CMakeCCompilerId.c</in>
+            </df>
+            <df name="CompilerIdCXX">
+              <in>CMakeCXXCompilerId.cpp</in>
+            </df>
+          </df>
+          <df name="CMakeTmp">
+          </df>
+          <df name="Progress">
+          </df>
+          <df name="raspistill.dir">
+            <df name="gl_scenes">
+            </df>
+          </df>
+          <df name="testmain.dir">
+            <df name="gl_scenes">
+            </df>
+          </df>
+        </df>
+        <df name="gl_scenes">
+          <in>cube_texture_and_coords.h</in>
+          <in>mirror.c</in>
+          <in>mirror.h</in>
+          <in>models.c</in>
+          <in>models.h</in>
+          <in>own.c</in>
+          <in>own.h</in>
+          <in>sobel.c</in>
+          <in>sobel.h</in>
+          <in>sobel_alt.c</in>
+          <in>square.c</in>
+          <in>square.h</in>
+          <in>teapot.c</in>
+          <in>teapot.h</in>
+          <in>yuv.c</in>
+          <in>yuv.h</in>
+        </df>
+        <df name="imv_examples">
+          <in>imv2pgm.c</in>
+          <in>imv2txt.c</in>
+        </df>
+        <in>RaspiCLI.c</in>
+        <in>RaspiCLI.h</in>
+        <in>RaspiCamControl.c</in>
+        <in>RaspiCamControl.h</in>
+        <in>RaspiPreview.c</in>
+        <in>RaspiPreview.h</in>
+        <in>RaspiStill.c</in>
+        <in>RaspiTex.c</in>
+        <in>RaspiTex.h</in>
+        <in>RaspiTexUtil.c</in>
+        <in>RaspiTexUtil.h</in>
+        <in>testmain.cpp</in>
+        <in>tga.c</in>
+        <in>tga.h</in>
+      </df>
+      <df name="vcinclude">
+        <in>common.h</in>
+        <in>vc_image_types.h</in>
+        <in>vcore.h</in>
+      </df>
+      <df name="wiringPi">
+        <df name="debian">
+        </df>
+        <df name="debian-template">
+          <df name="wiringPi">
+            <df name="DEBIAN">
+            </df>
+          </df>
+        </df>
+        <df name="devLib">
+          <in>ds1302.c</in>
+          <in>ds1302.h</in>
+          <in>font.h</in>
+          <in>gertboard.c</in>
+          <in>gertboard.h</in>
+          <in>lcd.c</in>
+          <in>lcd.h</in>
+          <in>lcd128x64.c</in>
+          <in>lcd128x64.h</in>
+          <in>maxdetect.c</in>
+          <in>maxdetect.h</in>
+          <in>piFace.c</in>
+          <in>piFace.h</in>
+          <in>piFaceOld.c</in>
+          <in>piGlow.c</in>
+          <in>piGlow.h</in>
+          <in>piNes.c</in>
+          <in>piNes.h</in>
+          <in>scrollPhat.c</in>
+          <in>scrollPhat.h</in>
+          <in>scrollPhatFont.h</in>
+        </df>
+        <df name="examples">
+          <df name="Gertboard">
+            <in>7segments.c</in>
+            <in>buttons.c</in>
+            <in>gertboard.c</in>
+            <in>record.c</in>
+            <in>temperature.c</in>
+            <in>voltmeter.c</in>
+            <in>vumeter.c</in>
+          </df>
+          <df name="PiFace">
+            <in>blink.c</in>
+            <in>buttons.c</in>
+            <in>ladder.c</in>
+            <in>metro.c</in>
+            <in>motor.c</in>
+            <in>reaction.c</in>
+          </df>
+          <df name="PiGlow">
+            <in>piGlow0.c</in>
+            <in>piGlow1.c</in>
+            <in>piglow.c</in>
+          </df>
+          <df name="q2w">
+            <in>binary.c</in>
+            <in>blink-io.c</in>
+            <in>blink.c</in>
+            <in>bright.c</in>
+            <in>button.c</in>
+            <in>volts.c</in>
+          </df>
+          <df name="scrollPhat">
+            <in>scphat.c</in>
+            <in>test.c</in>
+          </df>
+          <in>blink.c</in>
+          <in>blink12.c</in>
+          <in>blink12drcs.c</in>
+          <in>blink6drcs.c</in>
+          <in>blink8.c</in>
+          <in>clock.c</in>
+          <in>delayTest.c</in>
+          <in>ds1302.c</in>
+          <in>header.h</in>
+          <in>isr-osc.c</in>
+          <in>isr.c</in>
+          <in>lcd-adafruit.c</in>
+          <in>lcd.c</in>
+          <in>lowPower.c</in>
+          <in>max31855.c</in>
+          <in>nes.c</in>
+          <in>okLed.c</in>
+          <in>pwm.c</in>
+          <in>rht03.c</in>
+          <in>serialRead.c</in>
+          <in>serialTest.c</in>
+          <in>servo.c</in>
+          <in>softPwm.c</in>
+          <in>softTone.c</in>
+          <in>speed.c</in>
+          <in>spiSpeed.c</in>
+          <in>wfi.c</in>
+        </df>
+        <df name="gpio">
+          <in>gpio.c</in>
+          <in>pins.c</in>
+          <in>readall.c</in>
+          <in>version.h</in>
+        </df>
+        <df name="pins">
+        </df>
+        <df name="wiringPi">
+          <in>ads1115.c</in>
+          <in>ads1115.h</in>
+          <in>drcSerial.c</in>
+          <in>drcSerial.h</in>
+          <in>max31855.c</in>
+          <in>max31855.h</in>
+          <in>max5322.c</in>
+          <in>max5322.h</in>
+          <in>mcp23008.c</in>
+          <in>mcp23008.h</in>
+          <in>mcp23016.c</in>
+          <in>mcp23016.h</in>
+          <in>mcp23016reg.h</in>
+          <in>mcp23017.c</in>
+          <in>mcp23017.h</in>
+          <in>mcp23s08.c</in>
+          <in>mcp23s08.h</in>
+          <in>mcp23s17.c</in>
+          <in>mcp23s17.h</in>
+          <in>mcp23x08.h</in>
+          <in>mcp23x0817.h</in>
+          <in>mcp3002.c</in>
+          <in>mcp3002.h</in>
+          <in>mcp3004.c</in>
+          <in>mcp3004.h</in>
+          <in>mcp3422.c</in>
+          <in>mcp3422.h</in>
+          <in>mcp4802.c</in>
+          <in>mcp4802.h</in>
+          <in>pcf8574.c</in>
+          <in>pcf8574.h</in>
+          <in>pcf8591.c</in>
+          <in>pcf8591.h</in>
+          <in>piHiPri.c</in>
+          <in>piThread.c</in>
+          <in>sn3218.c</in>
+          <in>sn3218.h</in>
+          <in>softPwm.c</in>
+          <in>softPwm.h</in>
+          <in>softServo.c</in>
+          <in>softServo.h</in>
+          <in>softTone.c</in>
+          <in>softTone.h</in>
+          <in>sr595.c</in>
+          <in>sr595.h</in>
+          <in>wiringPi.c</in>
+          <in>wiringPi.h</in>
+          <in>wiringPiI2C.c</in>
+          <in>wiringPiI2C.h</in>
+          <in>wiringPiSPI.c</in>
+          <in>wiringPiSPI.h</in>
+          <in>wiringSerial.c</in>
+          <in>wiringSerial.h</in>
+          <in>wiringShift.c</in>
+          <in>wiringShift.h</in>
+          <in>wpiExtensions.c</in>
+          <in>wpiExtensions.h</in>
+        </df>
+      </df>
+    </df>
+  </logicalFolder>
+  <projectmakefile></projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <developmentServer>pi@172.16.0.5:22</developmentServer>
+        <platform>2</platform>
+      </toolsSet>
+      <compile>
+        <compiledirpicklist>
+          <compiledirpicklistitem>.</compiledirpicklistitem>
+          <compiledirpicklistitem>${AUTO_FOLDER}</compiledirpicklistitem>
+        </compiledirpicklist>
+        <compiledir>${AUTO_FOLDER}</compiledir>
+        <compilecommandpicklist>
+          <compilecommandpicklistitem>${MAKE} ${ITEM_NAME}.o</compilecommandpicklistitem>
+          <compilecommandpicklistitem>${AUTO_COMPILE}</compilecommandpicklistitem>
+        </compilecommandpicklist>
+        <compilecommand>${AUTO_COMPILE}</compilecommand>
+      </compile>
+      <dbx_gdbdebugger version="1">
+        <gdb_pathmaps>
+        </gdb_pathmaps>
+        <gdb_interceptlist>
+          <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
+        </gdb_interceptlist>
+        <gdb_options>
+          <DebugOptions>
+          </DebugOptions>
+        </gdb_options>
+        <gdb_buildfirst gdb_buildfirst_overriden="false" gdb_buildfirst_old="false"/>
+      </dbx_gdbdebugger>
+      <nativedebugger version="1">
+        <engine>gdb</engine>
+      </nativedebugger>
+      <runprofile version="9">
+        <runcommandpicklist>
+          <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+        </runcommandpicklist>
+        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <rundir>.</rundir>
+        <buildfirst>false</buildfirst>
+        <terminal-type>0</terminal-type>
+        <remove-instrumentation>0</remove-instrumentation>
+        <environment>
+        </environment>
+      </runprofile>
+    </conf>
+  </confs>
+</configurationDescriptor>

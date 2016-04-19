@@ -1,0 +1,1 @@
+/usr/bin/cc      -pthread CMakeFiles/raspiyuv.dir/RaspiCamControl.o CMakeFiles/raspiyuv.dir/RaspiCLI.o CMakeFiles/raspiyuv.dir/RaspiPreview.o CMakeFiles/raspiyuv.dir/RaspiStillYUV.o  -o raspiyuv  -L/opt/vc/lib -rdynamic -lmmal_core -lmmal_util -lmmal_vc_client -lvcos -lbcm_host -Wl,-rpath,/opt/vc/lib: 

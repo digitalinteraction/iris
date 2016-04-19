@@ -1,0 +1,72 @@
+[
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/RaspiCamControl.c.o   -c /home/pi/gpu_main/raspicam/RaspiCamControl.c",
+  "file": "/home/pi/gpu_main/raspicam/RaspiCamControl.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/RaspiCLI.c.o   -c /home/pi/gpu_main/raspicam/RaspiCLI.c",
+  "file": "/home/pi/gpu_main/raspicam/RaspiCLI.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/RaspiPreview.c.o   -c /home/pi/gpu_main/raspicam/RaspiPreview.c",
+  "file": "/home/pi/gpu_main/raspicam/RaspiPreview.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/g++    -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/testmain.cpp.o -c /home/pi/gpu_main/raspicam/testmain.cpp",
+  "file": "/home/pi/gpu_main/raspicam/testmain.cpp"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/RaspiTex.c.o   -c /home/pi/gpu_main/raspicam/RaspiTex.c",
+  "file": "/home/pi/gpu_main/raspicam/RaspiTex.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/RaspiTexUtil.c.o   -c /home/pi/gpu_main/raspicam/RaspiTexUtil.c",
+  "file": "/home/pi/gpu_main/raspicam/RaspiTexUtil.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/tga.c.o   -c /home/pi/gpu_main/raspicam/tga.c",
+  "file": "/home/pi/gpu_main/raspicam/tga.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/gl_scenes/models.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/models.c",
+  "file": "/home/pi/gpu_main/raspicam/gl_scenes/models.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/gl_scenes/mirror.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/mirror.c",
+  "file": "/home/pi/gpu_main/raspicam/gl_scenes/mirror.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/gl_scenes/yuv.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/yuv.c",
+  "file": "/home/pi/gpu_main/raspicam/gl_scenes/yuv.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/gl_scenes/sobel.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/sobel.c",
+  "file": "/home/pi/gpu_main/raspicam/gl_scenes/sobel.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/gl_scenes/square.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/square.c",
+  "file": "/home/pi/gpu_main/raspicam/gl_scenes/square.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/gl_scenes/teapot.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/teapot.c",
+  "file": "/home/pi/gpu_main/raspicam/gl_scenes/teapot.c"
+},
+{
+  "directory": "/home/pi/gpu_main/raspicam",
+  "command": "/usr/bin/gcc   -g3 -gdwarf-2 -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include    -o CMakeFiles/testmain.dir/gl_scenes/own.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/own.c",
+  "file": "/home/pi/gpu_main/raspicam/gl_scenes/own.c"
+}
+]
