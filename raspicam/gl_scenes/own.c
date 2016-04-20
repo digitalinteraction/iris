@@ -47,6 +47,15 @@ RASPITEXUTIL_SHADER_PROGRAM_T own_shader = {
     //.attribute_names = {},
 };
 
+RASPITEXUTIL_SHADER_PROGRAM_T own_shader2 = {
+    .vertex_source = 0,
+    .fragment_source = 0,
+    .uniform_names = {"renderTexture", "tex_unit"},
+    //.uniform_names = {},
+    .attribute_names = {"vertex"},
+    //.attribute_names = {},
+};
+
 int loadshader(char* filename, char* filename2, RASPITEXUTIL_SHADER_PROGRAM_T *p) {
 
     printf("load shader with name %s\n", filename);
@@ -96,13 +105,14 @@ static int own_init(RASPITEX_STATE *state)
     if (rc != 0)
        goto end;
     loadshader("../gl_scenes/own_vertex.glsl", "../gl_scenes/own_fragment_undistort_2.glsl", &own_shader);
+    loadshader("../gl_scenes/own_vertex.glsl", "../gl_scenes/own_fragment_3.glsl", &own_shader2);
+
     //GLint texLoc = glGetUniformLocation(own_shader.program, "undist");
     //glUniform1i(texLoc, 1);
     //glUniform1i(own_shader.uniform_locations[1], 1);
     rc = raspitexutil_build_shader_program(&own_shader);
-    
-    
-    
+    rc += raspitexutil_build_shader_program(&own_shader2);
+
     GLCHK(glGenFramebuffers(1, &state->framebuffer));
     GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->framebuffer));
     
@@ -140,12 +150,9 @@ end:
 }
 
 static int own_redraw(RASPITEX_STATE *raspitex_state) {
-    static float offset = 0.0;
 
     GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, raspitex_state->framebuffer));
-    // Start with a clear screen
     GLCHK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-    // Bind the OES texture which is used to render the camera preview
     GLCHK(glUseProgram(own_shader.program));
 
     glActiveTexture(GL_TEXTURE0);
@@ -161,35 +168,32 @@ static int own_redraw(RASPITEX_STATE *raspitex_state) {
         -1.0f, -1.0f,
     };
     GLCHK(glVertexAttribPointer(own_shader.attribute_locations[0], 2, GL_FLOAT, GL_FALSE, 0, varray));
-    //GLCHK(glUniform1f(own_shader.uniform_locations[1], offset));
-    //GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
-
-    //glActiveTexture(GL_TEXTURE1);
-    //GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->undist));
-
     GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->undist));
-
-    //GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
-    // GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1944, 1458, 0, GL_RGB, GL_UNSIGNED_BYTE, mapping));
-    //GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, 1944, 1458, 0, GL_ALPHA, GL_FLOAT, mapping));
-
-
+    
     GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
-
-    ////////////////////////////////////////////////////////////////////////
-    //GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->undist));
-
-    //glUniform1i(glGetUniformLocation(own_shader.program, "undist"), 0);
-
-
-    //glUniform1i(glGetUniformLocation(own_shader.program, "undist"),1);
+///////////////////////////////////////////////////////////////
+    GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+    GLCHK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+    GLCHK(glUseProgram(own_shader2.program));
+    GLCHK(glUniform2f(own_shader2.uniform_locations[1], 1.0 / (float) 1944.0, 1.0 / (float) 1458.0));
     
+    glActiveTexture(GL_TEXTURE0);
+    GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->renderTexture));
+    GLCHK(glEnableVertexAttribArray(own_shader.attribute_locations[0]));
+    GLfloat varray2[] = {
+        -1.0f, -1.0f,
+        1.0f,  1.0f,
+        1.0f, -1.0f,
 
-    ////////////////////////////////////////////////////////////////////////
+        -1.0f,  1.0f,
+        1.0f,  1.0f,
+        -1.0f, -1.0f,
+    };
+    GLCHK(glVertexAttribPointer(own_shader.attribute_locations[0], 2, GL_FLOAT, GL_FALSE, 0, varray2));
     
-    //offset += 0.05;
-
-
+    GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
+/////////////////////////////////////////////////////////////////////////////////
+    
     GLCHK(glDisableVertexAttribArray(own_shader.attribute_locations[0]));
     GLCHK(glUseProgram(0));
     return 0;

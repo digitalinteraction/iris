@@ -177,7 +177,7 @@ int main(int argc, char** argv) {
     digitalWrite (2, 1) ; 
     digitalWrite (3, 1) ; 
     digitalWrite (7, 1) ; */
-    while (i < 5) {
+    while (i < 100) {
         //name[4] = '0'+i;
         
         printf("capturing...%d %d\n", i, pin);
