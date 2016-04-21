@@ -10,8 +10,11 @@ vec2 lookup(vec2 incoord){
 
 void main()
 {  
+    #ifdef A
     vec2 lookup_coord = lookup(texcoord);
-    
-
     gl_FragColor = texture2D(tex, lookup_coord);
+    #else
+    vec2 lookup_coord = lookup(texcoord);
+    gl_FragColor = texture2D(tex, texcoord);
+    #endif
 }

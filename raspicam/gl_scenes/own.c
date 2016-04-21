@@ -33,12 +33,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <GLES2/gl2.h>
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
+#include <stdarg.h>
 
 unsigned char mapping[1458][1944][4];
 
 
 
 RASPITEXUTIL_SHADER_PROGRAM_T own_shader = {
+    .vertex_strings = 2,
+    .fragment_strings = 2,
     .vertex_source = 0,
     .fragment_source = 0,
     .uniform_names = {"tex", "undist"},
@@ -48,6 +51,8 @@ RASPITEXUTIL_SHADER_PROGRAM_T own_shader = {
 };
 
 RASPITEXUTIL_SHADER_PROGRAM_T own_shader2 = {
+    .vertex_strings = 2,
+    .fragment_strings = 2,
     .vertex_source = 0,
     .fragment_source = 0,
     .uniform_names = {"renderTexture", "tex_unit"},
@@ -56,9 +61,13 @@ RASPITEXUTIL_SHADER_PROGRAM_T own_shader2 = {
     //.attribute_names = {},
 };
 
-int loadshader(char* filename, char* filename2, RASPITEXUTIL_SHADER_PROGRAM_T *p) {
+
+int loadshader2(char* filename, char* filename2, RASPITEXUTIL_SHADER_PROGRAM_T *p, char prog1, char prog2) {
 
     printf("load shader with name %s\n", filename);
+    p->vertex_source = malloc(sizeof(char*)*2);
+    p->fragment_source = malloc(sizeof(char*)*2);
+
 
     FILE *fp;
     fp = fopen(filename, "rb");
@@ -69,11 +78,16 @@ int loadshader(char* filename, char* filename2, RASPITEXUTIL_SHADER_PROGRAM_T *p
     fseek(fp, 0L, SEEK_END);
     int sz = ftell(fp);
     fseek(fp, 0L, SEEK_SET);
-    p->vertex_source = malloc(sizeof (char)*(sz + 1));
-    if (p->vertex_source == 0) return -1; // can't reserve memory
-    fread(p->vertex_source, sz, 1, fp); /* Read the contents of the file in to the buffer */
-    p->vertex_source[sz] = 0;
+    p->vertex_source[1] = malloc(sizeof (char)*(sz + 1));
+    if (p->vertex_source[1] == 0) return -1; // can't reserve memory
+    fread(p->vertex_source[1], sz, 1, fp); /* Read the contents of the file in to the buffer */
+    p->vertex_source[1][sz] = 0;
     fclose(fp);
+    
+    char * def1 = malloc(sizeof(char)*11);
+    snprintf(def1, 11, "#define %c\n", prog1);
+    p->vertex_source[0] = def1;
+    p->vertex_strings = 2;
 
     printf("load shader with name %s\n", filename2);
     fp = fopen(filename2, "rb");
@@ -84,13 +98,57 @@ int loadshader(char* filename, char* filename2, RASPITEXUTIL_SHADER_PROGRAM_T *p
     fseek(fp, 0L, SEEK_END);
     sz = ftell(fp);
     fseek(fp, 0L, SEEK_SET);
-    p->fragment_source = malloc(sizeof (char)*(sz + 1));
-    if (p->fragment_source == 0) return -1; // can't reserve memory
-    fread(p->fragment_source, sz, 1, fp); /* Read the contents of the file in to the buffer */
-    p->fragment_source[sz] = 0;
+    p->fragment_source[1] = malloc(sizeof (char)*(sz + 1));
+    if (p->fragment_source[1] == 0) return -1; // can't reserve memory
+    fread(p->fragment_source[1], sz, 1, fp); /* Read the contents of the file in to the buffer */
+    p->fragment_source[1][sz] = 0;
     fclose(fp);
+    
+    char * def2 = malloc(sizeof(char)*11);
+    snprintf(def2, 11, "#define %c\n", prog1);
+    p->fragment_source[0] = def1;
+    p->fragment_strings = 2;
 
     return 0; // No Error
+}
+
+int loadshader(char* filename, char*** p, char* addition){
+    *p = malloc(sizeof(char*)*2);
+    if (*p == 0){
+        perror("ERROR_A");
+        return -1;
+    }
+    **p = addition;
+
+    FILE *fp;
+    fp = fopen(filename, "rb");
+    if (fp == NULL) {
+        perror("ERROR_B");
+        return -1;
+    }
+    fseek(fp, 0L, SEEK_END);
+    int sz = ftell(fp);
+    fseek(fp, 0L, SEEK_SET);
+    *(*p+1) = malloc(sizeof (char)*(sz + 1));
+    if (*(*p+1)== 0){
+        perror("ERROR_C");
+        return -1;
+    } 
+    fread(*(*p+1), sz, 1, fp); 
+    fclose(fp);
+    return 0;
+}
+
+int free_shader_mem(RASPITEXUTIL_SHADER_PROGRAM_T *p){
+    int i;
+    for(i=0;i < p->vertex_strings; i++){
+        free(p->vertex_source[i]);
+    }
+    for(i=0;i < p->fragment_strings; i++){
+        free(p->fragment_source[i]);
+    }
+    free(p->vertex_source);
+    free(p->fragment_source);
 }
 
 /**
@@ -104,8 +162,13 @@ static int own_init(RASPITEX_STATE *state)
     int rc = raspitexutil_gl_init_2_0(state);
     if (rc != 0)
        goto end;
-    loadshader("../gl_scenes/own_vertex.glsl", "../gl_scenes/own_fragment_undistort_2.glsl", &own_shader);
-    loadshader("../gl_scenes/own_vertex.glsl", "../gl_scenes/own_fragment_3.glsl", &own_shader2);
+    //loadshader("../gl_scenes/own_vertex.glsl", "../gl_scenes/own_fragment_undistort_2.glsl", &own_shader, 'A', 'A');
+    //loadshader("../gl_scenes/own_vertex.glsl", "../gl_scenes/own_fragment_3.glsl", &own_shader2, 'A', 'A');
+    char def_str[] = "#define A\n #define RES_X (1.0/1944.0)\n #define RES_Y (1.0/1458.0)\n";
+    loadshader("../gl_scenes/own_vertex.glsl", &(own_shader.vertex_source), def_str);
+    loadshader("../gl_scenes/own_fragment_undistort_2.glsl", &(own_shader.fragment_source), def_str);
+    loadshader("../gl_scenes/own_vertex.glsl", &(own_shader2.vertex_source), def_str);
+    loadshader("../gl_scenes/own_fragment_3.glsl", &(own_shader2.fragment_source), def_str);
 
     //GLint texLoc = glGetUniformLocation(own_shader.program, "undist");
     //glUniform1i(texLoc, 1);

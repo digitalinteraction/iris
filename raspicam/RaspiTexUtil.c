@@ -516,7 +516,7 @@ int raspitexutil_build_shader_program(RASPITEXUTIL_SHADER_PROGRAM_T *p)
     p->vs = p->fs = 0;
 
     p->vs = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(p->vs, 1, &p->vertex_source, NULL);
+    glShaderSource(p->vs, p->vertex_strings, p->vertex_source, NULL);
     glCompileShader(p->vs);
     glGetShaderiv(p->vs, GL_COMPILE_STATUS, &status);
     if (! status) {
@@ -526,7 +526,7 @@ int raspitexutil_build_shader_program(RASPITEXUTIL_SHADER_PROGRAM_T *p)
     }
 
     p->fs = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(p->fs, 1, &p->fragment_source, NULL);
+    glShaderSource(p->fs, p->fragment_strings, p->fragment_source, NULL);
     glCompileShader(p->fs);
 
     glGetShaderiv(p->fs, GL_COMPILE_STATUS, &status);

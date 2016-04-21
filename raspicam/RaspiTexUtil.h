@@ -49,8 +49,10 @@ extern VCOS_LOG_CAT_T raspitex_log_category;
  */
 typedef struct RASPITEXUTIL_SHADER_PROGRAM_T
 {
-   char *vertex_source;       /// Pointer to vertex shader source
-   char *fragment_source;     /// Pointer to fragment shader source
+   GLsizei vertex_strings;
+   GLsizei fragment_strings;
+   char **vertex_source;       /// Pointer to vertex shader source
+   char **fragment_source;     /// Pointer to fragment shader source
 
    /// Array of uniform names for raspitex_build_shader_program to process
    const char *uniform_names[SHADER_MAX_UNIFORMS];
