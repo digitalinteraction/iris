@@ -11,7 +11,6 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/tobias/piraspicam/gpu_main/raspicam/testmain.cpp</file>
-            <file>file:/home/tobias/piraspicam/gpu_main/raspicam/gl_scenes/sobel.c</file>
             <file>file:/home/tobias/piraspicam/gpu_main/raspicam/gl_scenes/own.c</file>
         </group>
     </open-files>

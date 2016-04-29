@@ -170,6 +170,9 @@ int main(int argc, char** argv) {
     FILE *output_file = NULL;
     char name[] = "test0.tga";
     output_file = fopen(name, "wb");
+    FILE *low_output_file = NULL;
+    char low_name[] = "low_test0.tga";
+    low_output_file = fopen(low_name, "wb");
 
     int i = 0;
     int pin = 0;
@@ -177,20 +180,43 @@ int main(int argc, char** argv) {
     digitalWrite (2, 1) ; 
     digitalWrite (3, 1) ; 
     digitalWrite (7, 1) ; */
-    while (i < 10) {
+    while (i < 100) {
         //name[4] = '0'+i;
-        
-        printf("capturing...%d %d\n", i, pin);
+
+        //printf("capturing...%d %d\n", i, pin);
         //digitalWrite (0, 1) ; 
         //digitalWrite (2, 1) ; 
         //digitalWrite (3, 1) ; 
         //digitalWrite (7, 1) ; 
-        
-        raspitex_capture(&state.raspitex_state, output_file, 0);
+        state.raspitex_state.patches[0].active = 1;
+        state.raspitex_state.patches[0].height = 300;
+        state.raspitex_state.patches[0].width = 300;
+        state.raspitex_state.patches[0].x = 200;
+        state.raspitex_state.patches[0].y = 200;
+
+        state.raspitex_state.patches[1].active = 1;
+        state.raspitex_state.patches[1].height = 500;
+        state.raspitex_state.patches[1].width = 500;
+        state.raspitex_state.patches[1].x = 100;
+        state.raspitex_state.patches[1].y = 100;
+
+        raspitex_capture(&state.raspitex_state, 0);
         i++;
 
     }
-    raspitex_capture(&state.raspitex_state, output_file, 1);
+    state.raspitex_state.patches[0].active = 1;
+    state.raspitex_state.patches[0].height = 300;
+    state.raspitex_state.patches[0].width = 300;
+    state.raspitex_state.patches[0].x = 200;
+    state.raspitex_state.patches[0].y = 200;
+    
+    state.raspitex_state.patches[1].active = 1;
+    state.raspitex_state.patches[1].height = 500;
+    state.raspitex_state.patches[1].width = 500;
+    state.raspitex_state.patches[1].x = 100;
+    state.raspitex_state.patches[1].y = 100;
+    
+    raspitex_capture(&state.raspitex_state, 1);
     /*digitalWrite(0,0);
     digitalWrite(2,0);
     digitalWrite(3,0);

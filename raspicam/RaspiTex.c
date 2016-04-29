@@ -44,11 +44,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "interface/mmal/util/mmal_util_params.h"
 #include "tga.h"
 
-#include "gl_scenes/mirror.h"
-#include "gl_scenes/sobel.h"
-#include "gl_scenes/square.h"
-#include "gl_scenes/teapot.h"
-#include "gl_scenes/yuv.h"
+//#include "gl_scenes/mirror.h"
+//#include "gl_scenes/sobel.h"
+//#include "gl_scenes/square.h"
+//#include "gl_scenes/teapot.h"
+//#include "gl_scenes/yuv.h"
 #include "gl_scenes/own.h"
 
 #include <wiringPi.h>
@@ -221,24 +221,43 @@ static void raspitex_do_capture(RASPITEX_STATE *state)
    //clock_t t1,t2;
    //t1 = clock();
    //digitalWrite (RASPITEX_FLASH_PIN, 1) ;       
-  
 
-   if (state->capture.request)
-   {
-      if (state->ops.capture(state, &buffer, &size) == 0)
-      {
-         /* Pass ownership of buffer to main thread via capture state */
-         state->capture.buffer = buffer;
-         state->capture.size = size;
-      }
-      else
-      {
-         state->capture.buffer = NULL; // Null indicates an error
-         state->capture.size = 0;
-      }
+    if (state->capture.request) {
 
-      state->capture.request = 0; // Always clear request and post sem
-      vcos_semaphore_post(&state->capture.completed_sem);
+        int i = 0;
+        //printf("AAA\n");
+        state->capture.size_low = state->low_buffer_size;
+        state->capture.buffer_low = state->low_undist_buffer;
+        //printf("BBB\n");
+
+        for (i = 0; i < 10;i++) {
+                    //printf("CCC\n");
+                    //fflush(stdout);
+            //printf("CAPTURING:: %d\n", state->patches[i].active);
+            if (state->patches[i].active == 1) {
+                //printf("CAPTURING in buffer %d\n", i);
+                if (state->ops.capture(state, i) == 0) {
+                    state->patches[i].active = 2;
+                }
+                
+                    /* Pass ownership of buffer to main thread via capture state */
+                    /*state->capture.buffer = buffer;
+                    state->capture.buffer_low = state->low_undist_buffer;
+                    state->capture.size = size;
+                    state->capture.size_low = state->low_buffer_size;
+                } else {
+                    state->capture.buffer = NULL; // Null indicates an error
+                    state->capture.buffer_low = NULL;
+                    state->capture.size = 0;
+                    state->capture.size_low = 0;
+
+                }*/
+
+            }
+        }
+
+        state->capture.request = 0; // Always clear request and post sem
+        vcos_semaphore_post(&state->capture.completed_sem);
    }
    //digitalWrite (RASPITEX_FLASH_PIN, 0) ;       
    //t2 = clock();
@@ -720,16 +739,22 @@ int raspitex_start(RASPITEX_STATE *state)
  * @param outpt_file Output file handle for the ppm image.
  * @return Zero on success.
  */
-int raspitex_capture(RASPITEX_STATE *state, FILE *output_file, int write)
+int raspitex_capture(RASPITEX_STATE *state, int write)
 {
    int rc = 0;
-   uint8_t *buffer = NULL;
-   size_t size = 0;
+   char low_name[] = "low_test0.tga";
+   char name[] = "test0.tga";
+   FILE * low_output = fopen(low_name, "wb");
+   FILE * output;
+   //uint8_t *buffer = NULL;
+   //size_t size = 0;
+   uint8_t *buffer_low = NULL;
+   size_t size_low = 0;
 
-   vcos_log_trace("%s: state %p file %p", VCOS_FUNCTION,
-         state, output_file);
+   //vcos_log_trace("%s: state %p file %p", VCOS_FUNCTION,
+   //      state, output_file);
 
-   if (state && output_file)
+   if (state)
    {
       /* Only request one capture at a time */
       vcos_semaphore_wait(&state->capture.start_sem);
@@ -739,32 +764,53 @@ int raspitex_capture(RASPITEX_STATE *state, FILE *output_file, int write)
       vcos_semaphore_wait(&state->capture.completed_sem);
 
       /* Take ownership of the captured buffer */
-      buffer = state->capture.buffer;
-      size = state->capture.size;
+      //buffer = state->capture.buffer;
+      //size = state->capture.size;
+      buffer_low = state->capture.buffer_low;
+      size_low = state->capture.size_low;
 
       state->capture.request = 0;
-      state->capture.buffer = 0;
-      state->capture.size = 0;
+      //state->capture.buffer = 0;
+      //state->capture.size = 0;
+      state->capture.buffer_low = 0;
+      state->capture.size_low = 0;
 
       /* Allow another capture to be requested */
       vcos_semaphore_post(&state->capture.start_sem);
    }
-   if (size == 0 || ! buffer)
-   {
-      vcos_log_error("%s: capture failed", VCOS_FUNCTION);
-      rc = -1;
-      goto end;
-   }
-   printf("PPM captured: Size %ix%i, with total: %i\n", state->width, state->height, size);
+   /*
+    if (size == 0 || ! buffer || size_low == 0 || !buffer_low)
+    {
+       vcos_log_error("%s: capture failed", VCOS_FUNCTION);
+       printf("%d %p %d %p\n", size, buffer, size_low, buffer_low);
+       rc = -1;
+       goto end;
+    }*/
+   raspitexutil_brga_to_rgba(buffer_low, size_low);
+   rc = write_tga(low_output, LOW_OUTPUT_X, LOW_OUTPUT_Y, buffer_low, size_low);
+   fflush(low_output);
+   //printf("reading out patches\n");
 
-    if (write == 1) {
-        raspitexutil_brga_to_rgba(buffer, size);
-        //TOBIAS
-        rc = write_tga(output_file, state->width, state->height, buffer, size);
-        fflush(output_file);
+    int i = 0;
+    for (i = 0; i < 10; i++) {
+        if (state->patches[i].active == 2) {
+            //printf("PPM captured: Size %ix%i, with total: %i\n", state->patches[i].width, state->patches[i].height, state->patches[i].size);
+            if (write == 1) {
+                uint8_t * buffer = state->patches[i].buffer;
+                size_t size = state->patches[i].size;
+                name[4] = i+'0';
+                output = fopen(name, "wb");
+                raspitexutil_brga_to_rgba(buffer, size);
+
+                //TOBIAS
+                rc = write_tga(output, state->patches[i].width, state->patches[i].height, buffer, size);
+                fflush(output);
+                state->patches[i].active = 0;
+            }
+        } else if (state->patches[i].active == 1) {
+            printf("Patch %d not succesfully transferred\n", i);
+        }else{
+            //printf("nothing to do...\n");
+        }
     }
-
-end:
-   free(buffer);
-   return rc;
 }

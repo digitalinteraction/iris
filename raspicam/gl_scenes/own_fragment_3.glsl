@@ -27,5 +27,6 @@ void main()
     vec4 v =  p0 + (2.0 * p1) + p3 -p6 + (-2.0 * p7) + -p8;
     vec4 h =  p0 + (2.0 * p3) + p7 -p2 + (-2.0 * p5) + -p8;
     gl_FragColor = sqrt(h*h + v*v);
+    //gl_FragColor = texture2D(renderTexture, texcoord);
     gl_FragColor.a = 1.0;
 }

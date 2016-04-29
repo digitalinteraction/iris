@@ -277,12 +277,7 @@ CMakeFiles/testmain.dir/RaspiTex.c.o
  /home/pi/gpu_main/raspicam/RaspiTex.c
  /home/pi/gpu_main/raspicam/RaspiTex.h
  /home/pi/gpu_main/raspicam/RaspiTexUtil.h
- /home/pi/gpu_main/raspicam/gl_scenes/mirror.h
  /home/pi/gpu_main/raspicam/gl_scenes/own.h
- /home/pi/gpu_main/raspicam/gl_scenes/sobel.h
- /home/pi/gpu_main/raspicam/gl_scenes/square.h
- /home/pi/gpu_main/raspicam/gl_scenes/teapot.h
- /home/pi/gpu_main/raspicam/gl_scenes/yuv.h
  /home/pi/gpu_main/raspicam/tga.h
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h

@@ -44,6 +44,13 @@ extern "C"{
 #define RASPITEX_VERSION_MAJOR 1
 #define RASPITEX_VERSION_MINOR 0
     
+#define UNDISTORT_X 1944
+#define UNDISTORT_Y 1458
+#define HIGH_OUTPUT_X 1944
+#define HIGH_OUTPUT_Y 1458
+#define LOW_OUTPUT_X 64//400//972
+#define LOW_OUTPUT_Y 48//300//729
+    
 //0: IR
 //2: UV
 //7: White
@@ -60,6 +67,17 @@ typedef enum {
 } RASPITEX_SCENE_T;
 
 struct RASPITEX_STATE;
+
+typedef struct RASPITEX_PATCH
+{
+     uint8_t *buffer;
+     size_t size;
+     int32_t x;
+     int32_t y;
+     int32_t width;
+     int32_t height;
+     uint8_t active;
+} RASPITEX_PATCH;
 
 typedef struct RASPITEX_SCENE_OPS
 {
@@ -95,7 +113,7 @@ typedef struct RASPITEX_SCENE_OPS
    /// Allocates a buffer and copies the pixels from the current
    /// frame-buffer into it.
    int (*capture)(struct RASPITEX_STATE *state,
-         uint8_t **buffer, size_t *buffer_size);
+         uint8_t nr);
 
    /// Creates EGL surface for native window
    void (*gl_term)(struct RASPITEX_STATE *state);
@@ -117,9 +135,11 @@ typedef struct RASPITEX_CAPTURE
 
    /// The RGB capture buffer
    uint8_t *buffer;
+   uint8_t *buffer_low;
 
    /// Size of the captured buffer in bytes
    size_t size;
+   size_t size_low;
 
    /// Frame-buffer capture has been requested. Could use
    /// a queue instead here to allow multiple capture requests.
@@ -167,8 +187,16 @@ typedef struct RASPITEX_STATE
 
    GLuint texture;                     /// Name for the preview texture
    GLuint undist;                      /// Name for the lookup table (undistort)
-   GLuint framebuffer;
-   GLuint renderTexture;
+   GLuint framebuffer_high;
+   GLuint framebuffer_low;
+   GLuint renderTexture_high;
+   GLuint renderTexture_low;
+   unsigned char *low_undist_buffer;
+   
+   RASPITEX_PATCH patches[10];
+   size_t patch_size;
+   
+   size_t low_buffer_size;
    EGLImageKHR undist_img;            /// EGL image for Y plane texture
 
    EGLImageKHR egl_image;              /// The current preview EGL image
@@ -201,7 +229,7 @@ MMAL_STATUS_T raspitex_configure_preview_port(RASPITEX_STATE *state,
 void raspitex_display_help();
 int raspitex_parse_cmdline(RASPITEX_STATE *state,
       const char *arg1, const char *arg2);
-int raspitex_capture(RASPITEX_STATE *state, FILE* output_file, int write);
+int raspitex_capture(RASPITEX_STATE *state, int write);
 
 #endif /* RASPITEX_H_ */
 #ifdef __cplusplus

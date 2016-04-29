@@ -108,7 +108,7 @@ int raspitexutil_update_u_texture(RASPITEX_STATE *raspitex_state,
 int raspitexutil_update_v_texture(RASPITEX_STATE *raspitex_state,
       EGLClientBuffer mm_buf);
 int raspitexutil_capture_bgra(struct RASPITEX_STATE *state,
-      uint8_t **buffer, size_t *buffer_size);
+      uint8_t nr);
 void raspitexutil_close(RASPITEX_STATE* raspitex_state);
 
 /* Utility functions */

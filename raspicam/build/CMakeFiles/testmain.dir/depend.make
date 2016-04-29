@@ -276,12 +276,7 @@ CMakeFiles/testmain.dir/RaspiTex.c.o: ../RaspiCLI.h
 CMakeFiles/testmain.dir/RaspiTex.c.o: ../RaspiTex.c
 CMakeFiles/testmain.dir/RaspiTex.c.o: ../RaspiTex.h
 CMakeFiles/testmain.dir/RaspiTex.c.o: ../RaspiTexUtil.h
-CMakeFiles/testmain.dir/RaspiTex.c.o: ../gl_scenes/mirror.h
 CMakeFiles/testmain.dir/RaspiTex.c.o: ../gl_scenes/own.h
-CMakeFiles/testmain.dir/RaspiTex.c.o: ../gl_scenes/sobel.h
-CMakeFiles/testmain.dir/RaspiTex.c.o: ../gl_scenes/square.h
-CMakeFiles/testmain.dir/RaspiTex.c.o: ../gl_scenes/teapot.h
-CMakeFiles/testmain.dir/RaspiTex.c.o: ../gl_scenes/yuv.h
 CMakeFiles/testmain.dir/RaspiTex.c.o: ../tga.h
 CMakeFiles/testmain.dir/RaspiTex.c.o: /opt/vc/include/EGL/egl.h
 CMakeFiles/testmain.dir/RaspiTex.c.o: /opt/vc/include/EGL/eglext.h

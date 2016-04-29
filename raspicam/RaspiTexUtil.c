@@ -464,31 +464,35 @@ void raspitexutil_brga_to_rgba(uint8_t *buffer, size_t size)
  * @param buffer_size The size of the new buffer in bytes (out param)
  * @return Zero if successful.
  */
-int raspitexutil_capture_bgra(RASPITEX_STATE *state,
-      uint8_t **buffer, size_t *buffer_size)
+int raspitexutil_capture_bgra(RASPITEX_STATE *state, uint8_t nr)
 {
    const int bytes_per_pixel = 4;
+   int width = state->patches[nr].width;
+   int height = state->patches[nr].height;
 
    vcos_log_trace("%s: %dx%d %d", VCOS_FUNCTION,
-         state->width, state->height, bytes_per_pixel);
+         width, height, bytes_per_pixel);
 
-   *buffer_size = state->width * state->height * bytes_per_pixel;
-   *buffer = calloc(*buffer_size, 1);
-   if (! *buffer)
+   state->patches[nr].size = width * height * bytes_per_pixel;
+   state->patches[nr].buffer = calloc(state->patches[nr].size, 1);
+   if (! state->patches[nr].buffer)
       goto error;
 
-   glReadPixels(0, 0, state->width, state->height, GL_RGBA,
-         GL_UNSIGNED_BYTE, *buffer);
+   glReadPixels(state->patches[nr].x,
+           state->patches[nr].y,
+           state->patches[nr].width, 
+           state->patches[nr].height, GL_RGBA,
+         GL_UNSIGNED_BYTE, state->patches[nr].buffer);
    if (glGetError() != GL_NO_ERROR)
       goto error;
 
    return 0;
 
 error:
-   *buffer_size = 0;
-   if (*buffer)
-      free(*buffer);
-   *buffer = NULL;
+   state->patches[nr].size = 0;
+   if (state->patches[nr].buffer)
+      free(state->patches[nr].buffer);
+   state->patches[nr].buffer = NULL;
    return -1;
 }
 
