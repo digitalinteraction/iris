@@ -60,57 +60,6 @@ RASPITEXUTIL_SHADER_PROGRAM_T own_shader2 = {
     //.attribute_names = {},
 };
 
-
-int loadshader2(char* filename, char* filename2, RASPITEXUTIL_SHADER_PROGRAM_T *p, char prog1, char prog2) {
-
-    printf("load shader with name %s\n", filename);
-    p->vertex_source = malloc(sizeof(char*)*2);
-    p->fragment_source = malloc(sizeof(char*)*2);
-
-
-    FILE *fp;
-    fp = fopen(filename, "rb");
-    if (fp == NULL) {
-        perror("ERROR");
-        return -1;
-    }
-    fseek(fp, 0L, SEEK_END);
-    int sz = ftell(fp);
-    fseek(fp, 0L, SEEK_SET);
-    p->vertex_source[1] = malloc(sizeof (char)*(sz + 1));
-    if (p->vertex_source[1] == 0) return -1; // can't reserve memory
-    fread(p->vertex_source[1], sz, 1, fp); /* Read the contents of the file in to the buffer */
-    p->vertex_source[1][sz] = 0;
-    fclose(fp);
-    
-    char * def1 = malloc(sizeof(char)*11);
-    snprintf(def1, 11, "#define %c\n", prog1);
-    p->vertex_source[0] = def1;
-    p->vertex_strings = 2;
-
-    printf("load shader with name %s\n", filename2);
-    fp = fopen(filename2, "rb");
-    if (fp == NULL) {
-        perror("ERROR");
-        return -1;
-    }
-    fseek(fp, 0L, SEEK_END);
-    sz = ftell(fp);
-    fseek(fp, 0L, SEEK_SET);
-    p->fragment_source[1] = malloc(sizeof (char)*(sz + 1));
-    if (p->fragment_source[1] == 0) return -1; // can't reserve memory
-    fread(p->fragment_source[1], sz, 1, fp); /* Read the contents of the file in to the buffer */
-    p->fragment_source[1][sz] = 0;
-    fclose(fp);
-    
-    char * def2 = malloc(sizeof(char)*11);
-    snprintf(def2, 11, "#define %c\n", prog1);
-    p->fragment_source[0] = def1;
-    p->fragment_strings = 2;
-
-    return 0; // No Error
-}
-
 int loadshader(char* filename, char*** p, char* addition){
     *p = malloc(sizeof(char*)*2);
     if (*p == 0){
@@ -138,7 +87,7 @@ int loadshader(char* filename, char*** p, char* addition){
     return 0;
 }
 
-int free_shader_mem(RASPITEXUTIL_SHADER_PROGRAM_T *p){
+/*int free_shader_mem(RASPITEXUTIL_SHADER_PROGRAM_T *p){
     int i;
     for(i=0;i < p->vertex_strings; i++){
         free(p->vertex_source[i]);
@@ -148,7 +97,7 @@ int free_shader_mem(RASPITEXUTIL_SHADER_PROGRAM_T *p){
     }
     free(p->vertex_source);
     free(p->fragment_source);
-}
+}*/
 
 /**
  * Creates the OpenGL ES 2.X context and builds the shaders.
@@ -242,31 +191,6 @@ end:
     return rc;
 }
 
-int getFramebuffer(int x, int y, uint8_t **buffer, size_t *buffer_size) {
-    *buffer_size = x * y * 4;
-    //printf("try getting framebuffer low, size: %d\n", *buffer_size);
-
-    *buffer = calloc(*buffer_size, 1);
-    if (! *buffer) {
-        free(*buffer);
-        return 1;
-    }
-
-    GLCHK(glReadPixels(0, 0, x, y, GL_RGBA,
-            GL_UNSIGNED_BYTE, *buffer));
-    if (glGetError() != GL_NO_ERROR) {
-        free(*buffer);
-        printf("GL ERROR: %d\n", glGetError());
-        return 1;
-    }
-    
-    //printf("got framebuffer low\n");
-    //FILE * = fopen("../gl_scenes/matrix.txt", "rb");
-
-    
-    
-    return 0;
-}
 
 static int own_redraw(RASPITEX_STATE *raspitex_state) {
 ///////////////////////////////////////////////////////////////////
@@ -291,9 +215,6 @@ static int own_redraw(RASPITEX_STATE *raspitex_state) {
     GLCHK(glViewport(0,0,LOW_OUTPUT_X,LOW_OUTPUT_Y));
     GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
     
-    if(getFramebuffer(LOW_OUTPUT_X, LOW_OUTPUT_Y, &raspitex_state->low_undist_buffer, &raspitex_state->low_buffer_size)){
-        printf("error, not getting low res buffer\n");
-    }
 ////////////////////////////////////////////////////////////////////
     
     GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, raspitex_state->framebuffer_high));

@@ -180,7 +180,7 @@ int main(int argc, char** argv) {
     digitalWrite (2, 1) ; 
     digitalWrite (3, 1) ; 
     digitalWrite (7, 1) ; */
-    while (i < 10) {
+    while (i < 1000) {
         //name[4] = '0'+i;
 
         //printf("capturing...%d %d\n", i, pin);
