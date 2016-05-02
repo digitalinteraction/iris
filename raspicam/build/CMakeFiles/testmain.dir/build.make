@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pi/gpu_main/raspicam
+CMAKE_SOURCE_DIR = /home/pi/gpu_main/cutting_board/raspicam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pi/gpu_main/raspicam/build
+CMAKE_BINARY_DIR = /home/pi/gpu_main/cutting_board/raspicam/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/testmain.dir/depend.make
@@ -51,17 +51,17 @@ include CMakeFiles/testmain.dir/flags.make
 
 CMakeFiles/testmain.dir/RaspiCamControl.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/RaspiCamControl.c.o: ../RaspiCamControl.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/RaspiCamControl.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/RaspiCamControl.c.o   -c /home/pi/gpu_main/raspicam/RaspiCamControl.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/RaspiCamControl.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/RaspiCamControl.c
 
 CMakeFiles/testmain.dir/RaspiCamControl.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/RaspiCamControl.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/RaspiCamControl.c > CMakeFiles/testmain.dir/RaspiCamControl.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/RaspiCamControl.c > CMakeFiles/testmain.dir/RaspiCamControl.c.i
 
 CMakeFiles/testmain.dir/RaspiCamControl.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/RaspiCamControl.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/RaspiCamControl.c -o CMakeFiles/testmain.dir/RaspiCamControl.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/RaspiCamControl.c -o CMakeFiles/testmain.dir/RaspiCamControl.c.s
 
 CMakeFiles/testmain.dir/RaspiCamControl.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/RaspiCamControl.c.o.requires
@@ -74,17 +74,17 @@ CMakeFiles/testmain.dir/RaspiCamControl.c.o.provides.build: CMakeFiles/testmain.
 
 CMakeFiles/testmain.dir/RaspiCLI.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/RaspiCLI.c.o: ../RaspiCLI.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/RaspiCLI.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/RaspiCLI.c.o   -c /home/pi/gpu_main/raspicam/RaspiCLI.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/RaspiCLI.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.c
 
 CMakeFiles/testmain.dir/RaspiCLI.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/RaspiCLI.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/RaspiCLI.c > CMakeFiles/testmain.dir/RaspiCLI.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.c > CMakeFiles/testmain.dir/RaspiCLI.c.i
 
 CMakeFiles/testmain.dir/RaspiCLI.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/RaspiCLI.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/RaspiCLI.c -o CMakeFiles/testmain.dir/RaspiCLI.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.c -o CMakeFiles/testmain.dir/RaspiCLI.c.s
 
 CMakeFiles/testmain.dir/RaspiCLI.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/RaspiCLI.c.o.requires
@@ -97,17 +97,17 @@ CMakeFiles/testmain.dir/RaspiCLI.c.o.provides.build: CMakeFiles/testmain.dir/Ras
 
 CMakeFiles/testmain.dir/RaspiPreview.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/RaspiPreview.c.o: ../RaspiPreview.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_3)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/RaspiPreview.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/RaspiPreview.c.o   -c /home/pi/gpu_main/raspicam/RaspiPreview.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/RaspiPreview.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.c
 
 CMakeFiles/testmain.dir/RaspiPreview.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/RaspiPreview.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/RaspiPreview.c > CMakeFiles/testmain.dir/RaspiPreview.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.c > CMakeFiles/testmain.dir/RaspiPreview.c.i
 
 CMakeFiles/testmain.dir/RaspiPreview.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/RaspiPreview.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/RaspiPreview.c -o CMakeFiles/testmain.dir/RaspiPreview.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.c -o CMakeFiles/testmain.dir/RaspiPreview.c.s
 
 CMakeFiles/testmain.dir/RaspiPreview.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/RaspiPreview.c.o.requires
@@ -120,17 +120,17 @@ CMakeFiles/testmain.dir/RaspiPreview.c.o.provides.build: CMakeFiles/testmain.dir
 
 CMakeFiles/testmain.dir/testmain.cpp.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/testmain.cpp.o: ../testmain.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_4)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/testmain.dir/testmain.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/testmain.dir/testmain.cpp.o -c /home/pi/gpu_main/raspicam/testmain.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/testmain.dir/testmain.cpp.o -c /home/pi/gpu_main/cutting_board/raspicam/testmain.cpp
 
 CMakeFiles/testmain.dir/testmain.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/testmain.dir/testmain.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/pi/gpu_main/raspicam/testmain.cpp > CMakeFiles/testmain.dir/testmain.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/testmain.cpp > CMakeFiles/testmain.dir/testmain.cpp.i
 
 CMakeFiles/testmain.dir/testmain.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/testmain.dir/testmain.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/pi/gpu_main/raspicam/testmain.cpp -o CMakeFiles/testmain.dir/testmain.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/testmain.cpp -o CMakeFiles/testmain.dir/testmain.cpp.s
 
 CMakeFiles/testmain.dir/testmain.cpp.o.requires:
 .PHONY : CMakeFiles/testmain.dir/testmain.cpp.o.requires
@@ -143,17 +143,17 @@ CMakeFiles/testmain.dir/testmain.cpp.o.provides.build: CMakeFiles/testmain.dir/t
 
 CMakeFiles/testmain.dir/RaspiTex.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/RaspiTex.c.o: ../RaspiTex.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_5)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/RaspiTex.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/RaspiTex.c.o   -c /home/pi/gpu_main/raspicam/RaspiTex.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/RaspiTex.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.c
 
 CMakeFiles/testmain.dir/RaspiTex.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/RaspiTex.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/RaspiTex.c > CMakeFiles/testmain.dir/RaspiTex.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.c > CMakeFiles/testmain.dir/RaspiTex.c.i
 
 CMakeFiles/testmain.dir/RaspiTex.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/RaspiTex.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/RaspiTex.c -o CMakeFiles/testmain.dir/RaspiTex.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.c -o CMakeFiles/testmain.dir/RaspiTex.c.s
 
 CMakeFiles/testmain.dir/RaspiTex.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/RaspiTex.c.o.requires
@@ -166,17 +166,17 @@ CMakeFiles/testmain.dir/RaspiTex.c.o.provides.build: CMakeFiles/testmain.dir/Ras
 
 CMakeFiles/testmain.dir/RaspiTexUtil.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/RaspiTexUtil.c.o: ../RaspiTexUtil.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/RaspiTexUtil.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/RaspiTexUtil.c.o   -c /home/pi/gpu_main/raspicam/RaspiTexUtil.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/RaspiTexUtil.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.c
 
 CMakeFiles/testmain.dir/RaspiTexUtil.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/RaspiTexUtil.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/RaspiTexUtil.c > CMakeFiles/testmain.dir/RaspiTexUtil.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.c > CMakeFiles/testmain.dir/RaspiTexUtil.c.i
 
 CMakeFiles/testmain.dir/RaspiTexUtil.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/RaspiTexUtil.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/RaspiTexUtil.c -o CMakeFiles/testmain.dir/RaspiTexUtil.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.c -o CMakeFiles/testmain.dir/RaspiTexUtil.c.s
 
 CMakeFiles/testmain.dir/RaspiTexUtil.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/RaspiTexUtil.c.o.requires
@@ -189,17 +189,17 @@ CMakeFiles/testmain.dir/RaspiTexUtil.c.o.provides.build: CMakeFiles/testmain.dir
 
 CMakeFiles/testmain.dir/tga.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/tga.c.o: ../tga.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/tga.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/tga.c.o   -c /home/pi/gpu_main/raspicam/tga.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/tga.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/tga.c
 
 CMakeFiles/testmain.dir/tga.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/tga.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/tga.c > CMakeFiles/testmain.dir/tga.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/tga.c > CMakeFiles/testmain.dir/tga.c.i
 
 CMakeFiles/testmain.dir/tga.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/tga.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/tga.c -o CMakeFiles/testmain.dir/tga.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/tga.c -o CMakeFiles/testmain.dir/tga.c.s
 
 CMakeFiles/testmain.dir/tga.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/tga.c.o.requires
@@ -212,17 +212,17 @@ CMakeFiles/testmain.dir/tga.c.o.provides.build: CMakeFiles/testmain.dir/tga.c.o
 
 CMakeFiles/testmain.dir/gl_scenes/models.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/gl_scenes/models.c.o: ../gl_scenes/models.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/gl_scenes/models.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/models.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/models.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/models.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.c
 
 CMakeFiles/testmain.dir/gl_scenes/models.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/gl_scenes/models.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/gl_scenes/models.c > CMakeFiles/testmain.dir/gl_scenes/models.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.c > CMakeFiles/testmain.dir/gl_scenes/models.c.i
 
 CMakeFiles/testmain.dir/gl_scenes/models.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/gl_scenes/models.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/gl_scenes/models.c -o CMakeFiles/testmain.dir/gl_scenes/models.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.c -o CMakeFiles/testmain.dir/gl_scenes/models.c.s
 
 CMakeFiles/testmain.dir/gl_scenes/models.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/gl_scenes/models.c.o.requires
@@ -235,17 +235,17 @@ CMakeFiles/testmain.dir/gl_scenes/models.c.o.provides.build: CMakeFiles/testmain
 
 CMakeFiles/testmain.dir/gl_scenes/mirror.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/gl_scenes/mirror.c.o: ../gl_scenes/mirror.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_9)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/gl_scenes/mirror.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/mirror.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/mirror.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/mirror.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.c
 
 CMakeFiles/testmain.dir/gl_scenes/mirror.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/gl_scenes/mirror.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/gl_scenes/mirror.c > CMakeFiles/testmain.dir/gl_scenes/mirror.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.c > CMakeFiles/testmain.dir/gl_scenes/mirror.c.i
 
 CMakeFiles/testmain.dir/gl_scenes/mirror.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/gl_scenes/mirror.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/gl_scenes/mirror.c -o CMakeFiles/testmain.dir/gl_scenes/mirror.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.c -o CMakeFiles/testmain.dir/gl_scenes/mirror.c.s
 
 CMakeFiles/testmain.dir/gl_scenes/mirror.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/gl_scenes/mirror.c.o.requires
@@ -258,17 +258,17 @@ CMakeFiles/testmain.dir/gl_scenes/mirror.c.o.provides.build: CMakeFiles/testmain
 
 CMakeFiles/testmain.dir/gl_scenes/yuv.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/gl_scenes/yuv.c.o: ../gl_scenes/yuv.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/gl_scenes/yuv.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/yuv.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/yuv.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/yuv.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.c
 
 CMakeFiles/testmain.dir/gl_scenes/yuv.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/gl_scenes/yuv.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/gl_scenes/yuv.c > CMakeFiles/testmain.dir/gl_scenes/yuv.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.c > CMakeFiles/testmain.dir/gl_scenes/yuv.c.i
 
 CMakeFiles/testmain.dir/gl_scenes/yuv.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/gl_scenes/yuv.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/gl_scenes/yuv.c -o CMakeFiles/testmain.dir/gl_scenes/yuv.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.c -o CMakeFiles/testmain.dir/gl_scenes/yuv.c.s
 
 CMakeFiles/testmain.dir/gl_scenes/yuv.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/gl_scenes/yuv.c.o.requires
@@ -281,17 +281,17 @@ CMakeFiles/testmain.dir/gl_scenes/yuv.c.o.provides.build: CMakeFiles/testmain.di
 
 CMakeFiles/testmain.dir/gl_scenes/sobel.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/gl_scenes/sobel.c.o: ../gl_scenes/sobel.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_11)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/gl_scenes/sobel.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/sobel.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/sobel.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/sobel.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.c
 
 CMakeFiles/testmain.dir/gl_scenes/sobel.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/gl_scenes/sobel.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/gl_scenes/sobel.c > CMakeFiles/testmain.dir/gl_scenes/sobel.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.c > CMakeFiles/testmain.dir/gl_scenes/sobel.c.i
 
 CMakeFiles/testmain.dir/gl_scenes/sobel.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/gl_scenes/sobel.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/gl_scenes/sobel.c -o CMakeFiles/testmain.dir/gl_scenes/sobel.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.c -o CMakeFiles/testmain.dir/gl_scenes/sobel.c.s
 
 CMakeFiles/testmain.dir/gl_scenes/sobel.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/gl_scenes/sobel.c.o.requires
@@ -304,17 +304,17 @@ CMakeFiles/testmain.dir/gl_scenes/sobel.c.o.provides.build: CMakeFiles/testmain.
 
 CMakeFiles/testmain.dir/gl_scenes/square.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/gl_scenes/square.c.o: ../gl_scenes/square.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_12)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_12)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/gl_scenes/square.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/square.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/square.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/square.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/square.c
 
 CMakeFiles/testmain.dir/gl_scenes/square.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/gl_scenes/square.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/gl_scenes/square.c > CMakeFiles/testmain.dir/gl_scenes/square.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/square.c > CMakeFiles/testmain.dir/gl_scenes/square.c.i
 
 CMakeFiles/testmain.dir/gl_scenes/square.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/gl_scenes/square.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/gl_scenes/square.c -o CMakeFiles/testmain.dir/gl_scenes/square.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/square.c -o CMakeFiles/testmain.dir/gl_scenes/square.c.s
 
 CMakeFiles/testmain.dir/gl_scenes/square.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/gl_scenes/square.c.o.requires
@@ -327,17 +327,17 @@ CMakeFiles/testmain.dir/gl_scenes/square.c.o.provides.build: CMakeFiles/testmain
 
 CMakeFiles/testmain.dir/gl_scenes/teapot.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/gl_scenes/teapot.c.o: ../gl_scenes/teapot.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_13)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_13)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/gl_scenes/teapot.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/teapot.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/teapot.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/teapot.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.c
 
 CMakeFiles/testmain.dir/gl_scenes/teapot.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/gl_scenes/teapot.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/gl_scenes/teapot.c > CMakeFiles/testmain.dir/gl_scenes/teapot.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.c > CMakeFiles/testmain.dir/gl_scenes/teapot.c.i
 
 CMakeFiles/testmain.dir/gl_scenes/teapot.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/gl_scenes/teapot.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/gl_scenes/teapot.c -o CMakeFiles/testmain.dir/gl_scenes/teapot.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.c -o CMakeFiles/testmain.dir/gl_scenes/teapot.c.s
 
 CMakeFiles/testmain.dir/gl_scenes/teapot.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/gl_scenes/teapot.c.o.requires
@@ -350,17 +350,17 @@ CMakeFiles/testmain.dir/gl_scenes/teapot.c.o.provides.build: CMakeFiles/testmain
 
 CMakeFiles/testmain.dir/gl_scenes/own.c.o: CMakeFiles/testmain.dir/flags.make
 CMakeFiles/testmain.dir/gl_scenes/own.c.o: ../gl_scenes/own.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_14)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_14)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/testmain.dir/gl_scenes/own.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/own.c.o   -c /home/pi/gpu_main/raspicam/gl_scenes/own.c
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/testmain.dir/gl_scenes/own.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.c
 
 CMakeFiles/testmain.dir/gl_scenes/own.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/testmain.dir/gl_scenes/own.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/raspicam/gl_scenes/own.c > CMakeFiles/testmain.dir/gl_scenes/own.c.i
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.c > CMakeFiles/testmain.dir/gl_scenes/own.c.i
 
 CMakeFiles/testmain.dir/gl_scenes/own.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/testmain.dir/gl_scenes/own.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/raspicam/gl_scenes/own.c -o CMakeFiles/testmain.dir/gl_scenes/own.c.s
+	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.c -o CMakeFiles/testmain.dir/gl_scenes/own.c.s
 
 CMakeFiles/testmain.dir/gl_scenes/own.c.o.requires:
 .PHONY : CMakeFiles/testmain.dir/gl_scenes/own.c.o.requires
@@ -435,6 +435,6 @@ CMakeFiles/testmain.dir/clean:
 .PHONY : CMakeFiles/testmain.dir/clean
 
 CMakeFiles/testmain.dir/depend:
-	cd /home/pi/gpu_main/raspicam/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/pi/gpu_main/raspicam /home/pi/gpu_main/raspicam /home/pi/gpu_main/raspicam/build /home/pi/gpu_main/raspicam/build /home/pi/gpu_main/raspicam/build/CMakeFiles/testmain.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/pi/gpu_main/cutting_board/raspicam/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/pi/gpu_main/cutting_board/raspicam /home/pi/gpu_main/cutting_board/raspicam /home/pi/gpu_main/cutting_board/raspicam/build /home/pi/gpu_main/cutting_board/raspicam/build /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/testmain.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/testmain.dir/depend
 

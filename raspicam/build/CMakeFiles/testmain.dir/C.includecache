@@ -76,6 +76,12 @@ mmal_types.h
 mmal_encodings.h
 ../../interface/mmal/mmal_encodings.h
 
+../../interface/mmal/mmal_logging.h
+mmal_common.h
+../../interface/mmal/mmal_common.h
+interface/vcos/vcos_logging.h
+../../interface/mmal/interface/vcos/vcos_logging.h
+
 ../../interface/mmal/mmal_metadata.h
 mmal_common.h
 ../../interface/mmal/mmal_common.h
@@ -133,6 +139,10 @@ mmal_buffer.h
 ../../interface/mmal/mmal_types.h
 mmal_common.h
 ../../interface/mmal/mmal_common.h
+
+../../interface/mmal/util/mmal_connection.h
+
+../../interface/mmal/util/mmal_default_components.h
 
 ../../interface/mmal/util/mmal_util.h
 interface/mmal/mmal.h
@@ -652,13 +662,45 @@ RaspiTex.h
 interface/vcos/vcos.h
 ../interface/vcos/vcos.h
 
-/home/pi/gpu_main/raspicam/RaspiCLI.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
 
-/home/pi/gpu_main/raspicam/RaspiTex.c
-RaspiTex.h
-/home/pi/gpu_main/raspicam/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+memory.h
+-
+interface/vcos/vcos.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/vcos/vcos.h
+interface/mmal/mmal.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/mmal.h
+interface/mmal/mmal_logging.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/mmal_logging.h
+interface/mmal/mmal_buffer.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/mmal_buffer.h
+interface/mmal/util/mmal_util.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/util/mmal_util.h
+interface/mmal/util/mmal_util_params.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/util/mmal_util_params.h
+interface/mmal/util/mmal_default_components.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/util/mmal_default_components.h
+interface/mmal/util/mmal_connection.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/util/mmal_connection.h
+RaspiPreview.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.h
 RaspiCLI.h
-/home/pi/gpu_main/raspicam/RaspiCLI.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
+
+/home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.h
+
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTex.c
+RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
+RaspiCLI.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
 math.h
 -
 stdio.h
@@ -678,23 +720,23 @@ GLES/gl.h
 GLES/glext.h
 -
 RaspiTexUtil.h
-/home/pi/gpu_main/raspicam/RaspiTexUtil.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.h
 interface/vcos/vcos.h
-/home/pi/gpu_main/raspicam/interface/vcos/vcos.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/vcos/vcos.h
 interface/mmal/mmal_buffer.h
-/home/pi/gpu_main/raspicam/interface/mmal/mmal_buffer.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/mmal_buffer.h
 interface/mmal/util/mmal_util.h
-/home/pi/gpu_main/raspicam/interface/mmal/util/mmal_util.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/util/mmal_util.h
 interface/mmal/util/mmal_util_params.h
-/home/pi/gpu_main/raspicam/interface/mmal/util/mmal_util_params.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/util/mmal_util_params.h
 tga.h
-/home/pi/gpu_main/raspicam/tga.h
+/home/pi/gpu_main/cutting_board/raspicam/tga.h
 gl_scenes/own.h
-/home/pi/gpu_main/raspicam/gl_scenes/own.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.h
 wiringPi.h
 -
 
-/home/pi/gpu_main/raspicam/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
 stdio.h
 -
 EGL/egl.h
@@ -706,21 +748,21 @@ GLES/gl.h
 GLES/glext.h
 -
 interface/khronos/include/EGL/eglext_brcm.h
-/home/pi/gpu_main/raspicam/interface/khronos/include/EGL/eglext_brcm.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/khronos/include/EGL/eglext_brcm.h
 interface/mmal/mmal.h
-/home/pi/gpu_main/raspicam/interface/mmal/mmal.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/mmal.h
 
-/home/pi/gpu_main/raspicam/RaspiTexUtil.c
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.c
 RaspiTexUtil.h
-/home/pi/gpu_main/raspicam/RaspiTexUtil.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
 bcm_host.h
 -
 GLES2/gl2.h
 -
 
-/home/pi/gpu_main/raspicam/RaspiTexUtil.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.h
 math.h
 -
 stdio.h
@@ -734,19 +776,19 @@ EGL/egl.h
 EGL/eglext.h
 -
 RaspiTex.h
-/home/pi/gpu_main/raspicam/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
 interface/vcos/vcos.h
-/home/pi/gpu_main/raspicam/interface/vcos/vcos.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/vcos/vcos.h
 
-/home/pi/gpu_main/raspicam/gl_scenes/cube_texture_and_coords.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/cube_texture_and_coords.h
 
-/home/pi/gpu_main/raspicam/gl_scenes/mirror.c
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.c
 mirror.h
-/home/pi/gpu_main/raspicam/gl_scenes/mirror.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTex.h
 RaspiTexUtil.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTexUtil.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTexUtil.h
 GLES2/gl2.h
 -
 EGL/egl.h
@@ -754,19 +796,19 @@ EGL/egl.h
 EGL/eglext.h
 -
 
-/home/pi/gpu_main/raspicam/gl_scenes/mirror.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTex.h
 
-/home/pi/gpu_main/raspicam/gl_scenes/models.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.h
 
-/home/pi/gpu_main/raspicam/gl_scenes/own.c
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.c
 own.h
-/home/pi/gpu_main/raspicam/gl_scenes/own.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTex.h
 RaspiTexUtil.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTexUtil.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTexUtil.h
 GLES2/gl2.h
 -
 EGL/egl.h
@@ -776,19 +818,19 @@ EGL/eglext.h
 stdarg.h
 -
 
-/home/pi/gpu_main/raspicam/gl_scenes/own.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTex.h
 stdio.h
-/home/pi/gpu_main/raspicam/gl_scenes/stdio.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/stdio.h
 
-/home/pi/gpu_main/raspicam/gl_scenes/sobel.c
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.c
 sobel.h
-/home/pi/gpu_main/raspicam/gl_scenes/sobel.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTex.h
 RaspiTexUtil.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTexUtil.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTexUtil.h
 GLES2/gl2.h
 -
 EGL/egl.h
@@ -796,11 +838,11 @@ EGL/egl.h
 EGL/eglext.h
 -
 
-/home/pi/gpu_main/raspicam/gl_scenes/sobel.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTex.h
 
-/home/pi/gpu_main/raspicam/gl_scenes/square.c
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/square.c
 GLES/gl.h
 -
 GLES/glext.h
@@ -810,9 +852,9 @@ EGL/egl.h
 EGL/eglext.h
 -
 RaspiTexUtil.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTexUtil.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTexUtil.h
 
-/home/pi/gpu_main/raspicam/gl_scenes/teapot.c
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.c
 stdio.h
 -
 stdlib.h
@@ -832,27 +874,27 @@ EGL/egl.h
 EGL/eglext.h
 -
 cube_texture_and_coords.h
-/home/pi/gpu_main/raspicam/gl_scenes/cube_texture_and_coords.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/cube_texture_and_coords.h
 models.h
-/home/pi/gpu_main/raspicam/gl_scenes/models.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.h
 teapot.h
-/home/pi/gpu_main/raspicam/gl_scenes/teapot.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTex.h
 RaspiTexUtil.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTexUtil.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTexUtil.h
 
-/home/pi/gpu_main/raspicam/gl_scenes/teapot.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTex.h
 
-/home/pi/gpu_main/raspicam/gl_scenes/yuv.c
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.c
 yuv.h
-/home/pi/gpu_main/raspicam/gl_scenes/yuv.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTex.h
 RaspiTexUtil.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTexUtil.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTexUtil.h
 GLES2/gl2.h
 -
 EGL/egl.h
@@ -860,11 +902,11 @@ EGL/egl.h
 EGL/eglext.h
 -
 
-/home/pi/gpu_main/raspicam/gl_scenes/yuv.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/gl_scenes/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/RaspiTex.h
 
-/home/pi/gpu_main/raspicam/tga.h
+/home/pi/gpu_main/cutting_board/raspicam/tga.h
 stdlib.h
 -
 stdio.h

@@ -628,13 +628,13 @@ limits.h
 limits.h
 -
 
-/home/pi/gpu_main/raspicam/RaspiCLI.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
 
-/home/pi/gpu_main/raspicam/RaspiCamControl.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiCamControl.h
 
-/home/pi/gpu_main/raspicam/RaspiPreview.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.h
 
-/home/pi/gpu_main/raspicam/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
 stdio.h
 -
 EGL/egl.h
@@ -646,11 +646,11 @@ GLES/gl.h
 GLES/glext.h
 -
 interface/khronos/include/EGL/eglext_brcm.h
-/home/pi/gpu_main/raspicam/interface/khronos/include/EGL/eglext_brcm.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/khronos/include/EGL/eglext_brcm.h
 interface/mmal/mmal.h
-/home/pi/gpu_main/raspicam/interface/mmal/mmal.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/mmal.h
 
-/home/pi/gpu_main/raspicam/testmain.cpp
+/home/pi/gpu_main/cutting_board/raspicam/testmain.cpp
 cstdlib
 -
 stdio.h
@@ -670,31 +670,31 @@ errno.h
 sysexits.h
 -
 bcm_host.h
-/home/pi/gpu_main/raspicam/bcm_host.h
+/home/pi/gpu_main/cutting_board/raspicam/bcm_host.h
 interface/vcos/vcos.h
-/home/pi/gpu_main/raspicam/interface/vcos/vcos.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/vcos/vcos.h
 interface/mmal/mmal.h
-/home/pi/gpu_main/raspicam/interface/mmal/mmal.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/mmal.h
 interface/mmal/mmal_logging.h
-/home/pi/gpu_main/raspicam/interface/mmal/mmal_logging.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/mmal_logging.h
 interface/mmal/mmal_buffer.h
-/home/pi/gpu_main/raspicam/interface/mmal/mmal_buffer.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/mmal_buffer.h
 interface/mmal/util/mmal_util.h
-/home/pi/gpu_main/raspicam/interface/mmal/util/mmal_util.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/util/mmal_util.h
 interface/mmal/util/mmal_util_params.h
-/home/pi/gpu_main/raspicam/interface/mmal/util/mmal_util_params.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/util/mmal_util_params.h
 interface/mmal/util/mmal_default_components.h
-/home/pi/gpu_main/raspicam/interface/mmal/util/mmal_default_components.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/util/mmal_default_components.h
 interface/mmal/util/mmal_connection.h
-/home/pi/gpu_main/raspicam/interface/mmal/util/mmal_connection.h
+/home/pi/gpu_main/cutting_board/raspicam/interface/mmal/util/mmal_connection.h
 RaspiCamControl.h
-/home/pi/gpu_main/raspicam/RaspiCamControl.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiCamControl.h
 RaspiPreview.h
-/home/pi/gpu_main/raspicam/RaspiPreview.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.h
 RaspiCLI.h
-/home/pi/gpu_main/raspicam/RaspiCLI.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
 RaspiTex.h
-/home/pi/gpu_main/raspicam/RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
 semaphore.h
 -
 wiringPi.h

@@ -3,11 +3,11 @@
 
 # compile C with /usr/bin/cc
 # compile CXX with /usr/bin/c++
-C_FLAGS = -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include   
+C_FLAGS = -I/home/pi/gpu_main/cutting_board/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/cutting_board/raspicam -I/home/pi/gpu_main/cutting_board/raspicam/.. -I/home/pi/gpu_main/cutting_board/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/cutting_board/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/cutting_board/raspicam/usr/include -I/opt/vc/include   
 
 C_DEFINES = 
 
-CXX_FLAGS = -I/home/pi/gpu_main/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/raspicam -I/home/pi/gpu_main/raspicam/.. -I/home/pi/gpu_main/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/raspicam/usr/include -I/opt/vc/include   
+CXX_FLAGS = -I/home/pi/gpu_main/cutting_board/raspicam/../libs/bcm_host/include -I/home/pi/gpu_main/cutting_board/raspicam -I/home/pi/gpu_main/cutting_board/raspicam/.. -I/home/pi/gpu_main/cutting_board/raspicam/../interface/vcos/pthreads -I/home/pi/gpu_main/cutting_board/raspicam/../wiringPi -I/opt/vc/include/interface/vmcs_host/linux -I/home/pi/gpu_main/cutting_board/raspicam/usr/include -I/opt/vc/include   
 
 CXX_DEFINES = 
 

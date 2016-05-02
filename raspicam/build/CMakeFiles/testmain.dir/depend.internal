@@ -44,8 +44,8 @@ CMakeFiles/testmain.dir/RaspiCLI.c.o
  ../../interface/vcos/vcos_timer.h
  ../../interface/vcos/vcos_tls.h
  ../../interface/vcos/vcos_types.h
- /home/pi/gpu_main/raspicam/RaspiCLI.c
- /home/pi/gpu_main/raspicam/RaspiCLI.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.c
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
 CMakeFiles/testmain.dir/RaspiCamControl.c.o
  ../../interface/mmal/mmal.h
  ../../interface/mmal/mmal_buffer.h
@@ -120,9 +120,9 @@ CMakeFiles/testmain.dir/RaspiCamControl.c.o
  ../../interface/vcos/vcos_tls.h
  ../../interface/vcos/vcos_types.h
  ../../interface/vmcs_host/vc_vchi_gencmd.h
- /home/pi/gpu_main/raspicam/RaspiCLI.h
- /home/pi/gpu_main/raspicam/RaspiCamControl.c
- /home/pi/gpu_main/raspicam/RaspiCamControl.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiCamControl.c
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiCamControl.h
  /opt/vc/include/interface/vmcs_host/linux/vchost_config.h
 CMakeFiles/testmain.dir/RaspiPreview.c.o
  ../../interface/mmal/mmal.h
@@ -191,9 +191,9 @@ CMakeFiles/testmain.dir/RaspiPreview.c.o
  ../../interface/vcos/vcos_timer.h
  ../../interface/vcos/vcos_tls.h
  ../../interface/vcos/vcos_types.h
- /home/pi/gpu_main/raspicam/RaspiCLI.h
- /home/pi/gpu_main/raspicam/RaspiPreview.c
- /home/pi/gpu_main/raspicam/RaspiPreview.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.c
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.h
 CMakeFiles/testmain.dir/RaspiTex.c.o
  ../../interface/khronos/common/khrn_client_mangle.h
  ../../interface/khronos/include/EGL/eglext_brcm.h
@@ -273,12 +273,12 @@ CMakeFiles/testmain.dir/RaspiTex.c.o
  ../../interface/vmcs_host/vc_dispmanx_types.h
  ../../interface/vmcs_host/vc_dispservice_x_defs.h
  ../../vcinclude/common.h
- /home/pi/gpu_main/raspicam/RaspiCLI.h
- /home/pi/gpu_main/raspicam/RaspiTex.c
- /home/pi/gpu_main/raspicam/RaspiTex.h
- /home/pi/gpu_main/raspicam/RaspiTexUtil.h
- /home/pi/gpu_main/raspicam/gl_scenes/own.h
- /home/pi/gpu_main/raspicam/tga.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.c
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.h
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.h
+ /home/pi/gpu_main/cutting_board/raspicam/tga.h
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h
@@ -376,9 +376,9 @@ CMakeFiles/testmain.dir/RaspiTexUtil.c.o
  ../../interface/vmcs_host/vcgencmd.h
  ../../libs/bcm_host/include/bcm_host.h
  ../../vcinclude/common.h
- /home/pi/gpu_main/raspicam/RaspiTex.h
- /home/pi/gpu_main/raspicam/RaspiTexUtil.c
- /home/pi/gpu_main/raspicam/RaspiTexUtil.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.c
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.h
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h
@@ -471,8 +471,8 @@ CMakeFiles/testmain.dir/gl_scenes/mirror.c.o
  ../../vcinclude/common.h
  ../RaspiTex.h
  ../RaspiTexUtil.h
- /home/pi/gpu_main/raspicam/gl_scenes/mirror.c
- /home/pi/gpu_main/raspicam/gl_scenes/mirror.h
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.c
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.h
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h
@@ -542,8 +542,8 @@ CMakeFiles/testmain.dir/gl_scenes/models.c.o
  ../../interface/vmcs_host/vc_dispmanx_types.h
  ../../interface/vmcs_host/vc_dispservice_x_defs.h
  ../../vcinclude/common.h
- /home/pi/gpu_main/raspicam/gl_scenes/models.c
- /home/pi/gpu_main/raspicam/gl_scenes/models.h
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.c
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.h
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h
@@ -633,8 +633,8 @@ CMakeFiles/testmain.dir/gl_scenes/own.c.o
  ../../vcinclude/common.h
  ../RaspiTex.h
  ../RaspiTexUtil.h
- /home/pi/gpu_main/raspicam/gl_scenes/own.c
- /home/pi/gpu_main/raspicam/gl_scenes/own.h
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.c
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.h
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h
@@ -726,8 +726,8 @@ CMakeFiles/testmain.dir/gl_scenes/sobel.c.o
  ../../vcinclude/common.h
  ../RaspiTex.h
  ../RaspiTexUtil.h
- /home/pi/gpu_main/raspicam/gl_scenes/sobel.c
- /home/pi/gpu_main/raspicam/gl_scenes/sobel.h
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.c
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.h
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h
@@ -819,7 +819,7 @@ CMakeFiles/testmain.dir/gl_scenes/square.c.o
  ../../vcinclude/common.h
  ../RaspiTex.h
  ../RaspiTexUtil.h
- /home/pi/gpu_main/raspicam/gl_scenes/square.c
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/square.c
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h
@@ -909,10 +909,10 @@ CMakeFiles/testmain.dir/gl_scenes/teapot.c.o
  ../../vcinclude/common.h
  ../RaspiTex.h
  ../RaspiTexUtil.h
- /home/pi/gpu_main/raspicam/gl_scenes/cube_texture_and_coords.h
- /home/pi/gpu_main/raspicam/gl_scenes/models.h
- /home/pi/gpu_main/raspicam/gl_scenes/teapot.c
- /home/pi/gpu_main/raspicam/gl_scenes/teapot.h
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/cube_texture_and_coords.h
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.h
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.c
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.h
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h
@@ -1002,8 +1002,8 @@ CMakeFiles/testmain.dir/gl_scenes/yuv.c.o
  ../../vcinclude/common.h
  ../RaspiTex.h
  ../RaspiTexUtil.h
- /home/pi/gpu_main/raspicam/gl_scenes/yuv.c
- /home/pi/gpu_main/raspicam/gl_scenes/yuv.h
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.c
+ /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.h
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h
@@ -1017,8 +1017,8 @@ CMakeFiles/testmain.dir/gl_scenes/yuv.c.o
  /opt/vc/include/GLES2/gl2platform.h
  /opt/vc/include/KHR/khrplatform.h
 CMakeFiles/testmain.dir/tga.c.o
- /home/pi/gpu_main/raspicam/tga.c
- /home/pi/gpu_main/raspicam/tga.h
+ /home/pi/gpu_main/cutting_board/raspicam/tga.c
+ /home/pi/gpu_main/cutting_board/raspicam/tga.h
 CMakeFiles/testmain.dir/testmain.cpp.o
  ../../interface/khronos/common/khrn_client_mangle.h
  ../../interface/khronos/include/EGL/eglext_brcm.h
@@ -1111,11 +1111,11 @@ CMakeFiles/testmain.dir/testmain.cpp.o
  ../../interface/vmcs_host/vcgencmd.h
  ../../libs/bcm_host/include/bcm_host.h
  ../../vcinclude/common.h
- /home/pi/gpu_main/raspicam/RaspiCLI.h
- /home/pi/gpu_main/raspicam/RaspiCamControl.h
- /home/pi/gpu_main/raspicam/RaspiPreview.h
- /home/pi/gpu_main/raspicam/RaspiTex.h
- /home/pi/gpu_main/raspicam/testmain.cpp
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiCamControl.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.h
+ /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
+ /home/pi/gpu_main/cutting_board/raspicam/testmain.cpp
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h

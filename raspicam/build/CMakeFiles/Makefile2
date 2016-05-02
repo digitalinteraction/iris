@@ -47,10 +47,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pi/gpu_main/raspicam
+CMAKE_SOURCE_DIR = /home/pi/gpu_main/cutting_board/raspicam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pi/gpu_main/raspicam/build
+CMAKE_BINARY_DIR = /home/pi/gpu_main/cutting_board/raspicam/build
 
 #=============================================================================
 # Target rules for target CMakeFiles/testmain.dir
@@ -59,7 +59,7 @@ CMAKE_BINARY_DIR = /home/pi/gpu_main/raspicam/build
 CMakeFiles/testmain.dir/all:
 	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/depend
 	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/raspicam/build/CMakeFiles  1 2 3 4 5 6 7 8 9 10 11 12 13 14
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles  1 2 3 4 5 6 7 8 9 10 11 12 13 14
 	@echo "Built target testmain"
 .PHONY : CMakeFiles/testmain.dir/all
 
@@ -69,9 +69,9 @@ all: CMakeFiles/testmain.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/testmain.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/gpu_main/raspicam/build/CMakeFiles 14
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles 14
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testmain.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/gpu_main/raspicam/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles 0
 .PHONY : CMakeFiles/testmain.dir/rule
 
 # Convenience name for target.

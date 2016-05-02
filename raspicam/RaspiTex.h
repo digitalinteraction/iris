@@ -48,8 +48,8 @@ extern "C"{
 #define UNDISTORT_Y 1458
 #define HIGH_OUTPUT_X 1944
 #define HIGH_OUTPUT_Y 1458
-#define LOW_OUTPUT_X 64//400//972
-#define LOW_OUTPUT_Y 48//300//729
+#define LOW_OUTPUT_X 128//400//972
+#define LOW_OUTPUT_Y 96//300//729
     
 //0: IR
 //2: UV
@@ -194,9 +194,11 @@ typedef struct RASPITEX_STATE
    unsigned char *low_undist_buffer;
    
    RASPITEX_PATCH patches[10];
-   size_t patch_size;
-   
+   //size_t patch_size;
+   uint8_t *low_buffer;
    size_t low_buffer_size;
+   uint8_t low_buffer_request;
+   
    EGLImageKHR undist_img;            /// EGL image for Y plane texture
 
    EGLImageKHR egl_image;              /// The current preview EGL image
@@ -229,7 +231,7 @@ MMAL_STATUS_T raspitex_configure_preview_port(RASPITEX_STATE *state,
 void raspitex_display_help();
 int raspitex_parse_cmdline(RASPITEX_STATE *state,
       const char *arg1, const char *arg2);
-int raspitex_capture(RASPITEX_STATE *state, int write);
+int raspitex_capture(RASPITEX_STATE *state, int low, int write);
 
 #endif /* RASPITEX_H_ */
 #ifdef __cplusplus

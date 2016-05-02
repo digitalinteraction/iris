@@ -216,52 +216,27 @@ static void update_fps()
  */
 static void raspitex_do_capture(RASPITEX_STATE *state)
 {
-   uint8_t *buffer = NULL;
-   size_t size = 0;
-   //clock_t t1,t2;
-   //t1 = clock();
-   //digitalWrite (RASPITEX_FLASH_PIN, 1) ;       
-
+  
     if (state->capture.request) {
 
         int i = 0;
-        //printf("AAA\n");
-        state->capture.size_low = state->low_buffer_size;
-        state->capture.buffer_low = state->low_undist_buffer;
-        //printf("BBB\n");
+        if(state->low_buffer_request == 1){
+            if (state->ops.capture(state, 11) == 0) {
+                    state->low_buffer_request = 2;
+                }
+        }
 
         for (i = 0; i < 10;i++) {
-                    //printf("CCC\n");
-                    //fflush(stdout);
-            //printf("CAPTURING:: %d\n", state->patches[i].active);
-            if (state->patches[i].active == 1) {
-                //printf("CAPTURING in buffer %d\n", i);
+            if (state->patches[i].active == 1) {                
                 if (state->ops.capture(state, i) == 0) {
                     state->patches[i].active = 2;
                 }
-                
-                    /* Pass ownership of buffer to main thread via capture state */
-                    /*state->capture.buffer = buffer;
-                    state->capture.buffer_low = state->low_undist_buffer;
-                    state->capture.size = size;
-                    state->capture.size_low = state->low_buffer_size;
-                } else {
-                    state->capture.buffer = NULL; // Null indicates an error
-                    state->capture.buffer_low = NULL;
-                    state->capture.size = 0;
-                    state->capture.size_low = 0;
-
-                }*/
-
             }
         }
 
         state->capture.request = 0; // Always clear request and post sem
         vcos_semaphore_post(&state->capture.completed_sem);
    }
-   //digitalWrite (RASPITEX_FLASH_PIN, 0) ;       
-   //t2 = clock();
-   //printf("Time taken: %f\n", ((float)(t2-t1)/1000000.0F)*1000);
 }
 
 /**
@@ -739,17 +714,14 @@ int raspitex_start(RASPITEX_STATE *state)
  * @param outpt_file Output file handle for the ppm image.
  * @return Zero on success.
  */
-int raspitex_capture(RASPITEX_STATE *state, int write)
+int raspitex_capture(RASPITEX_STATE *state, int low, int write)
 {
    int rc = 0;
    char low_name[] = "low_test0.tga";
    char name[] = "test0.tga";
-   FILE * low_output = fopen(low_name, "wb");
    FILE * output;
    //uint8_t *buffer = NULL;
    //size_t size = 0;
-   uint8_t *buffer_low = NULL;
-   size_t size_low = 0;
 
    //vcos_log_trace("%s: state %p file %p", VCOS_FUNCTION,
    //      state, output_file);
@@ -759,6 +731,9 @@ int raspitex_capture(RASPITEX_STATE *state, int write)
       /* Only request one capture at a time */
       vcos_semaphore_wait(&state->capture.start_sem);
       state->capture.request = 1;
+      if(low){
+          state->low_buffer_request = 1;
+      }
 
       /* Wait for capture to start */
       vcos_semaphore_wait(&state->capture.completed_sem);
@@ -766,8 +741,15 @@ int raspitex_capture(RASPITEX_STATE *state, int write)
       /* Take ownership of the captured buffer */
       //buffer = state->capture.buffer;
       //size = state->capture.size;
-      buffer_low = state->capture.buffer_low;
-      size_low = state->capture.size_low;
+      if(state->low_buffer_request == 2){
+          state->low_buffer = state->capture.buffer_low;
+          state->low_buffer_size = state->capture.size_low;
+          state->low_buffer_request = 0;
+      }else if(low && state->low_buffer_request != 2){
+          printf("Error getting low res buffer\n");
+          return 1;
+      }
+      
 
       state->capture.request = 0;
       //state->capture.buffer = 0;
@@ -779,16 +761,28 @@ int raspitex_capture(RASPITEX_STATE *state, int write)
       vcos_semaphore_post(&state->capture.start_sem);
    }
    /*
-    if (size == 0 || ! buffer || size_low == 0 || !buffer_low)
-    {
-       vcos_log_error("%s: capture failed", VCOS_FUNCTION);
-       printf("%d %p %d %p\n", size, buffer, size_low, buffer_low);
-       rc = -1;
-       goto end;
-    }*/
-   raspitexutil_brga_to_rgba(buffer_low, size_low);
-   rc = write_tga(low_output, LOW_OUTPUT_X, LOW_OUTPUT_Y, buffer_low, size_low);
-   fflush(low_output);
+      if (size == 0 || ! buffer || size_low == 0 || !buffer_low)
+      {
+         vcos_log_error("%s: capture failed", VCOS_FUNCTION);
+         printf("%d %p %d %p\n", size, buffer, size_low, buffer_low);
+         rc = -1;
+         goto end;
+      }*/
+    if (state->low_buffer != NULL) {
+        if (low) {
+            FILE * low_output = fopen(low_name, "wb");
+            raspitexutil_brga_to_rgba(state->low_buffer, state->low_buffer_size);
+            rc = write_tga(low_output, LOW_OUTPUT_X, LOW_OUTPUT_Y, state->low_buffer, state->low_buffer_size);
+            fflush(low_output);
+            fclose(low_output);
+        }
+        free(state->low_buffer);
+        //printf("Freeing buffer %p\n", state->low_buffer);
+    }
+
+
+    
+   
    //printf("reading out patches\n");
 
     int i = 0;
@@ -798,7 +792,7 @@ int raspitex_capture(RASPITEX_STATE *state, int write)
             if (write == 1) {
                 uint8_t * buffer = state->patches[i].buffer;
                 size_t size = state->patches[i].size;
-                name[4] = i+'0';
+                name[4] = i + '0';
                 output = fopen(name, "wb");
                 raspitexutil_brga_to_rgba(buffer, size);
 
@@ -806,10 +800,13 @@ int raspitex_capture(RASPITEX_STATE *state, int write)
                 rc = write_tga(output, state->patches[i].width, state->patches[i].height, buffer, size);
                 fflush(output);
                 state->patches[i].active = 0;
+                fclose(output);
             }
+            //printf("Freeing buffer %p\n", state->patches[i].buffer);
+            free(state->patches[i].buffer);
         } else if (state->patches[i].active == 1) {
             printf("Patch %d not succesfully transferred\n", i);
-        }else{
+        } else {
             //printf("nothing to do...\n");
         }
     }

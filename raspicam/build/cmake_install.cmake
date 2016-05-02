@@ -1,4 +1,4 @@
-# Install script for directory: /home/pi/gpu_main/raspicam
+# Install script for directory: /home/pi/gpu_main/cutting_board/raspicam
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,7 +39,7 @@ if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspeci
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/testmain"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/pi/gpu_main/raspicam/build/testmain")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/bin" TYPE EXECUTABLE FILES "/home/pi/gpu_main/cutting_board/raspicam/build/testmain")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/testmain" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/testmain")
     file(RPATH_REMOVE
@@ -56,7 +56,7 @@ else()
   set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 endif()
 
-file(WRITE "/home/pi/gpu_main/raspicam/build/${CMAKE_INSTALL_MANIFEST}" "")
+file(WRITE "/home/pi/gpu_main/cutting_board/raspicam/build/${CMAKE_INSTALL_MANIFEST}" "")
 foreach(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  file(APPEND "/home/pi/gpu_main/raspicam/build/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  file(APPEND "/home/pi/gpu_main/cutting_board/raspicam/build/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 endforeach()

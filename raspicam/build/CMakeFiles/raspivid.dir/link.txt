@@ -1,1 +1,0 @@
-/usr/bin/cc      -pthread CMakeFiles/raspivid.dir/RaspiCamControl.o CMakeFiles/raspivid.dir/RaspiCLI.o CMakeFiles/raspivid.dir/RaspiPreview.o CMakeFiles/raspivid.dir/RaspiVid.o  -o raspivid  -L/opt/vc/lib -rdynamic -lmmal_core -lmmal_util -lmmal_vc_client -lvcos -lbcm_host -Wl,-rpath,/opt/vc/lib: 

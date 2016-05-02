@@ -3,7 +3,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 SET(COMPILE_DEFINITIONS -Werror)
-SET(GCC_COVERAGE_LINK_FLAGS    "-pthread -lwiringPi")
+SET(GCC_COVERAGE_LINK_FLAGS    "-pthread -lwiringPi -g")
 
 SET( CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${GCC_COVERAGE_LINK_FLAGS}" )
 include_directories(${PROJECT_SOURCE_DIR}/../libs/bcm_host/include)

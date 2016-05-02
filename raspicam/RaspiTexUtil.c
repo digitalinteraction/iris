@@ -464,36 +464,65 @@ void raspitexutil_brga_to_rgba(uint8_t *buffer, size_t size)
  * @param buffer_size The size of the new buffer in bytes (out param)
  * @return Zero if successful.
  */
-int raspitexutil_capture_bgra(RASPITEX_STATE *state, uint8_t nr)
-{
-   const int bytes_per_pixel = 4;
-   int width = state->patches[nr].width;
-   int height = state->patches[nr].height;
+int raspitexutil_capture_bgra(RASPITEX_STATE *state, uint8_t nr) {
 
-   vcos_log_trace("%s: %dx%d %d", VCOS_FUNCTION,
-         width, height, bytes_per_pixel);
+    if (nr == 11) {
+        state->capture.size_low = LOW_OUTPUT_X * LOW_OUTPUT_Y * 4;
+        state->capture.buffer_low = calloc(state->capture.size_low, 1);
+        //printf("Allocate Buffer %p\n", state->capture.buffer_low);
 
-   state->patches[nr].size = width * height * bytes_per_pixel;
-   state->patches[nr].buffer = calloc(state->patches[nr].size, 1);
-   if (! state->patches[nr].buffer)
-      goto error;
+        if (!state->capture.buffer_low)
+            goto error;
 
-   glReadPixels(state->patches[nr].x,
-           state->patches[nr].y,
-           state->patches[nr].width, 
-           state->patches[nr].height, GL_RGBA,
-         GL_UNSIGNED_BYTE, state->patches[nr].buffer);
-   if (glGetError() != GL_NO_ERROR)
-      goto error;
+        GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->framebuffer_low));
+        glReadPixels(0, 0, LOW_OUTPUT_X, LOW_OUTPUT_Y, GL_RGBA, GL_UNSIGNED_BYTE, state->capture.buffer_low);
+        GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 
-   return 0;
+        if (glGetError() != GL_NO_ERROR)
+            goto error;
+
+        return 0;
+    } else {
+
+        GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+
+        const int bytes_per_pixel = 4;
+        int width = state->patches[nr].width;
+        int height = state->patches[nr].height;
+
+        vcos_log_trace("%s: %dx%d %d", VCOS_FUNCTION,
+                width, height, bytes_per_pixel);
+
+        state->patches[nr].size = width * height * bytes_per_pixel;
+        state->patches[nr].buffer = calloc(state->patches[nr].size, 1);
+        //printf("Allocate Buffer %p\n", state->patches[nr].buffer);
+
+        if (!state->patches[nr].buffer)
+            goto error;
+
+        glReadPixels(state->patches[nr].x,
+                state->patches[nr].y,
+                state->patches[nr].width,
+                state->patches[nr].height, GL_RGBA,
+                GL_UNSIGNED_BYTE, state->patches[nr].buffer);
+        if (glGetError() != GL_NO_ERROR)
+            goto error;
+
+        return 0;
+    }
 
 error:
-   state->patches[nr].size = 0;
-   if (state->patches[nr].buffer)
-      free(state->patches[nr].buffer);
-   state->patches[nr].buffer = NULL;
-   return -1;
+    if (nr == 11) {
+        free(state->capture.buffer_low);
+        state->capture.buffer_low = NULL;
+        state->capture.size_low = 0;
+    } else {
+        state->patches[nr].size = 0;
+        if (state->patches[nr].buffer)
+            free(state->patches[nr].buffer);
+        state->patches[nr].buffer = NULL;
+    }
+    return -1;
 }
 
 

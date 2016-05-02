@@ -180,7 +180,7 @@ int main(int argc, char** argv) {
     digitalWrite (2, 1) ; 
     digitalWrite (3, 1) ; 
     digitalWrite (7, 1) ; */
-    while (i < 100) {
+    while (i < 10) {
         //name[4] = '0'+i;
 
         //printf("capturing...%d %d\n", i, pin);
@@ -188,19 +188,20 @@ int main(int argc, char** argv) {
         //digitalWrite (2, 1) ; 
         //digitalWrite (3, 1) ; 
         //digitalWrite (7, 1) ; 
-        state.raspitex_state.patches[0].active = 1;
+        state.raspitex_state.patches[0].active = 0;
         state.raspitex_state.patches[0].height = 300;
         state.raspitex_state.patches[0].width = 300;
         state.raspitex_state.patches[0].x = 200;
         state.raspitex_state.patches[0].y = 200;
+        state.raspitex_state.low_buffer_request = 1;
 
-        state.raspitex_state.patches[1].active = 1;
+        state.raspitex_state.patches[1].active = 0;
         state.raspitex_state.patches[1].height = 500;
         state.raspitex_state.patches[1].width = 500;
         state.raspitex_state.patches[1].x = 100;
         state.raspitex_state.patches[1].y = 100;
 
-        raspitex_capture(&state.raspitex_state, 0);
+        raspitex_capture(&state.raspitex_state, 0, 0);
         i++;
 
     }
@@ -216,7 +217,9 @@ int main(int argc, char** argv) {
     state.raspitex_state.patches[1].x = 100;
     state.raspitex_state.patches[1].y = 100;
     
-    raspitex_capture(&state.raspitex_state, 1);
+    state.raspitex_state.low_buffer_request = 1;
+    
+    raspitex_capture(&state.raspitex_state, 1, 1);
     /*digitalWrite(0,0);
     digitalWrite(2,0);
     digitalWrite(3,0);
