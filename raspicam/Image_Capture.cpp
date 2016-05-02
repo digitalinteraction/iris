@@ -23,7 +23,7 @@
 #include <sysexits.h>
 
 #define VERSION_STRING "v1.3.8"
-
+/*
 #include "bcm_host.h"
 #include "interface/vcos/vcos.h"
 
@@ -40,92 +40,27 @@
 #include "RaspiPreview.h"
 #include "RaspiCLI.h"
 #include "RaspiTex.h"
-
+*/
+#include "Image_Capture.h"
 #include <semaphore.h>
 
 #include <wiringPi.h>
 
 
-// Standard port setting for the camera component
-#define MMAL_CAMERA_PREVIEW_PORT 0
-#define MMAL_CAMERA_VIDEO_PORT 1
-#define MMAL_CAMERA_CAPTURE_PORT 2
 
 
-// Stills format information
-// 0 implies variable
-#define STILLS_FRAME_RATE_NUM 0
-#define STILLS_FRAME_RATE_DEN 1
 
-/// Video render needs at least 2 buffers.
-#define VIDEO_OUTPUT_BUFFERS_NUM 3
 
-#define MAX_USER_EXIF_TAGS      32
-#define MAX_EXIF_PAYLOAD_LENGTH 128
-
-/// Frame advance method
-#define FRAME_NEXT_SINGLE        0
-#define FRAME_NEXT_TIMELAPSE     1
-#define FRAME_NEXT_KEYPRESS      2
-#define FRAME_NEXT_FOREVER       3
-#define FRAME_NEXT_GPIO          4
-#define FRAME_NEXT_SIGNAL        5
-#define FRAME_NEXT_IMMEDIATELY   6
-
-typedef struct
-{
-   int timeout;                        /// Time taken before frame is grabbed and app then shuts down. Units are milliseconds
-   int width;                          /// Requested width of image
-   int height;                         /// requested height of image
-   int quality;                        /// JPEG quality setting (1-100)
-   int wantRAW;                        /// Flag for whether the JPEG metadata also contains the RAW bayer image
-   char *filename;                     /// filename of output file
-   char *linkname;                     /// filename of output file
-   int frameStart;                     /// First number of frame output counter
-   MMAL_PARAM_THUMBNAIL_CONFIG_T thumbnailConfig;
-   int verbose;                        /// !0 if want detailed run information
-   int demoMode;                       /// Run app in demo mode
-   int demoInterval;                   /// Interval between camera settings changes
-   MMAL_FOURCC_T encoding;             /// Encoding to use for the output file.
-   const char *exifTags[MAX_USER_EXIF_TAGS]; /// Array of pointers to tags supplied from the command line
-   int numExifTags;                    /// Number of supplied tags
-   int enableExifTags;                 /// Enable/Disable EXIF tags in output
-   int timelapse;                      /// Delay between each picture in timelapse mode. If 0, disable timelapse
-   int fullResPreview;                 /// If set, the camera preview port runs at capture resolution. Reduces fps.
-   int frameNextMethod;                /// Which method to use to advance to next frame
-   int glCapture;                      /// Save the GL frame-buffer instead of camera output
-   int settings;                       /// Request settings from the camera
-   int cameraNum;                      /// Camera number
-   int burstCaptureMode;               /// Enable burst mode
-   int sensor_mode;                     /// Sensor mode. 0=auto. Check docs/forum for modes selected by other values.
-   int datetime;                       /// Use DateTime instead of frame#
-   int timestamp;                      /// Use timestamp instead of frame#
-
-   RASPIPREVIEW_PARAMETERS preview_parameters;    /// Preview setup parameters
-   RASPICAM_CAMERA_PARAMETERS camera_parameters; /// Camera setup parameters
-
-   MMAL_COMPONENT_T *camera_component;    /// Pointer to the camera component
-   MMAL_COMPONENT_T *encoder_component;   /// Pointer to the encoder component
-   MMAL_COMPONENT_T *null_sink_component; /// Pointer to the null sink component
-   MMAL_CONNECTION_T *preview_connection; /// Pointer to the connection from camera to preview
-   MMAL_CONNECTION_T *encoder_connection; /// Pointer to the connection from camera to encoder
-
-   MMAL_POOL_T *encoder_pool; /// Pointer to the pool of buffers used by encoder output port
-
-   RASPITEX_STATE raspitex_state; /// GL renderer state and parameters
-} RASPISTILL_STATE;
 
 using namespace std;
-static MMAL_STATUS_T create_camera_component(RASPISTILL_STATE *state);
+/*static MMAL_STATUS_T create_camera_component(RASPISTILL_STATE *state);
 static void camera_control_callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer);
 static void default_status(RASPISTILL_STATE *state);
+static void * begin_capturing(void *queue);*/
 
 
-/*
- * 
- */
-int main(int argc, char** argv) {
-    RASPISTILL_STATE state;
+Image_Capture::Image_Capture(Buffer *buffer){
+    //RASPISTILL_STATE state;
     MMAL_STATUS_T status = MMAL_SUCCESS;
     MMAL_PORT_T *camera_preview_port = NULL;
     MMAL_PORT_T *camera_video_port = NULL;
@@ -140,7 +75,7 @@ int main(int argc, char** argv) {
     if ((status = create_camera_component(&state)) != MMAL_SUCCESS) {
         //vcos_log_error("%s: Failed to create camera component", __func__);
         printf("Failed to create camera component\n");
-        return -1;
+        //return -1;
     }
     
     
@@ -148,63 +83,49 @@ int main(int argc, char** argv) {
     camera_video_port = state.camera_component->output[MMAL_CAMERA_VIDEO_PORT];
     camera_still_port = state.camera_component->output[MMAL_CAMERA_CAPTURE_PORT];
     
-    if ((raspitex_start(&state.raspitex_state) != 0))
-        return -1;
+    if ((raspitex_start(&state.raspitex_state) != 0)){
+        printf("Error in starting raspitex\n");
+    }
+        //return -1;
     
     
     /*if (mmal_port_parameter_set_boolean(camera_video_port, MMAL_PARAMETER_CAPTURE, 1) != MMAL_SUCCESS) {
             //vcos_log_error("%s: Failed to start capture", __func__);
     }*/
-    if (wiringPiSetup () == -1)
-        return 1 ;
- 
-    
-    pinMode (0, OUTPUT) ;
-    pinMode (2, OUTPUT) ;
-    pinMode (3, OUTPUT) ;
-    pinMode (7, OUTPUT) ;
-
-
-    time_t start = time(NULL);
-    
-    FILE *output_file = NULL;
-    char name[] = "test0.tga";
-    output_file = fopen(name, "wb");
-    FILE *low_output_file = NULL;
-    char low_name[] = "low_test0.tga";
-    low_output_file = fopen(low_name, "wb");
-
-    int i = 0;
-    int pin = 0;
-    /*digitalWrite(0, 1);
-    digitalWrite (2, 1) ; 
-    digitalWrite (3, 1) ; 
-    digitalWrite (7, 1) ; */
-    while (i < 1000) {
-        //name[4] = '0'+i;
-
-        //printf("capturing...%d %d\n", i, pin);
-        //digitalWrite (0, 1) ; 
-        //digitalWrite (2, 1) ; 
-        //digitalWrite (3, 1) ; 
-        //digitalWrite (7, 1) ; 
-        state.raspitex_state.patches[0].active = 0;
-        state.raspitex_state.patches[0].height = 300;
-        state.raspitex_state.patches[0].width = 300;
-        state.raspitex_state.patches[0].x = 200;
-        state.raspitex_state.patches[0].y = 200;
-        state.raspitex_state.low_buffer_request = 1;
-
-        state.raspitex_state.patches[1].active = 0;
-        state.raspitex_state.patches[1].height = 500;
-        state.raspitex_state.patches[1].width = 500;
-        state.raspitex_state.patches[1].x = 100;
-        state.raspitex_state.patches[1].y = 100;
-
-        raspitex_capture(&state.raspitex_state, 0, 0);
-        i++;
-
+    if (wiringPiSetup () == -1){
+        printf("Error in setting up wiringPi\n");
     }
+    
+    printf("Almost finshed setting up\n");
+    
+    capturing = 0;
+    //this->buffer = buffer;
+        //return 1 ;
+ 
+}
+
+
+Image_Capture::~Image_Capture(){
+    printf("Shutting capturing down\n");
+}
+
+int Image_Capture::run() {
+    time_t start = time(NULL);
+
+    while (capturing) {
+        state.raspitex_state.low_buffer_request = 1;
+        raspitex_capture(&state.raspitex_state, 0, 0);
+        uint8_t * test = state.raspitex_state.low_buffer;
+        size_t test_sz = state.raspitex_state.low_buffer_size;
+    }
+    
+    printf("%.2f\n", (double) (time(NULL) - start));
+    
+    
+    return 0;
+}
+
+int Image_Capture::get_high_res_image(){
     state.raspitex_state.patches[0].active = 1;
     state.raspitex_state.patches[0].height = 300;
     state.raspitex_state.patches[0].width = 300;
@@ -220,18 +141,9 @@ int main(int argc, char** argv) {
     state.raspitex_state.low_buffer_request = 1;
     
     raspitex_capture(&state.raspitex_state, 1, 1);
-    /*digitalWrite(0,0);
-    digitalWrite(2,0);
-    digitalWrite(3,0);
-    digitalWrite(7,0);*/
-
-    printf("%.2f\n", (double) (time(NULL) - start));
-    
-    
-    return 0;
 }
 
-static MMAL_STATUS_T create_camera_component(RASPISTILL_STATE *state)
+ MMAL_STATUS_T Image_Capture::create_camera_component(RASPISTILL_STATE *state)
 {
    MMAL_COMPONENT_T *camera = 0;
    MMAL_ES_FORMAT_T *format;
@@ -480,7 +392,7 @@ static MMAL_STATUS_T create_camera_component(RASPISTILL_STATE *state)
 
 }
 
-static void camera_control_callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
+ void Image_Capture::camera_control_callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer)
 {
    if (buffer->cmd == MMAL_EVENT_PARAMETER_CHANGED)
    {
@@ -511,7 +423,7 @@ static void camera_control_callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buf
    mmal_buffer_header_release(buffer);
 }
 
-static void default_status(RASPISTILL_STATE *state)
+ void Image_Capture::default_status(RASPISTILL_STATE *state)
 {
    if (!state)
    {

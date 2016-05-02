@@ -1,1 +1,1 @@
-/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/testmain.dir
+/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir

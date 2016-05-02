@@ -776,7 +776,7 @@ int raspitex_capture(RASPITEX_STATE *state, int low, int write)
             fflush(low_output);
             fclose(low_output);
         }
-        free(state->low_buffer);
+        //free(state->low_buffer);
         //printf("Freeing buffer %p\n", state->low_buffer);
     }
 
@@ -803,7 +803,7 @@ int raspitex_capture(RASPITEX_STATE *state, int low, int write)
                 fclose(output);
             }
             //printf("Freeing buffer %p\n", state->patches[i].buffer);
-            free(state->patches[i].buffer);
+            //free(state->patches[i].buffer);
         } else if (state->patches[i].active == 1) {
             printf("Patch %d not succesfully transferred\n", i);
         } else {

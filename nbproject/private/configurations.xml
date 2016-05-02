@@ -527,15 +527,11 @@
             </df>
             <df name="CMakeTmp">
             </df>
-            <df name="raspistill.dir">
+            <df name="main.dir">
               <df name="gl_scenes">
               </df>
             </df>
-            <df name="raspivid.dir">
-            </df>
-            <df name="raspividyuv.dir">
-            </df>
-            <df name="raspiyuv.dir">
+            <df name="Progress">
             </df>
             <df name="testmain.dir">
               <df name="gl_scenes">
@@ -552,17 +548,11 @@
               <in>CMakeCXXCompilerId.cpp</in>
             </df>
           </df>
-          <df name="CMakeTmp">
-          </df>
           <df name="Progress">
           </df>
           <df name="raspistill.dir">
-            <df name="gl_scenes">
-            </df>
           </df>
           <df name="testmain.dir">
-            <df name="gl_scenes">
-            </df>
           </df>
         </df>
         <df name="gl_scenes">
@@ -587,6 +577,10 @@
           <in>imv2pgm.c</in>
           <in>imv2txt.c</in>
         </df>
+        <in>Buffer.cpp</in>
+        <in>Buffer.h</in>
+        <in>Image_Capture.cpp</in>
+        <in>Image_Capture.h</in>
         <in>RaspiCLI.c</in>
         <in>RaspiCLI.h</in>
         <in>RaspiCamControl.c</in>
@@ -598,7 +592,7 @@
         <in>RaspiTex.h</in>
         <in>RaspiTexUtil.c</in>
         <in>RaspiTexUtil.h</in>
-        <in>testmain.cpp</in>
+        <in>main.cpp</in>
         <in>tga.c</in>
         <in>tga.h</in>
       </df>
@@ -608,167 +602,6 @@
         <in>vcore.h</in>
       </df>
       <df name="wiringPi">
-        <df name="debian">
-        </df>
-        <df name="debian-template">
-          <df name="wiringPi">
-            <df name="DEBIAN">
-            </df>
-          </df>
-        </df>
-        <df name="devLib">
-          <in>ds1302.c</in>
-          <in>ds1302.h</in>
-          <in>font.h</in>
-          <in>gertboard.c</in>
-          <in>gertboard.h</in>
-          <in>lcd.c</in>
-          <in>lcd.h</in>
-          <in>lcd128x64.c</in>
-          <in>lcd128x64.h</in>
-          <in>maxdetect.c</in>
-          <in>maxdetect.h</in>
-          <in>piFace.c</in>
-          <in>piFace.h</in>
-          <in>piFaceOld.c</in>
-          <in>piGlow.c</in>
-          <in>piGlow.h</in>
-          <in>piNes.c</in>
-          <in>piNes.h</in>
-          <in>scrollPhat.c</in>
-          <in>scrollPhat.h</in>
-          <in>scrollPhatFont.h</in>
-        </df>
-        <df name="examples">
-          <df name="Gertboard">
-            <in>7segments.c</in>
-            <in>buttons.c</in>
-            <in>gertboard.c</in>
-            <in>record.c</in>
-            <in>temperature.c</in>
-            <in>voltmeter.c</in>
-            <in>vumeter.c</in>
-          </df>
-          <df name="PiFace">
-            <in>blink.c</in>
-            <in>buttons.c</in>
-            <in>ladder.c</in>
-            <in>metro.c</in>
-            <in>motor.c</in>
-            <in>reaction.c</in>
-          </df>
-          <df name="PiGlow">
-            <in>piGlow0.c</in>
-            <in>piGlow1.c</in>
-            <in>piglow.c</in>
-          </df>
-          <df name="q2w">
-            <in>binary.c</in>
-            <in>blink-io.c</in>
-            <in>blink.c</in>
-            <in>bright.c</in>
-            <in>button.c</in>
-            <in>volts.c</in>
-          </df>
-          <df name="scrollPhat">
-            <in>scphat.c</in>
-            <in>test.c</in>
-          </df>
-          <in>blink.c</in>
-          <in>blink12.c</in>
-          <in>blink12drcs.c</in>
-          <in>blink6drcs.c</in>
-          <in>blink8.c</in>
-          <in>clock.c</in>
-          <in>delayTest.c</in>
-          <in>ds1302.c</in>
-          <in>header.h</in>
-          <in>isr-osc.c</in>
-          <in>isr.c</in>
-          <in>lcd-adafruit.c</in>
-          <in>lcd.c</in>
-          <in>lowPower.c</in>
-          <in>max31855.c</in>
-          <in>nes.c</in>
-          <in>okLed.c</in>
-          <in>pwm.c</in>
-          <in>rht03.c</in>
-          <in>serialRead.c</in>
-          <in>serialTest.c</in>
-          <in>servo.c</in>
-          <in>softPwm.c</in>
-          <in>softTone.c</in>
-          <in>speed.c</in>
-          <in>spiSpeed.c</in>
-          <in>wfi.c</in>
-        </df>
-        <df name="gpio">
-          <in>gpio.c</in>
-          <in>pins.c</in>
-          <in>readall.c</in>
-          <in>version.h</in>
-        </df>
-        <df name="pins">
-        </df>
-        <df name="wiringPi">
-          <in>ads1115.c</in>
-          <in>ads1115.h</in>
-          <in>drcSerial.c</in>
-          <in>drcSerial.h</in>
-          <in>max31855.c</in>
-          <in>max31855.h</in>
-          <in>max5322.c</in>
-          <in>max5322.h</in>
-          <in>mcp23008.c</in>
-          <in>mcp23008.h</in>
-          <in>mcp23016.c</in>
-          <in>mcp23016.h</in>
-          <in>mcp23016reg.h</in>
-          <in>mcp23017.c</in>
-          <in>mcp23017.h</in>
-          <in>mcp23s08.c</in>
-          <in>mcp23s08.h</in>
-          <in>mcp23s17.c</in>
-          <in>mcp23s17.h</in>
-          <in>mcp23x08.h</in>
-          <in>mcp23x0817.h</in>
-          <in>mcp3002.c</in>
-          <in>mcp3002.h</in>
-          <in>mcp3004.c</in>
-          <in>mcp3004.h</in>
-          <in>mcp3422.c</in>
-          <in>mcp3422.h</in>
-          <in>mcp4802.c</in>
-          <in>mcp4802.h</in>
-          <in>pcf8574.c</in>
-          <in>pcf8574.h</in>
-          <in>pcf8591.c</in>
-          <in>pcf8591.h</in>
-          <in>piHiPri.c</in>
-          <in>piThread.c</in>
-          <in>sn3218.c</in>
-          <in>sn3218.h</in>
-          <in>softPwm.c</in>
-          <in>softPwm.h</in>
-          <in>softServo.c</in>
-          <in>softServo.h</in>
-          <in>softTone.c</in>
-          <in>softTone.h</in>
-          <in>sr595.c</in>
-          <in>sr595.h</in>
-          <in>wiringPi.c</in>
-          <in>wiringPi.h</in>
-          <in>wiringPiI2C.c</in>
-          <in>wiringPiI2C.h</in>
-          <in>wiringPiSPI.c</in>
-          <in>wiringPiSPI.h</in>
-          <in>wiringSerial.c</in>
-          <in>wiringSerial.h</in>
-          <in>wiringShift.c</in>
-          <in>wiringShift.h</in>
-          <in>wpiExtensions.c</in>
-          <in>wpiExtensions.h</in>
-        </df>
       </df>
     </df>
   </logicalFolder>

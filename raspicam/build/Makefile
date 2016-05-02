@@ -144,24 +144,72 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named testmain
+# Target rules for targets named main
 
 # Build rule for target.
-testmain: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 testmain
-.PHONY : testmain
+main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 main
+.PHONY : main
 
 # fast build rule for target.
-testmain/fast:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/build
-.PHONY : testmain/fast
+main/fast:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
+.PHONY : main/fast
+
+Buffer.o: Buffer.cpp.o
+.PHONY : Buffer.o
+
+# target to build an object file
+Buffer.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Buffer.cpp.o
+.PHONY : Buffer.cpp.o
+
+Buffer.i: Buffer.cpp.i
+.PHONY : Buffer.i
+
+# target to preprocess a source file
+Buffer.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Buffer.cpp.i
+.PHONY : Buffer.cpp.i
+
+Buffer.s: Buffer.cpp.s
+.PHONY : Buffer.s
+
+# target to generate assembly for a file
+Buffer.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Buffer.cpp.s
+.PHONY : Buffer.cpp.s
+
+Image_Capture.o: Image_Capture.cpp.o
+.PHONY : Image_Capture.o
+
+# target to build an object file
+Image_Capture.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Image_Capture.cpp.o
+.PHONY : Image_Capture.cpp.o
+
+Image_Capture.i: Image_Capture.cpp.i
+.PHONY : Image_Capture.i
+
+# target to preprocess a source file
+Image_Capture.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Image_Capture.cpp.i
+.PHONY : Image_Capture.cpp.i
+
+Image_Capture.s: Image_Capture.cpp.s
+.PHONY : Image_Capture.s
+
+# target to generate assembly for a file
+Image_Capture.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Image_Capture.cpp.s
+.PHONY : Image_Capture.cpp.s
 
 RaspiCLI.o: RaspiCLI.c.o
 .PHONY : RaspiCLI.o
 
 # target to build an object file
 RaspiCLI.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiCLI.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiCLI.c.o
 .PHONY : RaspiCLI.c.o
 
 RaspiCLI.i: RaspiCLI.c.i
@@ -169,7 +217,7 @@ RaspiCLI.i: RaspiCLI.c.i
 
 # target to preprocess a source file
 RaspiCLI.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiCLI.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiCLI.c.i
 .PHONY : RaspiCLI.c.i
 
 RaspiCLI.s: RaspiCLI.c.s
@@ -177,7 +225,7 @@ RaspiCLI.s: RaspiCLI.c.s
 
 # target to generate assembly for a file
 RaspiCLI.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiCLI.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiCLI.c.s
 .PHONY : RaspiCLI.c.s
 
 RaspiCamControl.o: RaspiCamControl.c.o
@@ -185,7 +233,7 @@ RaspiCamControl.o: RaspiCamControl.c.o
 
 # target to build an object file
 RaspiCamControl.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiCamControl.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiCamControl.c.o
 .PHONY : RaspiCamControl.c.o
 
 RaspiCamControl.i: RaspiCamControl.c.i
@@ -193,7 +241,7 @@ RaspiCamControl.i: RaspiCamControl.c.i
 
 # target to preprocess a source file
 RaspiCamControl.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiCamControl.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiCamControl.c.i
 .PHONY : RaspiCamControl.c.i
 
 RaspiCamControl.s: RaspiCamControl.c.s
@@ -201,7 +249,7 @@ RaspiCamControl.s: RaspiCamControl.c.s
 
 # target to generate assembly for a file
 RaspiCamControl.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiCamControl.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiCamControl.c.s
 .PHONY : RaspiCamControl.c.s
 
 RaspiPreview.o: RaspiPreview.c.o
@@ -209,7 +257,7 @@ RaspiPreview.o: RaspiPreview.c.o
 
 # target to build an object file
 RaspiPreview.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiPreview.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiPreview.c.o
 .PHONY : RaspiPreview.c.o
 
 RaspiPreview.i: RaspiPreview.c.i
@@ -217,7 +265,7 @@ RaspiPreview.i: RaspiPreview.c.i
 
 # target to preprocess a source file
 RaspiPreview.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiPreview.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiPreview.c.i
 .PHONY : RaspiPreview.c.i
 
 RaspiPreview.s: RaspiPreview.c.s
@@ -225,7 +273,7 @@ RaspiPreview.s: RaspiPreview.c.s
 
 # target to generate assembly for a file
 RaspiPreview.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiPreview.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiPreview.c.s
 .PHONY : RaspiPreview.c.s
 
 RaspiTex.o: RaspiTex.c.o
@@ -233,7 +281,7 @@ RaspiTex.o: RaspiTex.c.o
 
 # target to build an object file
 RaspiTex.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiTex.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiTex.c.o
 .PHONY : RaspiTex.c.o
 
 RaspiTex.i: RaspiTex.c.i
@@ -241,7 +289,7 @@ RaspiTex.i: RaspiTex.c.i
 
 # target to preprocess a source file
 RaspiTex.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiTex.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiTex.c.i
 .PHONY : RaspiTex.c.i
 
 RaspiTex.s: RaspiTex.c.s
@@ -249,7 +297,7 @@ RaspiTex.s: RaspiTex.c.s
 
 # target to generate assembly for a file
 RaspiTex.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiTex.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiTex.c.s
 .PHONY : RaspiTex.c.s
 
 RaspiTexUtil.o: RaspiTexUtil.c.o
@@ -257,7 +305,7 @@ RaspiTexUtil.o: RaspiTexUtil.c.o
 
 # target to build an object file
 RaspiTexUtil.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiTexUtil.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiTexUtil.c.o
 .PHONY : RaspiTexUtil.c.o
 
 RaspiTexUtil.i: RaspiTexUtil.c.i
@@ -265,7 +313,7 @@ RaspiTexUtil.i: RaspiTexUtil.c.i
 
 # target to preprocess a source file
 RaspiTexUtil.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiTexUtil.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiTexUtil.c.i
 .PHONY : RaspiTexUtil.c.i
 
 RaspiTexUtil.s: RaspiTexUtil.c.s
@@ -273,7 +321,7 @@ RaspiTexUtil.s: RaspiTexUtil.c.s
 
 # target to generate assembly for a file
 RaspiTexUtil.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/RaspiTexUtil.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/RaspiTexUtil.c.s
 .PHONY : RaspiTexUtil.c.s
 
 gl_scenes/mirror.o: gl_scenes/mirror.c.o
@@ -281,7 +329,7 @@ gl_scenes/mirror.o: gl_scenes/mirror.c.o
 
 # target to build an object file
 gl_scenes/mirror.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/mirror.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/mirror.c.o
 .PHONY : gl_scenes/mirror.c.o
 
 gl_scenes/mirror.i: gl_scenes/mirror.c.i
@@ -289,7 +337,7 @@ gl_scenes/mirror.i: gl_scenes/mirror.c.i
 
 # target to preprocess a source file
 gl_scenes/mirror.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/mirror.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/mirror.c.i
 .PHONY : gl_scenes/mirror.c.i
 
 gl_scenes/mirror.s: gl_scenes/mirror.c.s
@@ -297,7 +345,7 @@ gl_scenes/mirror.s: gl_scenes/mirror.c.s
 
 # target to generate assembly for a file
 gl_scenes/mirror.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/mirror.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/mirror.c.s
 .PHONY : gl_scenes/mirror.c.s
 
 gl_scenes/models.o: gl_scenes/models.c.o
@@ -305,7 +353,7 @@ gl_scenes/models.o: gl_scenes/models.c.o
 
 # target to build an object file
 gl_scenes/models.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/models.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/models.c.o
 .PHONY : gl_scenes/models.c.o
 
 gl_scenes/models.i: gl_scenes/models.c.i
@@ -313,7 +361,7 @@ gl_scenes/models.i: gl_scenes/models.c.i
 
 # target to preprocess a source file
 gl_scenes/models.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/models.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/models.c.i
 .PHONY : gl_scenes/models.c.i
 
 gl_scenes/models.s: gl_scenes/models.c.s
@@ -321,7 +369,7 @@ gl_scenes/models.s: gl_scenes/models.c.s
 
 # target to generate assembly for a file
 gl_scenes/models.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/models.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/models.c.s
 .PHONY : gl_scenes/models.c.s
 
 gl_scenes/own.o: gl_scenes/own.c.o
@@ -329,7 +377,7 @@ gl_scenes/own.o: gl_scenes/own.c.o
 
 # target to build an object file
 gl_scenes/own.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/own.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/own.c.o
 .PHONY : gl_scenes/own.c.o
 
 gl_scenes/own.i: gl_scenes/own.c.i
@@ -337,7 +385,7 @@ gl_scenes/own.i: gl_scenes/own.c.i
 
 # target to preprocess a source file
 gl_scenes/own.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/own.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/own.c.i
 .PHONY : gl_scenes/own.c.i
 
 gl_scenes/own.s: gl_scenes/own.c.s
@@ -345,7 +393,7 @@ gl_scenes/own.s: gl_scenes/own.c.s
 
 # target to generate assembly for a file
 gl_scenes/own.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/own.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/own.c.s
 .PHONY : gl_scenes/own.c.s
 
 gl_scenes/sobel.o: gl_scenes/sobel.c.o
@@ -353,7 +401,7 @@ gl_scenes/sobel.o: gl_scenes/sobel.c.o
 
 # target to build an object file
 gl_scenes/sobel.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/sobel.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/sobel.c.o
 .PHONY : gl_scenes/sobel.c.o
 
 gl_scenes/sobel.i: gl_scenes/sobel.c.i
@@ -361,7 +409,7 @@ gl_scenes/sobel.i: gl_scenes/sobel.c.i
 
 # target to preprocess a source file
 gl_scenes/sobel.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/sobel.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/sobel.c.i
 .PHONY : gl_scenes/sobel.c.i
 
 gl_scenes/sobel.s: gl_scenes/sobel.c.s
@@ -369,7 +417,7 @@ gl_scenes/sobel.s: gl_scenes/sobel.c.s
 
 # target to generate assembly for a file
 gl_scenes/sobel.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/sobel.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/sobel.c.s
 .PHONY : gl_scenes/sobel.c.s
 
 gl_scenes/square.o: gl_scenes/square.c.o
@@ -377,7 +425,7 @@ gl_scenes/square.o: gl_scenes/square.c.o
 
 # target to build an object file
 gl_scenes/square.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/square.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/square.c.o
 .PHONY : gl_scenes/square.c.o
 
 gl_scenes/square.i: gl_scenes/square.c.i
@@ -385,7 +433,7 @@ gl_scenes/square.i: gl_scenes/square.c.i
 
 # target to preprocess a source file
 gl_scenes/square.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/square.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/square.c.i
 .PHONY : gl_scenes/square.c.i
 
 gl_scenes/square.s: gl_scenes/square.c.s
@@ -393,7 +441,7 @@ gl_scenes/square.s: gl_scenes/square.c.s
 
 # target to generate assembly for a file
 gl_scenes/square.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/square.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/square.c.s
 .PHONY : gl_scenes/square.c.s
 
 gl_scenes/teapot.o: gl_scenes/teapot.c.o
@@ -401,7 +449,7 @@ gl_scenes/teapot.o: gl_scenes/teapot.c.o
 
 # target to build an object file
 gl_scenes/teapot.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/teapot.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/teapot.c.o
 .PHONY : gl_scenes/teapot.c.o
 
 gl_scenes/teapot.i: gl_scenes/teapot.c.i
@@ -409,7 +457,7 @@ gl_scenes/teapot.i: gl_scenes/teapot.c.i
 
 # target to preprocess a source file
 gl_scenes/teapot.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/teapot.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/teapot.c.i
 .PHONY : gl_scenes/teapot.c.i
 
 gl_scenes/teapot.s: gl_scenes/teapot.c.s
@@ -417,7 +465,7 @@ gl_scenes/teapot.s: gl_scenes/teapot.c.s
 
 # target to generate assembly for a file
 gl_scenes/teapot.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/teapot.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/teapot.c.s
 .PHONY : gl_scenes/teapot.c.s
 
 gl_scenes/yuv.o: gl_scenes/yuv.c.o
@@ -425,7 +473,7 @@ gl_scenes/yuv.o: gl_scenes/yuv.c.o
 
 # target to build an object file
 gl_scenes/yuv.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/yuv.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/yuv.c.o
 .PHONY : gl_scenes/yuv.c.o
 
 gl_scenes/yuv.i: gl_scenes/yuv.c.i
@@ -433,7 +481,7 @@ gl_scenes/yuv.i: gl_scenes/yuv.c.i
 
 # target to preprocess a source file
 gl_scenes/yuv.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/yuv.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/yuv.c.i
 .PHONY : gl_scenes/yuv.c.i
 
 gl_scenes/yuv.s: gl_scenes/yuv.c.s
@@ -441,39 +489,39 @@ gl_scenes/yuv.s: gl_scenes/yuv.c.s
 
 # target to generate assembly for a file
 gl_scenes/yuv.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/gl_scenes/yuv.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/yuv.c.s
 .PHONY : gl_scenes/yuv.c.s
 
-testmain.o: testmain.cpp.o
-.PHONY : testmain.o
+main.o: main.cpp.o
+.PHONY : main.o
 
 # target to build an object file
-testmain.cpp.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/testmain.cpp.o
-.PHONY : testmain.cpp.o
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-testmain.i: testmain.cpp.i
-.PHONY : testmain.i
+main.i: main.cpp.i
+.PHONY : main.i
 
 # target to preprocess a source file
-testmain.cpp.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/testmain.cpp.i
-.PHONY : testmain.cpp.i
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-testmain.s: testmain.cpp.s
-.PHONY : testmain.s
+main.s: main.cpp.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-testmain.cpp.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/testmain.cpp.s
-.PHONY : testmain.cpp.s
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 tga.o: tga.c.o
 .PHONY : tga.o
 
 # target to build an object file
 tga.c.o:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/tga.c.o
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tga.c.o
 .PHONY : tga.c.o
 
 tga.i: tga.c.i
@@ -481,7 +529,7 @@ tga.i: tga.c.i
 
 # target to preprocess a source file
 tga.c.i:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/tga.c.i
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tga.c.i
 .PHONY : tga.c.i
 
 tga.s: tga.c.s
@@ -489,7 +537,7 @@ tga.s: tga.c.s
 
 # target to generate assembly for a file
 tga.c.s:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/tga.c.s
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/tga.c.s
 .PHONY : tga.c.s
 
 # Help Target
@@ -503,8 +551,14 @@ help:
 	@echo "... install/local"
 	@echo "... install/strip"
 	@echo "... list_install_components"
+	@echo "... main"
 	@echo "... rebuild_cache"
-	@echo "... testmain"
+	@echo "... Buffer.o"
+	@echo "... Buffer.i"
+	@echo "... Buffer.s"
+	@echo "... Image_Capture.o"
+	@echo "... Image_Capture.i"
+	@echo "... Image_Capture.s"
 	@echo "... RaspiCLI.o"
 	@echo "... RaspiCLI.i"
 	@echo "... RaspiCLI.s"
@@ -541,9 +595,9 @@ help:
 	@echo "... gl_scenes/yuv.o"
 	@echo "... gl_scenes/yuv.i"
 	@echo "... gl_scenes/yuv.s"
-	@echo "... testmain.o"
-	@echo "... testmain.i"
-	@echo "... testmain.s"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 	@echo "... tga.o"
 	@echo "... tga.i"
 	@echo "... tga.s"

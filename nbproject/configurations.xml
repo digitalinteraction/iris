@@ -250,13 +250,15 @@
           <in>imv2pgm.c</in>
           <in>imv2txt.c</in>
         </df>
+        <in>Buffer.cpp</in>
+        <in>Buffer.h</in>
+        <in>Image_Capture.h</in>
         <in>RaspiCLI.c</in>
         <in>RaspiCamControl.c</in>
         <in>RaspiPreview.c</in>
         <in>RaspiStill.c</in>
         <in>RaspiTex.c</in>
         <in>RaspiTexUtil.c</in>
-        <in>testmain.cpp</in>
         <in>tga.c</in>
       </df>
     </df>
@@ -903,6 +905,10 @@
       </item>
       <item path="libs/sm/user-vcsm.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="raspicam/Buffer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="raspicam/Buffer.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="raspicam/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c"
             ex="false"
             tool="0"
@@ -912,6 +918,8 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="raspicam/Image_Capture.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="raspicam/RaspiCLI.c" ex="false" tool="0" flavor2="0">
       </item>
@@ -950,8 +958,6 @@
       <item path="raspicam/imv_examples/imv2pgm.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="raspicam/imv_examples/imv2txt.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="raspicam/testmain.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="raspicam/tga.c" ex="false" tool="0" flavor2="0">
       </item>

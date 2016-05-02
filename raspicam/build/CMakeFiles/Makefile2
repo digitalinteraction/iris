@@ -53,38 +53,38 @@ CMAKE_SOURCE_DIR = /home/pi/gpu_main/cutting_board/raspicam
 CMAKE_BINARY_DIR = /home/pi/gpu_main/cutting_board/raspicam/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/testmain.dir
+# Target rules for target CMakeFiles/main.dir
 
 # All Build rule for target.
-CMakeFiles/testmain.dir/all:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/depend
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles  1 2 3 4 5 6 7 8 9 10 11 12 13 14
-	@echo "Built target testmain"
-.PHONY : CMakeFiles/testmain.dir/all
+CMakeFiles/main.dir/all:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/depend
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+	@echo "Built target main"
+.PHONY : CMakeFiles/main.dir/all
 
 # Include target in all.
-all: CMakeFiles/testmain.dir/all
+all: CMakeFiles/main.dir/all
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/testmain.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles 14
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/testmain.dir/all
+CMakeFiles/main.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles 16
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles 0
-.PHONY : CMakeFiles/testmain.dir/rule
+.PHONY : CMakeFiles/main.dir/rule
 
 # Convenience name for target.
-testmain: CMakeFiles/testmain.dir/rule
-.PHONY : testmain
+main: CMakeFiles/main.dir/rule
+.PHONY : main
 
 # clean rule for target.
-CMakeFiles/testmain.dir/clean:
-	$(MAKE) -f CMakeFiles/testmain.dir/build.make CMakeFiles/testmain.dir/clean
-.PHONY : CMakeFiles/testmain.dir/clean
+CMakeFiles/main.dir/clean:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/clean
+.PHONY : CMakeFiles/main.dir/clean
 
 # clean rule for target.
-clean: CMakeFiles/testmain.dir/clean
+clean: CMakeFiles/main.dir/clean
 .PHONY : clean
 
 #=============================================================================
