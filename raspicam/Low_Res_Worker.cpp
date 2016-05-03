@@ -23,6 +23,7 @@ Low_Res_Worker::Low_Res_Worker(Buffer *buffer) {
     buf = buffer;
     processing = 0;
     pMOG2 = createBackgroundSubtractorMOG2(500, 16, false);
+    //pMOG2 = createBackgroundSubtractorMOG2();
 }
 
 
@@ -50,7 +51,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size){
     Mat img = convert(image, image_size);
     
     if(img.empty() == 0){
-        pMOG2->apply(img, mask, 0.01);
+        pMOG2->apply(img, mask, 0.005);
         imshow("Background Separator", mask);
         waitKey( 30 );
     }else{

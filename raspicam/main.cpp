@@ -8,7 +8,12 @@
 #include "Image_Capture.h"
 #include "Low_Res_Worker.h"
 
+using namespace std;
+
 int main() {
+
+    cout << "OpenCV version : " << CV_VERSION << endl;
+
     Buffer *buffer = new Buffer(32);
     Image_Capture *cap = new Image_Capture(buffer);
     Low_Res_Worker *low = new Low_Res_Worker(buffer);
