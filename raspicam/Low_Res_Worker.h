@@ -37,7 +37,8 @@ private:
     Mat convert(uint8_t *image, size_t image_size);
     Mat mask;
     Ptr<BackgroundSubtractor> pMOG2;
-    
+    Mat previous[10];
+    int prev_cnt;
 };
 
 #endif /* LOW_RES_WORKER_H */
