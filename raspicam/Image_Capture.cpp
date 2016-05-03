@@ -59,7 +59,11 @@ static void default_status(RASPISTILL_STATE *state);
 static void * begin_capturing(void *queue);*/
 
 
-Image_Capture::Image_Capture(Buffer *buffer){
+Image_Capture::Image_Capture(Buffer *buffer)
+{
+    
+    buf = buffer;
+
     //RASPISTILL_STATE state;
     MMAL_STATUS_T status = MMAL_SUCCESS;
     MMAL_PORT_T *camera_preview_port = NULL;
@@ -92,14 +96,13 @@ Image_Capture::Image_Capture(Buffer *buffer){
     /*if (mmal_port_parameter_set_boolean(camera_video_port, MMAL_PARAMETER_CAPTURE, 1) != MMAL_SUCCESS) {
             //vcos_log_error("%s: Failed to start capture", __func__);
     }*/
-    if (wiringPiSetup () == -1){
+    /*if (wiringPiSetup () == -1){
         printf("Error in setting up wiringPi\n");
-    }
+    }*/
     
     printf("Almost finshed setting up\n");
     
     capturing = 0;
-    //this->buffer = buffer;
         //return 1 ;
  
 }
@@ -109,20 +112,24 @@ Image_Capture::~Image_Capture(){
     printf("Shutting capturing down\n");
 }
 
-int Image_Capture::run() {
+void Image_Capture::run() {
     time_t start = time(NULL);
 
     while (capturing) {
         state.raspitex_state.low_buffer_request = 1;
         raspitex_capture(&state.raspitex_state, 0, 0);
-        uint8_t * test = state.raspitex_state.low_buffer;
-        size_t test_sz = state.raspitex_state.low_buffer_size;
+        if(buf->add(state.raspitex_state.low_buffer, state.raspitex_state.low_buffer_size) == 0){
+            //printf("succesfully added buffer %p\n", state.raspitex_state.low_buffer);
+        }else{
+            //printf("buffer full\n");
+            free(state.raspitex_state.low_buffer);
+        }
     }
     
     printf("%.2f\n", (double) (time(NULL) - start));
     
     
-    return 0;
+    //return 0;
 }
 
 int Image_Capture::get_high_res_image(){

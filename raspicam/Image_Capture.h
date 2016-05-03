@@ -15,7 +15,7 @@
 #include "RaspiCLI.h"
 #include "RaspiTex.h"
 
-#include "Buffer.h"
+#include "Low_Res_Worker.h"
 
 // Standard port setting for the camera component
 #define MMAL_CAMERA_PREVIEW_PORT 0
@@ -91,7 +91,7 @@ class Image_Capture{
 public:
     Image_Capture(Buffer *buffer);
     ~Image_Capture();
-    int run();
+    void run();
     int get_high_res_image();
     int capturing;
 private:
@@ -100,5 +100,5 @@ private:
     static void default_status(RASPISTILL_STATE *state);
     static void * begin_capturing(void *queue);
     RASPISTILL_STATE state;
-    Buffer *buffer;
+    Buffer *buf;
 };

@@ -48,8 +48,8 @@ extern "C"{
 #define UNDISTORT_Y 1458
 #define HIGH_OUTPUT_X 1944
 #define HIGH_OUTPUT_Y 1458
-#define LOW_OUTPUT_X 128//400//972
-#define LOW_OUTPUT_Y 96//300//729
+#define LOW_OUTPUT_X 256//128//400//972
+#define LOW_OUTPUT_Y 192//96//300//729
     
 //0: IR
 //2: UV

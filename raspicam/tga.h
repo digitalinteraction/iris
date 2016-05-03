@@ -25,7 +25,9 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
+#ifdef __cplusplus
+extern "C"{
+#endif 
 #ifndef TGA_H
 #define TGA_H
 
@@ -71,3 +73,6 @@ int write_tga(FILE* fp, int width, int height, uint8_t *buffer, size_t buffer_si
 unsigned char *load_tga(const char *filename, struct tga_header *header);
 
 #endif /* TGA_H */
+#ifdef __cplusplus
+}
+#endif

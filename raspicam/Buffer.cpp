@@ -37,6 +37,7 @@ int Buffer::add(uint8_t *buffer, size_t buffer_size){
         array[add_pos].buffer = buffer;
         array[add_pos].buffer_size = buffer_size;
         array[add_pos].status = 1;
+        //printf("added buffer %d\n", add_pos);
     }else{
         array[add_pos].lock.unlock();
         add_pos--;
@@ -57,6 +58,7 @@ int Buffer::get(uint8_t **buffer, size_t *buffer_size){
         *buffer = array[get_pos].buffer;
         *buffer_size = array[get_pos].buffer_size;
         array[get_pos].status = 2;
+        //printf("gotten buffer %d\n", get_pos);
     }else{
         array[get_pos].lock.unlock();
         get_pos--;
@@ -73,6 +75,7 @@ int Buffer::release(){
         array[get_pos].buffer = 0;
         array[get_pos].buffer_size = 0;
         array[get_pos].status = 0;
+        //printf("release buffer %d\n", get_pos);
     }else{
         array[get_pos].lock.unlock();
         return 1;

@@ -531,8 +531,6 @@
               <df name="gl_scenes">
               </df>
             </df>
-            <df name="Progress">
-            </df>
             <df name="testmain.dir">
               <df name="gl_scenes">
               </df>
@@ -581,6 +579,8 @@
         <in>Buffer.h</in>
         <in>Image_Capture.cpp</in>
         <in>Image_Capture.h</in>
+        <in>Low_Res_Worker.cpp</in>
+        <in>Low_Res_Worker.h</in>
         <in>RaspiCLI.c</in>
         <in>RaspiCLI.h</in>
         <in>RaspiCamControl.c</in>

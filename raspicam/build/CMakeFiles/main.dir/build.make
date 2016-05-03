@@ -164,9 +164,32 @@ CMakeFiles/main.dir/Image_Capture.cpp.o.provides: CMakeFiles/main.dir/Image_Capt
 
 CMakeFiles/main.dir/Image_Capture.cpp.o.provides.build: CMakeFiles/main.dir/Image_Capture.cpp.o
 
+CMakeFiles/main.dir/Low_Res_Worker.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/Low_Res_Worker.cpp.o: ../Low_Res_Worker.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/main.dir/Low_Res_Worker.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/main.dir/Low_Res_Worker.cpp.o -c /home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.cpp
+
+CMakeFiles/main.dir/Low_Res_Worker.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/Low_Res_Worker.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.cpp > CMakeFiles/main.dir/Low_Res_Worker.cpp.i
+
+CMakeFiles/main.dir/Low_Res_Worker.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/Low_Res_Worker.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.cpp -o CMakeFiles/main.dir/Low_Res_Worker.cpp.s
+
+CMakeFiles/main.dir/Low_Res_Worker.cpp.o.requires:
+.PHONY : CMakeFiles/main.dir/Low_Res_Worker.cpp.o.requires
+
+CMakeFiles/main.dir/Low_Res_Worker.cpp.o.provides: CMakeFiles/main.dir/Low_Res_Worker.cpp.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Low_Res_Worker.cpp.o.provides.build
+.PHONY : CMakeFiles/main.dir/Low_Res_Worker.cpp.o.provides
+
+CMakeFiles/main.dir/Low_Res_Worker.cpp.o.provides.build: CMakeFiles/main.dir/Low_Res_Worker.cpp.o
+
 CMakeFiles/main.dir/Buffer.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/Buffer.cpp.o: ../Buffer.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_6)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/main.dir/Buffer.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/main.dir/Buffer.cpp.o -c /home/pi/gpu_main/cutting_board/raspicam/Buffer.cpp
 
@@ -189,7 +212,7 @@ CMakeFiles/main.dir/Buffer.cpp.o.provides.build: CMakeFiles/main.dir/Buffer.cpp.
 
 CMakeFiles/main.dir/RaspiTex.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/RaspiTex.c.o: ../RaspiTex.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/RaspiTex.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/RaspiTex.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.c
 
@@ -212,7 +235,7 @@ CMakeFiles/main.dir/RaspiTex.c.o.provides.build: CMakeFiles/main.dir/RaspiTex.c.
 
 CMakeFiles/main.dir/RaspiTexUtil.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/RaspiTexUtil.c.o: ../RaspiTexUtil.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/RaspiTexUtil.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/RaspiTexUtil.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.c
 
@@ -235,7 +258,7 @@ CMakeFiles/main.dir/RaspiTexUtil.c.o.provides.build: CMakeFiles/main.dir/RaspiTe
 
 CMakeFiles/main.dir/tga.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/tga.c.o: ../tga.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_9)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/tga.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/tga.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/tga.c
 
@@ -258,7 +281,7 @@ CMakeFiles/main.dir/tga.c.o.provides.build: CMakeFiles/main.dir/tga.c.o
 
 CMakeFiles/main.dir/gl_scenes/models.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/gl_scenes/models.c.o: ../gl_scenes/models.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/models.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/models.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.c
 
@@ -281,7 +304,7 @@ CMakeFiles/main.dir/gl_scenes/models.c.o.provides.build: CMakeFiles/main.dir/gl_
 
 CMakeFiles/main.dir/gl_scenes/mirror.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/gl_scenes/mirror.c.o: ../gl_scenes/mirror.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_11)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_12)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/mirror.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/mirror.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.c
 
@@ -304,7 +327,7 @@ CMakeFiles/main.dir/gl_scenes/mirror.c.o.provides.build: CMakeFiles/main.dir/gl_
 
 CMakeFiles/main.dir/gl_scenes/yuv.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/gl_scenes/yuv.c.o: ../gl_scenes/yuv.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_12)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_13)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/yuv.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/yuv.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.c
 
@@ -327,7 +350,7 @@ CMakeFiles/main.dir/gl_scenes/yuv.c.o.provides.build: CMakeFiles/main.dir/gl_sce
 
 CMakeFiles/main.dir/gl_scenes/sobel.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/gl_scenes/sobel.c.o: ../gl_scenes/sobel.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_13)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_14)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/sobel.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/sobel.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.c
 
@@ -350,7 +373,7 @@ CMakeFiles/main.dir/gl_scenes/sobel.c.o.provides.build: CMakeFiles/main.dir/gl_s
 
 CMakeFiles/main.dir/gl_scenes/square.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/gl_scenes/square.c.o: ../gl_scenes/square.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_14)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_15)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/square.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/square.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/square.c
 
@@ -373,7 +396,7 @@ CMakeFiles/main.dir/gl_scenes/square.c.o.provides.build: CMakeFiles/main.dir/gl_
 
 CMakeFiles/main.dir/gl_scenes/teapot.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/gl_scenes/teapot.c.o: ../gl_scenes/teapot.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_15)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_16)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/teapot.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/teapot.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.c
 
@@ -396,7 +419,7 @@ CMakeFiles/main.dir/gl_scenes/teapot.c.o.provides.build: CMakeFiles/main.dir/gl_
 
 CMakeFiles/main.dir/gl_scenes/own.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/gl_scenes/own.c.o: ../gl_scenes/own.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_16)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_17)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/own.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/own.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.c
 
@@ -424,6 +447,7 @@ main_OBJECTS = \
 "CMakeFiles/main.dir/RaspiPreview.c.o" \
 "CMakeFiles/main.dir/main.cpp.o" \
 "CMakeFiles/main.dir/Image_Capture.cpp.o" \
+"CMakeFiles/main.dir/Low_Res_Worker.cpp.o" \
 "CMakeFiles/main.dir/Buffer.cpp.o" \
 "CMakeFiles/main.dir/RaspiTex.c.o" \
 "CMakeFiles/main.dir/RaspiTexUtil.c.o" \
@@ -444,6 +468,7 @@ main: CMakeFiles/main.dir/RaspiCLI.c.o
 main: CMakeFiles/main.dir/RaspiPreview.c.o
 main: CMakeFiles/main.dir/main.cpp.o
 main: CMakeFiles/main.dir/Image_Capture.cpp.o
+main: CMakeFiles/main.dir/Low_Res_Worker.cpp.o
 main: CMakeFiles/main.dir/Buffer.cpp.o
 main: CMakeFiles/main.dir/RaspiTex.c.o
 main: CMakeFiles/main.dir/RaspiTexUtil.c.o
@@ -456,6 +481,12 @@ main: CMakeFiles/main.dir/gl_scenes/square.c.o
 main: CMakeFiles/main.dir/gl_scenes/teapot.c.o
 main: CMakeFiles/main.dir/gl_scenes/own.c.o
 main: CMakeFiles/main.dir/build.make
+main: /usr/local/lib/libopencv_core.so.3.1.0
+main: /usr/local/lib/libopencv_imgproc.so.3.1.0
+main: /usr/local/lib/libopencv_highgui.so.3.1.0
+main: /usr/local/lib/libopencv_video.so.3.1.0
+main: /usr/local/lib/libopencv_imgproc.so.3.1.0
+main: /usr/local/lib/libopencv_core.so.3.1.0
 main: CMakeFiles/main.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)
@@ -469,6 +500,7 @@ CMakeFiles/main.dir/requires: CMakeFiles/main.dir/RaspiCLI.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/RaspiPreview.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/main.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/Image_Capture.cpp.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/Low_Res_Worker.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/Buffer.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/RaspiTex.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/RaspiTexUtil.c.o.requires

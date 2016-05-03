@@ -204,6 +204,30 @@ Image_Capture.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Image_Capture.cpp.s
 .PHONY : Image_Capture.cpp.s
 
+Low_Res_Worker.o: Low_Res_Worker.cpp.o
+.PHONY : Low_Res_Worker.o
+
+# target to build an object file
+Low_Res_Worker.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Low_Res_Worker.cpp.o
+.PHONY : Low_Res_Worker.cpp.o
+
+Low_Res_Worker.i: Low_Res_Worker.cpp.i
+.PHONY : Low_Res_Worker.i
+
+# target to preprocess a source file
+Low_Res_Worker.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Low_Res_Worker.cpp.i
+.PHONY : Low_Res_Worker.cpp.i
+
+Low_Res_Worker.s: Low_Res_Worker.cpp.s
+.PHONY : Low_Res_Worker.s
+
+# target to generate assembly for a file
+Low_Res_Worker.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Low_Res_Worker.cpp.s
+.PHONY : Low_Res_Worker.cpp.s
+
 RaspiCLI.o: RaspiCLI.c.o
 .PHONY : RaspiCLI.o
 
@@ -559,6 +583,9 @@ help:
 	@echo "... Image_Capture.o"
 	@echo "... Image_Capture.i"
 	@echo "... Image_Capture.s"
+	@echo "... Low_Res_Worker.o"
+	@echo "... Low_Res_Worker.i"
+	@echo "... Low_Res_Worker.s"
 	@echo "... RaspiCLI.o"
 	@echo "... RaspiCLI.i"
 	@echo "... RaspiCLI.s"

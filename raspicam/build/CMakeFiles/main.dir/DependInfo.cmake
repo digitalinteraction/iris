@@ -23,6 +23,7 @@ set(CMAKE_C_COMPILER_ID "GNU")
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/pi/gpu_main/cutting_board/raspicam/Buffer.cpp" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/Buffer.cpp.o"
   "/home/pi/gpu_main/cutting_board/raspicam/Image_Capture.cpp" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/Image_Capture.cpp.o"
+  "/home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.cpp" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/Low_Res_Worker.cpp.o"
   "/home/pi/gpu_main/cutting_board/raspicam/main.cpp" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
@@ -41,6 +42,8 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
   "/opt/vc/include/interface/vmcs_host/linux"
   "../usr/include"
   "/opt/vc/include"
+  "/usr/local/include/opencv"
+  "/usr/local/include"
   )
 set(CMAKE_CXX_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
 set(CMAKE_Fortran_TARGET_INCLUDE_PATH ${CMAKE_C_TARGET_INCLUDE_PATH})
