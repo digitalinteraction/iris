@@ -1123,6 +1123,7 @@ CMakeFiles/main.dir/Image_Capture.cpp.o
  /home/pi/gpu_main/cutting_board/raspicam/RaspiCamControl.h
  /home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.h
  /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
+ /home/pi/gpu_main/cutting_board/raspicam/tga.h
  /opt/vc/include/EGL/egl.h
  /opt/vc/include/EGL/eglext.h
  /opt/vc/include/EGL/eglext_android.h
@@ -1135,6 +1136,7 @@ CMakeFiles/main.dir/Image_Capture.cpp.o
  /opt/vc/include/KHR/khrplatform.h
  /opt/vc/include/interface/vmcs_host/linux/vchost_config.h
  /usr/local/include/opencv/cxcore.h
+ /usr/local/include/opencv2/bgsegm.hpp
  /usr/local/include/opencv2/calib3d.hpp
  /usr/local/include/opencv2/calib3d/calib3d_c.h
  /usr/local/include/opencv2/core.hpp
@@ -1283,6 +1285,7 @@ CMakeFiles/main.dir/Low_Res_Worker.cpp.o
  /opt/vc/include/GLES/glplatform.h
  /opt/vc/include/KHR/khrplatform.h
  /usr/local/include/opencv/cxcore.h
+ /usr/local/include/opencv2/bgsegm.hpp
  /usr/local/include/opencv2/calib3d.hpp
  /usr/local/include/opencv2/calib3d/calib3d_c.h
  /usr/local/include/opencv2/core.hpp
@@ -1449,6 +1452,7 @@ CMakeFiles/main.dir/main.cpp.o
  /opt/vc/include/KHR/khrplatform.h
  /opt/vc/include/interface/vmcs_host/linux/vchost_config.h
  /usr/local/include/opencv/cxcore.h
+ /usr/local/include/opencv2/bgsegm.hpp
  /usr/local/include/opencv2/calib3d.hpp
  /usr/local/include/opencv2/calib3d/calib3d_c.h
  /usr/local/include/opencv2/core.hpp

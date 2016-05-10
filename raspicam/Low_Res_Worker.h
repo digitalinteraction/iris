@@ -21,6 +21,8 @@
 #include "opencv2/imgproc.hpp"
 #include <opencv2/highgui.hpp>
 #include <opencv2/video.hpp>
+#include <opencv2/bgsegm.hpp>
+#include "opencv2/photo.hpp"
 using namespace cv;
 
 
@@ -33,12 +35,14 @@ public:
     int counter;
 private:
     Buffer * buf;
-    void process_image(uint8_t *image, size_t image_size);
+    void process_image(uint8_t *image, size_t image_size, int light);
     Mat convert(uint8_t *image, size_t image_size);
+    int interprete_params(double mean, double sum);
     Mat mask;
     Ptr<BackgroundSubtractor> pMOG2;
-    Mat previous[10];
-    int prev_cnt;
+    Mat previous;
+    int cnt;
+    float learning;
 };
 
 #endif /* LOW_RES_WORKER_H */

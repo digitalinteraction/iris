@@ -20,6 +20,7 @@ typedef struct{
     int id;
     std::mutex lock;
     int status;
+    int light;
 } Buffer_Item;
 
 
@@ -27,8 +28,8 @@ class Buffer{
 public:
     Buffer(int size);
     ~Buffer();
-    int add(uint8_t *buffer, size_t buffer_size);
-    int get(uint8_t **buffer, size_t *buffer_size);
+    int add(uint8_t *buffer, size_t buffer_size, int light);
+    int get(uint8_t **buffer, size_t *buffer_size, int*light);
     int release();
 private:
     Buffer_Item *array;

@@ -45,6 +45,8 @@
 #include <semaphore.h>
 
 #include <wiringPi.h>
+#include "tga.h"
+#include <unistd.h>
 
 
 
@@ -96,9 +98,14 @@ Image_Capture::Image_Capture(Buffer *buffer)
     /*if (mmal_port_parameter_set_boolean(camera_video_port, MMAL_PARAMETER_CAPTURE, 1) != MMAL_SUCCESS) {
             //vcos_log_error("%s: Failed to start capture", __func__);
     }*/
-    /*if (wiringPiSetup () == -1){
+    if (wiringPiSetup () == -1){
         printf("Error in setting up wiringPi\n");
-    }*/
+    }
+    
+    pinMode (0, OUTPUT);
+    //pinMode (2, OUTPUT);
+    //pinMode (7, OUTPUT);
+    
     
     printf("Almost finshed setting up\n");
     
@@ -113,23 +120,67 @@ Image_Capture::~Image_Capture(){
 }
 
 void Image_Capture::run() {
-    time_t start = time(NULL);
-
+    int light = 0;
+    int first = 0;
     while (capturing) {
+        if(first <= 20)
+        first++;
+        
+        
         state.raspitex_state.low_buffer_request = 1;
+        if(light != 0){
+            digitalWrite (0, HIGH) ;
+            //digitalWrite (2, HIGH) ;
+            digitalWrite (7, HIGH);
+            //printf("light on\n");
+        }else{
+            //printf("light off\n");
+            digitalWrite (0, LOW) ;
+            digitalWrite (7, LOW) ;
+        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        
         raspitex_capture(&state.raspitex_state, 0, 0);
-        if(buf->add(state.raspitex_state.low_buffer, state.raspitex_state.low_buffer_size) == 0){
+        
+        //std::this_thread::sleep_for(std::chrono::milliseconds(40));
+
+        if (light != 0) {
+            //digitalWrite(0, LOW);
+            digitalWrite(0, LOW);
+            digitalWrite(7, LOW);
+        }else{
+            digitalWrite (0, LOW) ;
+            digitalWrite (7, LOW) ;
+        }
+
+        
+        /*if(first == 22 && light != 0){
+            FILE* out = fopen("light.tga", "wb");
+            write_tga(out, LOW_OUTPUT_X, LOW_OUTPUT_Y, state.raspitex_state.low_buffer, state.raspitex_state.low_buffer_size);
+            fclose(out);
+            first++;
+        }
+        
+        
+        if(first == 21 && light == 0){
+            FILE* out = fopen("nolight.tga", "wb");
+            write_tga(out, LOW_OUTPUT_X, LOW_OUTPUT_Y, state.raspitex_state.low_buffer, state.raspitex_state.low_buffer_size);
+            fclose(out);
+            first++;
+        }*/
+        
+
+        if (buf->add(state.raspitex_state.low_buffer, state.raspitex_state.low_buffer_size, light) == 0){
             //printf("succesfully added buffer %p\n", state.raspitex_state.low_buffer);
+            light = !light;
+
         }else{
             //printf("buffer full\n");
             free(state.raspitex_state.low_buffer);
         }
-    }
-    
-    printf("%.2f\n", (double) (time(NULL) - start));
-    
-    
-    //return 0;
+        
+    }    
 }
 
 int Image_Capture::get_high_res_image(){
@@ -479,10 +530,10 @@ int Image_Capture::get_high_res_image(){
    // Set up the camera_parameters to default
    raspicamcontrol_set_defaults(&state->camera_parameters);
    //TOBIAS
-   //state->camera_parameters.shutter_speed = 7000;
-   //state->camera_parameters.ISO = 100;
-   state->camera_parameters.shutter_speed = 0;
-   state->camera_parameters.ISO = 0;
+   state->camera_parameters.shutter_speed = 20000;
+   state->camera_parameters.ISO = 100;
+   //state->camera_parameters.shutter_speed = 0;
+   //state->camera_parameters.ISO = 0;
 
    // Set initial GL preview state
    raspitex_set_defaults(&state->raspitex_state);

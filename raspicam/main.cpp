@@ -14,14 +14,14 @@ int main() {
 
     cout << "OpenCV version : " << CV_VERSION << endl;
 
-    Buffer *buffer = new Buffer(32);
+    Buffer *buffer = new Buffer(8);
     Image_Capture *cap = new Image_Capture(buffer);
     Low_Res_Worker *low = new Low_Res_Worker(buffer);
     cap->capturing = 1;
     low->processing = 1;
     std::thread img_cap(&Image_Capture::run, cap);
     std::thread low_work(&Low_Res_Worker::run, low);
-    for (int i = 0; i < 60; i++) {
+    for (int i = 0; i < 3600; i++) {
         int begin = low->counter;
         std::this_thread::sleep_for(std::chrono::seconds(1));
         begin = low->counter - begin;

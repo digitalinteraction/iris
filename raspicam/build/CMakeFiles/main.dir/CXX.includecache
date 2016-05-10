@@ -687,6 +687,10 @@ semaphore.h
 -
 wiringPi.h
 -
+tga.h
+/home/pi/gpu_main/cutting_board/raspicam/tga.h
+unistd.h
+-
 
 /home/pi/gpu_main/cutting_board/raspicam/Image_Capture.h
 bcm_host.h
@@ -718,14 +722,6 @@ RaspiTex.h
 Low_Res_Worker.h
 /home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.h
 
-/home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.cpp
-Low_Res_Worker.h
-/home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.h
-RaspiTex.h
-/home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
-tga.h
-/home/pi/gpu_main/cutting_board/raspicam/tga.h
-
 /home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.h
 Buffer.h
 /home/pi/gpu_main/cutting_board/raspicam/Buffer.h
@@ -741,6 +737,10 @@ opencv2/highgui.hpp
 -
 opencv2/video.hpp
 -
+opencv2/bgsegm.hpp
+-
+opencv2/photo.hpp
+/home/pi/gpu_main/cutting_board/raspicam/opencv2/photo.hpp
 
 /home/pi/gpu_main/cutting_board/raspicam/RaspiCLI.h
 
@@ -763,18 +763,6 @@ interface/khronos/include/EGL/eglext_brcm.h
 /home/pi/gpu_main/cutting_board/raspicam/interface/khronos/include/EGL/eglext_brcm.h
 interface/mmal/mmal.h
 /home/pi/gpu_main/cutting_board/raspicam/interface/mmal/mmal.h
-
-/home/pi/gpu_main/cutting_board/raspicam/main.cpp
-iostream
--
-thread
--
-chrono
--
-Image_Capture.h
-/home/pi/gpu_main/cutting_board/raspicam/Image_Capture.h
-Low_Res_Worker.h
-/home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.h
 
 /home/pi/gpu_main/cutting_board/raspicam/tga.h
 stdlib.h
@@ -849,6 +837,10 @@ interface/vcos/vcos.h
 /usr/local/include/opencv/cxcore.h
 opencv2/core/core_c.h
 /usr/local/include/opencv/opencv2/core/core_c.h
+
+/usr/local/include/opencv2/bgsegm.hpp
+opencv2/video.hpp
+/usr/local/include/opencv2/opencv2/video.hpp
 
 /usr/local/include/opencv2/calib3d.hpp
 opencv2/core.hpp

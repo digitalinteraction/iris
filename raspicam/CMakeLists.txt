@@ -20,7 +20,8 @@ include_directories(usr/include)
 include_directories(/opt/vc/include)
 link_directories(/opt/vc/lib)
 
-find_package(OpenCV REQUIRED core imgproc highgui video)
+#find_package(OpenCV REQUIRED core imgproc highgui video)
+find_package(OpenCV REQUIRED)
 
 set (GL_SCENE_SOURCES
    gl_scenes/models.c

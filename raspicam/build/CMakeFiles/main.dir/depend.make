@@ -1122,6 +1122,7 @@ CMakeFiles/main.dir/Image_Capture.cpp.o: ../RaspiCLI.h
 CMakeFiles/main.dir/Image_Capture.cpp.o: ../RaspiCamControl.h
 CMakeFiles/main.dir/Image_Capture.cpp.o: ../RaspiPreview.h
 CMakeFiles/main.dir/Image_Capture.cpp.o: ../RaspiTex.h
+CMakeFiles/main.dir/Image_Capture.cpp.o: ../tga.h
 CMakeFiles/main.dir/Image_Capture.cpp.o: /opt/vc/include/EGL/egl.h
 CMakeFiles/main.dir/Image_Capture.cpp.o: /opt/vc/include/EGL/eglext.h
 CMakeFiles/main.dir/Image_Capture.cpp.o: /opt/vc/include/EGL/eglext_android.h
@@ -1134,6 +1135,7 @@ CMakeFiles/main.dir/Image_Capture.cpp.o: /opt/vc/include/GLES/glplatform.h
 CMakeFiles/main.dir/Image_Capture.cpp.o: /opt/vc/include/KHR/khrplatform.h
 CMakeFiles/main.dir/Image_Capture.cpp.o: /opt/vc/include/interface/vmcs_host/linux/vchost_config.h
 CMakeFiles/main.dir/Image_Capture.cpp.o: /usr/local/include/opencv/cxcore.h
+CMakeFiles/main.dir/Image_Capture.cpp.o: /usr/local/include/opencv2/bgsegm.hpp
 CMakeFiles/main.dir/Image_Capture.cpp.o: /usr/local/include/opencv2/calib3d.hpp
 CMakeFiles/main.dir/Image_Capture.cpp.o: /usr/local/include/opencv2/calib3d/calib3d_c.h
 CMakeFiles/main.dir/Image_Capture.cpp.o: /usr/local/include/opencv2/core.hpp
@@ -1282,6 +1284,7 @@ CMakeFiles/main.dir/Low_Res_Worker.cpp.o: /opt/vc/include/GLES/glext.h
 CMakeFiles/main.dir/Low_Res_Worker.cpp.o: /opt/vc/include/GLES/glplatform.h
 CMakeFiles/main.dir/Low_Res_Worker.cpp.o: /opt/vc/include/KHR/khrplatform.h
 CMakeFiles/main.dir/Low_Res_Worker.cpp.o: /usr/local/include/opencv/cxcore.h
+CMakeFiles/main.dir/Low_Res_Worker.cpp.o: /usr/local/include/opencv2/bgsegm.hpp
 CMakeFiles/main.dir/Low_Res_Worker.cpp.o: /usr/local/include/opencv2/calib3d.hpp
 CMakeFiles/main.dir/Low_Res_Worker.cpp.o: /usr/local/include/opencv2/calib3d/calib3d_c.h
 CMakeFiles/main.dir/Low_Res_Worker.cpp.o: /usr/local/include/opencv2/core.hpp
@@ -1448,6 +1451,7 @@ CMakeFiles/main.dir/main.cpp.o: /opt/vc/include/GLES/glplatform.h
 CMakeFiles/main.dir/main.cpp.o: /opt/vc/include/KHR/khrplatform.h
 CMakeFiles/main.dir/main.cpp.o: /opt/vc/include/interface/vmcs_host/linux/vchost_config.h
 CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv/cxcore.h
+CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/bgsegm.hpp
 CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/calib3d.hpp
 CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/calib3d/calib3d_c.h
 CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/core.hpp
