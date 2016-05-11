@@ -554,22 +554,28 @@
           </df>
         </df>
         <df name="gl_scenes">
+          <df name="old">
+            <in>mirror.c</in>
+            <in>mirror.h</in>
+            <in>sobel.c</in>
+            <in>sobel.h</in>
+            <in>sobel_alt.c</in>
+            <in>square.c</in>
+            <in>square.h</in>
+            <in>teapot.c</in>
+            <in>teapot.h</in>
+            <in>yuv.c</in>
+            <in>yuv.h</in>
+          </df>
           <in>cube_texture_and_coords.h</in>
           <in>mirror.c</in>
-          <in>mirror.h</in>
           <in>models.c</in>
-          <in>models.h</in>
           <in>own.c</in>
           <in>own.h</in>
           <in>sobel.c</in>
-          <in>sobel.h</in>
-          <in>sobel_alt.c</in>
           <in>square.c</in>
-          <in>square.h</in>
           <in>teapot.c</in>
-          <in>teapot.h</in>
           <in>yuv.c</in>
-          <in>yuv.h</in>
         </df>
         <df name="imv_examples">
           <in>imv2pgm.c</in>

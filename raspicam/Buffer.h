@@ -30,6 +30,7 @@ public:
     ~Buffer();
     int add(uint8_t *buffer, size_t buffer_size, int light);
     int get(uint8_t **buffer, size_t *buffer_size, int*light);
+    int free_space();
     int release();
 private:
     Buffer_Item *array;

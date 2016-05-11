@@ -61,10 +61,11 @@ static void default_status(RASPISTILL_STATE *state);
 static void * begin_capturing(void *queue);*/
 
 
-Image_Capture::Image_Capture(Buffer *buffer)
+Image_Capture::Image_Capture(Buffer *buffer, Low_Res_Worker * work)
 {
     
     buf = buffer;
+    worker = work;
 
     //RASPISTILL_STATE state;
     MMAL_STATUS_T status = MMAL_SUCCESS;
@@ -103,9 +104,12 @@ Image_Capture::Image_Capture(Buffer *buffer)
     }
     
     pinMode (0, OUTPUT);
-    //pinMode (2, OUTPUT);
-    //pinMode (7, OUTPUT);
+    pinMode (2, OUTPUT);
+    pinMode (7, OUTPUT);
     
+    digitalWrite(0, LOW);
+    digitalWrite(2, LOW);
+    digitalWrite(7, LOW);
     
     printf("Almost finshed setting up\n");
     
@@ -116,75 +120,66 @@ Image_Capture::Image_Capture(Buffer *buffer)
 
 
 Image_Capture::~Image_Capture(){
+    digitalWrite(0, LOW);
+    digitalWrite(2, LOW);
+    digitalWrite(7, LOW);
     printf("Shutting capturing down\n");
 }
 
 void Image_Capture::run() {
-    int light = 0;
-    int first = 0;
+    printf("starting up!\n");fflush(stdout);
+    RASPITEX_PATCH ** patches;
+    patches = (RASPITEX_PATCH **) calloc(sizeof(RASPITEX_PATCH *), 1);
+    patches[0] = (RASPITEX_PATCH *)calloc(sizeof(RASPITEX_PATCH), 1);
+    patches[0]->height = LOW_OUTPUT_X;
+    patches[0]->width = LOW_OUTPUT_Y;
+    printf("start running %p %d!\n", patches, 1);fflush(stdout);
+    uint8_t size_patches = 1;
+    
     while (capturing) {
-        if(first <= 20)
-        first++;
-        
-        
-        state.raspitex_state.low_buffer_request = 1;
-        if(light != 0){
-            digitalWrite (0, HIGH) ;
-            //digitalWrite (2, HIGH) ;
-            digitalWrite (7, HIGH);
-            //printf("light on\n");
-        }else{
-            //printf("light off\n");
-            digitalWrite (0, LOW) ;
-            digitalWrite (7, LOW) ;
+        if (buf->free_space() == 0) {
+
+
+            uint8_t ret = raspitex_capture(&state.raspitex_state, patches, size_patches);
+
+            //TODO no need for buffer at this place!
+            if (buf->add(patches[0]->buffer, patches[0]->size, 0) == 0) {
+                //printf("succesfully added buffer %p\n", state.raspitex_state.low_buffer);
+            } else {
+                //printf("buffer full\n");
+                free(patches[0]->buffer);
+            }
+
+
         }
-
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-        
-        raspitex_capture(&state.raspitex_state, 0, 0);
-        
-        //std::this_thread::sleep_for(std::chrono::milliseconds(40));
-
-        if (light != 0) {
-            //digitalWrite(0, LOW);
-            digitalWrite(0, LOW);
-            digitalWrite(7, LOW);
-        }else{
-            digitalWrite (0, LOW) ;
-            digitalWrite (7, LOW) ;
+        if (worker->requests_pending > 0) {
+            
+            //TODO own function, dont forget to free them again...
+            uint8_t req = worker->requests_pending;
+            RASPITEX_PATCH ** temp = (RASPITEX_PATCH **) calloc(sizeof(RASPITEX_PATCH *)*(req+1), 1);
+            temp[0] = patches[0];
+            free(patches);
+            patches = temp;
+            
+            for(int i=0;i<req;i++){
+                patches[i+1] = (RASPITEX_PATCH *)calloc(sizeof(RASPITEX_PATCH), 1);
+                patches[i+1]->x = worker->requests[i][0];
+                patches[i+1]->y = worker->requests[i][1];
+                patches[i+1]->width = worker->requests[i][2];
+                patches[i+1]->height = worker->requests[i][3];
+            }
+            
+            
+            worker->requests_pending = 0;
         }
-
-        
-        /*if(first == 22 && light != 0){
-            FILE* out = fopen("light.tga", "wb");
-            write_tga(out, LOW_OUTPUT_X, LOW_OUTPUT_Y, state.raspitex_state.low_buffer, state.raspitex_state.low_buffer_size);
-            fclose(out);
-            first++;
-        }
-        
-        
-        if(first == 21 && light == 0){
-            FILE* out = fopen("nolight.tga", "wb");
-            write_tga(out, LOW_OUTPUT_X, LOW_OUTPUT_Y, state.raspitex_state.low_buffer, state.raspitex_state.low_buffer_size);
-            fclose(out);
-            first++;
-        }*/
-        
-
-        if (buf->add(state.raspitex_state.low_buffer, state.raspitex_state.low_buffer_size, light) == 0){
-            //printf("succesfully added buffer %p\n", state.raspitex_state.low_buffer);
-            light = !light;
-
-        }else{
-            //printf("buffer full\n");
-            free(state.raspitex_state.low_buffer);
-        }
-        
-    }    
+    }
+    digitalWrite(0, LOW);
+    digitalWrite(2, LOW);
+    digitalWrite(7, LOW);
 }
 
 int Image_Capture::get_high_res_image(){
-    state.raspitex_state.patches[0].active = 1;
+   /*state.raspitex_state.patches[0].active = 1;
     state.raspitex_state.patches[0].height = 300;
     state.raspitex_state.patches[0].width = 300;
     state.raspitex_state.patches[0].x = 200;
@@ -198,7 +193,7 @@ int Image_Capture::get_high_res_image(){
     
     state.raspitex_state.low_buffer_request = 1;
     
-    raspitex_capture(&state.raspitex_state, 1, 1);
+    raspitex_capture(&state.raspitex_state, 1, 1);*/
 }
 
  MMAL_STATUS_T Image_Capture::create_camera_component(RASPISTILL_STATE *state)

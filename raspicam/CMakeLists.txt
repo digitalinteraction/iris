@@ -24,12 +24,6 @@ link_directories(/opt/vc/lib)
 find_package(OpenCV REQUIRED)
 
 set (GL_SCENE_SOURCES
-   gl_scenes/models.c
-   gl_scenes/mirror.c
-   gl_scenes/yuv.c
-   gl_scenes/sobel.c
-   gl_scenes/square.c
-   gl_scenes/teapot.c
    gl_scenes/own.c)
 
 set (COMMON_SOURCES

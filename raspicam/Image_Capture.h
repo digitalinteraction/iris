@@ -89,7 +89,7 @@ typedef struct
 
 class Image_Capture{
 public:
-    Image_Capture(Buffer *buffer);
+    Image_Capture(Buffer *buffer, Low_Res_Worker * work);
     ~Image_Capture();
     void run();
     int get_high_res_image();
@@ -101,4 +101,5 @@ private:
     static void * begin_capturing(void *queue);
     RASPISTILL_STATE state;
     Buffer *buf;
+    Low_Res_Worker * worker;
 };

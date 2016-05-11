@@ -10,13 +10,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/pi/gpu_main/cutting_board/raspicam/RaspiPreview.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/RaspiPreview.c.o"
   "/home/pi/gpu_main/cutting_board/raspicam/RaspiTex.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/RaspiTex.c.o"
   "/home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/RaspiTexUtil.c.o"
-  "/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/gl_scenes/mirror.c.o"
-  "/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/gl_scenes/models.c.o"
   "/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/gl_scenes/own.c.o"
-  "/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/gl_scenes/sobel.c.o"
-  "/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/square.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/gl_scenes/square.c.o"
-  "/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/gl_scenes/teapot.c.o"
-  "/home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/gl_scenes/yuv.c.o"
   "/home/pi/gpu_main/cutting_board/raspicam/tga.c" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/tga.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")

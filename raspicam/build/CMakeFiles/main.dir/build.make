@@ -279,147 +279,9 @@ CMakeFiles/main.dir/tga.c.o.provides: CMakeFiles/main.dir/tga.c.o.requires
 
 CMakeFiles/main.dir/tga.c.o.provides.build: CMakeFiles/main.dir/tga.c.o
 
-CMakeFiles/main.dir/gl_scenes/models.c.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/gl_scenes/models.c.o: ../gl_scenes/models.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_11)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/models.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/models.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.c
-
-CMakeFiles/main.dir/gl_scenes/models.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/gl_scenes/models.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.c > CMakeFiles/main.dir/gl_scenes/models.c.i
-
-CMakeFiles/main.dir/gl_scenes/models.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/gl_scenes/models.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/models.c -o CMakeFiles/main.dir/gl_scenes/models.c.s
-
-CMakeFiles/main.dir/gl_scenes/models.c.o.requires:
-.PHONY : CMakeFiles/main.dir/gl_scenes/models.c.o.requires
-
-CMakeFiles/main.dir/gl_scenes/models.c.o.provides: CMakeFiles/main.dir/gl_scenes/models.c.o.requires
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/models.c.o.provides.build
-.PHONY : CMakeFiles/main.dir/gl_scenes/models.c.o.provides
-
-CMakeFiles/main.dir/gl_scenes/models.c.o.provides.build: CMakeFiles/main.dir/gl_scenes/models.c.o
-
-CMakeFiles/main.dir/gl_scenes/mirror.c.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/gl_scenes/mirror.c.o: ../gl_scenes/mirror.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_12)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/mirror.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/mirror.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.c
-
-CMakeFiles/main.dir/gl_scenes/mirror.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/gl_scenes/mirror.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.c > CMakeFiles/main.dir/gl_scenes/mirror.c.i
-
-CMakeFiles/main.dir/gl_scenes/mirror.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/gl_scenes/mirror.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/mirror.c -o CMakeFiles/main.dir/gl_scenes/mirror.c.s
-
-CMakeFiles/main.dir/gl_scenes/mirror.c.o.requires:
-.PHONY : CMakeFiles/main.dir/gl_scenes/mirror.c.o.requires
-
-CMakeFiles/main.dir/gl_scenes/mirror.c.o.provides: CMakeFiles/main.dir/gl_scenes/mirror.c.o.requires
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/mirror.c.o.provides.build
-.PHONY : CMakeFiles/main.dir/gl_scenes/mirror.c.o.provides
-
-CMakeFiles/main.dir/gl_scenes/mirror.c.o.provides.build: CMakeFiles/main.dir/gl_scenes/mirror.c.o
-
-CMakeFiles/main.dir/gl_scenes/yuv.c.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/gl_scenes/yuv.c.o: ../gl_scenes/yuv.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_13)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/yuv.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/yuv.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.c
-
-CMakeFiles/main.dir/gl_scenes/yuv.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/gl_scenes/yuv.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.c > CMakeFiles/main.dir/gl_scenes/yuv.c.i
-
-CMakeFiles/main.dir/gl_scenes/yuv.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/gl_scenes/yuv.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/yuv.c -o CMakeFiles/main.dir/gl_scenes/yuv.c.s
-
-CMakeFiles/main.dir/gl_scenes/yuv.c.o.requires:
-.PHONY : CMakeFiles/main.dir/gl_scenes/yuv.c.o.requires
-
-CMakeFiles/main.dir/gl_scenes/yuv.c.o.provides: CMakeFiles/main.dir/gl_scenes/yuv.c.o.requires
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/yuv.c.o.provides.build
-.PHONY : CMakeFiles/main.dir/gl_scenes/yuv.c.o.provides
-
-CMakeFiles/main.dir/gl_scenes/yuv.c.o.provides.build: CMakeFiles/main.dir/gl_scenes/yuv.c.o
-
-CMakeFiles/main.dir/gl_scenes/sobel.c.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/gl_scenes/sobel.c.o: ../gl_scenes/sobel.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_14)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/sobel.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/sobel.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.c
-
-CMakeFiles/main.dir/gl_scenes/sobel.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/gl_scenes/sobel.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.c > CMakeFiles/main.dir/gl_scenes/sobel.c.i
-
-CMakeFiles/main.dir/gl_scenes/sobel.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/gl_scenes/sobel.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/sobel.c -o CMakeFiles/main.dir/gl_scenes/sobel.c.s
-
-CMakeFiles/main.dir/gl_scenes/sobel.c.o.requires:
-.PHONY : CMakeFiles/main.dir/gl_scenes/sobel.c.o.requires
-
-CMakeFiles/main.dir/gl_scenes/sobel.c.o.provides: CMakeFiles/main.dir/gl_scenes/sobel.c.o.requires
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/sobel.c.o.provides.build
-.PHONY : CMakeFiles/main.dir/gl_scenes/sobel.c.o.provides
-
-CMakeFiles/main.dir/gl_scenes/sobel.c.o.provides.build: CMakeFiles/main.dir/gl_scenes/sobel.c.o
-
-CMakeFiles/main.dir/gl_scenes/square.c.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/gl_scenes/square.c.o: ../gl_scenes/square.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_15)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/square.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/square.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/square.c
-
-CMakeFiles/main.dir/gl_scenes/square.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/gl_scenes/square.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/square.c > CMakeFiles/main.dir/gl_scenes/square.c.i
-
-CMakeFiles/main.dir/gl_scenes/square.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/gl_scenes/square.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/square.c -o CMakeFiles/main.dir/gl_scenes/square.c.s
-
-CMakeFiles/main.dir/gl_scenes/square.c.o.requires:
-.PHONY : CMakeFiles/main.dir/gl_scenes/square.c.o.requires
-
-CMakeFiles/main.dir/gl_scenes/square.c.o.provides: CMakeFiles/main.dir/gl_scenes/square.c.o.requires
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/square.c.o.provides.build
-.PHONY : CMakeFiles/main.dir/gl_scenes/square.c.o.provides
-
-CMakeFiles/main.dir/gl_scenes/square.c.o.provides.build: CMakeFiles/main.dir/gl_scenes/square.c.o
-
-CMakeFiles/main.dir/gl_scenes/teapot.c.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/gl_scenes/teapot.c.o: ../gl_scenes/teapot.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_16)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/teapot.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/teapot.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.c
-
-CMakeFiles/main.dir/gl_scenes/teapot.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/main.dir/gl_scenes/teapot.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.c > CMakeFiles/main.dir/gl_scenes/teapot.c.i
-
-CMakeFiles/main.dir/gl_scenes/teapot.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/main.dir/gl_scenes/teapot.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/teapot.c -o CMakeFiles/main.dir/gl_scenes/teapot.c.s
-
-CMakeFiles/main.dir/gl_scenes/teapot.c.o.requires:
-.PHONY : CMakeFiles/main.dir/gl_scenes/teapot.c.o.requires
-
-CMakeFiles/main.dir/gl_scenes/teapot.c.o.provides: CMakeFiles/main.dir/gl_scenes/teapot.c.o.requires
-	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/gl_scenes/teapot.c.o.provides.build
-.PHONY : CMakeFiles/main.dir/gl_scenes/teapot.c.o.provides
-
-CMakeFiles/main.dir/gl_scenes/teapot.c.o.provides.build: CMakeFiles/main.dir/gl_scenes/teapot.c.o
-
 CMakeFiles/main.dir/gl_scenes/own.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/gl_scenes/own.c.o: ../gl_scenes/own.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_17)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/own.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/own.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.c
 
@@ -452,12 +314,6 @@ main_OBJECTS = \
 "CMakeFiles/main.dir/RaspiTex.c.o" \
 "CMakeFiles/main.dir/RaspiTexUtil.c.o" \
 "CMakeFiles/main.dir/tga.c.o" \
-"CMakeFiles/main.dir/gl_scenes/models.c.o" \
-"CMakeFiles/main.dir/gl_scenes/mirror.c.o" \
-"CMakeFiles/main.dir/gl_scenes/yuv.c.o" \
-"CMakeFiles/main.dir/gl_scenes/sobel.c.o" \
-"CMakeFiles/main.dir/gl_scenes/square.c.o" \
-"CMakeFiles/main.dir/gl_scenes/teapot.c.o" \
 "CMakeFiles/main.dir/gl_scenes/own.c.o"
 
 # External object files for target main
@@ -473,12 +329,6 @@ main: CMakeFiles/main.dir/Buffer.cpp.o
 main: CMakeFiles/main.dir/RaspiTex.c.o
 main: CMakeFiles/main.dir/RaspiTexUtil.c.o
 main: CMakeFiles/main.dir/tga.c.o
-main: CMakeFiles/main.dir/gl_scenes/models.c.o
-main: CMakeFiles/main.dir/gl_scenes/mirror.c.o
-main: CMakeFiles/main.dir/gl_scenes/yuv.c.o
-main: CMakeFiles/main.dir/gl_scenes/sobel.c.o
-main: CMakeFiles/main.dir/gl_scenes/square.c.o
-main: CMakeFiles/main.dir/gl_scenes/teapot.c.o
 main: CMakeFiles/main.dir/gl_scenes/own.c.o
 main: CMakeFiles/main.dir/build.make
 main: /usr/local/lib/libopencv_xphoto.so.3.1.0
@@ -557,12 +407,6 @@ CMakeFiles/main.dir/requires: CMakeFiles/main.dir/Buffer.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/RaspiTex.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/RaspiTexUtil.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/tga.c.o.requires
-CMakeFiles/main.dir/requires: CMakeFiles/main.dir/gl_scenes/models.c.o.requires
-CMakeFiles/main.dir/requires: CMakeFiles/main.dir/gl_scenes/mirror.c.o.requires
-CMakeFiles/main.dir/requires: CMakeFiles/main.dir/gl_scenes/yuv.c.o.requires
-CMakeFiles/main.dir/requires: CMakeFiles/main.dir/gl_scenes/sobel.c.o.requires
-CMakeFiles/main.dir/requires: CMakeFiles/main.dir/gl_scenes/square.c.o.requires
-CMakeFiles/main.dir/requires: CMakeFiles/main.dir/gl_scenes/teapot.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/gl_scenes/own.c.o.requires
 .PHONY : CMakeFiles/main.dir/requires
 

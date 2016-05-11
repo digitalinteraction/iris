@@ -26,6 +26,7 @@ Low_Res_Worker::Low_Res_Worker(Buffer *buffer) {
     pMOG2 = createBackgroundSubtractorMOG2(100, 16, false);
     cnt = 0;
     learning = 0.05;
+    previous = Mat::zeros(LOW_OUTPUT_Y, LOW_OUTPUT_X, CV_8UC4);
     //pMOG2 = bgsegm::createBackgroundSubtractorGMG();
 }
 
@@ -54,79 +55,65 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size, int light)
     //Mat is in format BGRA
     Mat img = convert(image, image_size);
     if (img.empty() == 0) {
-        /* pMOG2->apply(img, mask, learning);
-            
-            cnt++;
-            if(cnt == 60){
-                //learning = 0;
-                printf("Learning Phase done\n");
-                learning = std::numeric_limits< double >::min();
-            }*/
-        if(light == 0){
-           
-            previous = img.clone();
-        }else{
-            if(previous.empty() == 0){
-                absdiff(img, previous, mask);
-            }
-            
-        }
-                
-        /*previous[prev_cnt] = mask.clone();
-        prev_cnt++;
-        if(prev_cnt == 10) prev_cnt = 0;
-        
-        double sum =0;
-        for(int i=0;i<10;i++){
-            if(!previous[i].empty()){
-                //absdiff(previous[i], mask, out);
-                sum += mean(previous[i] - mask)[0];
-                //s += mean(out)[0];
-            }
-        }
-        
-        double p = mean(mask)[0];
-        //interprete_params(p, sum);*/
-        /////////////////////////////////////////////////////////////
-        //Mat output;
-        
-        
-        //int morph_size = 1;
-        //Mat element = getStructuringElement( 2, Size( 2*morph_size + 1, 2*morph_size+1 ), Point( morph_size, morph_size ) );
-        //morphologyEx(mask, output, 2, element);
-        
-        //fastNlMeansDenoising(mask, output, 3, 3, 5);
-        
-        
-        
-        /*vector<vector<Point> > contours;
-        vector<Vec4i> hierarchy;
-        //Canny(mask, canny_output, 100, 200, 3);
-        findContours(mask, contours, hierarchy, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
-        RNG rng(12345);
 
+        pMOG2->apply(img, mask, learning);
+        cnt++;
+        if (cnt == 60) {
+            printf("Learning Phase done\n");
+            learning = std::numeric_limits< double >::min();
+        }
         
-        Mat drawing = Mat::zeros(mask.size(), CV_8UC3);
+        Mat kernel = Mat::ones(3, 3, CV_8U);
+        Mat cleaned;
+        morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
+        
+        vector<vector<Point> > contours;
+        RNG rng(12345);
+        findContours(cleaned, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         for (int i = 0; i < contours.size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-            drawContours(drawing, contours, i, color, 2, 8, hierarchy, 0, Point());
+            drawContours(drawing, contours, i, color, 2);
         }
-
-        /// Show in a window
-        namedWindow("Contours", CV_WINDOW_AUTOSIZE);
-        imshow("Contours", drawing);*/
-        ///////////////////////////////////////////////////////////////
-        if(mask.empty() == 0 && light != 1){
-            //Mat greyMat;
-            //cvtColor(mask, greyMat, CV_BGR2GRAY);
-            //greyMat *= 20;
-            mask *= 10;
-            imshow("Background Separator", mask);
-            waitKey(30);
-        }
-        //std::this_thread::sleep_for(std::chrono::seconds(1));
-
         
+        int cnt = 0;
+        if(contours.size() > 0 && contours.size() < 10){
+            for(int i = 0;i< contours.size();i++){
+                int xmin = contours[i][0].x;
+                int ymin = contours[i][0].y;
+                int xmax = contours[i][0].x;
+                int ymax = contours[i][0].y;
+                for(int j=0;j<contours[i].size();j++){
+                    if(contours[i][j].x < xmin){
+                        xmin = contours[i][j].x;
+                    }
+                    if(contours[i][j].x > xmax){
+                        xmax = contours[i][j].x;
+                    }
+                    if(contours[i][j].y < ymin){
+                        ymin = contours[i][j].y;
+                    }
+                    if(contours[i][j].y > ymax){
+                        ymax = contours[i][j].y;
+                    }
+                }
+                if((xmax-xmin) > 20 && (ymax - ymin) > 20){
+                    requests[cnt][0] = xmin;
+                    requests[cnt][1] = ymin;
+                    requests[cnt][2] = xmax;
+                    requests[cnt][3] = ymax;
+                    cnt++;
+                }
+                //printf("Quadrant: (%d %d), (%d %d)\n", xmin, ymin, xmax, ymax);
+            }
+        }
+        if(cnt > 0){
+            requests_pending = cnt;
+        }
+        
+        ///////////////////////////////////////////////////////////////
+        imshow("Background Separator", drawing);
+        waitKey(30);
     } else {
         printf("Failed to convert camera image to Mat\n");
     }

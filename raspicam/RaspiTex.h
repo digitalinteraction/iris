@@ -48,8 +48,8 @@ extern "C"{
 #define UNDISTORT_Y 1458
 #define HIGH_OUTPUT_X 1944
 #define HIGH_OUTPUT_Y 1458
-#define LOW_OUTPUT_X 256//128//400//972
-#define LOW_OUTPUT_Y 192//96//300//729
+#define LOW_OUTPUT_X 128//256//128//400//972
+#define LOW_OUTPUT_Y 96//192//96//300//729
     
 //0: IR
 //2: UV
@@ -68,6 +68,7 @@ typedef enum {
 
 struct RASPITEX_STATE;
 
+//select is 0 for low framebuffer will return current framebuffer in fb, else selection is 1 and fb must be set
 typedef struct RASPITEX_PATCH
 {
      uint8_t *buffer;
@@ -76,8 +77,20 @@ typedef struct RASPITEX_PATCH
      int32_t y;
      int32_t width;
      int32_t height;
-     uint8_t active;
+     int8_t active;
+     uint8_t fb;
+     uint8_t token;
+     uint8_t select;
 } RASPITEX_PATCH;
+
+typedef struct RASPITEX_CAPTURE
+{
+   /// Wait for previous capture to complete
+   VCOS_SEMAPHORE_T start_sem;
+
+   /// Posted once the capture is complete
+   VCOS_SEMAPHORE_T completed_sem;
+} RASPITEX_CAPTURE;
 
 typedef struct RASPITEX_SCENE_OPS
 {
@@ -113,7 +126,7 @@ typedef struct RASPITEX_SCENE_OPS
    /// Allocates a buffer and copies the pixels from the current
    /// frame-buffer into it.
    int (*capture)(struct RASPITEX_STATE *state,
-         uint8_t nr);
+         RASPITEX_PATCH *patch);
 
    /// Creates EGL surface for native window
    void (*gl_term)(struct RASPITEX_STATE *state);
@@ -124,27 +137,6 @@ typedef struct RASPITEX_SCENE_OPS
    /// Called when the scene is unloaded
    void (*close)(struct RASPITEX_STATE *state);
 } RASPITEX_SCENE_OPS;
-
-typedef struct RASPITEX_CAPTURE
-{
-   /// Wait for previous capture to complete
-   VCOS_SEMAPHORE_T start_sem;
-
-   /// Posted once the capture is complete
-   VCOS_SEMAPHORE_T completed_sem;
-
-   /// The RGB capture buffer
-   uint8_t *buffer;
-   uint8_t *buffer_low;
-
-   /// Size of the captured buffer in bytes
-   size_t size;
-   size_t size_low;
-
-   /// Frame-buffer capture has been requested. Could use
-   /// a queue instead here to allow multiple capture requests.
-   int request;
-} RASPITEX_CAPTURE;
 
 /**
  * Contains the internal state and configuration for the GL rendered
@@ -161,16 +153,16 @@ typedef struct RASPITEX_STATE
    uint32_t preview_stop;              /// If zero the worker can continue
 
    /* Copy of preview window params */
-   int32_t preview_x;                  /// x-offset of preview window
-   int32_t preview_y;                  /// y-offset of preview window
-   int32_t preview_width;              /// preview y-plane width in pixels
-   int32_t preview_height;             /// preview y-plane height in pixels
+   uint32_t preview_x;                  /// x-offset of preview window
+   uint32_t preview_y;                  /// y-offset of preview window
+   uint32_t preview_width;              /// preview y-plane width in pixels
+   uint32_t preview_height;             /// preview y-plane height in pixels
 
    /* Display rectangle for the native window */
-   int32_t x;                          /// x-offset in pixels
-   int32_t y;                          /// y-offset in pixels
-   int32_t width;                      /// width in pixels
-   int32_t height;                     /// height in pixels
+   uint32_t x;                          /// x-offset in pixels
+   uint32_t y;                          /// y-offset in pixels
+   uint32_t width;                      /// width in pixels
+   uint32_t height;                     /// height in pixels
    int opacity;                        /// Alpha value for display element
    int gl_win_defined;                 /// Use rect from --glwin instead of preview
 
@@ -191,13 +183,14 @@ typedef struct RASPITEX_STATE
    GLuint framebuffer_low;
    GLuint renderTexture_high;
    GLuint renderTexture_low;
-   unsigned char *low_undist_buffer;
    
-   RASPITEX_PATCH patches[10];
-   //size_t patch_size;
-   uint8_t *low_buffer;
-   size_t low_buffer_size;
-   uint8_t low_buffer_request;
+   GLuint fb_high_end[3];
+   GLuint render_high_end[3];
+   uint8_t curr_pos_fb;
+   uint8_t valid_token[3];
+      
+   RASPITEX_PATCH **patches;
+   int8_t patch_size;
    
    EGLImageKHR undist_img;            /// EGL image for Y plane texture
 
@@ -231,7 +224,7 @@ MMAL_STATUS_T raspitex_configure_preview_port(RASPITEX_STATE *state,
 void raspitex_display_help();
 int raspitex_parse_cmdline(RASPITEX_STATE *state,
       const char *arg1, const char *arg2);
-int raspitex_capture(RASPITEX_STATE *state, int low, int write);
+int raspitex_capture(RASPITEX_STATE *state, RASPITEX_PATCH ** pts, int8_t size);
 
 #endif /* RASPITEX_H_ */
 #ifdef __cplusplus

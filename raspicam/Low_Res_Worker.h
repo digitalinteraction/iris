@@ -23,6 +23,8 @@
 #include <opencv2/video.hpp>
 #include <opencv2/bgsegm.hpp>
 #include "opencv2/photo.hpp"
+#include <opencv2/features2d.hpp>
+
 using namespace cv;
 
 
@@ -33,6 +35,8 @@ public:
     void run();
     int processing;
     int counter;
+    int requests_pending;
+    int requests[10][4];
 private:
     Buffer * buf;
     void process_image(uint8_t *image, size_t image_size, int light);

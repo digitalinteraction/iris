@@ -48,6 +48,19 @@ int Buffer::add(uint8_t *buffer, size_t buffer_size, int light){
     return 0;
 }
 
+int Buffer::free_space(){
+    int temp_pos = add_pos+1;
+    if(temp_pos == size){
+        temp_pos = 0;
+    }
+    
+    if(array[temp_pos].status == 0){
+        return 0;
+    }
+    
+    return 1;
+}
+
 int Buffer::get(uint8_t **buffer, size_t *buffer_size, int *light){
     get_pos++;
     if(get_pos == size){

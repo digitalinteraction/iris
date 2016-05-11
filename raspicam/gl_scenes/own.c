@@ -156,6 +156,26 @@ static int own_init(RASPITEX_STATE *state)
     GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
     GLCHK(glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,state->renderTexture_low,0));
 
+    int i;
+    for (i = 0; i < 3; i++) {
+        printf("generating framebuffer %d\n", i);
+        //generate framebuffer high
+        GLCHK(glGenFramebuffers(1, &state->fb_high_end[i]));
+        GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->fb_high_end[i]));
+
+        printf("generating texture %d\n", i);
+        //configure texture in framebuffer
+        GLCHK(glGenTextures(1, &state->render_high_end[i]));
+        GLCHK(glBindTexture(GL_TEXTURE_2D, state->render_high_end[i]));
+        GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, HIGH_OUTPUT_X, HIGH_OUTPUT_Y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0));
+        GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
+        GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
+        GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+        GLCHK(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, state->render_high_end[i], 0));
+    }
+    
+    
     printf("check framebuffer low\n");
     GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->framebuffer_low));
     GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -169,8 +189,15 @@ static int own_init(RASPITEX_STATE *state)
     if(status != GL_FRAMEBUFFER_COMPLETE){
         printf("Error Frame buffer High\n");
     }
-    
-    
+
+    for (i = 0; i < 3; i++) {
+        printf("check framebuffer %d\n", i);
+        GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->fb_high_end[i]));
+        status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+        if (status != GL_FRAMEBUFFER_COMPLETE) {
+            printf("Error Frame buffer %i\n", i);
+        }
+    }
     
     GLCHK(glUseProgram(own_shader.program));
     //GLCHK(glUniform1i(own_shader.uniform_locations[0], 0)); // tex unit
@@ -184,8 +211,8 @@ static int own_init(RASPITEX_STATE *state)
     GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, UNDISTORT_X, UNDISTORT_Y, 0, GL_RGBA, GL_UNSIGNED_BYTE, mapping));
     //GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, 1944, 1458, 0, GL_ALPHA, GL_FLOAT, mapping));
 
-
-
+    state->curr_pos_fb = 0;
+    printf("finished setting up OpenGL\n");
 
 end:
     return rc;
@@ -193,6 +220,11 @@ end:
 
 
 static int own_redraw(RASPITEX_STATE *raspitex_state) {
+    
+    raspitex_state->curr_pos_fb++;
+    if(raspitex_state->curr_pos_fb == 3){
+        raspitex_state->curr_pos_fb = 0;
+    }
 ///////////////////////////////////////////////////////////////////
     GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, raspitex_state->framebuffer_low));
     GLCHK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
@@ -242,7 +274,9 @@ static int own_redraw(RASPITEX_STATE *raspitex_state) {
     
     
 ///////////////////////////////////////////////////////////////
-    GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, 0));
+    
+    raspitex_state->valid_token[raspitex_state->curr_pos_fb]++;
+    GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, raspitex_state->fb_high_end[raspitex_state->curr_pos_fb]));
     GLCHK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
     GLCHK(glUseProgram(own_shader2.program));
     GLCHK(glUniform2f(own_shader2.uniform_locations[1], 1.0 / (float) HIGH_OUTPUT_X, 1.0 / (float) HIGH_OUTPUT_Y));
