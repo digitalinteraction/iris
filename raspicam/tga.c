@@ -88,6 +88,7 @@ read_fail:
 unsigned char *load_tga(const char *filename, struct tga_header *header) {
     unsigned char *image = NULL;
     FILE *fp = fopen(filename, "r");
+    //printf("File %s? %p\n", filename, fp);
     if (fp) {
         if(read_header(fp, header) == 0) {
             if (header->image_type == tga_type_true_color &&

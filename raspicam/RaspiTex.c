@@ -206,6 +206,7 @@ static void update_fps()
       frame_count = 0;
       time_start = time_now;
       vcos_log_info("%3.2f FPS", fps);
+      printf("Driver::Frames per second %3.2f\n", fps);
    }
 }
 
@@ -229,6 +230,7 @@ static void raspitex_do_capture(RASPITEX_STATE *state) {
                     break;
                 }
             } else {
+                printf("ERROR::CAPT::Patch %p\n", i);
                 ret++;
                 break;
             }
@@ -236,15 +238,19 @@ static void raspitex_do_capture(RASPITEX_STATE *state) {
         if (ret != 0) {
             for (i = 0; i < state->patch_size; i++) {
                 if (state->patches[i]) {
+                    printf("CAPT::Freeing buffer %p\n", state->patches[i]->buffer);
                     free(state->patches[i]->buffer);
                 }
             }
+            printf("ERROR::CAPTa:: %d", ret);
             state->patch_size = -1;
             return;
         }
+        
         state->patch_size = 0;
+        vcos_semaphore_post(&state->capture.completed_sem);
+
     }
-    vcos_semaphore_post(&state->capture.completed_sem);
     //printf("do capture end %d\n", state->patch_size);
     //printf("do capture end %d %d %p\n", state->patches[0]->active, state->patches[0]->size, state->patches[0]->buffer); fflush(stdout);
 }
@@ -712,7 +718,7 @@ int raspitex_start(RASPITEX_STATE *state)
 int raspitex_capture(RASPITEX_STATE *state, RASPITEX_PATCH ** pts, int8_t size)
 {
     
-    //printf("try capturing %d %d %p %p\n", size, state->patch_size, state->patches, pts );
+   // printf("try capturing %d %d %p %p\n", size, state->patch_size, state->patches, pts );
    if (state && pts && size)
    {
        
@@ -729,6 +735,7 @@ int raspitex_capture(RASPITEX_STATE *state, RASPITEX_PATCH ** pts, int8_t size)
       vcos_semaphore_post(&state->capture.start_sem);
       
       state->patches = 0;
+      //printf("CCCAP::patch size %d\n", state->patch_size);
       if(state->patch_size == 0){
           return 0;
       }

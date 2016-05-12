@@ -252,6 +252,8 @@
         </df>
         <in>Buffer.cpp</in>
         <in>Buffer.h</in>
+        <in>High_Res_Worker.cpp</in>
+        <in>High_Res_Worker.h</in>
         <in>Image_Capture.h</in>
         <in>Low_Res_Worker.cpp</in>
         <in>Low_Res_Worker.h</in>
@@ -920,6 +922,10 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="raspicam/High_Res_Worker.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="raspicam/High_Res_Worker.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="raspicam/Image_Capture.h" ex="false" tool="3" flavor2="0">
       </item>

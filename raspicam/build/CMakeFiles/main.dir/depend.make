@@ -471,6 +471,7 @@ CMakeFiles/main.dir/gl_scenes/own.c.o: ../../interface/vmcs_host/vc_dispservice_
 CMakeFiles/main.dir/gl_scenes/own.c.o: ../../vcinclude/common.h
 CMakeFiles/main.dir/gl_scenes/own.c.o: ../RaspiTex.h
 CMakeFiles/main.dir/gl_scenes/own.c.o: ../RaspiTexUtil.h
+CMakeFiles/main.dir/gl_scenes/own.c.o: ../tga.h
 CMakeFiles/main.dir/gl_scenes/own.c.o: ../gl_scenes/own.c
 CMakeFiles/main.dir/gl_scenes/own.c.o: ../gl_scenes/own.h
 CMakeFiles/main.dir/gl_scenes/own.c.o: /opt/vc/include/EGL/egl.h
@@ -967,6 +968,7 @@ CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/objdetect.hpp
 CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/objdetect/detection_based_tracker.hpp
 CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/objdetect/objdetect_c.h
 CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/opencv.hpp
+CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/opencv_modules.hpp
 CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/photo.hpp
 CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/photo/photo_c.h
 CMakeFiles/main.dir/main.cpp.o: /usr/local/include/opencv2/video.hpp

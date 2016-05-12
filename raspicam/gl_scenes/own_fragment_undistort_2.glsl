@@ -1,5 +1,6 @@
 #extension GL_OES_EGL_image_external : require
 uniform samplerExternalOES tex;
+uniform sampler2D alt_tex;
 uniform sampler2D undist;
 varying vec2 texcoord;
 
@@ -12,9 +13,11 @@ void main()
 {  
     #ifdef A
     vec2 lookup_coord = lookup(texcoord);
+    gl_FragColor = texture2D(alt_tex, lookup_coord);
     gl_FragColor = texture2D(tex, lookup_coord);
     #else
     vec2 lookup_coord = lookup(texcoord);
-    gl_FragColor = texture2D(tex, texcoord);
+    gl_FragColor = texture2D(tex, lookup_coord);
+    gl_FragColor = texture2D(alt_tex, lookup_coord);
     #endif
 }

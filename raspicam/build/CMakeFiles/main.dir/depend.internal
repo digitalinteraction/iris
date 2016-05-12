@@ -472,6 +472,7 @@ CMakeFiles/main.dir/gl_scenes/own.c.o
  ../../vcinclude/common.h
  ../RaspiTex.h
  ../RaspiTexUtil.h
+ ../tga.h
  /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.c
  /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.h
  /opt/vc/include/EGL/egl.h
@@ -968,6 +969,7 @@ CMakeFiles/main.dir/main.cpp.o
  /usr/local/include/opencv2/objdetect/detection_based_tracker.hpp
  /usr/local/include/opencv2/objdetect/objdetect_c.h
  /usr/local/include/opencv2/opencv.hpp
+ /usr/local/include/opencv2/opencv_modules.hpp
  /usr/local/include/opencv2/photo.hpp
  /usr/local/include/opencv2/photo/photo_c.h
  /usr/local/include/opencv2/video.hpp

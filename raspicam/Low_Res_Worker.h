@@ -24,6 +24,9 @@
 #include <opencv2/bgsegm.hpp>
 #include "opencv2/photo.hpp"
 #include <opencv2/features2d.hpp>
+#include "RaspiTex.h"
+#include <pthread.h>
+
 
 using namespace cv;
 
@@ -35,11 +38,16 @@ public:
     void run();
     int processing;
     int counter;
+    
+    int new_low_buffer;
+    pthread_mutex_t buffer_lock;
+    RASPITEX_PATCH low_patch;
+    
     int requests_pending;
-    int requests[10][4];
+    RASPITEX_PATCH requests[10];
 private:
     Buffer * buf;
-    void process_image(uint8_t *image, size_t image_size, int light);
+    void process_image(uint8_t *image, size_t image_size);
     Mat convert(uint8_t *image, size_t image_size);
     int interprete_params(double mean, double sum);
     Mat mask;

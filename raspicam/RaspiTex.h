@@ -48,7 +48,7 @@ extern "C"{
 #define UNDISTORT_Y 1458
 #define HIGH_OUTPUT_X 1944
 #define HIGH_OUTPUT_Y 1458
-#define LOW_OUTPUT_X 128//256//128//400//972
+#define LOW_OUTPUT_X 128//128//256//128//400//972
 #define LOW_OUTPUT_Y 96//192//96//300//729
     
 //0: IR
@@ -179,6 +179,7 @@ typedef struct RASPITEX_STATE
 
    GLuint texture;                     /// Name for the preview texture
    GLuint undist;                      /// Name for the lookup table (undistort)
+   GLuint alt_tex;
    GLuint framebuffer_high;
    GLuint framebuffer_low;
    GLuint renderTexture_high;

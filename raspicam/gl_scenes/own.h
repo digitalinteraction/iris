@@ -33,6 +33,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "RaspiTex.h"
 #include "stdio.h"
 
+unsigned char mapping[UNDISTORT_Y][UNDISTORT_X][4];
+
+#define EXTERNAL_IMAGES
 
 int own_open(RASPITEX_STATE *state);
 

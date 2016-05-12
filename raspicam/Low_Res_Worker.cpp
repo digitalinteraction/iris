@@ -12,7 +12,6 @@
  */
 
 #include "Low_Res_Worker.h"
-#include "RaspiTex.h"
 #include "tga.h"
 #include <limits>
 
@@ -27,6 +26,13 @@ Low_Res_Worker::Low_Res_Worker(Buffer *buffer) {
     cnt = 0;
     learning = 0.05;
     previous = Mat::zeros(LOW_OUTPUT_Y, LOW_OUTPUT_X, CV_8UC4);
+    new_low_buffer = 0;
+    requests_pending = 0;
+    if (pthread_mutex_init(&buffer_lock, NULL) != 0)
+    {
+        printf("mutex init failed\n");
+    }
+    
     //pMOG2 = bgsegm::createBackgroundSubtractorGMG();
 }
 
@@ -40,42 +46,60 @@ void Low_Res_Worker::run(){
     size_t image_size;
     int light;
     while(processing){
-        if(buf->get(&image, &image_size, &light) == 0){
-            if(image != 0 && image_size != 0){
-                counter++;
-                process_image(image, image_size, light);
-                buf->release();
-                
-            }
+        if(new_low_buffer == 1){
+            pthread_mutex_lock(&buffer_lock);
+            counter++;
+            process_image(low_patch.buffer, low_patch.size);
+            free(low_patch.buffer);
+            new_low_buffer = 0;
+            pthread_mutex_unlock(&buffer_lock);
         }
     }
 }
 
-void Low_Res_Worker::process_image(uint8_t *image, size_t image_size, int light) {
+void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     //Mat is in format BGRA
     Mat img = convert(image, image_size);
     if (img.empty() == 0) {
 
-        pMOG2->apply(img, mask, learning);
+        //BACKGROUND SUBSTRACTOR/////////////////////////////
+        /*pMOG2->apply(img, mask, learning);
         cnt++;
         if (cnt == 60) {
             printf("Learning Phase done\n");
             learning = std::numeric_limits< double >::min();
-        }
-        
+        }*/
+        /////////////////////////////////////////////////////
+        Mat hsv;
+        cvtColor(img, hsv, COLOR_BGR2HSV);
+        Mat channel[3];
+        split(hsv, channel);
+        //channel[1];
+        threshold(channel[1], mask, 40, 255, THRESH_BINARY);
+                
+        //CLEANING UP////////////////////////////////////////
         Mat kernel = Mat::ones(3, 3, CV_8U);
         Mat cleaned;
         morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
         
+        
+        /////////////////////////////////////////////////////
+        
+        //GET SHAPE//////////////////////////////////////////
         vector<vector<Point> > contours;
         RNG rng(12345);
         findContours(cleaned, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        /////////////////////////////////////////////////////
+        
+        //DRAW CONTOURS//////////////////////////////////////
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         for (int i = 0; i < contours.size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours, i, color, 2);
         }
+        /////////////////////////////////////////////////////
         
+        //FIND MAX/MIN POINTS////////////////////////////////
         int cnt = 0;
         if(contours.size() > 0 && contours.size() < 10){
             for(int i = 0;i< contours.size();i++){
@@ -97,22 +121,41 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size, int light)
                         ymax = contours[i][j].y;
                     }
                 }
-                if((xmax-xmin) > 20 && (ymax - ymin) > 20){
-                    requests[cnt][0] = xmin;
-                    requests[cnt][1] = ymin;
-                    requests[cnt][2] = xmax;
-                    requests[cnt][3] = ymax;
+                if((xmax-xmin) > 10 && (ymax - ymin) > 10){
+                    requests[cnt].fb = low_patch.fb;
+                    requests[cnt].token = low_patch.token;
+                    float factorx = (float)HIGH_OUTPUT_X/LOW_OUTPUT_X;
+                    float factory = (float)HIGH_OUTPUT_Y/LOW_OUTPUT_Y;
+                    float x = (xmin-5)*factorx - factorx;
+                    float y = (ymin-5)*factory - factory;
+                    if(x < 0) x = 0;
+                    if(y < 0) y = 0;
+                    float height = (ymax+5)*factory + factory - y;
+                    float width = (xmax+5)*factorx + factorx - x;
+                    if((y + height) > HIGH_OUTPUT_Y) height = HIGH_OUTPUT_Y - y;
+                    if((x + width) > HIGH_OUTPUT_X) width = HIGH_OUTPUT_X - x;
+                    requests[cnt].x = (int)x;
+                    requests[cnt].y = (int)y;
+                    requests[cnt].height = (int)(height+0.5);
+                    requests[cnt].width = (int)(width+0.5);
+                    //add limits for request in ImageCapture
                     cnt++;
                 }
-                //printf("Quadrant: (%d %d), (%d %d)\n", xmin, ymin, xmax, ymax);
             }
         }
+        /////////////////////////////////////////////////////
+        
         if(cnt > 0){
             requests_pending = cnt;
         }
         
         ///////////////////////////////////////////////////////////////
-        imshow("Background Separator", drawing);
+        imshow("H", channel[0]);
+        imshow("S", channel[1]);
+        imshow("V", channel[2]);
+        imshow("cleaned", cleaned);
+        imshow("Mask", drawing);
+
         waitKey(30);
     } else {
         printf("Failed to convert camera image to Mat\n");

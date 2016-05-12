@@ -6,6 +6,8 @@
         <in>calib.c</in>
         <in>gray.c</in>
       </df>
+      <df name="external_images">
+      </df>
       <df name="interface">
         <df name="khronos">
           <df name="common">
@@ -557,6 +559,8 @@
           <df name="old">
             <in>mirror.c</in>
             <in>mirror.h</in>
+            <in>models.c</in>
+            <in>models.h</in>
             <in>sobel.c</in>
             <in>sobel.h</in>
             <in>sobel_alt.c</in>
@@ -583,6 +587,8 @@
         </df>
         <in>Buffer.cpp</in>
         <in>Buffer.h</in>
+        <in>High_Res_Worker.cpp</in>
+        <in>High_Res_Worker.h</in>
         <in>Image_Capture.cpp</in>
         <in>Image_Capture.h</in>
         <in>Low_Res_Worker.cpp</in>

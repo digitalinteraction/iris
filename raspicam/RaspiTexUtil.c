@@ -338,7 +338,6 @@ int raspitexutil_do_update_texture(EGLDisplay display, EGLenum target,
       eglDestroyImageKHR(display, *egl_image);
       *egl_image = EGL_NO_IMAGE_KHR;
    }
-
    *egl_image = eglCreateImageKHR(display, EGL_NO_CONTEXT, target, mm_buf, NULL);
    GLCHK(glEGLImageTargetTexture2DOES(GL_TEXTURE_EXTERNAL_OES, *egl_image));
 
@@ -468,6 +467,8 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
     
     patch->size = patch->height * patch->width * 4;
     patch->buffer = calloc(patch->size, 1);
+    //printf("BGRAallocate buffer %p\n", patch->buffer);
+
     if (!patch->buffer)
         goto error;
 
@@ -499,6 +500,7 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
     return 0;
 
 error:
+    printf("BGRA::Free buffer %p\n", patch->buffer);
     free(patch->buffer);
     patch->buffer = NULL;
     patch->size = 0;

@@ -129,49 +129,47 @@ Image_Capture::~Image_Capture(){
 void Image_Capture::run() {
     printf("starting up!\n");fflush(stdout);
     RASPITEX_PATCH ** patches;
-    patches = (RASPITEX_PATCH **) calloc(sizeof(RASPITEX_PATCH *), 1);
+    patches = (RASPITEX_PATCH **) calloc(sizeof(RASPITEX_PATCH *)*11, 1);
     patches[0] = (RASPITEX_PATCH *)calloc(sizeof(RASPITEX_PATCH), 1);
     patches[0]->height = LOW_OUTPUT_X;
     patches[0]->width = LOW_OUTPUT_Y;
-    printf("start running %p %d!\n", patches, 1);fflush(stdout);
     uint8_t size_patches = 1;
     
     while (capturing) {
-        if (buf->free_space() == 0) {
-
-
-            uint8_t ret = raspitex_capture(&state.raspitex_state, patches, size_patches);
-
-            //TODO no need for buffer at this place!
-            if (buf->add(patches[0]->buffer, patches[0]->size, 0) == 0) {
-                //printf("succesfully added buffer %p\n", state.raspitex_state.low_buffer);
-            } else {
-                //printf("buffer full\n");
-                free(patches[0]->buffer);
-            }
-
-
-        }
+        
+        size_patches = 1;
         if (worker->requests_pending > 0) {
-            
-            //TODO own function, dont forget to free them again...
-            uint8_t req = worker->requests_pending;
-            RASPITEX_PATCH ** temp = (RASPITEX_PATCH **) calloc(sizeof(RASPITEX_PATCH *)*(req+1), 1);
-            temp[0] = patches[0];
-            free(patches);
-            patches = temp;
-            
-            for(int i=0;i<req;i++){
+            printf("request for %d\n", worker->requests_pending);
+            for(int i=0;i<worker->requests_pending;i++){
                 patches[i+1] = (RASPITEX_PATCH *)calloc(sizeof(RASPITEX_PATCH), 1);
-                patches[i+1]->x = worker->requests[i][0];
-                patches[i+1]->y = worker->requests[i][1];
-                patches[i+1]->width = worker->requests[i][2];
-                patches[i+1]->height = worker->requests[i][3];
+                memcpy(patches[i+1], &worker->requests[i], sizeof(RASPITEX_PATCH));
+                patches[i+1]->select = 1;
+                patches[i+1]->active = 0;
+                //printf("Request (%d, %d) (%d, %d)\n", patches[i+1]->x, patches[i+1]->y, patches[i+1]->width, patches[i+1]->height);
             }
-            
-            
+            //size_patches = worker->requests_pending+1;
             worker->requests_pending = 0;
         }
+
+            patches[0]->active = 0;
+            patches[0]->buffer = 0;
+            int8_t ret = raspitex_capture(&state.raspitex_state, patches, size_patches);
+            
+            pthread_mutex_lock(&worker->buffer_lock);
+            memcpy(&worker->low_patch, patches[0], sizeof(RASPITEX_PATCH));
+            worker->new_low_buffer = 1;
+            pthread_mutex_unlock(&worker->buffer_lock);
+
+        for (int i = 0; i < (size_patches - 1); i++) {
+            if (patches[i + 1]->buffer) {
+                //printf("IMG::Free patch %d %p\nIMG::Free patch buffer %p", i+1, patches[i+1], patches[i+1]->buffer);
+                free(patches[i + 1]->buffer);
+                free(patches[i + 1]);
+            }
+        }
+        
+            
+        
     }
     digitalWrite(0, LOW);
     digitalWrite(2, LOW);

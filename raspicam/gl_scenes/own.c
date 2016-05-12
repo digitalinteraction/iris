@@ -34,8 +34,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <stdarg.h>
+#include "tga.h"
+#include <stdlib.h>     
 
-unsigned char mapping[UNDISTORT_Y][UNDISTORT_X][4];
 
 
 RASPITEXUTIL_SHADER_PROGRAM_T own_shader = {
@@ -43,7 +44,7 @@ RASPITEXUTIL_SHADER_PROGRAM_T own_shader = {
     .fragment_strings = 2,
     .vertex_source = 0,
     .fragment_source = 0,
-    .uniform_names = {"tex", "undist"},
+    .uniform_names = {"tex", "undist", "alt_tex"},
     //.uniform_names = {},
     .attribute_names = {"vertex"},
     //.attribute_names = {},
@@ -99,6 +100,30 @@ int loadshader(char* filename, char*** p, char* addition){
     free(p->fragment_source);
 }*/
 
+#ifdef EXTERNAL_IMAGES
+uint8_t counter=0;
+
+unsigned char * load_image(){
+    char name[] = "/home/pi/gpu_main/cutting_board/external_images/000.tga";
+    name[50] = counter+'0';
+    //printf("Filename %s\n", name);
+    struct tga_header tgatemp;
+    unsigned char * image = load_tga(name, &tgatemp);
+    if (image != 0) {
+        counter++;
+    }else if(counter != 0){
+        exit(EXIT_SUCCESS);
+    }else{
+        printf("Error in loading image\n");
+        exit(EXIT_FAILURE);
+    }
+    return image;
+}
+#endif
+
+
+
+
 /**
  * Creates the OpenGL ES 2.X context and builds the shaders.
  * @param raspitex_state A pointer to the GL preview state.
@@ -112,19 +137,30 @@ static int own_init(RASPITEX_STATE *state)
        goto end;
     //loadshader("../gl_scenes/own_vertex.glsl", "../gl_scenes/own_fragment_undistort_2.glsl", &own_shader, 'A', 'A');
     //loadshader("../gl_scenes/own_vertex.glsl", "../gl_scenes/own_fragment_3.glsl", &own_shader2, 'A', 'A');
+    
+#ifdef EXTERNAL_IMAGES
+    char def_str[] = "#define B\n #define RES_X (1.0/1944.0)\n #define RES_Y (1.0/1458.0)\n";
+#else
     char def_str[] = "#define A\n #define RES_X (1.0/1944.0)\n #define RES_Y (1.0/1458.0)\n";
+#endif
+    
+    
     loadshader("../gl_scenes/own_vertex.glsl", &(own_shader.vertex_source), def_str);
     loadshader("../gl_scenes/own_fragment_undistort_2.glsl", &(own_shader.fragment_source), def_str);
     loadshader("../gl_scenes/own_vertex.glsl", &(own_shader2.vertex_source), def_str);
     loadshader("../gl_scenes/own_fragment_3.glsl", &(own_shader2.fragment_source), def_str);
 
-    //GLint texLoc = glGetUniformLocation(own_shader.program, "undist");
-    //glUniform1i(texLoc, 1);
+    
     //glUniform1i(own_shader.uniform_locations[1], 1);
     printf("building shader units\n");
     rc = raspitexutil_build_shader_program(&own_shader);
     rc += raspitexutil_build_shader_program(&own_shader2);
 
+    //GLint texLoc = glGetUniformLocation(own_shader.program, "undist");
+    //glUniform1i(texLoc, 1);
+    //texLoc = glGetUniformLocation(own_shader.program, "alt_tex");
+    //glUniform1i(texLoc, 0);
+    
     printf("generating framebuffer high\n");
     //generate framebuffer high
     GLCHK(glGenFramebuffers(1, &state->framebuffer_high));
@@ -200,17 +236,33 @@ static int own_init(RASPITEX_STATE *state)
     }
     
     GLCHK(glUseProgram(own_shader.program));
-    //GLCHK(glUniform1i(own_shader.uniform_locations[0], 0)); // tex unit
-    //GLCHK(glUniform1i(own_shader.uniform_locations[1], 1)); // tex unit
+    //GLCHK(glUniform1i(state->alt_tex, 0));
+    //GLCHK(glUniform1i(state->undist, 1));
+
+    GLCHK(glUniform1i(own_shader.uniform_locations[1], 0)); // tex unit
+    GLCHK(glUniform1i(own_shader.uniform_locations[2], 1)); // tex unit
+    
+    
     printf("generate undistortion texture\n");
+    GLCHK(glGenTextures(1, &state->undist));
     GLCHK(glBindTexture(GL_TEXTURE_2D, state->undist));
     GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
     GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
     GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
     GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
     GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, UNDISTORT_X, UNDISTORT_Y, 0, GL_RGBA, GL_UNSIGNED_BYTE, mapping));
-    //GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, 1944, 1458, 0, GL_ALPHA, GL_FLOAT, mapping));
+    
+    printf("generate alternative texture\n");
+    GLCHK(glGenTextures(1, &state->alt_tex));
+    GLCHK(glBindTexture(GL_TEXTURE_2D, state->alt_tex));
+    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+    GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, UNDISTORT_X, UNDISTORT_Y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0));
 
+    
+    
     state->curr_pos_fb = 0;
     printf("finished setting up OpenGL\n");
 
@@ -220,18 +272,35 @@ end:
 
 
 static int own_redraw(RASPITEX_STATE *raspitex_state) {
-    
     raspitex_state->curr_pos_fb++;
     if(raspitex_state->curr_pos_fb == 3){
         raspitex_state->curr_pos_fb = 0;
     }
-///////////////////////////////////////////////////////////////////
+    
+    
     GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, raspitex_state->framebuffer_low));
     GLCHK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
     GLCHK(glUseProgram(own_shader.program));
-
-    GLCHK(glActiveTexture(GL_TEXTURE0));
+    
+    //GLCHK(glActiveTexture(GL_TEXTURE0));
     GLCHK(glBindTexture(GL_TEXTURE_EXTERNAL_OES, raspitex_state->texture));
+
+    ///////////////////////////////////////////////////////////////////
+#ifdef EXTERNAL_IMAGES
+    //GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->alt_tex));
+    unsigned char * image = load_image();
+    GLCHK(glActiveTexture(GL_TEXTURE1));
+    GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->alt_tex));
+    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+    GLCHK(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, UNDISTORT_X, UNDISTORT_Y, GL_RGBA, GL_UNSIGNED_BYTE, image));
+    //GLCHK(glTexSubImage2D(GL_TEXTURE_2D, 0, GL_RGBA, UNDISTORT_X, UNDISTORT_Y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image));
+    
+#endif
+    ////////////////////////////////////////////////////////////////////
+
     GLCHK(glEnableVertexAttribArray(own_shader.attribute_locations[0]));
     GLfloat varray[] = {
         -1.0f, -1.0f,
@@ -243,6 +312,7 @@ static int own_redraw(RASPITEX_STATE *raspitex_state) {
         -1.0f, -1.0f,
     };
     GLCHK(glVertexAttribPointer(own_shader.attribute_locations[0], 2, GL_FLOAT, GL_FALSE, 0, varray));
+    GLCHK(glActiveTexture(GL_TEXTURE0));
     GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->undist));
     GLCHK(glViewport(0,0,LOW_OUTPUT_X,LOW_OUTPUT_Y));
     GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
@@ -253,8 +323,15 @@ static int own_redraw(RASPITEX_STATE *raspitex_state) {
     GLCHK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
     GLCHK(glUseProgram(own_shader.program));
 
-    GLCHK(glActiveTexture(GL_TEXTURE0));
+    //GLCHK(glActiveTexture(GL_TEXTURE0));
     GLCHK(glBindTexture(GL_TEXTURE_EXTERNAL_OES, raspitex_state->texture));
+    
+#ifdef EXTERNAL_IMAGES
+    GLCHK(glActiveTexture(GL_TEXTURE1));
+    GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->alt_tex));
+    free(image);
+#endif
+    
     GLCHK(glViewport(0,0,UNDISTORT_X,UNDISTORT_Y));
 
     GLCHK(glEnableVertexAttribArray(own_shader.attribute_locations[0]));
@@ -268,6 +345,7 @@ static int own_redraw(RASPITEX_STATE *raspitex_state) {
         -1.0f, -1.0f,
     };
     GLCHK(glVertexAttribPointer(own_shader.attribute_locations[0], 2, GL_FLOAT, GL_FALSE, 0, varray2));
+    GLCHK(glActiveTexture(GL_TEXTURE0));
     GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->undist));
     
     GLCHK(glDrawArrays(GL_TRIANGLES, 0, 6));
