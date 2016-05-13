@@ -19,8 +19,7 @@
 
 using namespace std;
 
-Low_Res_Worker::Low_Res_Worker(Buffer *buffer) {
-    buf = buffer;
+Low_Res_Worker::Low_Res_Worker() {
     processing = 0;
     pMOG2 = createBackgroundSubtractorMOG2(100, 16, false);
     cnt = 0;

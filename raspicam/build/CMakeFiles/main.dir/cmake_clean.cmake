@@ -5,6 +5,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/main.dir/main.cpp.o"
   "CMakeFiles/main.dir/Image_Capture.cpp.o"
   "CMakeFiles/main.dir/Low_Res_Worker.cpp.o"
+  "CMakeFiles/main.dir/High_Res_Worker.cpp.o"
   "CMakeFiles/main.dir/Buffer.cpp.o"
   "CMakeFiles/main.dir/RaspiTex.c.o"
   "CMakeFiles/main.dir/RaspiTexUtil.c.o"

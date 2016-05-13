@@ -5,15 +5,14 @@
  */
 
 #include "Buffer.h"
+#include "RaspiTex.h"
 
 
 Buffer::Buffer(int size){
     array = new Buffer_Item[size];
     this->size = size;
     for(int i = 0; i< size;i++){
-        array[i].buffer = 0;
-        array[i].buffer_size = 0;
-        array[i].id = i;
+        array[i].patch = 0;
         array[i].status = 0;
         array[i].lock.unlock();
     }
@@ -26,7 +25,7 @@ Buffer::~Buffer(){
     delete[] array;
 }
 
-int Buffer::add(uint8_t *buffer, size_t buffer_size, int light){
+int Buffer::add(RASPITEX_PATCH *patch){
     add_pos++;
     if(add_pos == size){
         add_pos = 0;
@@ -34,10 +33,8 @@ int Buffer::add(uint8_t *buffer, size_t buffer_size, int light){
     
     array[add_pos].lock.lock();
     if(array[add_pos].status == 0){
-        array[add_pos].buffer = buffer;
-        array[add_pos].buffer_size = buffer_size;
+        array[add_pos].patch = patch;
         array[add_pos].status = 1;
-        array[add_pos].light = light;
         //printf("added buffer %d\n", add_pos);
     }else{
         array[add_pos].lock.unlock();
@@ -61,7 +58,7 @@ int Buffer::free_space(){
     return 1;
 }
 
-int Buffer::get(uint8_t **buffer, size_t *buffer_size, int *light){
+int Buffer::get(RASPITEX_PATCH **patch){
     get_pos++;
     if(get_pos == size){
         get_pos = 0;
@@ -69,9 +66,7 @@ int Buffer::get(uint8_t **buffer, size_t *buffer_size, int *light){
     
     array[get_pos].lock.lock();
     if(array[get_pos].status == 1){
-        *buffer = array[get_pos].buffer;
-        *buffer_size = array[get_pos].buffer_size;
-        *light = array[get_pos].light;
+        *patch = array[get_pos].patch;
         array[get_pos].status = 2;
         //printf("gotten buffer %d\n", get_pos);
     }else{
@@ -86,11 +81,10 @@ int Buffer::get(uint8_t **buffer, size_t *buffer_size, int *light){
 int Buffer::release(){
     array[get_pos].lock.lock();
     if(array[get_pos].status == 2){
-        free(array[get_pos].buffer);
-        array[get_pos].buffer = 0;
-        array[get_pos].buffer_size = 0;
+        free(array[get_pos].patch->buffer);
+        free(array[get_pos].patch);
+        array[get_pos].patch = 0;
         array[get_pos].status = 0;
-        //printf("release buffer %d\n", get_pos);
     }else{
         array[get_pos].lock.unlock();
         return 1;

@@ -187,9 +187,32 @@ CMakeFiles/main.dir/Low_Res_Worker.cpp.o.provides: CMakeFiles/main.dir/Low_Res_W
 
 CMakeFiles/main.dir/Low_Res_Worker.cpp.o.provides.build: CMakeFiles/main.dir/Low_Res_Worker.cpp.o
 
+CMakeFiles/main.dir/High_Res_Worker.cpp.o: CMakeFiles/main.dir/flags.make
+CMakeFiles/main.dir/High_Res_Worker.cpp.o: ../High_Res_Worker.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_7)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/main.dir/High_Res_Worker.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/main.dir/High_Res_Worker.cpp.o -c /home/pi/gpu_main/cutting_board/raspicam/High_Res_Worker.cpp
+
+CMakeFiles/main.dir/High_Res_Worker.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/main.dir/High_Res_Worker.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/pi/gpu_main/cutting_board/raspicam/High_Res_Worker.cpp > CMakeFiles/main.dir/High_Res_Worker.cpp.i
+
+CMakeFiles/main.dir/High_Res_Worker.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/main.dir/High_Res_Worker.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/pi/gpu_main/cutting_board/raspicam/High_Res_Worker.cpp -o CMakeFiles/main.dir/High_Res_Worker.cpp.s
+
+CMakeFiles/main.dir/High_Res_Worker.cpp.o.requires:
+.PHONY : CMakeFiles/main.dir/High_Res_Worker.cpp.o.requires
+
+CMakeFiles/main.dir/High_Res_Worker.cpp.o.provides: CMakeFiles/main.dir/High_Res_Worker.cpp.o.requires
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/High_Res_Worker.cpp.o.provides.build
+.PHONY : CMakeFiles/main.dir/High_Res_Worker.cpp.o.provides
+
+CMakeFiles/main.dir/High_Res_Worker.cpp.o.provides.build: CMakeFiles/main.dir/High_Res_Worker.cpp.o
+
 CMakeFiles/main.dir/Buffer.cpp.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/Buffer.cpp.o: ../Buffer.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_7)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_8)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/main.dir/Buffer.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/main.dir/Buffer.cpp.o -c /home/pi/gpu_main/cutting_board/raspicam/Buffer.cpp
 
@@ -212,7 +235,7 @@ CMakeFiles/main.dir/Buffer.cpp.o.provides.build: CMakeFiles/main.dir/Buffer.cpp.
 
 CMakeFiles/main.dir/RaspiTex.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/RaspiTex.c.o: ../RaspiTex.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_8)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_9)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/RaspiTex.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/RaspiTex.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.c
 
@@ -235,7 +258,7 @@ CMakeFiles/main.dir/RaspiTex.c.o.provides.build: CMakeFiles/main.dir/RaspiTex.c.
 
 CMakeFiles/main.dir/RaspiTexUtil.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/RaspiTexUtil.c.o: ../RaspiTexUtil.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_9)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_10)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/RaspiTexUtil.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/RaspiTexUtil.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/RaspiTexUtil.c
 
@@ -258,7 +281,7 @@ CMakeFiles/main.dir/RaspiTexUtil.c.o.provides.build: CMakeFiles/main.dir/RaspiTe
 
 CMakeFiles/main.dir/tga.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/tga.c.o: ../tga.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_10)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_11)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/tga.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/tga.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/tga.c
 
@@ -281,7 +304,7 @@ CMakeFiles/main.dir/tga.c.o.provides.build: CMakeFiles/main.dir/tga.c.o
 
 CMakeFiles/main.dir/gl_scenes/own.c.o: CMakeFiles/main.dir/flags.make
 CMakeFiles/main.dir/gl_scenes/own.c.o: ../gl_scenes/own.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_11)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles $(CMAKE_PROGRESS_12)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/main.dir/gl_scenes/own.c.o"
 	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/main.dir/gl_scenes/own.c.o   -c /home/pi/gpu_main/cutting_board/raspicam/gl_scenes/own.c
 
@@ -310,6 +333,7 @@ main_OBJECTS = \
 "CMakeFiles/main.dir/main.cpp.o" \
 "CMakeFiles/main.dir/Image_Capture.cpp.o" \
 "CMakeFiles/main.dir/Low_Res_Worker.cpp.o" \
+"CMakeFiles/main.dir/High_Res_Worker.cpp.o" \
 "CMakeFiles/main.dir/Buffer.cpp.o" \
 "CMakeFiles/main.dir/RaspiTex.c.o" \
 "CMakeFiles/main.dir/RaspiTexUtil.c.o" \
@@ -325,6 +349,7 @@ main: CMakeFiles/main.dir/RaspiPreview.c.o
 main: CMakeFiles/main.dir/main.cpp.o
 main: CMakeFiles/main.dir/Image_Capture.cpp.o
 main: CMakeFiles/main.dir/Low_Res_Worker.cpp.o
+main: CMakeFiles/main.dir/High_Res_Worker.cpp.o
 main: CMakeFiles/main.dir/Buffer.cpp.o
 main: CMakeFiles/main.dir/RaspiTex.c.o
 main: CMakeFiles/main.dir/RaspiTexUtil.c.o
@@ -403,6 +428,7 @@ CMakeFiles/main.dir/requires: CMakeFiles/main.dir/RaspiPreview.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/main.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/Image_Capture.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/Low_Res_Worker.cpp.o.requires
+CMakeFiles/main.dir/requires: CMakeFiles/main.dir/High_Res_Worker.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/Buffer.cpp.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/RaspiTex.c.o.requires
 CMakeFiles/main.dir/requires: CMakeFiles/main.dir/RaspiTexUtil.c.o.requires

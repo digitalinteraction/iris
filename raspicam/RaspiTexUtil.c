@@ -468,6 +468,7 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
     patch->size = patch->height * patch->width * 4;
     patch->buffer = calloc(patch->size, 1);
     //printf("BGRAallocate buffer %p\n", patch->buffer);
+    //printf("Patch request: %d %d %d %d\n", patch->x, patch->y, patch->width, patch->height);
 
     if (!patch->buffer)
         goto error;
@@ -485,7 +486,7 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
                 (state->valid_token[patch->fb] == patch->token)){
             
             GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->fb_high_end[patch->fb]));
-            glReadPixels(patch->x, patch->y, patch->height, patch->width, GL_RGBA, GL_UNSIGNED_BYTE, patch->buffer);
+            GLCHK(glReadPixels(patch->x, patch->y, patch->height, patch->width, GL_RGBA, GL_UNSIGNED_BYTE, patch->buffer));
             patch->active = 2;
 
         }else{

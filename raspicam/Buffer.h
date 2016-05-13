@@ -13,14 +13,13 @@
 #include <iostream>       // std::cout
 #include <thread>         // std::thread
 #include <mutex>          // std::mutex
+#include "RaspiTex.h"
+
 
 typedef struct{
-    uint8_t *buffer;
-    size_t buffer_size;
-    int id;
+    RASPITEX_PATCH *patch;
     std::mutex lock;
     int status;
-    int light;
 } Buffer_Item;
 
 
@@ -28,8 +27,8 @@ class Buffer{
 public:
     Buffer(int size);
     ~Buffer();
-    int add(uint8_t *buffer, size_t buffer_size, int light);
-    int get(uint8_t **buffer, size_t *buffer_size, int*light);
+    int add(RASPITEX_PATCH *patch);
+    int get(RASPITEX_PATCH **patch);
     int free_space();
     int release();
 private:

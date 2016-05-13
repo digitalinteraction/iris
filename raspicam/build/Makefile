@@ -180,6 +180,30 @@ Buffer.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/Buffer.cpp.s
 .PHONY : Buffer.cpp.s
 
+High_Res_Worker.o: High_Res_Worker.cpp.o
+.PHONY : High_Res_Worker.o
+
+# target to build an object file
+High_Res_Worker.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/High_Res_Worker.cpp.o
+.PHONY : High_Res_Worker.cpp.o
+
+High_Res_Worker.i: High_Res_Worker.cpp.i
+.PHONY : High_Res_Worker.i
+
+# target to preprocess a source file
+High_Res_Worker.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/High_Res_Worker.cpp.i
+.PHONY : High_Res_Worker.cpp.i
+
+High_Res_Worker.s: High_Res_Worker.cpp.s
+.PHONY : High_Res_Worker.s
+
+# target to generate assembly for a file
+High_Res_Worker.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/High_Res_Worker.cpp.s
+.PHONY : High_Res_Worker.cpp.s
+
 Image_Capture.o: Image_Capture.cpp.o
 .PHONY : Image_Capture.o
 
@@ -436,6 +460,9 @@ help:
 	@echo "... Buffer.o"
 	@echo "... Buffer.i"
 	@echo "... Buffer.s"
+	@echo "... High_Res_Worker.o"
+	@echo "... High_Res_Worker.i"
+	@echo "... High_Res_Worker.s"
 	@echo "... Image_Capture.o"
 	@echo "... Image_Capture.i"
 	@echo "... Image_Capture.s"

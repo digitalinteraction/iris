@@ -13,12 +13,19 @@
 
 #ifndef HIGH_RES_WORKER_H
 #define HIGH_RES_WORKER_H
+#include "Buffer.h"
 
 class High_Res_Worker {
 public:
-    High_Res_Worker();
+    High_Res_Worker(Buffer *buffer);
     virtual ~High_Res_Worker();
+    int processing;
+    void run();
+
 private:
+    Buffer * buf;
+    int cnt;
+
 
 };
 

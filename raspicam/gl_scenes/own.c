@@ -36,6 +36,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdarg.h>
 #include "tga.h"
 #include <stdlib.h>     
+#include <dirent.h>
+
+
+#ifdef EXTERNAL_IMAGES
+unsigned char dirname[] = "/home/pi/gpu_main/cutting_board/external_images/";
+uint8_t file_cnt=0;
+unsigned char filenames[100][7];
+#endif
 
 
 
@@ -104,19 +112,21 @@ int loadshader(char* filename, char*** p, char* addition){
 uint8_t counter=0;
 
 unsigned char * load_image(){
-    char name[] = "/home/pi/gpu_main/cutting_board/external_images/000.tga";
-    name[50] = counter+'0';
-    //printf("Filename %s\n", name);
+    unsigned char *name = malloc(strlen(dirname)+8);
+    strcpy(name, dirname);
+    strncat(name, filenames[counter], 7);
     struct tga_header tgatemp;
     unsigned char * image = load_tga(name, &tgatemp);
     if (image != 0) {
         counter++;
     }else if(counter != 0){
-        exit(EXIT_SUCCESS);
+        //exit(EXIT_SUCCESS);
+        pthread_exit(EXIT_SUCCESS);
     }else{
         printf("Error in loading image\n");
         exit(EXIT_FAILURE);
     }
+    free(name);
     return image;
 }
 #endif
@@ -412,10 +422,27 @@ int own_open(RASPITEX_STATE *state)
        printf("Could not open matrix file\n");
    }
    
-  
-   FILE *fp;
-   fp = fopen("out.tga", "w");
-   write_tga(fp, UNDISTORT_X, UNDISTORT_Y, mapping, sizeof(mapping));
-   fclose(fp);
-   return 0;
+
+    FILE *fp;
+    fp = fopen("out.tga", "w");
+    write_tga(fp, UNDISTORT_X, UNDISTORT_Y, mapping, sizeof (mapping));
+    fclose(fp);
+
+#ifdef EXTERNAL_IMAGES
+    DIR *d;
+    file_cnt = 0;
+    struct dirent *dir;
+    d = opendir(dirname);
+    if (d) {
+        while ((dir = readdir(d)) != NULL) {
+            if(strlen(dir->d_name) == 7 && strcmp((dir->d_name+3), ".tga") == 0){
+                strncpy(filenames[file_cnt], dir->d_name, 7);
+                file_cnt++;
+            }
+        }
+        closedir(d);
+    }
+#endif
+    
+    return 0;
 }

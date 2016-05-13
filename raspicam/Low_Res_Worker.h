@@ -14,7 +14,6 @@
 #ifndef LOW_RES_WORKER_H
 #define LOW_RES_WORKER_H
 
-#include "Buffer.h"
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include "opencv2/imgcodecs.hpp"
@@ -33,7 +32,7 @@ using namespace cv;
 
 class Low_Res_Worker {
 public:
-    Low_Res_Worker(Buffer *buffer);
+    Low_Res_Worker();
     ~Low_Res_Worker();
     void run();
     int processing;
@@ -46,7 +45,6 @@ public:
     int requests_pending;
     RASPITEX_PATCH requests[10];
 private:
-    Buffer * buf;
     void process_image(uint8_t *image, size_t image_size);
     Mat convert(uint8_t *image, size_t image_size);
     int interprete_params(double mean, double sum);

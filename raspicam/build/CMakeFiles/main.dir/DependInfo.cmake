@@ -16,6 +16,7 @@ set(CMAKE_DEPENDS_CHECK_C
 set(CMAKE_C_COMPILER_ID "GNU")
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/pi/gpu_main/cutting_board/raspicam/Buffer.cpp" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/Buffer.cpp.o"
+  "/home/pi/gpu_main/cutting_board/raspicam/High_Res_Worker.cpp" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/High_Res_Worker.cpp.o"
   "/home/pi/gpu_main/cutting_board/raspicam/Image_Capture.cpp" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/Image_Capture.cpp.o"
   "/home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.cpp" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/Low_Res_Worker.cpp.o"
   "/home/pi/gpu_main/cutting_board/raspicam/main.cpp" "/home/pi/gpu_main/cutting_board/raspicam/build/CMakeFiles/main.dir/main.cpp.o"

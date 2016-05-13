@@ -37,6 +37,7 @@ unsigned char mapping[UNDISTORT_Y][UNDISTORT_X][4];
 
 #define EXTERNAL_IMAGES
 
+
 int own_open(RASPITEX_STATE *state);
 
 #endif /* OWN_H */

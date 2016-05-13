@@ -147,7 +147,7 @@ void Image_Capture::run() {
                 patches[i+1]->active = 0;
                 //printf("Request (%d, %d) (%d, %d)\n", patches[i+1]->x, patches[i+1]->y, patches[i+1]->width, patches[i+1]->height);
             }
-            //size_patches = worker->requests_pending+1;
+            size_patches = worker->requests_pending+1;
             worker->requests_pending = 0;
         }
 
@@ -162,9 +162,7 @@ void Image_Capture::run() {
 
         for (int i = 0; i < (size_patches - 1); i++) {
             if (patches[i + 1]->buffer) {
-                //printf("IMG::Free patch %d %p\nIMG::Free patch buffer %p", i+1, patches[i+1], patches[i+1]->buffer);
-                free(patches[i + 1]->buffer);
-                free(patches[i + 1]);
+                buf->add(patches[i+1]);
             }
         }
         

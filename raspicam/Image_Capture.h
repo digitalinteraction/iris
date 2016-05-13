@@ -16,6 +16,7 @@
 #include "RaspiTex.h"
 
 #include "Low_Res_Worker.h"
+#include "High_Res_Worker.h"
 
 // Standard port setting for the camera component
 #define MMAL_CAMERA_PREVIEW_PORT 0
