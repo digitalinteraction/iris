@@ -20,6 +20,7 @@ typedef struct{
     RASPITEX_PATCH *patch;
     std::mutex lock;
     int status;
+    uint8_t group;
 } Buffer_Item;
 
 
@@ -27,8 +28,8 @@ class Buffer{
 public:
     Buffer(int size);
     ~Buffer();
-    int add(RASPITEX_PATCH *patch);
-    int get(RASPITEX_PATCH **patch);
+    int add(RASPITEX_PATCH *patch, uint8_t group);
+    int get(RASPITEX_PATCH **patch, uint8_t* group);
     int free_space();
     int release();
 private:

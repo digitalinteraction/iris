@@ -115,13 +115,15 @@ unsigned char * load_image(){
     unsigned char *name = malloc(strlen(dirname)+8);
     strcpy(name, dirname);
     strncat(name, filenames[counter], 7);
+    
     struct tga_header tgatemp;
     unsigned char * image = load_tga(name, &tgatemp);
     if (image != 0) {
         counter++;
+        printf("load image %s\n", name);
     }else if(counter != 0){
         //exit(EXIT_SUCCESS);
-        pthread_exit(EXIT_SUCCESS);
+        //pthread_exit(EXIT_SUCCESS);
     }else{
         printf("Error in loading image\n");
         exit(EXIT_FAILURE);
@@ -203,7 +205,7 @@ static int own_init(RASPITEX_STATE *state)
     GLCHK(glFramebufferTexture2D(GL_FRAMEBUFFER,GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D,state->renderTexture_low,0));
 
     int i;
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < FRAMEBUFFER_CNT; i++) {
         printf("generating framebuffer %d\n", i);
         //generate framebuffer high
         GLCHK(glGenFramebuffers(1, &state->fb_high_end[i]));
@@ -236,7 +238,7 @@ static int own_init(RASPITEX_STATE *state)
         printf("Error Frame buffer High\n");
     }
 
-    for (i = 0; i < 3; i++) {
+    for (i = 0; i < FRAMEBUFFER_CNT; i++) {
         printf("check framebuffer %d\n", i);
         GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->fb_high_end[i]));
         status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
@@ -282,10 +284,24 @@ end:
 
 
 static int own_redraw(RASPITEX_STATE *raspitex_state) {
-    raspitex_state->curr_pos_fb++;
-    if(raspitex_state->curr_pos_fb == 3){
+
+    
+    
+    if (raspitex_state->external_images_finished == 0) {
+        raspitex_state->curr_pos_fb++;
+    }
+    
+    if (raspitex_state->curr_pos_fb == FRAMEBUFFER_CNT) {
         raspitex_state->curr_pos_fb = 0;
     }
+    
+    if (raspitex_state->external_images_finished == 0) {
+        raspitex_state->valid_token[raspitex_state->curr_pos_fb]++;
+    }
+    
+    
+    //printf("FRAMEBUFFER: %d %d\n", raspitex_state->valid_token[raspitex_state->curr_pos_fb], raspitex_state->curr_pos_fb);
+    
     
     
     GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, raspitex_state->framebuffer_low));
@@ -299,13 +315,20 @@ static int own_redraw(RASPITEX_STATE *raspitex_state) {
 #ifdef EXTERNAL_IMAGES
     //GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->alt_tex));
     unsigned char * image = load_image();
-    GLCHK(glActiveTexture(GL_TEXTURE1));
-    GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->alt_tex));
-    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
-    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
-    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-    GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
-    GLCHK(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, UNDISTORT_X, UNDISTORT_Y, GL_RGBA, GL_UNSIGNED_BYTE, image));
+    if (image != 0) {
+        //printf("loading image\n");
+        GLCHK(glActiveTexture(GL_TEXTURE1));
+        GLCHK(glBindTexture(GL_TEXTURE_2D, raspitex_state->alt_tex));
+        GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST));
+        GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST));
+        GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
+        GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+        GLCHK(glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, UNDISTORT_X, UNDISTORT_Y, GL_RGBA, GL_UNSIGNED_BYTE, image));
+    }else{
+        //printf("finished loading image\n");
+        raspitex_state->external_images_finished = 1;
+    }
+    usleep(50000);
     //GLCHK(glTexSubImage2D(GL_TEXTURE_2D, 0, GL_RGBA, UNDISTORT_X, UNDISTORT_Y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image));
     
 #endif
@@ -363,7 +386,6 @@ static int own_redraw(RASPITEX_STATE *raspitex_state) {
     
 ///////////////////////////////////////////////////////////////
     
-    raspitex_state->valid_token[raspitex_state->curr_pos_fb]++;
     GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, raspitex_state->fb_high_end[raspitex_state->curr_pos_fb]));
     GLCHK(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
     GLCHK(glUseProgram(own_shader2.program));
@@ -398,7 +420,12 @@ int own_open(RASPITEX_STATE *state)
    state->ops.redraw = own_redraw;
    state->ops.update_texture = raspitexutil_update_texture;
    
-
+   uint8_t step = 256/FRAMEBUFFER_CNT;
+   uint8_t p;
+   for(p=0;p<FRAMEBUFFER_CNT;p++){
+        state->valid_token[p] = step*p;
+   }
+   
    unsigned int i;
    unsigned int j;
    unsigned int x=0;

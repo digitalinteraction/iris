@@ -111,6 +111,8 @@ Image_Capture::Image_Capture(Buffer *buffer, Low_Res_Worker * work)
     digitalWrite(2, LOW);
     digitalWrite(7, LOW);
     
+    group = 0;
+    
     printf("Almost finshed setting up\n");
     
     capturing = 0;
@@ -145,8 +147,9 @@ void Image_Capture::run() {
                 memcpy(patches[i+1], &worker->requests[i], sizeof(RASPITEX_PATCH));
                 patches[i+1]->select = 1;
                 patches[i+1]->active = 0;
-                //printf("Request (%d, %d) (%d, %d)\n", patches[i+1]->x, patches[i+1]->y, patches[i+1]->width, patches[i+1]->height);
+                printf("Request (%d, %d) (%d, %d)\n", patches[i+1]->x, patches[i+1]->y, patches[i+1]->width, patches[i+1]->height);
             }
+            group++;
             size_patches = worker->requests_pending+1;
             worker->requests_pending = 0;
         }
@@ -155,14 +158,17 @@ void Image_Capture::run() {
             patches[0]->buffer = 0;
             int8_t ret = raspitex_capture(&state.raspitex_state, patches, size_patches);
             
-            pthread_mutex_lock(&worker->buffer_lock);
-            memcpy(&worker->low_patch, patches[0], sizeof(RASPITEX_PATCH));
-            worker->new_low_buffer = 1;
-            pthread_mutex_unlock(&worker->buffer_lock);
+            //if(state.raspitex_state.external_images_finished == 0){
+                pthread_mutex_lock(&worker->buffer_lock);
+                memcpy(&worker->low_patch, patches[0], sizeof(RASPITEX_PATCH));
+                worker->new_low_buffer = 1;
+                pthread_mutex_unlock(&worker->buffer_lock);
+            //}
+            
 
         for (int i = 0; i < (size_patches - 1); i++) {
             if (patches[i + 1]->buffer) {
-                buf->add(patches[i+1]);
+                buf->add(patches[i+1], group);
             }
         }
         

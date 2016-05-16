@@ -61,6 +61,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     Mat img = convert(image, image_size);
     if (img.empty() == 0) {
 
+        //imwrite("test.png", img);
         //BACKGROUND SUBSTRACTOR/////////////////////////////
         /*pMOG2->apply(img, mask, learning);
         cnt++;
@@ -116,27 +117,28 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     if(contours[i][j].y < ymin){
                         ymin = contours[i][j].y;
                     }
-                    if(contours[i][j].y > ymax){
+                    if (contours[i][j].y > ymax) {
                         ymax = contours[i][j].y;
                     }
                 }
-                if((xmax-xmin) > 10 && (ymax - ymin) > 10){
+                if ((xmax - xmin) > 10 && (ymax - ymin) > 10) {
                     requests[cnt].fb = low_patch.fb;
                     requests[cnt].token = low_patch.token;
-                    float factorx = (float)HIGH_OUTPUT_X/LOW_OUTPUT_X;
-                    float factory = (float)HIGH_OUTPUT_Y/LOW_OUTPUT_Y;
-                    float x = (xmin-5)*factorx - factorx;
-                    float y = (ymin-5)*factory - factory;
-                    if(x < 0) x = 0;
-                    if(y < 0) y = 0;
-                    float height = (ymax+5)*factory + factory - y;
-                    float width = (xmax+5)*factorx + factorx - x;
-                    if((y + height) > HIGH_OUTPUT_Y) height = HIGH_OUTPUT_Y - y;
-                    if((x + width) > HIGH_OUTPUT_X) width = HIGH_OUTPUT_X - x;
-                    requests[cnt].x = (int)x;
-                    requests[cnt].y = (int)y;
-                    requests[cnt].height = (int)(height+0.5);
-                    requests[cnt].width = (int)(width+0.5);
+                    //printf("Low Res: %d %d %d %d\n", xmin, ymin, xmax, ymax);
+                    float factorx = (float) HIGH_OUTPUT_X / LOW_OUTPUT_X;
+                    float factory = (float) HIGH_OUTPUT_Y / LOW_OUTPUT_Y;
+                    float x = (xmin - 5) * factorx - factorx;
+                    float y = (ymin - 5) * factory - factory;
+                    if (x < 0) x = 0;
+                    if (y < 0) y = 0;
+                    float height = (ymax + 5) * factory + factory - y;
+                    float width = (xmax + 5) * factorx + factorx - x;
+                    if ((y + height) > HIGH_OUTPUT_Y) height = HIGH_OUTPUT_Y - y;
+                    if ((x + width) > HIGH_OUTPUT_X) width = HIGH_OUTPUT_X - x;
+                    requests[cnt].x = (int) x;
+                    requests[cnt].y = (int) y;
+                    requests[cnt].height = (int) (width + 1.5);
+                    requests[cnt].width = (int) (height + 1.5);
                     //add limits for request in ImageCapture
                     cnt++;
                 }

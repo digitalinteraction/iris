@@ -51,6 +51,8 @@ extern "C"{
 #define LOW_OUTPUT_X 128//128//256//128//400//972
 #define LOW_OUTPUT_Y 96//192//96//300//729
     
+#define FRAMEBUFFER_CNT 8
+    
 //0: IR
 //2: UV
 //7: White
@@ -87,7 +89,7 @@ typedef struct RASPITEX_CAPTURE
 {
    /// Wait for previous capture to complete
    VCOS_SEMAPHORE_T start_sem;
-
+   uint8_t cap;
    /// Posted once the capture is complete
    VCOS_SEMAPHORE_T completed_sem;
 } RASPITEX_CAPTURE;
@@ -185,10 +187,12 @@ typedef struct RASPITEX_STATE
    GLuint renderTexture_high;
    GLuint renderTexture_low;
    
-   GLuint fb_high_end[3];
-   GLuint render_high_end[3];
+   uint8_t external_images_finished;
+   
+   GLuint fb_high_end[FRAMEBUFFER_CNT];
+   GLuint render_high_end[FRAMEBUFFER_CNT];
    uint8_t curr_pos_fb;
-   uint8_t valid_token[3];
+   uint8_t valid_token[FRAMEBUFFER_CNT];
       
    RASPITEX_PATCH **patches;
    int8_t patch_size;

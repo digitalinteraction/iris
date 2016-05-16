@@ -473,6 +473,13 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
     if (!patch->buffer)
         goto error;
 
+    if(patch->select == 0 && state->external_images_finished == 1){
+        patch->fb = state->curr_pos_fb;
+        patch->token = state->valid_token[state->curr_pos_fb];
+        patch->active = 2;
+        return 0;
+    }
+    
     if (patch->select == 0) {
         GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->framebuffer_low));
         glReadPixels(patch->x, patch->y, patch->height, patch->width, GL_RGBA, GL_UNSIGNED_BYTE, patch->buffer);
@@ -480,16 +487,18 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
         patch->fb = state->curr_pos_fb;
         patch->token = state->valid_token[state->curr_pos_fb];
         patch->active = 2;
+        printf("LOW RES: %d %d\n", patch->token, patch->fb);
 
     }else if(patch->select == 1){
-        if((patch->fb >= 0) && (patch->fb < 3) &&
+        if((patch->fb >= 0) && (patch->fb < FRAMEBUFFER_CNT) &&
                 (state->valid_token[patch->fb] == patch->token)){
-            
+            printf("request for %d %d %d %d\n", patch->x, patch->y, patch->height, patch->width);
             GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->fb_high_end[patch->fb]));
             GLCHK(glReadPixels(patch->x, patch->y, patch->height, patch->width, GL_RGBA, GL_UNSIGNED_BYTE, patch->buffer));
             patch->active = 2;
 
         }else{
+            printf("Token: %d %d, FB: %d\n", patch->token, state->valid_token[patch->fb], patch->fb);
             patch->active = -1;
             goto error;
         }

@@ -25,7 +25,7 @@ Buffer::~Buffer(){
     delete[] array;
 }
 
-int Buffer::add(RASPITEX_PATCH *patch){
+int Buffer::add(RASPITEX_PATCH *patch, uint8_t group){
     add_pos++;
     if(add_pos == size){
         add_pos = 0;
@@ -34,6 +34,7 @@ int Buffer::add(RASPITEX_PATCH *patch){
     array[add_pos].lock.lock();
     if(array[add_pos].status == 0){
         array[add_pos].patch = patch;
+        array[add_pos].group = group;
         array[add_pos].status = 1;
         //printf("added buffer %d\n", add_pos);
     }else{
@@ -58,7 +59,7 @@ int Buffer::free_space(){
     return 1;
 }
 
-int Buffer::get(RASPITEX_PATCH **patch){
+int Buffer::get(RASPITEX_PATCH **patch, uint8_t *group){
     get_pos++;
     if(get_pos == size){
         get_pos = 0;
@@ -67,6 +68,7 @@ int Buffer::get(RASPITEX_PATCH **patch){
     array[get_pos].lock.lock();
     if(array[get_pos].status == 1){
         *patch = array[get_pos].patch;
+        *group = array[get_pos].group;
         array[get_pos].status = 2;
         //printf("gotten buffer %d\n", get_pos);
     }else{

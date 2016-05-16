@@ -362,6 +362,7 @@ static int raspitex_draw(RASPITEX_STATE *state, MMAL_BUFFER_HEADER_T *buf)
       // vcos_log_trace("%s: No preview image", VCOS_FUNCTION);
    }
 
+
 end:
    return rc;
 }
@@ -672,6 +673,8 @@ void raspitex_set_defaults(RASPITEX_STATE *state)
    state->ops.gl_term = raspitexutil_gl_term;
    state->ops.destroy_native_window = raspitexutil_destroy_native_window;
    state->ops.close = raspitexutil_close;
+   state->external_images_finished = 0;
+   state->capture.cap = 0;
 }
 
 /* Stops the rendering loop and destroys MMAL resources
@@ -725,7 +728,6 @@ int raspitex_capture(RASPITEX_STATE *state, RASPITEX_PATCH ** pts, int8_t size)
        state->patches = pts;
        state->patch_size = size;
        
-       //printf("waiting for response %p %d\n", pts, size);
       /* Only request one capture at a time */
       vcos_semaphore_wait(&state->capture.start_sem);
       /* Wait for capture to start */

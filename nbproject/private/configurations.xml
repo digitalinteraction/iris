@@ -7,6 +7,8 @@
         <in>gray.c</in>
       </df>
       <df name="external_images">
+        <df name="jpg">
+        </df>
       </df>
       <df name="interface">
         <df name="khronos">

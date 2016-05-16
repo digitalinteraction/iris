@@ -103,4 +103,5 @@ private:
     RASPISTILL_STATE state;
     Buffer *buf;
     Low_Res_Worker * worker;
+    uint8_t group;
 };
