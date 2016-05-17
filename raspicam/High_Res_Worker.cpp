@@ -65,33 +65,49 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
     printf("Image:: %p %d %d\n", patch->buffer, patch->size, img.empty());
     if (img.empty() == 0) {
         //////////////////////////////////////////////////////////
-        Mat hsv, mask;
-        cvtColor(img, hsv, COLOR_BGR2HSV);
-        Mat channel[3];
-        split(hsv, channel);
+        //Mat hsv, mask;
+        //cvtColor(img, hsv, COLOR_BGR2HSV);
+        //Mat channel[3];
+        //split(hsv, channel);
+        
+        Mat rgb;
+        cvtColor(img, rgb, COLOR_RGBA2RGB);
+        
+        Mat marker = Mat::zeros(img.size(), CV_32SC1);
+        Size img_size = img.size();
+        circle(marker, Point(img_size.width/2, img_size.height/2), 100, CV_RGB(1,1,1),-1);
+        circle(marker, Point(0,0), 5, CV_RGB(255,255,255), -1);
+        circle(marker, Point(0,img_size.height), 5, CV_RGB(255,255,255), -1);
+        circle(marker, Point(img_size.width,0), 5, CV_RGB(255,255,255), -1);
+        circle(marker, Point(img_size.width,img_size.height), 5, CV_RGB(255,255,255), -1);
+        
+        watershed(rgb, marker);
+        
         //channel[1];
-        threshold(channel[1], mask, 40, 255, THRESH_BINARY);
-        Mat kernel = Mat::ones(3, 3, CV_8U);
-        Mat cleaned;
-        morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
+        //threshold(channel[1], mask, 40, 255, THRESH_BINARY);
+        //Mat kernel = Mat::ones(3, 3, CV_8U);
+        //Mat cleaned;
+        //morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
         //////////////////////////////////////////////////////////
         
         //////////////////////////////////////////////////////////
         std::vector<vector<Point> > contours;
         RNG rng(12345);
-        findContours(cleaned, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        findContours(marker, contours, CV_RETR_FLOODFILL, CV_CHAIN_APPROX_SIMPLE);
         //////////////////////////////////////////////////////////
         
         //DRAW CONTOURS//////////////////////////////////////
-        Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
+        Mat drawing = Mat::zeros(marker.size(), CV_8UC3);
         for (int i = 0; i < contours.size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours, i, color, 2);
         }
         //////////////////////////////////////////////////////////
         
-        Mat part_img;
-        img.copyTo(part_img, cleaned);
+        Mat part_img, inv_marker;
+        bitwise_not(marker, inv_marker);
+        inv_marker.convertTo(inv_marker, CV_8UC1);
+        img.copyTo(part_img, inv_marker);
         
         //imshow("High res", mask);
         //waitKey(30);
@@ -99,9 +115,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         std::vector<KeyPoint> kp;
         detector->detect(part_img, kp);
         std::cout << "Found " << kp.size() << " Keypoints " << std::endl;
-        Mat out, rgb;
-        cvtColor(img, rgb, COLOR_RGBA2RGB);
-        drawKeypoints(rgb, kp, out, Scalar::all(255));
+        Mat out, rgb2;
+        cvtColor(img, rgb2, COLOR_RGBA2RGB);
+        drawKeypoints(rgb2, kp, out, Scalar::all(255));
         
         
         
@@ -114,8 +130,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         tmp2[7] = group + '0';
         tmp2[8] = cnt + '0';
         
-        imwrite(tmp2, drawing);
-        imwrite(tmp, out);
+        imwrite(tmp2, out);
+        imwrite(tmp, drawing);
 
         //FILE *fp = fopen(tmp, "wb");
         //write_tga(fp, patch->height, patch->width, patch->buffer, patch->size);

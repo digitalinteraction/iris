@@ -26,14 +26,7 @@ void main()
     vec4 p8 = texture2D(renderTexture, vec2(x2, y2));
     vec4 v =  p0 + (2.0 * p1) + p3 -p6 + (-2.0 * p7) + -p8;
     vec4 h =  p0 + (2.0 * p3) + p7 -p2 + (-2.0 * p5) + -p8;
-    vec4 end = sqrt(h*h + v*v);
-    if((end.r + end.g + end.b) < 10.0){
-        gl_FragColor = texture2D(renderTexture, texcoord);
-    }else{
-        gl_FragColor = vec4(1.0,1.0,1.0,1.0);
-    }
-    //gl_FragColor = end;
+    gl_FragColor = sqrt(h*h + v*v);
+    gl_FragColor = texture2D(renderTexture, texcoord);
     gl_FragColor.a = 1.0;
-
-    //gl_FragColor = texture2D(renderTexture, texcoord);
 }

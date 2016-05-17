@@ -479,10 +479,20 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
         patch->active = 2;
         return 0;
     }
+    int i;
+    printf("FB: %d (%d) ", state->framebuffer_low, state->renderTexture_low);
+    printf(" %d (%d) ", state->framebuffer_high, state->renderTexture_high);
+    printf(" (%d) (%d) ", state->undist, state->alt_tex);
+    for(i=0;i<FRAMEBUFFER_CNT;i++){
+        printf(" %d (%d) ", state->fb_high_end[i], state->render_high_end[i]);
+    }
+    printf("\n");
+    
     
     if (patch->select == 0) {
         GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->framebuffer_low));
-        glReadPixels(patch->x, patch->y, patch->height, patch->width, GL_RGBA, GL_UNSIGNED_BYTE, patch->buffer);
+        GLCHK(glReadPixels(patch->x, patch->y, patch->height, patch->width, GL_RGBA, GL_UNSIGNED_BYTE, patch->buffer));
+        //glReadPixels(0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, patch->buffer);
 
         patch->fb = state->curr_pos_fb;
         patch->token = state->valid_token[state->curr_pos_fb];
@@ -490,9 +500,10 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
         printf("LOW RES: %d %d\n", patch->token, patch->fb);
 
     }else if(patch->select == 1){
-        if((patch->fb >= 0) && (patch->fb < FRAMEBUFFER_CNT) &&
-                (state->valid_token[patch->fb] == patch->token)){
+        if((patch->fb >= 0) && (patch->fb < FRAMEBUFFER_CNT) /*&&
+                (state->valid_token[patch->fb] == patch->token)*/){
             printf("request for %d %d %d %d\n", patch->x, patch->y, patch->height, patch->width);
+            printf("Token:: %d %d\n", patch->token, state->valid_token[patch->fb]);
             GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->fb_high_end[patch->fb]));
             GLCHK(glReadPixels(patch->x, patch->y, patch->height, patch->width, GL_RGBA, GL_UNSIGNED_BYTE, patch->buffer));
             patch->active = 2;

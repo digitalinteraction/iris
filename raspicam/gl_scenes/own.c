@@ -273,7 +273,14 @@ static int own_init(RASPITEX_STATE *state)
     GLCHK(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
     GLCHK(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, UNDISTORT_X, UNDISTORT_Y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0));
 
-    
+    //int i;
+    printf("FB: %d (%d) ", state->framebuffer_low, state->renderTexture_low);
+    printf(" %d (%d) ", state->framebuffer_high, state->renderTexture_high);
+    printf(" (%d) (%d) ", state->undist, state->alt_tex);
+    for(i=0;i<FRAMEBUFFER_CNT;i++){
+        printf(" %d (%d) ", state->fb_high_end[i], state->render_high_end[i]);
+    }
+    printf("\n");
     
     state->curr_pos_fb = 0;
     printf("finished setting up OpenGL\n");

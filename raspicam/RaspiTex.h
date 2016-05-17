@@ -51,7 +51,7 @@ extern "C"{
 #define LOW_OUTPUT_X 128//128//256//128//400//972
 #define LOW_OUTPUT_Y 96//192//96//300//729
     
-#define FRAMEBUFFER_CNT 8
+#define FRAMEBUFFER_CNT 4
     
 //0: IR
 //2: UV

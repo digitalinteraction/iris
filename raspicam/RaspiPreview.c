@@ -185,8 +185,8 @@ void raspipreview_set_defaults(RASPIPREVIEW_PARAMETERS *state)
    state->opacity = 255;
    state->previewWindow.x = 0;
    state->previewWindow.y = 0;
-   state->previewWindow.width = 1944;
-   state->previewWindow.height = 1458;
+   state->previewWindow.width = 1600;
+   state->previewWindow.height = 1200;
    state->preview_component = NULL;
 }
 
