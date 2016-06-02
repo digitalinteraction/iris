@@ -10,13 +10,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/Buffer.cpp</file>
             <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/gl_scenes/own.c</file>
-            <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/main.cpp</file>
             <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/Image_Capture.cpp</file>
-            <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/Image_Capture.h</file>
-            <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/High_Res_Worker.h</file>
-            <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/Buffer.h</file>
+            <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/main.cpp</file>
+            <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/gl_scenes/own.h</file>
+            <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/Low_Res_Worker.cpp</file>
             <file>file:/home/tobias/piraspicam/gpu_main/cutting_board/raspicam/High_Res_Worker.cpp</file>
         </group>
     </open-files>

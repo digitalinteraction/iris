@@ -480,13 +480,13 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
         return 0;
     }
     int i;
-    printf("FB: %d (%d) ", state->framebuffer_low, state->renderTexture_low);
-    printf(" %d (%d) ", state->framebuffer_high, state->renderTexture_high);
-    printf(" (%d) (%d) ", state->undist, state->alt_tex);
-    for(i=0;i<FRAMEBUFFER_CNT;i++){
-        printf(" %d (%d) ", state->fb_high_end[i], state->render_high_end[i]);
-    }
-    printf("\n");
+    //printf("FB: %d (%d) ", state->framebuffer_low, state->renderTexture_low);
+    //printf(" %d (%d) ", state->framebuffer_high, state->renderTexture_high);
+    //printf(" (%d) (%d) ", state->undist, state->alt_tex);
+    //for(i=0;i<FRAMEBUFFER_CNT;i++){
+    //    printf(" %d (%d) ", state->fb_high_end[i], state->render_high_end[i]);
+    //}
+    //printf("\n");
     
     
     if (patch->select == 0) {
@@ -497,13 +497,13 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
         patch->fb = state->curr_pos_fb;
         patch->token = state->valid_token[state->curr_pos_fb];
         patch->active = 2;
-        printf("LOW RES: %d %d\n", patch->token, patch->fb);
+        //printf("LOW RES: %d %d\n", patch->token, patch->fb);
 
     }else if(patch->select == 1){
         if((patch->fb >= 0) && (patch->fb < FRAMEBUFFER_CNT) /*&&
                 (state->valid_token[patch->fb] == patch->token)*/){
-            printf("request for %d %d %d %d\n", patch->x, patch->y, patch->height, patch->width);
-            printf("Token:: %d %d\n", patch->token, state->valid_token[patch->fb]);
+            //printf("request for %d %d %d %d\n", patch->x, patch->y, patch->height, patch->width);
+            //printf("Token:: %d %d\n", patch->token, state->valid_token[patch->fb]);
             GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->fb_high_end[patch->fb]));
             GLCHK(glReadPixels(patch->x, patch->y, patch->height, patch->width, GL_RGBA, GL_UNSIGNED_BYTE, patch->buffer));
             patch->active = 2;

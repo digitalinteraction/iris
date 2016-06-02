@@ -529,8 +529,6 @@
                 <in>CMakeCXXCompilerId.cpp</in>
               </df>
             </df>
-            <df name="CMakeTmp">
-            </df>
             <df name="main.dir">
               <df name="gl_scenes">
               </df>
@@ -539,6 +537,8 @@
               <df name="gl_scenes">
               </df>
             </df>
+          </df>
+          <df name="pics">
           </df>
         </df>
         <df name="CMakeFiles">
@@ -614,6 +614,23 @@
         <in>common.h</in>
         <in>vc_image_types.h</in>
         <in>vcore.h</in>
+      </df>
+      <df name="wavelet_code">
+        <df name="CMakeFiles">
+          <df name="3.0.2">
+            <df name="CompilerIdC">
+              <in>CMakeCCompilerId.c</in>
+            </df>
+            <df name="CompilerIdCXX">
+              <in>CMakeCXXCompilerId.cpp</in>
+            </df>
+          </df>
+          <df name="CMakeTmp">
+          </df>
+          <df name="test.dir">
+          </df>
+        </df>
+        <in>test.cpp</in>
       </df>
       <df name="wiringPi">
       </df>

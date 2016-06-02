@@ -27,6 +27,7 @@ Low_Res_Worker::Low_Res_Worker() {
     previous = Mat::zeros(LOW_OUTPUT_Y, LOW_OUTPUT_X, CV_8UC4);
     new_low_buffer = 0;
     requests_pending = 0;
+    nr_img = 0;
     if (pthread_mutex_init(&buffer_lock, NULL) != 0)
     {
         printf("mutex init failed\n");
@@ -49,6 +50,7 @@ void Low_Res_Worker::run(){
             pthread_mutex_lock(&buffer_lock);
             counter++;
             process_image(low_patch.buffer, low_patch.size);
+            nr_img++;
             free(low_patch.buffer);
             new_low_buffer = 0;
             pthread_mutex_unlock(&buffer_lock);
@@ -156,11 +158,41 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         imshow("V", channel[2]);
         imshow("cleaned", cleaned);
         imshow("Mask", drawing);
+        
+        char filename[30];
+        
+        /*snprintf(filename, 30, "pics/%d_lowres_ch0.png", nr_img);
+        imwrite(filename, channel[0]);
+        memset(filename, 0, 30);
+        
+        snprintf(filename, 30, "pics/%d_lowres_ch1.png", nr_img);
+        imwrite(filename, channel[1]);
+        memset(filename, 0, 30);
+        
+        snprintf(filename, 30, "pics/%d_lowres_ch2.png", nr_img);
+        imwrite(filename, channel[2]);
+        memset(filename, 0, 30);*/
+        
+        snprintf(filename, 30, "pics/%d_lowres_cleaned.png", nr_img);
+        imwrite(filename, cleaned);
+        memset(filename, 0, 30);
+        
+        snprintf(filename, 30, "pics/%d_lowres_mask.png", nr_img);
+        imwrite(filename, mask);
+        memset(filename, 0, 30);
 
         waitKey(30);
+        hsv.release();
+        channel[0].release();
+        channel[1].release();
+        channel[2].release();
+        kernel.release();
+        cleaned.release();
+        drawing.release();
     } else {
         printf("Failed to convert camera image to Mat\n");
     }
+    img.release();
 }
 
 Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {

@@ -32,6 +32,7 @@ public:
     int get(RASPITEX_PATCH **patch, uint8_t* group);
     int free_space();
     int release();
+    int curr_size;
 private:
     Buffer_Item *array;
     int add_pos;

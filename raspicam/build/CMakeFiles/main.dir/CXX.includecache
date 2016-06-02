@@ -558,6 +558,38 @@ opencv2/features2d.hpp
 opencv2/xfeatures2d.hpp
 -
 
+/home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.cpp
+Low_Res_Worker.h
+/home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.h
+tga.h
+/home/pi/gpu_main/cutting_board/raspicam/tga.h
+limits
+-
+
+/home/pi/gpu_main/cutting_board/raspicam/Low_Res_Worker.h
+opencv2/core/core.hpp
+-
+opencv2/highgui/highgui.hpp
+-
+opencv2/imgcodecs.hpp
+/home/pi/gpu_main/cutting_board/raspicam/opencv2/imgcodecs.hpp
+opencv2/imgproc.hpp
+/home/pi/gpu_main/cutting_board/raspicam/opencv2/imgproc.hpp
+opencv2/highgui.hpp
+-
+opencv2/video.hpp
+-
+opencv2/bgsegm.hpp
+-
+opencv2/photo.hpp
+/home/pi/gpu_main/cutting_board/raspicam/opencv2/photo.hpp
+opencv2/features2d.hpp
+-
+RaspiTex.h
+/home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
+pthread.h
+-
+
 /home/pi/gpu_main/cutting_board/raspicam/RaspiTex.h
 stdio.h
 -
@@ -644,6 +676,10 @@ stdint.h
 opencv2/core/core_c.h
 /usr/local/include/opencv/opencv2/core/core_c.h
 
+/usr/local/include/opencv2/bgsegm.hpp
+opencv2/video.hpp
+/usr/local/include/opencv2/opencv2/video.hpp
+
 /usr/local/include/opencv2/calib3d.hpp
 opencv2/core.hpp
 /usr/local/include/opencv2/opencv2/core.hpp
@@ -707,6 +743,10 @@ opencv2/core/neon_utils.hpp
 /usr/local/include/opencv2/core/opencv2/core/neon_utils.hpp
 
 /usr/local/include/opencv2/core/bufferpool.hpp
+
+/usr/local/include/opencv2/core/core.hpp
+opencv2/core.hpp
+/usr/local/include/opencv2/core/opencv2/core.hpp
 
 /usr/local/include/opencv2/core/core_c.h
 opencv2/core/types_c.h
@@ -927,6 +967,10 @@ opencv2/videoio.hpp
 /usr/local/include/opencv2/opencv2/videoio.hpp
 opencv2/highgui/highgui_c.h
 /usr/local/include/opencv2/opencv2/highgui/highgui_c.h
+
+/usr/local/include/opencv2/highgui/highgui.hpp
+opencv2/highgui.hpp
+/usr/local/include/opencv2/highgui/opencv2/highgui.hpp
 
 /usr/local/include/opencv2/highgui/highgui_c.h
 opencv2/core/core_c.h

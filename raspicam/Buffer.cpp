@@ -19,6 +19,7 @@ Buffer::Buffer(int size){
     
     add_pos = 0;
     get_pos = 0;
+    curr_size = 0;
 }
 
 Buffer::~Buffer(){
@@ -36,6 +37,7 @@ int Buffer::add(RASPITEX_PATCH *patch, uint8_t group){
         array[add_pos].patch = patch;
         array[add_pos].group = group;
         array[add_pos].status = 1;
+        curr_size++;
         //printf("added buffer %d\n", add_pos);
     }else{
         array[add_pos].lock.unlock();
@@ -85,6 +87,7 @@ int Buffer::release(){
     if(array[get_pos].status == 2){
         free(array[get_pos].patch->buffer);
         free(array[get_pos].patch);
+        curr_size--;
         array[get_pos].patch = 0;
         array[get_pos].status = 0;
     }else{

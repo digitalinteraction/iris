@@ -26,11 +26,11 @@ int main() {
     std::thread high_work(&High_Res_Worker::run, high);
     std::thread img_cap(&Image_Capture::run, cap);
     
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 1000; i++) {
         int begin = low->counter;
         std::this_thread::sleep_for(std::chrono::seconds(1));
         begin = low->counter - begin;
-        printf("%d Frames per Second: %d\n", i,begin);
+        printf("%d Frames per Second: %d, Buffer Size: %d\n", i,begin, buffer->curr_size);
         fflush(stdout);
     }
 

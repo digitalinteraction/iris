@@ -48,7 +48,7 @@ void High_Res_Worker::run(){
             if(group != prev_group){
                 cnt = 0;
             }
-            printf("%d %d got patch %d %d %d\n", patch->width, patch->height, patch->size, group, cnt);
+            //printf("%d %d got patch %d %d %d\n", patch->width, patch->height, patch->size, group, cnt);
 
             
             find_features(patch, group);
@@ -62,7 +62,7 @@ void High_Res_Worker::run(){
 
 void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
     Mat img = convert(patch);
-    printf("Image:: %p %d %d\n", patch->buffer, patch->size, img.empty());
+    //printf("Image:: %p %d %d\n", patch->buffer, patch->size, img.empty());
     if (img.empty() == 0) {
         //////////////////////////////////////////////////////////
         //Mat hsv, mask;
@@ -96,11 +96,13 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         findContours(marker, contours, CV_RETR_FLOODFILL, CV_CHAIN_APPROX_SIMPLE);
         //////////////////////////////////////////////////////////
         
+        printf("Contours size %d\n", contours.size());
         //DRAW CONTOURS//////////////////////////////////////
         Mat drawing = Mat::zeros(marker.size(), CV_8UC3);
         for (int i = 0; i < contours.size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours, i, color, 2);
+            printf("CON:: %d\n", contours[i].size());
         }
         //////////////////////////////////////////////////////////
         
@@ -122,21 +124,39 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         
         
-        char tmp[] = "testing00a.png";
-        char tmp2[] = "testing00b.png";
-
-        tmp[7] = group + '0';
+        //char tmp[] = "testing00a.png";
+        //char tmp2[] = "testing00b.png";
+        
+        char filename[30];
+        snprintf(filename, 30, "pics/%d_%d_highres_out.png", group, cnt);
+        imwrite(filename, out);
+        memset(filename, 0, 30);
+        
+        snprintf(filename, 30, "pics/%d_%d_highres_draw.png", group, cnt);
+        imwrite(filename, drawing);
+        memset(filename, 0, 30);
+        
+        /*tmp[7] = group + '0';
         tmp[8] = cnt + '0';
         tmp2[7] = group + '0';
-        tmp2[8] = cnt + '0';
+        tmp2[8] = cnt + '0';*/
         
-        imwrite(tmp2, out);
-        imwrite(tmp, drawing);
+        //imwrite(tmp2, out);
+        //imwrite(tmp, drawing);
 
         //FILE *fp = fopen(tmp, "wb");
         //write_tga(fp, patch->height, patch->width, patch->buffer, patch->size);
         //fclose(fp);
+        
+        rgb.release();
+        marker.release();
+        drawing.release();
+        part_img.release();
+        inv_marker.release();
+        out.release();
+        rgb2.release();
     }
+    img.release();
 }
 
 Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {

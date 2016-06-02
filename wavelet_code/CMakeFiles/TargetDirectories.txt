@@ -1,0 +1,1 @@
+/home/pi/gpu_main/cutting_board/wavelet_code/CMakeFiles/test.dir

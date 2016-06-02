@@ -99,18 +99,18 @@ Image_Capture::Image_Capture(Buffer *buffer, Low_Res_Worker * work)
     /*if (mmal_port_parameter_set_boolean(camera_video_port, MMAL_PARAMETER_CAPTURE, 1) != MMAL_SUCCESS) {
             //vcos_log_error("%s: Failed to start capture", __func__);
     }*/
-    if (wiringPiSetup () == -1){
+    /*if (wiringPiSetup () == -1){
         printf("Error in setting up wiringPi\n");
-    }
+    }*/
     
-    pinMode (0, OUTPUT);
+    /*pinMode (0, OUTPUT);
     pinMode (2, OUTPUT);
     pinMode (7, OUTPUT);
     
     digitalWrite(0, LOW);
     digitalWrite(2, LOW);
     digitalWrite(7, LOW);
-    
+    */
     group = 0;
     
     printf("Almost finshed setting up\n");
@@ -122,9 +122,9 @@ Image_Capture::Image_Capture(Buffer *buffer, Low_Res_Worker * work)
 
 
 Image_Capture::~Image_Capture(){
-    digitalWrite(0, LOW);
-    digitalWrite(2, LOW);
-    digitalWrite(7, LOW);
+    //digitalWrite(0, LOW);
+    //digitalWrite(2, LOW);
+    //digitalWrite(7, LOW);
     printf("Shutting capturing down\n");
 }
 
@@ -141,13 +141,13 @@ void Image_Capture::run() {
         
         size_patches = 1;
         if (worker->requests_pending > 0) {
-            printf("request for %d\n", worker->requests_pending);
+            //printf("request for %d\n", worker->requests_pending);
             for(int i=0;i<worker->requests_pending;i++){
                 patches[i+1] = (RASPITEX_PATCH *)calloc(sizeof(RASPITEX_PATCH), 1);
                 memcpy(patches[i+1], &worker->requests[i], sizeof(RASPITEX_PATCH));
                 patches[i+1]->select = 1;
                 patches[i+1]->active = 0;
-                printf("Request (%d, %d) (%d, %d)\n", patches[i+1]->x, patches[i+1]->y, patches[i+1]->width, patches[i+1]->height);
+                //printf("Request (%d, %d) (%d, %d)\n", patches[i+1]->x, patches[i+1]->y, patches[i+1]->width, patches[i+1]->height);
             }
             group++;
             size_patches = worker->requests_pending+1;
@@ -158,12 +158,12 @@ void Image_Capture::run() {
             patches[0]->buffer = 0;
             int8_t ret = raspitex_capture(&state.raspitex_state, patches, size_patches);
             
-            //if(state.raspitex_state.external_images_finished == 0){
+            if(state.raspitex_state.external_images_finished == 0){
                 pthread_mutex_lock(&worker->buffer_lock);
                 memcpy(&worker->low_patch, patches[0], sizeof(RASPITEX_PATCH));
                 worker->new_low_buffer = 1;
                 pthread_mutex_unlock(&worker->buffer_lock);
-            //}
+            }
             
 
         for (int i = 0; i < (size_patches - 1); i++) {
@@ -175,9 +175,9 @@ void Image_Capture::run() {
             
         
     }
-    digitalWrite(0, LOW);
-    digitalWrite(2, LOW);
-    digitalWrite(7, LOW);
+    //digitalWrite(0, LOW);
+    //digitalWrite(2, LOW);
+    //digitalWrite(7, LOW);
 }
 
 int Image_Capture::get_high_res_image(){

@@ -52,6 +52,7 @@ private:
     Ptr<BackgroundSubtractor> pMOG2;
     Mat previous;
     int cnt;
+    int nr_img;
     float learning;
 };
 
