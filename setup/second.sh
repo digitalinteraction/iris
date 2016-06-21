@@ -1,12 +1,12 @@
 ##opencv start
 echo "**************Start installing OpenCV Prerequisites**************"
-sudo apt-get install build-essential git cmake pkg-config
-sudo apt-get install libjpeg-dev libtiff5-dev libjasper-dev libpng12-dev
-sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
-sudo apt-get install libxvidcore-dev libx264-dev
-sudo apt-get install libgtk2.0-dev
-sudo apt-get install libatlas-base-dev gfortran
-sudo apt-get install python2.7-dev python3-dev
+sudo apt-get -y install build-essential git cmake pkg-config
+sudo apt-get -y install libjpeg-dev libtiff5-dev libjasper-dev libpng12-dev
+sudo apt-get -y install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+sudo apt-get -y install libxvidcore-dev libx264-dev
+sudo apt-get -y install libgtk2.0-dev
+sudo apt-get -y install libatlas-base-dev gfortran
+sudo apt-get -y install python2.7-dev python3-dev
 echo "**************Cloning OpenCV and OpenCV_contrib**************"
 cd ~
 mkdir opencv
@@ -37,10 +37,10 @@ cd wiringPi
 ./build
 
 echo "**************install pico UPS**************"
-sudo apt-get install python-rpi.gpio
-sudo apt-get install python-smbus
-sudo apt-get install i2c-tools
-sudo "i2c-bmc2708" >> /etc/modules
+sudo apt-get -y install python-rpi.gpio
+sudo apt-get -y install python-smbus
+sudo apt-get -y install i2c-tools
+sudo sh -c "echo "i2c-bmc2708" >> /etc/modules"
 mkdir ups
 cd ups
 wget http://www.pimodules.com/_zip/UPS_PIco_Supporting_Files.zip
