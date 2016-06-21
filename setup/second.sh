@@ -50,4 +50,4 @@ echo "sudo python /home/pi/picofssd.py &" >> /etc/rc.local
 echo "echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device( sleep 4; hwclock -s ) &" >> /etc/rc.local
 sudo chmod +x /etc/rc.local
 echo "**************Done**************"
-sudo reboot
+#sudo reboot
