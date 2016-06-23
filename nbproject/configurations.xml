@@ -267,6 +267,9 @@
         <in>SerialCon.h</in>
         <in>tga.c</in>
       </df>
+      <df name="serial_test">
+        <in>serial_test.cpp</in>
+      </df>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -978,6 +981,8 @@
       <item path="raspicam/imv_examples/imv2txt.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="raspicam/tga.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="serial_test/serial_test.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

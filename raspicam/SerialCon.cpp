@@ -23,11 +23,12 @@ SerialCon::SerialCon() {
     fd_array[2] = init_serial(2);
     fd_array[3] = init_serial(3);
     pipe(pipe_array);
-    fd_array[4] = pipe_array[0];
-    fd_array[5] = pipe_array[1];
+    pipe(send_array);
+    fd_array[4] = pipe_array[1];
+    //fd_array[5] = pipe_array[1];
 
     int i, max=0;
-    for(i=0;i<6;i++){
+    for(i=0;i<5;i++){
             if(fd_array[i] >= 0){
                 if(fd_array[i]>max){
                     max = fd_array[i];
@@ -54,26 +55,36 @@ SerialCon::SerialCon(const SerialCon& orig) {
 SerialCon::~SerialCon() {
 }
 
-int SerialCon::slip_send(char *p, uint16_t len) {
-
-    send_char(END);
+int SerialCon::slip_send(char *p, uint16_t len, int nr) {
+    char end = END;
+    char esc = ESC;
+    char esc_end = ESC_END;
+    char esc_esc = ESC_ESC;
+    
+    write(fd_array[nr], &end,1);
 
     while (len--) {
         switch (*p) {
             case END:
-                send_char(ESC);
-                send_char(ESC_END);
+                //send_char(ESC);
+                //send_char(ESC_END);
+                write(fd_array[nr], &esc,1);
+                write(fd_array[nr], &esc_end,1);
                 break;
             case ESC:
-                send_char(ESC);
-                send_char(ESC_ESC);
+                //send_char(ESC);
+                //send_char(ESC_ESC);
+                write(fd_array[nr], &esc,1);
+                write(fd_array[nr], &esc_esc,1);
                 break;
             default:
-                send_char(*p);
+                //send_char(*p);
+                write(fd_array[nr], p,1);
         }
         p++;
     }
-    send_char(END);
+    //send_char(END);
+    write(fd_array[nr], &end,1);
 }
 
 char SerialCon::slip_recv(char *p, int fd, int *state, int*size) {
@@ -113,6 +124,9 @@ int SerialCon::slip_run(){
     Timeout.tv_usec = 500;
     Timeout.tv_sec = 0;
     int res;
+    char test[] = "testing";
+    
+
     while(processing){
         res = 0;
         for(i=0;i<5;i++){
@@ -123,36 +137,40 @@ int SerialCon::slip_run(){
             printf("Timeout for Communication");
         }else{
             if(FD_ISSET(fd_array[0])){
+                printf("Received something on uart 0\n");
                 if(state0 != 2){
                     if(slip_recv(recv_buf0, fd_array[0], &state0, &size0) == 0){
-                        write(fd_array[4], recv_buf0, size0);
+                        write(send_array[0], recv_buf0, size0);
                         state0 = 0;
                         size0 = 0;
                     }
                 }
             }
             if(FD_ISSET(fd_array[1])){
+                printf("Received something on uart 1\n");
                 if(state1 != 2){
                     if(slip_recv(recv_buf1, fd_array[1], &state1, &size1) == 0){
-                        write(fd_array[4], recv_buf1, size1);
+                        write(send_array[0], recv_buf1, size1);
                         state1 = 0;
                         size1 = 0;
                     }
                 }
             }
             if(FD_ISSET(fd_array[2])){
+                printf("Received something on uart 2\n");
                 if(state2 != 2){
                     if(slip_recv(recv_buf2, fd_array[2], &state2, &size2) == 0){
-                        write(fd_array[4], recv_buf2, size2);
+                        write(send_array[0], recv_buf2, size2);
                         state2 = 0;
                         size2 = 0;
                     }
                 }
             }
             if(FD_ISSET(fd_array[3])){
+                printf("Received something on uart 3\n");
                 if(state3 != 2){
                     if(slip_recv(recv_buf3, fd_array[3], &state3, &size3) == 0){
-                        write(fd_array[4], recv_buf3, size3);
+                        write(send_array[0], recv_buf3, size3);
                         state3 = 0;
                         size3 = 0;
                     }
@@ -160,9 +178,16 @@ int SerialCon::slip_run(){
             }
             if(FD_ISSET(fd_array[4])){
                 //slip_send()
+                //read()
+                printf("Pipe send something\n");
             }
             
         }
+        slip_send(test, 7, 0);
+        slip_send(test, 7, 1);
+        slip_send(test, 7, 2);
+        slip_send(test, 7, 3);
+        
     }
 }
 
@@ -195,10 +220,10 @@ int SerialCon::init_serial(int nr){
     temp->c_cc[VTIME] = 5;
     tty = open(name, O_RDWR | O_NONBLOCK | O_NOCTTY);
     free(name);
-    //cfsetospeed(&tio,B115200);            // 115200 baud
-    //cfsetispeed(&tio,B115200);            // 115200 baud
-    cfsetospeed(temp, B4000000); // 115200 baud
-    cfsetispeed(temp, B4000000); // 115200 baud
+    cfsetospeed(&tio,B115200);            // 115200 baud
+    cfsetispeed(&tio,B115200);            // 115200 baud
+    //cfsetospeed(temp, B4000000); // 115200 baud
+    //cfsetispeed(temp, B4000000); // 115200 baud
     tcsetattr(tty,TCSANOW,temp);
     return tty;
 }

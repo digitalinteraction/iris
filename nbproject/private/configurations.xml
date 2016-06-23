@@ -626,6 +626,9 @@
         <in>tga.c</in>
         <in>tga.h</in>
       </df>
+      <df name="serial_test">
+        <in>serial_test.cpp</in>
+      </df>
       <df name="setup">
       </df>
       <df name="vcinclude">

@@ -32,6 +32,8 @@ public:
     virtual ~SerialCon();
     int processing;
     int slip_run();
+    int send_array[2];
+    int pipe_array[2];
 
 private:
     int tty_fd;
@@ -43,8 +45,7 @@ private:
     char *name_tty1;
     char *name_tty2;
     char *name_tty3;
-    int fd_array[6];
-    int pipe_array[2];
+    int fd_array[5];
     fd_set readfs;
     int maxfd;
     
@@ -60,6 +61,8 @@ private:
     char recv_buf3[SIZE_LIMIT];
     int state3;
     int size3;
+    
+    char recv_ipc[SIZE_LIMIT];
     
     int slip_send();
     int slip_recv();
