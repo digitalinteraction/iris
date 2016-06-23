@@ -12,14 +12,16 @@
  */
 
 #include <cstdlib>
-
+#include "../raspicam/SerialCon.h"
 using namespace std;
 
 /*
  * 
  */
 int main(int argc, char** argv) {
-
+    SerialCon *con = new SerialCon();
+    con->processing = 1;
+    con->slip_run();
     return 0;
 }
 
