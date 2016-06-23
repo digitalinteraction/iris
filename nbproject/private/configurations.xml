@@ -539,6 +539,20 @@
             </df>
           </df>
           <df name="pics">
+            <df name="0">
+            </df>
+            <df name="1">
+            </df>
+            <df name="2">
+            </df>
+            <df name="3">
+            </df>
+            <df name="4">
+            </df>
+            <df name="5">
+            </df>
+            <df name="6">
+            </df>
           </df>
         </df>
         <df name="CMakeFiles">
@@ -606,9 +620,13 @@
         <in>RaspiTex.h</in>
         <in>RaspiTexUtil.c</in>
         <in>RaspiTexUtil.h</in>
+        <in>SerialCon.cpp</in>
+        <in>SerialCon.h</in>
         <in>main.cpp</in>
         <in>tga.c</in>
         <in>tga.h</in>
+      </df>
+      <df name="setup">
       </df>
       <df name="vcinclude">
         <in>common.h</in>
@@ -624,8 +642,6 @@
             <df name="CompilerIdCXX">
               <in>CMakeCXXCompilerId.cpp</in>
             </df>
-          </df>
-          <df name="CMakeTmp">
           </df>
           <df name="test.dir">
           </df>
