@@ -14,7 +14,10 @@
 #ifndef SERIALCON_H
 #define SERIALCON_H
 #include <termios.h>
-
+#include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 
 //SLIP
 #define END             0300    /* indicates end of packet */
@@ -64,8 +67,8 @@ private:
     
     char recv_ipc[SIZE_LIMIT];
     
-    int slip_send();
-    int slip_recv();
+    int slip_send(char *p, uint16_t len, int nr);
+    int slip_recv(char *p, int fd, int *state, int*size);
     int init_serial(int nr);
 
 };

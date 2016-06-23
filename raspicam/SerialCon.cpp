@@ -12,10 +12,7 @@
  */
 
 #include "SerialCon.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <fcntl.h>
+
 
 SerialCon::SerialCon() {
     fd_array[0] = init_serial(0);
