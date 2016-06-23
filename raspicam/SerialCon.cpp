@@ -131,7 +131,7 @@ int SerialCon::slip_run(){
         }
         res = select(maxfd, &readfs, NULL, NULL, &Timeout);
         if(res == 0){
-            printf("Timeout for Communication");
+            //printf("Timeout for Communication");
         }else{
             if(FD_ISSET(fd_array[0], &readfs)){
                 printf("Received something on uart 0\n");
@@ -205,8 +205,8 @@ int SerialCon::init_serial(int nr){
             temp = &tio3;
             break;
     }
-    snprintf(name, 12, NAME_TTY, nr);
-
+    snprintf(name, 13, NAME_TTY, nr);
+    printf("%s\n", name);
     memset(temp, 0, sizeof (tio0));
     temp->c_iflag = 0;
     temp->c_oflag = 0;
