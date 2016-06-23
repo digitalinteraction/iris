@@ -136,7 +136,7 @@ int SerialCon::slip_run(){
         if(res == 0){
             printf("Timeout for Communication");
         }else{
-            if(FD_ISSET(fd_array[0])){
+            if(FD_ISSET(fd_array[0], &readfs)){
                 printf("Received something on uart 0\n");
                 if(state0 != 2){
                     if(slip_recv(recv_buf0, fd_array[0], &state0, &size0) == 0){
@@ -146,7 +146,7 @@ int SerialCon::slip_run(){
                     }
                 }
             }
-            if(FD_ISSET(fd_array[1])){
+            if(FD_ISSET(fd_array[1], &readfs)){
                 printf("Received something on uart 1\n");
                 if(state1 != 2){
                     if(slip_recv(recv_buf1, fd_array[1], &state1, &size1) == 0){
@@ -156,7 +156,7 @@ int SerialCon::slip_run(){
                     }
                 }
             }
-            if(FD_ISSET(fd_array[2])){
+            if(FD_ISSET(fd_array[2], &readfs)){
                 printf("Received something on uart 2\n");
                 if(state2 != 2){
                     if(slip_recv(recv_buf2, fd_array[2], &state2, &size2) == 0){
@@ -166,7 +166,7 @@ int SerialCon::slip_run(){
                     }
                 }
             }
-            if(FD_ISSET(fd_array[3])){
+            if(FD_ISSET(fd_array[3], &readfs)){
                 printf("Received something on uart 3\n");
                 if(state3 != 2){
                     if(slip_recv(recv_buf3, fd_array[3], &state3, &size3) == 0){
@@ -176,7 +176,7 @@ int SerialCon::slip_run(){
                     }
                 }
             }
-            if(FD_ISSET(fd_array[4])){
+            if(FD_ISSET(fd_array[4], &readfs)){
                 //slip_send()
                 //read()
                 printf("Pipe send something\n");
@@ -187,7 +187,6 @@ int SerialCon::slip_run(){
         slip_send(test, 7, 1);
         slip_send(test, 7, 2);
         slip_send(test, 7, 3);
-        
     }
 }
 
