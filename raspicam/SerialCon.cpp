@@ -190,7 +190,7 @@ int SerialCon::slip_run(){
 int SerialCon::init_serial(int nr){
     int tty = -1;
     struct termios * temp;
-    char * name = malloc(12*sizeof(char));
+    char * name = (char*)malloc(12*sizeof(char));
     select(nr) {
         case 0:
             temp = &tio0;
