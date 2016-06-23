@@ -191,7 +191,7 @@ int SerialCon::init_serial(int nr){
     int tty = -1;
     struct termios * temp;
     char * name = (char*)malloc(12*sizeof(char));
-    select(nr) {
+    switch(nr) {
         case 0:
             temp = &tio0;
             break;
@@ -216,8 +216,8 @@ int SerialCon::init_serial(int nr){
     temp->c_cc[VTIME] = 5;
     tty = open(name, O_RDWR | O_NONBLOCK | O_NOCTTY);
     free(name);
-    cfsetospeed(&tio,B115200);            // 115200 baud
-    cfsetispeed(&tio,B115200);            // 115200 baud
+    cfsetospeed(temp,B115200);            // 115200 baud
+    cfsetispeed(temp,B115200);            // 115200 baud
     //cfsetospeed(temp, B4000000); // 115200 baud
     //cfsetispeed(temp, B4000000); // 115200 baud
     tcsetattr(tty,TCSANOW,temp);
