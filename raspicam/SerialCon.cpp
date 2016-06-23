@@ -84,7 +84,7 @@ int SerialCon::slip_send(char *p, uint16_t len, int nr) {
     write(fd_array[nr], &end,1);
 }
 
-char SerialCon::slip_recv(char *p, int fd, int *state, int*size) {
+int SerialCon::slip_recv(char *p, int fd, int *state, int*size) {
     
     char c = 0;
     while(read(fd, &c, 1)){
