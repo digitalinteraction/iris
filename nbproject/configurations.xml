@@ -216,10 +216,16 @@
         </df>
       </df>
       <df name="network">
+        <in>DebugTransfer.cpp</in>
+        <in>DebugTransfer.h</in>
         <in>Packetbuffer.cpp</in>
         <in>Packetbuffer.h</in>
+        <in>ReliableTransfer.cpp</in>
+        <in>ReliableTransfer.h</in>
         <in>SerialCon.cpp</in>
         <in>SerialCon.h</in>
+        <in>Topology.cpp</in>
+        <in>Topology.h</in>
         <in>UnreliableTransfer.cpp</in>
         <in>UnreliableTransfer.h</in>
       </df>
@@ -920,13 +926,25 @@
       </item>
       <item path="libs/sm/user-vcsm.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="network/DebugTransfer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="network/DebugTransfer.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="network/Packetbuffer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="network/Packetbuffer.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="network/ReliableTransfer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="network/ReliableTransfer.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="network/SerialCon.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="network/SerialCon.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="network/Topology.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="network/Topology.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="network/UnreliableTransfer.cpp" ex="false" tool="1" flavor2="0">
       </item>

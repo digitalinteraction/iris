@@ -88,6 +88,7 @@ int UnreliableTransfer::recv(){
         
         uint8_t port = header->port;
         size_t size = header->size;
+        uint8_t addr = pack->addr;
         free(pack->buffer);
         free(pack);
 

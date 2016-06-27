@@ -15,6 +15,9 @@
 #define UNRELIABLETRANSFER_H
 #include "Packetbuffer.h"
 #include "SerialCon.h"
+#include "ReliableTransfer.h"
+#include "Topology.h"
+#include "DebugTransfer.h"
 
 struct unreliable_packet{
     size_t size;
