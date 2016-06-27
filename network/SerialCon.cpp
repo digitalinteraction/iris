@@ -14,14 +14,16 @@
 #include "SerialCon.h"
 
 
-SerialCon::SerialCon() {
+SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf) {
     fd_array[0] = init_serial(0);
     fd_array[1] = init_serial(1);
     fd_array[2] = init_serial(2);
     fd_array[3] = init_serial(3);
-    pipe(pipe_array);
-    pipe(send_array);
-    fd_array[4] = pipe_array[1];
+    send_buf = sendbuf;
+    fd_array[4] = send_buf->signalfd;
+    if(fd_array[4] == -1){
+        printf("Error in eventfd creation\n");
+    }
     //fd_array[5] = pipe_array[1];
 
     int i, max=0;
@@ -137,7 +139,7 @@ int SerialCon::slip_run(){
                 printf("Received something on uart 0\n");
                 if(state0 != 2){
                     if(slip_recv(recv_buf0, fd_array[0], &state0, &size0) == 0){
-                        write(send_array[0], recv_buf0, size0);
+                        recv_buf->add(size0, 0, recv_buf0);
                         state0 = 0;
                         size0 = 0;
                     }
@@ -147,7 +149,7 @@ int SerialCon::slip_run(){
                 printf("Received something on uart 1\n");
                 if(state1 != 2){
                     if(slip_recv(recv_buf1, fd_array[1], &state1, &size1) == 0){
-                        write(send_array[0], recv_buf1, size1);
+                        recv_buf->add(size1, 0, recv_buf1);
                         state1 = 0;
                         size1 = 0;
                     }
@@ -157,7 +159,7 @@ int SerialCon::slip_run(){
                 printf("Received something on uart 2\n");
                 if(state2 != 2){
                     if(slip_recv(recv_buf2, fd_array[2], &state2, &size2) == 0){
-                        write(send_array[0], recv_buf2, size2);
+                        recv_buf->add(size1, 0, recv_buf1);
                         state2 = 0;
                         size2 = 0;
                     }
@@ -167,7 +169,7 @@ int SerialCon::slip_run(){
                 printf("Received something on uart 3\n");
                 if(state3 != 2){
                     if(slip_recv(recv_buf3, fd_array[3], &state3, &size3) == 0){
-                        write(send_array[0], recv_buf3, size3);
+                        recv_buf->add(size1, 0, recv_buf1);
                         state3 = 0;
                         size3 = 0;
                     }
@@ -176,14 +178,28 @@ int SerialCon::slip_run(){
             if(FD_ISSET(fd_array[4], &readfs)){
                 //slip_send()
                 //read()
-                printf("Pipe send something\n");
+                
+                //u = 1;
+                //s = write(fd_array[4], &u, sizeof(uint64_t));
+                
+                uint64_t val = 0;
+                read(fd_array[4], &val, sizeof(uint64_t));
+                printf("Pipe send something, value received: %d \n", val);
+                for(int i = 0; i < val; i++){
+                    struct packet * pack;
+                    if(send_buf->get(&pack) == 0){
+                        slip_send(pack->buffer, pack->size, pack->addr);
+                    }else{
+                        printf("Error SerialCon: Buffer send_buffer is empty although select indicates data in buffer\n")
+                    }
+                }
             }
             
         }
-        slip_send(test, 7, 0);
-        slip_send(test, 7, 1);
-        slip_send(test, 7, 2);
-        slip_send(test, 7, 3);
+        //slip_send(test, 7, 0);
+        //slip_send(test, 7, 1);
+        //slip_send(test, 7, 2);
+        //slip_send(test, 7, 3);
     }
 }
 

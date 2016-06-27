@@ -20,6 +20,7 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <cstring>
+#include "Packetbuffer.h"
 
 //SLIP
 #define END             0300    /* indicates end of packet */
@@ -32,13 +33,14 @@
 
 class SerialCon {
 public:
-    SerialCon();
+    SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf);
     SerialCon(const SerialCon& orig);
     virtual ~SerialCon();
     int processing;
     int slip_run();
     int send_array[2];
     int pipe_array[2];
+    
 
 private:
     int tty_fd;
@@ -68,6 +70,9 @@ private:
     int size3;
     
     char recv_ipc[SIZE_LIMIT];
+    
+    Packetbuffer *send_buf;
+    Packetbuffer *recv_buf;
     
     int slip_send(char *p, uint16_t len, int nr);
     int slip_recv(char *p, int fd, int *state, int*size);

@@ -518,6 +518,14 @@
           <in>user-vcsm.h</in>
         </df>
       </df>
+      <df name="network">
+        <in>Packetbuffer.cpp</in>
+        <in>Packetbuffer.h</in>
+        <in>SerialCon.cpp</in>
+        <in>SerialCon.h</in>
+        <in>UnreliableTransfer.cpp</in>
+        <in>UnreliableTransfer.h</in>
+      </df>
       <df name="raspicam">
         <df name="build">
           <df name="CMakeFiles">
@@ -620,8 +628,6 @@
         <in>RaspiTex.h</in>
         <in>RaspiTexUtil.c</in>
         <in>RaspiTexUtil.h</in>
-        <in>SerialCon.cpp</in>
-        <in>SerialCon.h</in>
         <in>main.cpp</in>
         <in>tga.c</in>
         <in>tga.h</in>

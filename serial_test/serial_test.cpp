@@ -12,7 +12,7 @@
  */
 
 #include <cstdlib>
-#include "../raspicam/SerialCon.h"
+#include "../network/SerialCon.h"
 
 using namespace std;
 

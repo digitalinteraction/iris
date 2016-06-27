@@ -215,6 +215,14 @@
           <in>user-vcsm.c</in>
         </df>
       </df>
+      <df name="network">
+        <in>Packetbuffer.cpp</in>
+        <in>Packetbuffer.h</in>
+        <in>SerialCon.cpp</in>
+        <in>SerialCon.h</in>
+        <in>UnreliableTransfer.cpp</in>
+        <in>UnreliableTransfer.h</in>
+      </df>
       <df name="raspicam">
         <df name="build">
           <df name="CMakeFiles">
@@ -263,8 +271,6 @@
         <in>RaspiStill.c</in>
         <in>RaspiTex.c</in>
         <in>RaspiTexUtil.c</in>
-        <in>SerialCon.cpp</in>
-        <in>SerialCon.h</in>
         <in>tga.c</in>
       </df>
       <df name="serial_test">
@@ -914,6 +920,18 @@
       </item>
       <item path="libs/sm/user-vcsm.c" ex="false" tool="0" flavor2="0">
       </item>
+      <item path="network/Packetbuffer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="network/Packetbuffer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="network/SerialCon.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="network/SerialCon.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="network/UnreliableTransfer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="network/UnreliableTransfer.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="raspicam/Buffer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="raspicam/Buffer.h" ex="false" tool="3" flavor2="0">
@@ -949,10 +967,6 @@
       <item path="raspicam/RaspiTex.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="raspicam/RaspiTexUtil.c" ex="false" tool="0" flavor2="0">
-      </item>
-      <item path="raspicam/SerialCon.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="raspicam/SerialCon.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="raspicam/build/CMakeFiles/3.0.2/CompilerIdC/CMakeCCompilerId.c"
             ex="false"
