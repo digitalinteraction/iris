@@ -31,7 +31,7 @@ UnreliableTransfer::UnreliableTransfer(ReliableTransfer *rel, Topology *topo, De
     //TODO::set up fd if something is received, possibly with select and call recv() function
     
     
-    std::thread serial_comm(&SerialCon, sercon);
+    std::thread serial_comm(&SerialCon::slip_run(), sercon);
     
 }
 
@@ -94,13 +94,13 @@ int UnreliableTransfer::recv(){
 
         switch(port){
             case 0:
-                debug->recv(buffer, size);
+                debug->recv(buffer, size, addr);
                 break;
             case 1:
-                topo->recv(buffer, size);
+                topo->recv(buffer, size, addr);
                 break;
             case 2:
-                rel->recv(buffer, size);
+                rel->recv(buffer, size, addr);
                 break;
             default:
                 free(buffer);

@@ -21,15 +21,16 @@ class UnreliableTransfer;
 
 class Topology {
 public:
-    Topology();
+    Topology(UnreliableTransfer *unrel);
     Topology(const Topology& orig);
     virtual ~Topology();
-    int recv(void *buffer, size_t size);
+    int recv(void *buffer, size_t size, uint8_t addr);
     int send();
+    int alive(uint8_t addr);
 private:
     UnreliableTransfer *unrel;
     uint64_t mac;
-    
+    struct timespec alive[4];
     uint64_t mapping[4];
 };
 

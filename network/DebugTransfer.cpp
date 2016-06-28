@@ -22,3 +22,11 @@ DebugTransfer::DebugTransfer(const DebugTransfer& orig) {
 DebugTransfer::~DebugTransfer() {
 }
 
+int DebugTransfer::recv(void* buffer, size_t size, uint8_t addr){
+    free(buffer);
+    return 0;
+}
+
+int DebugTransfer::send(){
+    printf("Error DebugTransfer:: send not implemented yet\n");
+}

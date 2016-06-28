@@ -14,12 +14,15 @@
 #ifndef DEBUGTRANSFER_H
 #define DEBUGTRANSFER_H
 
+class UnreliableTransfer;
+
 class DebugTransfer {
 public:
     DebugTransfer();
     DebugTransfer(const DebugTransfer& orig);
     virtual ~DebugTransfer();
-    int recv(void *buffer, size_t size);
+    int recv(void *buffer, size_t size, uint8_t addr);
+    int send();
 private:
 
 };

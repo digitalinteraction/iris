@@ -25,10 +25,7 @@ Topology::Topology(UnreliableTransfer *unrel) {
     fclose(file);
     mac = 0;
     mac = (a<<40)|(b<<32)|(c<<24)|(d<<16)|(e<<8)|(f<<0);
-    mapping[0] = 0;
-    mapping[1] = 0;
-    mapping[2] = 0;
-    mapping[3] = 0;
+    printf("Topology:: got MAC %x\n", mac);
 }
 
 Topology::Topology(const Topology& orig) {
@@ -37,7 +34,14 @@ Topology::Topology(const Topology& orig) {
 Topology::~Topology() {
 }
 
+//call this function every 250ms
 int Topology::send(){
+    
+    mapping[0] = 0;
+    mapping[1] = 0;
+    mapping[2] = 0;
+    mapping[3] = 0;
+    
     struct topo_buffer *buf = (struct topo_buffer*) malloc(sizeof(struct topo_buffer));
     buf->mac = mac;
     
@@ -54,14 +58,25 @@ int Topology::send(){
     unrel->send((void*) buf, sizeof(struct topo_buffer), 1, 3);
 }
 
-int Topology::recv(void* buffer, size_t size) {
+int Topology::recv(void* buffer, size_t size, uint8_t addr) {
     struct topo_buffer *buf = (struct topo_buffer *) buffer;
     if (addr < 4) {
         if (mapping[buf->addr] == 0 || mapping[buf->addr] == buf->mac) {
             mapping[buf->addr] = buf->mac;
+            clock_gettime(CLOCK_REALTIME, &(alive[buf->addr]));
         } else {
             printf("Error Topology:: Conflicting MACs for the same spot in mapping\n");
         }
     }
     free(buffer);
+}
+
+int Topology::alive(uint8_t addr){
+    struct timespec current;
+    clock_gettime(CLOCK_REALTIME, &current);
+    if(current.tv_sec < (alive[addr].tv_sec+5)){
+        return 1;
+    }else{
+        return 0;
+    }
 }

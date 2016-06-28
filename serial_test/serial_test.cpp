@@ -12,7 +12,7 @@
  */
 
 #include <cstdlib>
-#include "../network/SerialCon.h"
+#include "../network/ReliableTransfer.h"
 
 using namespace std;
 
@@ -20,9 +20,19 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    SerialCon *con = new SerialCon();
-    con->processing = 1;
-    con->slip_run();
+    
+    UnreliableTransfer *unrel;
+    ReliableTransfer *rel = new ReliableTransfer(unrel);
+    Topology *topo = new Topology(unrel);
+    DebugTransfer *debug = new DebugTransfer();
+    
+    unrel = new UnreliableTransfer(rel, topo, debug); 
+    
+    while(true){
+        rel->check_timeouts();
+        topo->send();
+        sleep(0.25);
+    }
     return 0;
 }
 
