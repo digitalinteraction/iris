@@ -223,6 +223,4 @@ crc F_CRC_CalculaCheckSum(uint8_t const AF_Datos[], uint16_t VF_nBytes);
 
 #endif 
 
-#ifdef __cplusplus
 }
-#endif

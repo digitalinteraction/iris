@@ -13,52 +13,65 @@
 
 #include "Packetbuffer.h"
 #include <sys/eventfd.h>
-
-
+#include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <stdint.h>
+#include <cstring>
 
 Packetbuffer::Packetbuffer() {
-    signalfd = eventfd(0,0);
+    signalfd = eventfd(0, 0);
     first = 0;
     last = 0;
     cnt = 0;
     lock.unlock();
-}
-
-Packetbuffer::Packetbuffer(const Packetbuffer& orig) {
+#ifdef DEBUG
+    printf("Packetbuffer:: startup completed\n");
+#endif
 }
 
 Packetbuffer::~Packetbuffer() {
 }
 
-Packetbuffer::add(uint32_t size, uint8_t addr, void* buffer){
+int Packetbuffer::add(uint32_t size, uint8_t addr, void* buffer) {
+#ifdef DEBUG
+    printf("Packetbuffer:: adding item\n"); fflush(stdout);
+#endif
     lock.lock();
-    struct packet * pack = (struct packet *) malloc(sizeof(struct packet));
+    struct packet * pack = (struct packet *) malloc(sizeof (struct packet));
     pack->addr = addr;
     pack->size = size;
     pack->buffer = (void*) malloc(pack->size);
     pack->next = 0;
     memcpy(pack->buffer, buffer, pack->size);
-    
-    if(first == 0){
+
+    if (first == 0) {
         first = pack;
         last = pack;
-    }else{
+    } else {
         last->next = pack;
         last = pack;
     }
     cnt++;
     uint64_t u = 1;
-    write(signalfd, &u, sizeof(uint64_t));
+#ifdef DEBUG
+    printf("Packetbuffer:: signal to %x that something got added to buffer\n", signalfd);
+#endif
     lock.unlock();
+    write(signalfd, &u, sizeof (uint64_t));
     return 0;
 }
 
-Packetbuffer::get(struct packet** pack){
+int Packetbuffer::get(struct packet** pack) {
+#ifdef DEBUG
+    printf("someone called get\n");
+#endif
     lock.lock();
-    if(first == 0){
+    if (first == 0) {
         lock.unlock();
         return -1;
-    }else{
+    } else {
         *pack = first;
         first = first->next;
         cnt--;
@@ -66,4 +79,3 @@ Packetbuffer::get(struct packet** pack){
     lock.unlock();
     return 0;
 }
-    

@@ -15,7 +15,8 @@
 #define PACKETBUFFER_H
 
 #include <mutex>          // std::mutex
-
+#include <stdint.h>
+#define DEBUG
 
 struct packet{
     size_t size;
@@ -27,7 +28,6 @@ struct packet{
 class Packetbuffer {
 public:
     Packetbuffer();
-    Packetbuffer(const Packetbuffer& orig);
     virtual ~Packetbuffer();
     int add(uint32_t size, uint8_t addr, void *buffer);
     int get(struct packet ** pack);

@@ -14,7 +14,11 @@
 #ifndef RELIABLETRANSFER_H
 #define RELIABLETRANSFER_H
 
-class UnreliableTransfer;
+#include <stdint.h>
+#include "UnreliableTransfer.h"
+#include <mutex>
+
+//class UnreliableTransfer;
 
 struct reliable_packet{
     uint32_t id;
@@ -38,14 +42,14 @@ struct linked_header{
 
 class ReliableTransfer {
 public:
-    ReliableTransfer();
+    ReliableTransfer(UnreliableTransfer **unrel);
     ReliableTransfer(const ReliableTransfer& orig);
     virtual ~ReliableTransfer();
     int recv(void *buffer, size_t size, uint8_t addr);
     uint32_t send(void *buffer, size_t size, uint8_t addr, uint8_t broadcast);
     int check_timeouts();
 private:
-    UnreliableTransfer *unrel;
+    UnreliableTransfer **unrel;
     struct linked_header*first;
     struct linked_header*last;
     uint16_t seq;

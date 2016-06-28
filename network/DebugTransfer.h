@@ -13,8 +13,8 @@
 
 #ifndef DEBUGTRANSFER_H
 #define DEBUGTRANSFER_H
-
-class UnreliableTransfer;
+#include <stdint.h>
+#include "UnreliableTransfer.h"
 
 class DebugTransfer {
 public:

@@ -12,7 +12,14 @@
  */
 
 #include <cstdlib>
+#include <unistd.h>
+
 #include "../network/ReliableTransfer.h"
+#include "../network/DebugTransfer.h"
+#include "../network/Topology.h"
+
+#include "../network/UnreliableTransfer.h"
+
 
 using namespace std;
 
@@ -20,19 +27,20 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    
     UnreliableTransfer *unrel;
-    ReliableTransfer *rel = new ReliableTransfer(unrel);
-    Topology *topo = new Topology(unrel);
+    ReliableTransfer *rel = new ReliableTransfer(&unrel);
+    Topology *topo = new Topology(&unrel);
     DebugTransfer *debug = new DebugTransfer();
-    
-    unrel = new UnreliableTransfer(rel, topo, debug); 
-    
+    unrel = new UnreliableTransfer(rel, topo, debug);
+
+    sleep(2);
     while(true){
         rel->check_timeouts();
         topo->send();
-        sleep(0.25);
+        sleep(2);
     }
+    
+    unrel->serial_comm->join();
     return 0;
 }
 

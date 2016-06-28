@@ -15,9 +15,10 @@
 #include "UnreliableTransfer.h"
 #include <time.h>
 
+
 #define TIMEOUT   5;
 
-ReliableTransfer::ReliableTransfer(UnreliableTransfer *unrel) {
+ReliableTransfer::ReliableTransfer(UnreliableTransfer **unrel) {
     this->unrel = unrel;
     first = 0;
     last = 0;
@@ -47,27 +48,27 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
         if(header->broadcast == 1 && header->id == last_broadcast){
             success = 1;
         }
-        while (linked_header != 0 && success != 1) {
-            if (linked_header->packet->id == header->id) {
+        while (list_item != 0 && success != 1) {
+            if (list_item->packet->id == header->id) {
                 success = 1;
                 //TODO reset timeout to next interval
-                if (linked_header->prev == 0 && linked_header->next == 0) {
-                    first = 0
-                } else if (linked_header->prev == 0) {
-                    first = linked_header->next;
+                if (list_item->prev == 0 && list_item->next == 0) {
+                    first = 0;
+                } else if (list_item->prev == 0) {
+                    first = list_item->next;
                     first->prev = 0;
-                } else if (linked_header->next == 0) {
-                    linked_header->prev->next = 0;
+                } else if (list_item->next == 0) {
+                    list_item->prev->next = 0;
                 } else {
-                    linked_header->prev->next = linked_header->next;
-                    linked_header->next->prev = linked_header->prev;
+                    list_item->prev->next = list_item->next;
+                    list_item->next->prev = list_item->prev;
                 }
-                free(linked_header->packet->buffer);
-                free(linked_header->packet);
-                free(linked_header);
+                free(list_item->packet->buffer);
+                free(list_item->packet);
+                free(list_item);
             }
             if(success == 0)
-                linked_header = linked_header->next;
+                list_item = list_item->next;
         }
         list_lock.unlock();
         if(success == 0){
@@ -79,14 +80,14 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
 
         //is this thread safe?
         ack.id = header->id;
-        unrel->send(&ack, sizeof (struct reliable_packet), 2, addr);
+        (*unrel)->send(&ack, sizeof (struct reliable_packet), 2, addr);
 
         if (header->broadcast == 1) {
             if (header->id != last_broadcast) {
                 last_broadcast = header->id;
-                unrel->send(buffer, size, 2, (addr + 1) % 4);
-                unrel->send(buffer, size, 2, (addr + 2) % 4);
-                unrel->send(buffer, size, 2, (addr + 3) % 4);
+                (*unrel)->send(buffer, size, 2, (addr + 1) % 4);
+                (*unrel)->send(buffer, size, 2, (addr + 2) % 4);
+                (*unrel)->send(buffer, size, 2, (addr + 3) % 4);
                 //TODO send it upstairs
             } else {
                 free(buffer);
@@ -105,7 +106,7 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t
         return -1;
     }
     struct reliable_packet *header = (struct reliable_packet *)buf;
-    header->buffer = (buf + sizeof (struct reliable_packet));
+    header->buffer = ((unsigned char*)buf + sizeof (struct reliable_packet));
     header->ack = 0;
     header->filler = 0;
     header->id = seq++;
@@ -129,7 +130,7 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t
         packet->prev = last;
     }
     list_lock.unlock();
-    unrel->send(buf, total_size, 2, addr);
+    (*unrel)->send(buf, total_size, 2, addr);
     
     return header->id;
 }
@@ -144,7 +145,7 @@ int ReliableTransfer::check_timeouts(){
 
     while (first != 0 && first->timeout.tv_sec < current.tv_sec) {
         if (first->resent_time < 5) {
-            unrel->send(first->buf, first->size, 2, first->addr);
+            (*unrel)->send(first->buf, first->size, 2, first->addr);
             list_lock.lock();
             first->timeout.tv_sec = current.tv_sec + TIMEOUT;
             first->timeout.tv_nsec = current.tv_nsec;

@@ -23,21 +23,21 @@
 #include "Packetbuffer.h"
 
 //SLIP
-#define END             0300    /* indicates end of packet */
-#define ESC             0333    /* indicates byte stuffing */
-#define ESC_END         0334    /* ESC ESC_END means END data byte */
-#define ESC_ESC         0335    /* ESC ESC_ESC means ESC data byte */
+#define END             192
+#define ESC             219
+#define ESC_END         220
+#define ESC_ESC         221
 #define SIZE_LIMIT      2048
-#define NAME_TTY       "/dev/ttyUSB%d"
+//#define NAME_TTY       "/dev/ttyUSB%d"
+#define NAME_TTY       "/home/tobias/virtualTTY%d"
 
 
 class SerialCon {
 public:
     SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf);
-    SerialCon(const SerialCon& orig);
     virtual ~SerialCon();
     int processing;
-    int slip_run();
+    void slip_run();
     int send_array[2];
     int pipe_array[2];
     
@@ -56,26 +56,31 @@ private:
     fd_set readfs;
     int maxfd;
     
-    char recv_buf0[SIZE_LIMIT];
+    unsigned char recv_buf0[SIZE_LIMIT];
     int state0;
     int size0;
-    char recv_buf1[SIZE_LIMIT];
+    unsigned char recv_buf1[SIZE_LIMIT];
     int state1;
     int size1;
-    char recv_buf2[SIZE_LIMIT];
+    unsigned char recv_buf2[SIZE_LIMIT];
     int state2;
     int size2;
-    char recv_buf3[SIZE_LIMIT];
+    unsigned char recv_buf3[SIZE_LIMIT];
     int state3;
     int size3;
     
-    char recv_ipc[SIZE_LIMIT];
+    unsigned char recv_ipc[SIZE_LIMIT];
     
     Packetbuffer *send_buf;
     Packetbuffer *recv_buf;
     
-    int slip_send(char *p, uint16_t len, int nr);
-    int slip_recv(char *p, int fd, int *state, int*size);
+    unsigned char end = END;
+    unsigned char esc = ESC;
+    unsigned char esc_end = ESC_END;
+    unsigned char esc_esc = ESC_ESC;
+    
+    int slip_send(unsigned char *p, uint16_t len, int nr);
+    int slip_recv(unsigned char *p, int fd, int *state, int*size);
     int init_serial(int nr);
 
 };

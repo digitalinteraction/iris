@@ -20,6 +20,7 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf) {
     fd_array[2] = init_serial(2);
     fd_array[3] = init_serial(3);
     send_buf = sendbuf;
+    recv_buf = recvbuf;
     fd_array[4] = send_buf->signalfd;
     if(fd_array[4] == -1){
         printf("Error in eventfd creation\n");
@@ -48,18 +49,11 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf) {
     
 }
 
-SerialCon::SerialCon(const SerialCon& orig) {
-}
 
 SerialCon::~SerialCon() {
 }
 
-int SerialCon::slip_send(char *p, uint16_t len, int nr) {
-    char end = END;
-    char esc = ESC;
-    char esc_end = ESC_END;
-    char esc_esc = ESC_ESC;
-    
+int SerialCon::slip_send(unsigned char *p, uint16_t len, int nr) {
     write(fd_array[nr], &end,1);
 
     while (len--) {
@@ -86,9 +80,9 @@ int SerialCon::slip_send(char *p, uint16_t len, int nr) {
     write(fd_array[nr], &end,1);
 }
 
-int SerialCon::slip_recv(char *p, int fd, int *state, int*size) {
+int SerialCon::slip_recv(unsigned char *p, int fd, int *state, int*size) {
     
-    char c = 0;
+    unsigned char c = 0;
     while(read(fd, &c, 1)){
         switch (c) {
             case END:
@@ -117,26 +111,28 @@ int SerialCon::slip_recv(char *p, int fd, int *state, int*size) {
     return 1;
 }
 
-int SerialCon::slip_run(){
+void SerialCon::slip_run(){
     int i;
     struct timeval Timeout;
     Timeout.tv_usec = 500;
-    Timeout.tv_sec = 0;
+    Timeout.tv_sec = 2;
     int res;
-    char test[] = "testing";
+    //char test[] = "testing";
     
 
     while(processing){
         res = 0;
-        for(i=0;i<5;i++){
+        for(i=4;i<5;i++){
             FD_SET(fd_array[i], &readfs);
         }
+        Timeout.tv_usec = 500;
+        Timeout.tv_sec = 2;
         res = select(maxfd, &readfs, NULL, NULL, &Timeout);
         if(res == 0){
-            //printf("Timeout for Communication");
+            printf("Timeout for Communication\n");
         }else{
             if(FD_ISSET(fd_array[0], &readfs)){
-                printf("Received something on uart 0\n");
+                //printf("Received something on uart 0\n");
                 if(state0 != 2){
                     if(slip_recv(recv_buf0, fd_array[0], &state0, &size0) == 0){
                         recv_buf->add(size0, 0, recv_buf0);
@@ -146,7 +142,7 @@ int SerialCon::slip_run(){
                 }
             }
             if(FD_ISSET(fd_array[1], &readfs)){
-                printf("Received something on uart 1\n");
+                //printf("Received something on uart 1\n");
                 if(state1 != 2){
                     if(slip_recv(recv_buf1, fd_array[1], &state1, &size1) == 0){
                         recv_buf->add(size1, 0, recv_buf1);
@@ -156,7 +152,7 @@ int SerialCon::slip_run(){
                 }
             }
             if(FD_ISSET(fd_array[2], &readfs)){
-                printf("Received something on uart 2\n");
+                //printf("Received something on uart 2\n");
                 if(state2 != 2){
                     if(slip_recv(recv_buf2, fd_array[2], &state2, &size2) == 0){
                         recv_buf->add(size1, 0, recv_buf1);
@@ -166,7 +162,7 @@ int SerialCon::slip_run(){
                 }
             }
             if(FD_ISSET(fd_array[3], &readfs)){
-                printf("Received something on uart 3\n");
+                //printf("Received something on uart 3\n");
                 if(state3 != 2){
                     if(slip_recv(recv_buf3, fd_array[3], &state3, &size3) == 0){
                         recv_buf->add(size1, 0, recv_buf1);
@@ -184,13 +180,13 @@ int SerialCon::slip_run(){
                 
                 uint64_t val = 0;
                 read(fd_array[4], &val, sizeof(uint64_t));
-                printf("Pipe send something, value received: %d \n", val);
+                printf("Pipe send something, value received: %ld \n", val);
                 for(int i = 0; i < val; i++){
                     struct packet * pack;
                     if(send_buf->get(&pack) == 0){
-                        slip_send(pack->buffer, pack->size, pack->addr);
+                        slip_send((unsigned char*)pack->buffer, pack->size, pack->addr);
                     }else{
-                        printf("Error SerialCon: Buffer send_buffer is empty although select indicates data in buffer\n")
+                        printf("Error SerialCon: Buffer send_buffer is empty although select indicates data in buffer\n");
                     }
                 }
             }
@@ -206,7 +202,7 @@ int SerialCon::slip_run(){
 int SerialCon::init_serial(int nr){
     int tty = -1;
     struct termios * temp;
-    char * name = (char*)malloc(12*sizeof(char));
+    char * name = (char*)malloc(sizeof(NAME_TTY));
     switch(nr) {
         case 0:
             temp = &tio0;
@@ -221,7 +217,7 @@ int SerialCon::init_serial(int nr){
             temp = &tio3;
             break;
     }
-    snprintf(name, 13, NAME_TTY, nr);
+    snprintf(name, sizeof(NAME_TTY)+1, NAME_TTY, nr);
     printf("%s\n", name);
     memset(temp, 0, sizeof (tio0));
     temp->c_iflag = 0;

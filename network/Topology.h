@@ -17,18 +17,17 @@
 #include "UnreliableTransfer.h"
 
 
-class UnreliableTransfer;
+//class UnreliableTransfer;
 
 class Topology {
 public:
-    Topology(UnreliableTransfer *unrel);
-    Topology(const Topology& orig);
+    Topology(UnreliableTransfer **unrel);
     virtual ~Topology();
     int recv(void *buffer, size_t size, uint8_t addr);
     int send();
-    int alive(uint8_t addr);
+    int isalive(uint8_t addr);
 private:
-    UnreliableTransfer *unrel;
+    UnreliableTransfer **unrel;
     uint64_t mac;
     struct timespec alive[4];
     uint64_t mapping[4];
