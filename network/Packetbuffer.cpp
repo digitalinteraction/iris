@@ -26,6 +26,7 @@ Packetbuffer::Packetbuffer() {
     last = 0;
     cnt = 0;
     lock.unlock();
+    id = rand()%20;
 #ifdef DEBUG
     printf("Packetbuffer:: startup completed\n");
 #endif
@@ -36,10 +37,14 @@ Packetbuffer::~Packetbuffer() {
 
 int Packetbuffer::add(uint32_t size, uint8_t addr, void* buffer) {
 #ifdef DEBUG
-    printf("Packetbuffer:: adding item\n"); fflush(stdout);
+    //printf("Packetbuffer:: adding item size %d\n", size); fflush(stdout);
 #endif
+    //printf("Packetbuffer %d:: adding item size %d\n", id, size); fflush(stdout);
+
     lock.lock();
+    //printf("Packetbuffer:: %.*s\n", size, (char*)buffer);
     struct packet * pack = (struct packet *) malloc(sizeof (struct packet));
+    //printf("p malloc %p\n", pack);
     pack->addr = addr;
     pack->size = size;
     pack->buffer = (void*) malloc(pack->size);
@@ -56,7 +61,7 @@ int Packetbuffer::add(uint32_t size, uint8_t addr, void* buffer) {
     cnt++;
     uint64_t u = 1;
 #ifdef DEBUG
-    printf("Packetbuffer:: signal to %x that something got added to buffer\n", signalfd);
+    //printf("Packetbuffer:: signal to %x that something got added to buffer\n", signalfd);
 #endif
     lock.unlock();
     write(signalfd, &u, sizeof (uint64_t));
@@ -64,8 +69,9 @@ int Packetbuffer::add(uint32_t size, uint8_t addr, void* buffer) {
 }
 
 int Packetbuffer::get(struct packet** pack) {
+    //printf("Packetbuffer %d:: one packet delivered\n", id);
 #ifdef DEBUG
-    printf("someone called get\n");
+   //printf("someone called get\n");
 #endif
     lock.lock();
     if (first == 0) {

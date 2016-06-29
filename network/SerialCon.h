@@ -28,13 +28,13 @@
 #define ESC_END         220
 #define ESC_ESC         221
 #define SIZE_LIMIT      2048
-//#define NAME_TTY       "/dev/ttyUSB%d"
-#define NAME_TTY       "/home/tobias/virtualTTY%d"
+#define NAME_TTY       "/dev/ttyUSB%d"
+//#define NAME_TTY       "/home/tobias/virtualTTY%d"
 
 
 class SerialCon {
 public:
-    SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf);
+    SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb);
     virtual ~SerialCon();
     int processing;
     void slip_run();
@@ -54,6 +54,8 @@ private:
     char *name_tty3;
     int fd_array[5];
     fd_set readfs;
+    fd_set writefs;
+    fd_set exceptfs;
     int maxfd;
     
     unsigned char recv_buf0[SIZE_LIMIT];

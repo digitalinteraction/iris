@@ -16,7 +16,7 @@
 
 #include <mutex>          // std::mutex
 #include <stdint.h>
-#define DEBUG
+//#define DEBUG
 
 struct packet{
     size_t size;
@@ -37,6 +37,7 @@ private:
     struct packet *last;
     uint16_t cnt;
     std::mutex lock;
+    int id;
 };
 
 #endif /* PACKETBUFFER_H */

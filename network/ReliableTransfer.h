@@ -22,15 +22,13 @@
 
 struct reliable_packet{
     uint32_t id;
-    unsigned int broadcast:1;
-    unsigned int ack:1;
-    unsigned int filler:6;
-    void *buffer;
+    uint8_t broadcast;
+    uint8_t ack;
+    uint16_t filler;
 };
 
 struct linked_header{
     struct reliable_packet* packet;
-    void *buf;
     struct timespec timeout;
     uint8_t addr;
     struct linked_header* next;
@@ -42,13 +40,14 @@ struct linked_header{
 
 class ReliableTransfer {
 public:
-    ReliableTransfer(UnreliableTransfer **unrel);
+    ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out);
     ReliableTransfer(const ReliableTransfer& orig);
     virtual ~ReliableTransfer();
     int recv(void *buffer, size_t size, uint8_t addr);
     uint32_t send(void *buffer, size_t size, uint8_t addr, uint8_t broadcast);
     int check_timeouts();
 private:
+    Packetbuffer *out;
     UnreliableTransfer **unrel;
     struct linked_header*first;
     struct linked_header*last;
