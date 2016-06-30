@@ -82,7 +82,6 @@ int Topology::recv(void* buffer, size_t size, uint8_t addr) {
         }
     }
     //printf("t free %p\n", buffer);
-    free(buffer);
 }
 
 int Topology::isalive(uint8_t addr){

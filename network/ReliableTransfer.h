@@ -46,6 +46,7 @@ public:
     int recv(void *buffer, size_t size, uint8_t addr);
     uint32_t send(void *buffer, size_t size, uint8_t addr, uint8_t broadcast);
     int check_timeouts();
+    volatile uint32_t list_cnt;
 private:
     Packetbuffer *out;
     UnreliableTransfer **unrel;

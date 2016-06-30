@@ -81,7 +81,6 @@ int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint8_t ad
     header->addr = addr;
     header->port = port;
     header->size = size;
-    free(buffer);
     header->crc_val = 0;
     header->crc_val = F_CRC_CalculaCheckSum((uint8_t*) total_buf, total_size);
     //header->crc_val.process_bytes(total_buf, total_size);
@@ -160,9 +159,9 @@ int UnreliableTransfer::recv() {
                 rel->recv(buffer, size, addr);
                 break;
             default:
-                free(buffer);
-                //printf("u r5 free %p\n", buffer);
+                printf("UnreliableTransfer:: port not known: %d\n", port);
         }
+        free(buffer);
     }
     
 }

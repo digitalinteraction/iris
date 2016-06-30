@@ -70,8 +70,10 @@ int main(int argc, char** argv) {
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
-    unsigned long nextsend = currenttime + 200;
+    unsigned long nextsend = currenttime + 20;
     unsigned long nextprint = currenttime +1000;
+    unsigned long nextcheck = currenttime +20;
+
     //next_send.tv_nsec = (current.tv_nsec+20000000)%1000000000;
     //next_send.tv_sec = current.tv_sec;
     int sendpk = 0;
@@ -110,12 +112,17 @@ int main(int argc, char** argv) {
             //printf("end\n");
 
         }
+        
+        if(currenttime > nextcheck){
+            rel->check_timeouts();
+            nextcheck = currenttime + 2;
+        }
+        
         if(currenttime > nextsend){
             //topo->send();
             
             rel->send((void*)sendstring, size, 0, 0);
-            rel->check_timeouts();
-            nextsend = currenttime + 200;
+            nextsend = currenttime + 20;
             sendpk+=1;
             //next_send.tv_nsec = (current.tv_nsec+20000000)%1000 000 000;
             //next_send.tv_sec = current.tv_sec;
@@ -123,13 +130,16 @@ int main(int argc, char** argv) {
         
         if(currenttime > nextprint){
             struct mallinfo mi = mallinfo();
-            printf("memory: %d send packets: %d\n", mi.uordblks, sendpk);
+            printf("serial_test:: memory: %d send packets: %d list_cnt: %d\n", mi.uordblks, sendpk, rel->list_cnt);
             sendpk = 0;
             nextprint = currenttime+1000;
         }
         
-        struct packet *pack;
-        while(out->get(&pack) == 0){
+        
+        
+        struct packet *pack = 0;
+        while(image_out->get(&pack) == 0){
+            //printf("free pack buffer %p pack %p\n", pack->buffer, pack);
             free(pack->buffer);
             free(pack);
         }
