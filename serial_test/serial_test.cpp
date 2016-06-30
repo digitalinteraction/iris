@@ -22,7 +22,6 @@
 
 #include "../network/UnreliableTransfer.h"
 
-
 using namespace std;
 
 /*
@@ -31,15 +30,17 @@ using namespace std;
 int main(int argc, char** argv) {
     UnreliableTransfer *unrel;
     Packetbuffer *image_out = new Packetbuffer();
-    ReliableTransfer *rel = new ReliableTransfer(&unrel, image_out);
     Topology *topo = new Topology(&unrel);
+    ReliableTransfer *rel = new ReliableTransfer(&unrel, image_out, topo);
     DebugTransfer *debug = new DebugTransfer();
-    printf("serial_test:: got arguments %s %s\n", argv[0], argv[1]);
+    //printf("serial_test:: got arguments %s %s\n", argv[0], argv[1]);
+    uint8_t mode = 0;
     if(!strcmp(argv[1], "-a")){
-        printf("starting in mode 1\n");
+        //printf("starting in mode 1\n");
+        mode = 1;
         unrel = new UnreliableTransfer(rel, topo, debug, 1);
     }else{
-        printf("starting in mode 0\n");
+        //printf("starting in mode 0\n");
         unrel = new UnreliableTransfer(rel, topo, debug, 0);
     }
     
@@ -47,6 +48,10 @@ int main(int argc, char** argv) {
     
     char sendstring[] = "Testing Reliable Transfer\n";
     size_t size = sizeof(sendstring);
+    uint64_t* buf = (uint64_t*)malloc(size + sizeof(uint64_t));
+    memcpy(((char*)buf)+sizeof(uint64_t), sendstring, size);
+    buf[0] = 0;
+    
 
     sleep(2);
     
@@ -56,7 +61,7 @@ int main(int argc, char** argv) {
     Timeout.tv_sec = 0;
     fd_list[0] = unrel->recv_fd;
     fd_list[1] = out->signalfd;
-    printf("serial_test:: Connected to recv fd %d and %d\n", fd_list[0], fd_list[1]);
+    //printf("serial_test:: Connected to recv fd %d and %d\n", fd_list[0], fd_list[1]);
     int res = 0;
     int maxfd = 0;
     fd_set readfs;
@@ -70,9 +75,11 @@ int main(int argc, char** argv) {
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
-    unsigned long nextsend = currenttime + 20;
+    unsigned long nextsend = currenttime + 500;
     unsigned long nextprint = currenttime +1000;
     unsigned long nextcheck = currenttime +20;
+    unsigned long toposend = currenttime +200;
+    
 
     //next_send.tv_nsec = (current.tv_nsec+20000000)%1000000000;
     //next_send.tv_sec = current.tv_sec;
@@ -115,22 +122,33 @@ int main(int argc, char** argv) {
         
         if(currenttime > nextcheck){
             rel->check_timeouts();
-            nextcheck = currenttime + 2;
+            nextcheck = currenttime + 20;
+            topo->send();
+        }
+        
+        if(currenttime > toposend){
+            toposend = currenttime + 1000;
+            topo->send();
         }
         
         if(currenttime > nextsend){
-            //topo->send();
-            
-            rel->send((void*)sendstring, size, 0, 0);
-            nextsend = currenttime + 20;
-            sendpk+=1;
-            //next_send.tv_nsec = (current.tv_nsec+20000000)%1000 000 000;
-            //next_send.tv_sec = current.tv_sec;
+            if(rel->send((void*)buf, size, 0, 0) >= 0){
+                sendpk++;
+            }
+            if(mode == 1){
+                printf("%ld\n", buf[0]);
+            }
+            buf[0]++;
+            nextsend = currenttime + 200;            
         }
         
         if(currenttime > nextprint){
             struct mallinfo mi = mallinfo();
+            if(mode == 1){
             printf("serial_test:: memory: %d send packets: %d list_cnt: %d\n", mi.uordblks, sendpk, rel->list_cnt);
+            printf("Hosts alive: %d %d %d %d\n", topo->isalive(0), topo->isalive(1), topo->isalive(2),topo->isalive(3));
+
+            }
             sendpk = 0;
             nextprint = currenttime+1000;
         }
@@ -139,7 +157,9 @@ int main(int argc, char** argv) {
         
         struct packet *pack = 0;
         while(image_out->get(&pack) == 0){
-            //printf("free pack buffer %p pack %p\n", pack->buffer, pack);
+            if(mode == 0){
+                printf("%ld\n", ((uint64_t*) pack->buffer)[0]);
+            }
             free(pack->buffer);
             free(pack);
         }

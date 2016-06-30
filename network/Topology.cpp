@@ -25,7 +25,11 @@ Topology::Topology(UnreliableTransfer **unrel) {
     fclose(file);
     mac = 0;
     mac = (a<<40)|(b<<32)|(c<<24)|(d<<16)|(e<<8)|(f<<0);
-    printf("Topology:: got MAC %lx\n", mac);
+    //printf("Topology:: got MAC %lx\n", mac);
+    alive[0].tv_sec = 0;
+    alive[1].tv_sec = 0;
+    alive[2].tv_sec = 0;
+    alive[3].tv_sec = 0;
 }
 
 
@@ -52,31 +56,35 @@ int Topology::send(){
     buf1->mac = mac;
     buf2->mac = mac;
     buf3->mac = mac;
-#ifdef DEBUG
-    printf("Topology:: sending %p %ld\n", buf, sizeof (struct topo_buffer));
-#endif
-    //printf("Topology:: Sending 4 packets\n");
-    buf0->addr = 2;
+
+    buf0->addr = 0;//2;
     (*unrel)->send((void*) buf0, sizeof (struct topo_buffer), 1, 0);
 
-    buf1->addr = 3;
+    buf1->addr = 1;//3;
     (*unrel)->send((void*) buf1, sizeof (struct topo_buffer), 1, 1);
 
-    buf2->addr = 0;
+    buf2->addr = 2;//0;
     (*unrel)->send((void*) buf2, sizeof(struct topo_buffer), 1, 2);
     
-    buf3->addr = 1;
+    buf3->addr = 3;//1;
     (*unrel)->send((void*) buf3, sizeof(struct topo_buffer), 1, 3);
+    free(buf0);
+    free(buf1);
+    free(buf2);
+    free(buf3);
 }
 
 int Topology::recv(void* buffer, size_t size, uint8_t addr) {
 
     //printf("Topology:: received an alive packet at time %ld from addr %d\n", temp.tv_sec, addr);
     struct topo_buffer *buf = (struct topo_buffer *) buffer;
+    //printf("Topology: received a keep alive packet from %d on port %d\n", buf->addr, addr);
     if (addr < 4) {
         if (mapping[buf->addr] == 0 || mapping[buf->addr] == buf->mac) {
             mapping[buf->addr] = buf->mac;
-            clock_gettime(CLOCK_REALTIME, &(alive[buf->addr]));
+            struct timespec current;
+            clock_gettime(CLOCK_REALTIME, &current);
+            alive[buf->addr].tv_sec = current.tv_sec;
         } else {
             printf("Error Topology:: Conflicting MACs for the same spot in mapping\n");
         }
@@ -87,7 +95,7 @@ int Topology::recv(void* buffer, size_t size, uint8_t addr) {
 int Topology::isalive(uint8_t addr){
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
-    if(current.tv_sec < (alive[addr].tv_sec+5)){
+    if(current.tv_sec <= (alive[addr].tv_sec+5)){
         return 1;
     }else{
         return 0;

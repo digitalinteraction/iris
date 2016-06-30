@@ -18,9 +18,9 @@
 #include <string.h>
 
 
-#define TIMEOUT   5;
+#define TIMEOUT   2;
 
-ReliableTransfer::ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out) {
+ReliableTransfer::ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out, Topology *topo) {
     this->unrel = unrel;
     first = 0;
     last = 0;
@@ -30,6 +30,7 @@ ReliableTransfer::ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out
     ack.filler = 0;
     ack.id = 0;
     last_broadcast = 0;
+    this->topo = topo;
     list_lock.unlock();
     this->out = out;
 }
@@ -41,18 +42,13 @@ ReliableTransfer::~ReliableTransfer() {
 }
 
 int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
-
-    //printf("Reliable Transfer:: got packet size %ld addr %d\n", size, addr);
+    if(buffer == 0 || size <= 0){
+        printf("Error ReliableTransfer: buffer or size is wrong\n");
+        return -1;
+    }
     struct reliable_packet *header = (struct reliable_packet*) buffer;
-    //printf("Reliable Transfer:: header info %d %d %d\n", header->ack, header->broadcast, header->id);
-    //printf("Content of Ack: ");
-    //for (int i = 0; i < size; i++) {
-    //   printf(" %x ", *(((char *) header) + i));
-    //}
-    //printf("\n");
 
     if (header->ack == 1) {
-        //printf("Reliable Transfer:: ack received with id %d\n", header->id);       
         list_lock.lock();
         struct linked_header *list_item = first;
         uint8_t success = 0;
@@ -63,7 +59,6 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
         while (list_item != 0 && success != 1) {
             if (list_item->packet->id == header->id) {
                 success = 1;
-                //TODO reset timeout to next interval
                 if (list_item->prev == 0 && list_item->next == 0) {
                     first = 0;
                 } else if (list_item->prev == 0) {
@@ -78,8 +73,6 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
                 }
                 list_cnt--;
 
-                //free(list_item->packet->buffer);
-                //printf("ID %d free listitem packet %p, listitem %p\n", list_item->packet->id, list_item->packet, list_item);
                 free((void*)list_item->packet);
                 free(list_item);
             }
@@ -94,20 +87,14 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
     } else {
         unsigned char* buf = ((unsigned char *)buffer) + sizeof(struct reliable_packet);
         size_t new_size = size - sizeof(struct reliable_packet);
-        //printf("Reliable Transfer:: send packet to out with size %ld\n", new_size);
-        //printf("Reliable Transfer::Content %s\n", buf);
-        //is this thread safe?
         struct reliable_packet *cp_ack = (struct reliable_packet *)malloc(sizeof(struct reliable_packet));
-        //printf("ID %d malloc ack %p\n", header->id, cp_ack);
         memcpy(cp_ack, &ack, sizeof(ack));
         cp_ack->id = header->id;
         if(header->broadcast == 1){
             cp_ack->broadcast = 1;
         }
-        //printf("size of ack: %ld\n", sizeof(struct reliable_packet));
         
         (*unrel)->send(cp_ack, sizeof (struct reliable_packet), 2, addr);
-        //printf("ID %d free ack %p\n", header->id, cp_ack);
         free(cp_ack);
 
         if (header->broadcast == 1) {
@@ -126,10 +113,22 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
 }
 
 uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t broadcast){
-    //printf("Reliable Transfer:: sending packet size %ld\n", size);
+    
+    if(buffer == 0 || size <= 0){
+        printf("Error Reliable Transfer: buffer or size is wrong\n");
+        return -1;
+    }
+    
     
     //add topology info to enable send
-    //if(list_cnt > 20 || )
+    if(list_cnt > 20){
+        //printf("Error ReliableTransfer: list too long right now\n");
+        return -1;
+    }
+    if(topo->isalive(addr) == 0){
+        //printf("Error Reliable Transfer: destination is not alive\n");
+        return -1;
+    }
     
     
     size_t total_size = size + sizeof(struct reliable_packet);
@@ -140,7 +139,6 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t
         return -1;
     }
     struct reliable_packet *header = (struct reliable_packet *)buf;
-    //header->buffer = ((unsigned char*)buf + sizeof (struct reliable_packet));
     memcpy(((unsigned char*)buf + sizeof (struct reliable_packet)), buffer, size);
     header->ack = 0;
     header->filler = 0;
@@ -150,7 +148,6 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t
     memcpy((unsigned char*)cpy_buffer, (unsigned char*)buf, total_size);
 
     struct linked_header *packet = (struct linked_header *) malloc(sizeof(struct linked_header));
-    //printf("ID:%d alloc buf %p, cpy_buf %p, linked_header %p\n", header->id, buf, cpy_buffer, packet);
 
     packet->next = 0;
     packet->prev = 0;
@@ -174,14 +171,8 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t
     }
     list_cnt++;
     list_lock.unlock();
-    //printf("Reliable Transfer::sending packet size2 %ld to addr %d with id %d\n", total_size, addr, header->id);
-    //printf("COntent: ");
-    //for(int i = 0; i < total_size; i++){
-    //    printf(" %x ", *((char *)buf+i));
-    //}
-    //printf("\n");
+ 
     (*unrel)->send(buf, total_size, 2, addr);
-    //printf("ID: %d free buf %p\n", header->id, buf);
     free(buf);
     
     return header->id;
@@ -197,7 +188,6 @@ int ReliableTransfer::check_timeouts(){
 
     while (first != 0 && first->timeout.tv_sec <= current.tv_sec) {
         if (first->resent_time < 5) {
-            printf("resending packet id %d at time %ld with size %ld\n", first->packet->id, current.tv_sec, first->size);
             struct reliable_packet* send_temp = (struct reliable_packet*)malloc(first->size);
             list_lock.lock();
             memcpy(send_temp, first->packet, first->size);
@@ -210,11 +200,9 @@ int ReliableTransfer::check_timeouts(){
             if (last != 0) {
                 last->next = temp;
                 last = temp;
-                //printf("first inserted after last, new first %p old first %p last %p\n", first, temp, last);
             } else if (first == 0) {
                 first = temp;
                 last = temp;
-                //printf("only one packet present\n");
             }
             list_lock.unlock();
         }else{

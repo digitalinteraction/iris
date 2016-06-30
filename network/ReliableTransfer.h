@@ -17,6 +17,7 @@
 #include <stdint.h>
 #include "UnreliableTransfer.h"
 #include <mutex>
+#include "Topology.h"
 
 //class UnreliableTransfer;
 
@@ -40,7 +41,7 @@ struct linked_header{
 
 class ReliableTransfer {
 public:
-    ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out);
+    ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out, Topology *topo);
     ReliableTransfer(const ReliableTransfer& orig);
     virtual ~ReliableTransfer();
     int recv(void *buffer, size_t size, uint8_t addr);
@@ -49,6 +50,7 @@ public:
     volatile uint32_t list_cnt;
 private:
     Packetbuffer *out;
+    Topology *topo;
     UnreliableTransfer **unrel;
     struct linked_header*first;
     struct linked_header*last;
