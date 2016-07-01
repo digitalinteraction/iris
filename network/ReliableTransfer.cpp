@@ -73,7 +73,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
                 }
                 list_cnt--;
 
-                free((void*)list_item->packet);
+                free(list_item->packet);
                 free(list_item);
             }
             if(success == 0)
@@ -138,8 +138,11 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t
         printf("Error Reliable Transfer:: allocating buffer failed\n");
         return -1;
     }
-    struct reliable_packet *header = (struct reliable_packet *)buf;
+    
     memcpy(((unsigned char*)buf + sizeof (struct reliable_packet)), buffer, size);
+    
+    struct reliable_packet *header = (struct reliable_packet *)buf;
+
     header->ack = 0;
     header->filler = 0;
     header->id = seq++;
@@ -188,6 +191,7 @@ int ReliableTransfer::check_timeouts(){
 
     while (first != 0 && first->timeout.tv_sec <= current.tv_sec) {
         if (first->resent_time < 5) {
+            printf("ReliableTransfer: retransmitting packet\n");
             struct reliable_packet* send_temp = (struct reliable_packet*)malloc(first->size);
             list_lock.lock();
             memcpy(send_temp, first->packet, first->size);

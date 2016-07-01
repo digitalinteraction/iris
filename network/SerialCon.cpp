@@ -22,10 +22,10 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) 
         fd_array[2] = init_serial(2);
         fd_array[3] = init_serial(3);
     } else {
-        fd_array[0] = init_serial(5);
-        fd_array[1] = init_serial(6);
-        fd_array[2] = init_serial(7);
-        fd_array[3] = init_serial(8);
+        fd_array[0] = init_serial(4);
+        fd_array[1] = init_serial(5);
+        fd_array[2] = init_serial(6);
+        fd_array[3] = init_serial(7);
     }
 
     send_buf = sendbuf;
@@ -110,58 +110,35 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, int nr) {
 }
 
 int SerialCon::slip_recv(unsigned char *p, int fd, int *state, int*size) {
-#ifdef DEBUG
-    //printf("SerialCon:: Receiving::");
-#endif
+
     unsigned char c = 0;
     while (read(fd, &c, 1) > 0) {
-        //#ifdef DEBUG
-        //        printf("%c", c);
-        //#endif
         switch (c) {
             case END:
                 if (*state == 0) {
-                    *state = 1;
+                    *state = 1; 
                     *size = 0;
-#ifdef DEBUG                    
-                    //printf(" END ");
-#endif
                 } else if (*state == 1) {
                     *state = 2;
-                    //p[(*size)++] = 0;
-#ifdef DEBUG
-                    //printf(" END \n");
-#endif
                     return 0;
                 }
                 break;
             case ESC:
-#ifdef DEBUG
-                //printf(" ESC ");
-#endif
                 read(fd, &c, 1);
                 if (c == ESC_END) {
                     c = END;
-#ifdef DEBUG
-                    //printf(" ESC_END ");
-#endif
                 } else {
                     c = ESC;
-#ifdef DEBUG
-                    //printf(" ESC_ESC ");
-#endif
                 }
             default:
-#ifdef DEBUG
-                //printf(" %c ", c);
-#endif
-                if ((*size) < SIZE_LIMIT)
+                if ((*size) < SIZE_LIMIT){
                     p[(*size)++] = c;
+                }else{
+                    *state = 0;
+                    *size = 0;
+                }
         }
     }
-#ifdef DEBUG
-    printf("-\n");
-#endif
     return 1;
 }
 
@@ -256,11 +233,11 @@ void SerialCon::slip_run() {
                         if (pack->size > 0) {
                             
                             //REMOVE
-                            int r = rand()%100;
+                            /*int r = rand()%1000;
                             if(r == 53){
                                 printf("error inserted\n");
                                 ((unsigned char *)pack->buffer)[pack->size/2] = 0xFF;
-                            }
+                            }*/
                             //REMOVE END
                             
                             int ret = slip_send((unsigned char*) pack->buffer, pack->size, pack->addr);
@@ -310,14 +287,14 @@ int SerialCon::init_serial(int nr) {
     memset(temp, 0, sizeof (tio0));
     temp->c_iflag = 0;
     temp->c_oflag = 0;
-    temp->c_cflag = CS8 | CREAD | CLOCAL; // 8n1, see termios.h for more information
-    temp->c_lflag = 0;
+    temp->c_cflag = (CS8 | CREAD | CLOCAL)&~(PARENB|CSTOPB|CRTSCTS); // 8n1, see termios.h for more information
+    temp->c_lflag &= ~(ICANON | ECHO | ISIG);
     temp->c_cc[VMIN] = 1;
     temp->c_cc[VTIME] = 5;
     tty = open(name, O_RDWR | O_NONBLOCK | O_NOCTTY);
     free(name);
-    cfsetospeed(temp, B115200); // 115200 baud
-    cfsetispeed(temp, B115200); // 115200 baud
+    cfsetospeed(temp, B9600); // 115200 baud
+    cfsetispeed(temp, B9600); // 115200 baud
     //cfsetospeed(temp, B4000000); // 115200 baud
     //cfsetispeed(temp, B4000000); // 115200 baud
     tcsetattr(tty, TCSANOW, temp);

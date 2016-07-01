@@ -60,7 +60,7 @@ int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint8_t ad
 
     struct unreliable_packet *header = (struct unreliable_packet *) total_buf;
  
-    memcpy(((unsigned char*) total_buf + sizeof (struct unreliable_packet)), buffer, size);
+    memcpy((((unsigned char*) total_buf) + sizeof (struct unreliable_packet)), buffer, size);
     header->addr = addr;
     header->port = port;
     header->size = size;
@@ -77,8 +77,8 @@ int UnreliableTransfer::recv() {
     struct packet *pack;
     while (recv_buf->get(&pack) == 0) {
         
-        if(pack->buffer == 0 || pack->size <= 0){
-            printf("Error Unreliable Transfer:: buffer or size is wrong\n");
+        if(pack->buffer == 0 || pack->size <= sizeof(struct unreliable_packet)){
+            printf("Error Unreliable Transfer:: buffer or size is wrong: %ld %p\n", pack->size, pack->buffer);
             return -1;
         }
         struct unreliable_packet *header = (struct unreliable_packet *) pack->buffer;
@@ -87,13 +87,14 @@ int UnreliableTransfer::recv() {
         crc comp_crc = F_CRC_CalculaCheckSum((uint8_t*) pack->buffer, pack->size);
         
         if (comp_crc != real_crc) {
+            printf("Error Unreliable Transfer:: %d CRC did not match %x %x\n", header->port, comp_crc, real_crc);
             free(pack->buffer);
             free(pack);
-            //printf("Error Unreliable Transfer:: CRC did not match %x %x\n", comp_crc, real_crc);
             return -1;
         }
-        void *buffer = malloc(header->size);
-        memcpy(buffer, ((unsigned char*) pack->buffer + sizeof (struct unreliable_packet)), header->size);
+        //void *buffer = malloc(header->size);
+        void *buffer = malloc(pack->size - sizeof(struct unreliable_packet));
+        memcpy(buffer, ((unsigned char*) pack->buffer + sizeof (struct unreliable_packet)), pack->size - sizeof(struct unreliable_packet));
         
         uint8_t port = header->port;
         size_t size = header->size;
