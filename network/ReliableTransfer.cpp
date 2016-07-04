@@ -42,49 +42,70 @@ ReliableTransfer::~ReliableTransfer() {
 }
 
 int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
+    //printf("recv ");
     if(buffer == 0 || size <= 0){
         printf("Error ReliableTransfer: buffer or size is wrong\n");
         return -1;
     }
+    
+    
     struct reliable_packet *header = (struct reliable_packet*) buffer;
 
     if (header->ack == 1) {
+        //printf(" ack "); fflush(stdout);
         list_lock.lock();
         struct linked_header *list_item = first;
         uint8_t success = 0;
         
         if(header->broadcast == 1 && header->id == last_broadcast){
+            //printf(" bc "); fflush(stdout);
             success = 1;
         }
+        //printf(" while "); fflush(stdout);
         while (list_item != 0 && success != 1) {
+            //printf(" li %p ", list_item); fflush(stdout);
+            //printf(" lip %p ", list_item->packet); fflush(stdout);
+            //printf(" lippn %p %p ", list_item->prev, list_item->next); fflush(stdout);
+            
+            if(list_item->packet != 0){
             if (list_item->packet->id == header->id) {
                 success = 1;
+                //printf("List prev: %p next %p\n", list_item->prev, list_item->next);
                 if (list_item->prev == 0 && list_item->next == 0) {
+                    //printf(" 0 "); fflush(stdout);
                     first = 0;
+                    last = 0;
                 } else if (list_item->prev == 0) {
+                    //printf(" 1 "); fflush(stdout);
                     first = list_item->next;
                     first->prev = 0;
                 } else if (list_item->next == 0) {
+                    //printf(" 2 "); fflush(stdout);
                     list_item->prev->next = 0;
                     last = list_item->prev;
                 } else {
+                    //printf(" 3 "); fflush(stdout);
                     list_item->prev->next = list_item->next;
                     list_item->next->prev = list_item->prev;
                 }
                 list_cnt--;
+                //printf("List First: %p Last %p\n", first, last);
 
                 free(list_item->packet);
                 free(list_item);
             }
-            if(success == 0)
+            }
+            if(success == 0){
                 list_item = list_item->next;
+            }
         }
         list_lock.unlock();
         if(success == 0){
-            printf("Error Reliable Transfer:: Packet which does not exist acknowledged (maybe duplicate)\n");
+            printf("Error Reliable Transfer:: Packet which does not exist acknowledged %d (maybe duplicate)\n", header->id);
         }
         
     } else {
+        //printf(" real ");fflush(stdout);
         unsigned char* buf = ((unsigned char *)buffer) + sizeof(struct reliable_packet);
         size_t new_size = size - sizeof(struct reliable_packet);
         struct reliable_packet *cp_ack = (struct reliable_packet *)malloc(sizeof(struct reliable_packet));
@@ -110,17 +131,17 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
             out->add(new_size, addr, buf);
         }
     }
+    //printf("recv ends\n");
+    return 0;
 }
 
 uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t broadcast){
-    
     if(buffer == 0 || size <= 0){
         printf("Error Reliable Transfer: buffer or size is wrong\n");
         return -1;
     }
     
     
-    //add topology info to enable send
     if(list_cnt > 20){
         //printf("Error ReliableTransfer: list too long right now\n");
         return -1;
@@ -134,7 +155,7 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t
     size_t total_size = size + sizeof(struct reliable_packet);
     void *buf = malloc(total_size);
     void *cpy_buffer = malloc(total_size);
-    if (buf < 0) {
+    if (buf <= 0 || cpy_buffer <= 0) {
         printf("Error Reliable Transfer:: allocating buffer failed\n");
         return -1;
     }
@@ -177,48 +198,56 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t
  
     (*unrel)->send(buf, total_size, 2, addr);
     free(buf);
-    
-    return header->id;
+    return 0;
 }
 
 //call this function every 250ms
 int ReliableTransfer::check_timeouts(){
     if(first == 0){
-        return 0;
+        return -1;
     }
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
-
+    list_lock.lock();
     while (first != 0 && first->timeout.tv_sec <= current.tv_sec) {
         if (first->resent_time < 5) {
             printf("ReliableTransfer: retransmitting packet\n");
-            struct reliable_packet* send_temp = (struct reliable_packet*)malloc(first->size);
-            list_lock.lock();
-            memcpy(send_temp, first->packet, first->size);
-            (*unrel)->send(send_temp, first->size, 2, first->addr);
+            // struct reliable_packet* send_temp = (struct reliable_packet*)malloc(first->size);
+            // memcpy(send_temp, first->packet, first->size);
+            //(*unrel)->send(send_temp, first->size, 2, first->addr);
+            if(first->packet == 0){
+                printf("Retransmit: empty payload\n"); fflush(stdout);
+            }
+            (*unrel)->send(first->packet, first->size, 2, first->addr);
+
             first->timeout.tv_sec = current.tv_sec + TIMEOUT;
             //first->timeout.tv_nsec = current.tv_nsec;
             first->resent_time++;
+            
             struct linked_header *temp = first;
-            first = first->next;
-            if (last != 0) {
+            
+            
+            if (first->next != 0) {
+                first = first->next;
+                first->prev = 0;
+                temp->next = 0;
+                temp->prev = last;
                 last->next = temp;
                 last = temp;
-            } else if (first == 0) {
-                first = temp;
-                last = temp;
-            }
-            list_lock.unlock();
-        }else{
+            }            
+        } else {
             printf("ERROR::Reliable Transfer::Packet could not be transmitted\n");
             struct linked_header *temp = first;
             first = first->next;
             free(temp->packet);
             free(temp);
-            if(first != 0)
+            if (first != 0)
                 first->prev = 0;
             list_cnt--;
             //call app to signal packet could not be transmitted
         }
     }
+        
+    list_lock.unlock();
+    return 0;
 }

@@ -16,17 +16,17 @@
 #include <stdlib.h>
 
 SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) {
-    if (deb == 1) {
+    //if (deb == 1) {
         fd_array[0] = init_serial(0);
         fd_array[1] = init_serial(1);
         fd_array[2] = init_serial(2);
         fd_array[3] = init_serial(3);
-    } else {
-        fd_array[0] = init_serial(4);
-        fd_array[1] = init_serial(5);
-        fd_array[2] = init_serial(6);
-        fd_array[3] = init_serial(7);
-    }
+    //} /*else {
+        //fd_array[0] = init_serial(1);
+       // fd_array[1] = init_serial(3);
+        //fd_array[2] = init_serial(5);
+        //fd_array[3] = init_serial(7);
+    //}*/
 
     send_buf = sendbuf;
     recv_buf = recvbuf;
@@ -67,16 +67,19 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, int nr) {
     if (len <= 0 || nr > 3 || p == 0) {
         return -1;
     }
+    
+    
     ssize_t ret = 0;
 
     write(fd_array[nr], &end, 1);
 
     while (len--) {
+
         switch (*p) {
             case END:
                 //send_char(ESC);
                 //send_char(ESC_END);
-                ret += write(fd_array[nr], &esc, 1);
+                ret = write(fd_array[nr], &esc, 1);
                 ret += write(fd_array[nr], &esc_end, 1);
                 if (ret != 2) {
                     return -1;
@@ -85,7 +88,7 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, int nr) {
             case ESC:
                 //send_char(ESC);
                 //send_char(ESC_ESC);
-                ret += write(fd_array[nr], &esc, 1);
+                ret = write(fd_array[nr], &esc, 1);
                 ret += write(fd_array[nr], &esc_esc, 1);
                 if (ret != 2) {
                     return -1;
@@ -98,7 +101,6 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, int nr) {
                     return -1;
                 }
         }
-        ret = 0;
         p++;
     }
     //send_char(END);
@@ -109,35 +111,35 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, int nr) {
     return 0;
 }
 
-int SerialCon::slip_recv(unsigned char *p, int fd, int *state, int*size) {
-
-    unsigned char c = 0;
-    while (read(fd, &c, 1) > 0) {
-        switch (c) {
-            case END:
-                if (*state == 0) {
-                    *state = 1; 
-                    *size = 0;
-                } else if (*state == 1) {
-                    *state = 2;
-                    return 0;
-                }
-                break;
-            case ESC:
-                read(fd, &c, 1);
-                if (c == ESC_END) {
-                    c = END;
-                } else {
-                    c = ESC;
-                }
-            default:
-                if ((*size) < SIZE_LIMIT){
-                    p[(*size)++] = c;
-                }else{
-                    *state = 0;
-                    *size = 0;
-                }
-        }
+int SerialCon::slip_recv(unsigned char *p, unsigned char c, int *state, int*size) {
+    switch (c) {
+        case END:
+            return 0;
+            break;
+        case ESC:
+            if (*state == 0) {
+                *state = 1;
+            } else {
+                printf("Error SerialCon: double ESC\n");
+            }
+            break;
+        case ESC_END:
+            if (*state == 1) {
+                c = END;
+                *state = 0;
+            }
+        case ESC_ESC:
+            if (*state == 1) {
+                c = ESC;
+                *state = 0;
+            }
+    default:
+            if ((*size) < SIZE_LIMIT) {
+                p[(*size)++] = c;
+            } else {
+                *state = 0;
+                *size = 0;
+            }
     }
     return 1;
 }
@@ -167,12 +169,13 @@ void SerialCon::slip_run() {
         } else {
 
             if (FD_ISSET(fd_array[0], &readfs)) {
-
-                if (state0 != 2) {
-                    if (slip_recv(recv_buf0, fd_array[0], &state0, &size0) == 0) {
+                unsigned char c;
+                while(read(fd_array[0], &c, 1) > 0){
+                    if (slip_recv(recv_buf0, c, &state0, &size0) == 0) {
                         if (size0 > 0) {
+ 
                             int ret = recv_buf->add(size0, 0, recv_buf0);
-                            if(ret != 0){
+                            if (ret != 0) {
                                 printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
@@ -182,11 +185,13 @@ void SerialCon::slip_run() {
                 }
             }
             if (FD_ISSET(fd_array[1], &readfs)) {
-                if (state1 != 2) {
-                    if (slip_recv(recv_buf1, fd_array[1], &state1, &size1) == 0) {
+                unsigned char c;
+                while(read(fd_array[1], &c, 1) > 0){
+                    if (slip_recv(recv_buf1, c, &state1, &size1) == 0) {
                         if (size1 > 0) {
-                            int ret = recv_buf->add(size1, 1, recv_buf1);
-                            if(ret != 0){
+ 
+                            int ret = recv_buf->add(size1, 0, recv_buf1);
+                            if (ret != 0) {
                                 printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
@@ -196,11 +201,13 @@ void SerialCon::slip_run() {
                 }
             }
             if (FD_ISSET(fd_array[2], &readfs)) {
-                if (state2 != 2) {
-                    if (slip_recv(recv_buf2, fd_array[2], &state2, &size2) == 0) {
+                unsigned char c;
+                while(read(fd_array[2], &c, 1) > 0){
+                    if (slip_recv(recv_buf2, c, &state2, &size2) == 0) {
                         if (size2 > 0) {
-                            int ret = recv_buf->add(size2, 2, recv_buf2);
-                            if(ret != 0){
+ 
+                            int ret = recv_buf->add(size2, 0, recv_buf2);
+                            if (ret != 0) {
                                 printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
@@ -210,11 +217,13 @@ void SerialCon::slip_run() {
                 }
             }
             if (FD_ISSET(fd_array[3], &readfs)) {
-                if (state3 != 2) {
-                    if (slip_recv(recv_buf3, fd_array[3], &state3, &size3) == 0) {
+                unsigned char c;
+                while(read(fd_array[3], &c, 1) > 0){
+                    if (slip_recv(recv_buf3, c, &state3, &size3) == 0) {
                         if (size3 > 0) {
-                            int ret = recv_buf->add(size3, 3, recv_buf3);
-                            if(ret != 0){
+ 
+                            int ret = recv_buf->add(size3, 0, recv_buf3);
+                            if (ret != 0) {
                                 printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
@@ -231,17 +240,13 @@ void SerialCon::slip_run() {
                     struct packet * pack;
                     if (send_buf->get(&pack) == 0) {
                         if (pack->size > 0) {
-                            
-                            //REMOVE
-                            /*int r = rand()%1000;
-                            if(r == 53){
+                            int r = rand() % 10000;
+                            if (r == 5423) {
                                 printf("error inserted\n");
-                                ((unsigned char *)pack->buffer)[pack->size/2] = 0xFF;
-                            }*/
-                            //REMOVE END
-                            
+                                ((unsigned char*)pack->buffer)[0] = 0xFF;
+                            }
                             int ret = slip_send((unsigned char*) pack->buffer, pack->size, pack->addr);
-                            if(ret != 0){
+                            if (ret != 0) {
                                 printf("Error SerialCon: sending packet did not work\n");
                             }
                         }

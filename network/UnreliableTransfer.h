@@ -18,6 +18,8 @@
 #include <thread>
 
 #include "crc/crc.h"
+#include <mutex>          // std::mutex
+
 //#include <boost/crc.hpp>
 
 class ReliableTransfer;
@@ -50,6 +52,9 @@ private:
     Topology *topo;
     DebugTransfer *debug;
     SerialCon *sercon;
+    std::mutex lock_recv;
+    std::mutex lock_send;
+
 
     
 };

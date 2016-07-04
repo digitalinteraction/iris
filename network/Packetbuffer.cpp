@@ -58,8 +58,9 @@ int Packetbuffer::add(uint32_t size, uint8_t addr, void* buffer) {
     cnt++;
     uint64_t u = 1;
 
-    lock.unlock();
     write(signalfd, &u, sizeof (uint64_t));
+    lock.unlock();
+
     return 0;
 }
 

@@ -31,6 +31,8 @@ UnreliableTransfer::UnreliableTransfer(ReliableTransfer *rel, Topology *topo, De
     this->rel = rel;
     this->topo = topo;
     this->debug = debug;
+    lock_recv.unlock();
+    lock_send.unlock();
     
     sercon->processing = 1;    
     
@@ -41,13 +43,18 @@ UnreliableTransfer::~UnreliableTransfer() {
 }
 
 int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint8_t addr) {
+    
+    
+    lock_send.lock();
     if(size <= 0 || buffer == 0){
         printf("Error Unreliable Transfer:: buffer or size is wrong\n");
+        lock_send.unlock();
         return -1;
     }
     size_t total_size = size + sizeof (struct unreliable_packet);
     if (total_size > SIZE_LIMIT) {
         printf("Error Unreliable Transfer:: size of packet is too large\n");
+        lock_send.unlock();
         return -1;
     }
 
@@ -55,6 +62,7 @@ int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint8_t ad
 
     if (total_buf < 0) {
         printf("Error Unreliable Transfer:: allocating buffer failed\n");
+        lock_send.unlock();
         return -1;
     }
 
@@ -70,26 +78,31 @@ int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint8_t ad
     send_buf->add(total_size, addr, total_buf);
     
     free(total_buf);
-    
+    lock_send.unlock();
 }
 
 int UnreliableTransfer::recv() {
+    lock_recv.lock();
     struct packet *pack;
     while (recv_buf->get(&pack) == 0) {
         
-        if(pack->buffer == 0 || pack->size <= sizeof(struct unreliable_packet)){
+        if(pack->buffer == 0 || pack->size <= sizeof(struct unreliable_packet)) {
             printf("Error Unreliable Transfer:: buffer or size is wrong: %ld %p\n", pack->size, pack->buffer);
+            lock_recv.unlock();
             return -1;
         }
+        
+
         struct unreliable_packet *header = (struct unreliable_packet *) pack->buffer;
         crc real_crc = header->crc_val;
         header->crc_val = 0;
         crc comp_crc = F_CRC_CalculaCheckSum((uint8_t*) pack->buffer, pack->size);
-        
+
         if (comp_crc != real_crc) {
             printf("Error Unreliable Transfer:: %d CRC did not match %x %x\n", header->port, comp_crc, real_crc);
             free(pack->buffer);
             free(pack);
+            lock_recv.unlock();
             return -1;
         }
         //void *buffer = malloc(header->size);
@@ -117,5 +130,6 @@ int UnreliableTransfer::recv() {
         }
         free(buffer);
     }
+    lock_recv.unlock();
     
 }

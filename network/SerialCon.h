@@ -83,7 +83,7 @@ private:
     unsigned char esc_esc = ESC_ESC;
     
     int slip_send(unsigned char *p, uint16_t len, int nr);
-    int slip_recv(unsigned char *p, int fd, int *state, int*size);
+    int slip_recv(unsigned char *p, unsigned char c, int *state, int*size);
     int init_serial(int nr);
 
 };

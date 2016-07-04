@@ -95,7 +95,7 @@ int Topology::recv(void* buffer, size_t size, uint8_t addr) {
 int Topology::isalive(uint8_t addr){
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
-    if(current.tv_sec <= (alive[addr].tv_sec+5)){
+    if(current.tv_sec <= (alive[addr].tv_sec+2)){
         return 1;
     }else{
         return 0;
