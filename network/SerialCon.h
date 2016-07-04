@@ -28,8 +28,8 @@
 #define ESC_END         220
 #define ESC_ESC         221
 #define SIZE_LIMIT      2048
-//#define NAME_TTY       "/dev/ttyUSB%d"
-#define NAME_TTY       "/dev/tnt%d"
+#define NAME_TTY       "/dev/ttyUSB%d"
+//#define NAME_TTY       "/dev/tnt%d"
 //#define NAME_TTY       "/home/tobias/virtualTTY%d"
 
 

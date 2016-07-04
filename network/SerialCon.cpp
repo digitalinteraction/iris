@@ -120,7 +120,7 @@ int SerialCon::slip_recv(unsigned char *p, unsigned char c, int *state, int*size
             if (*state == 0) {
                 *state = 1;
             } else {
-                printf("Error SerialCon: double ESC\n");
+                //printf("Error SerialCon: double ESC\n");
             }
             break;
         case ESC_END:
@@ -176,7 +176,7 @@ void SerialCon::slip_run() {
  
                             int ret = recv_buf->add(size0, 0, recv_buf0);
                             if (ret != 0) {
-                                printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
+                               // printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
                         state0 = 0;
@@ -192,7 +192,7 @@ void SerialCon::slip_run() {
  
                             int ret = recv_buf->add(size1, 0, recv_buf1);
                             if (ret != 0) {
-                                printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
+                                //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
                         state1 = 0;
@@ -208,7 +208,7 @@ void SerialCon::slip_run() {
  
                             int ret = recv_buf->add(size2, 0, recv_buf2);
                             if (ret != 0) {
-                                printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
+                                //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
                         state2 = 0;
@@ -224,7 +224,7 @@ void SerialCon::slip_run() {
  
                             int ret = recv_buf->add(size3, 0, recv_buf3);
                             if (ret != 0) {
-                                printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
+                                //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
                         state3 = 0;
@@ -240,14 +240,15 @@ void SerialCon::slip_run() {
                     struct packet * pack;
                     if (send_buf->get(&pack) == 0) {
                         if (pack->size > 0) {
+                            /*
                             int r = rand() % 10000;
                             if (r == 5423) {
-                                printf("error inserted\n");
+                                //printf("error inserted\n");
                                 ((unsigned char*)pack->buffer)[0] = 0xFF;
-                            }
+                            }*/
                             int ret = slip_send((unsigned char*) pack->buffer, pack->size, pack->addr);
                             if (ret != 0) {
-                                printf("Error SerialCon: sending packet did not work\n");
+                                //printf("Error SerialCon: sending packet did not work\n");
                             }
                         }
                         free(pack->buffer);
