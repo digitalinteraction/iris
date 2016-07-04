@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
     unsigned long nextsend = currenttime + 500;
     unsigned long nextprint = currenttime +1000;
     unsigned long nextcheck = currenttime +20;
-    unsigned long toposend = currenttime +200;
+    unsigned long toposend = currenttime +1000;
     
 
     //next_send.tv_nsec = (current.tv_nsec+20000000)%1000000000;
@@ -122,12 +122,12 @@ int main(int argc, char** argv) {
         
         if(currenttime > nextcheck){
             rel->check_timeouts();
-            nextcheck = currenttime + 2;
+            nextcheck = currenttime + 20;
             //topo->send();
         }
         
         if(currenttime > toposend){
-            toposend = currenttime + 2;
+            toposend = currenttime + 500;
             topo->send();
         }
         
@@ -135,20 +135,29 @@ int main(int argc, char** argv) {
             if(rel->send((void*)buf, size, 0, 0) >= 0){
                 sendpk++;
             }
+            if(rel->send((void*)buf, size, 1, 0) >= 0){
+                sendpk++;
+            }
+            if(rel->send((void*)buf, size, 2, 0) >= 0){
+                sendpk++;
+            }
+            if(rel->send((void*)buf, size, 3, 0) >= 0){
+                sendpk++;
+            }
             if(mode == 1){
-                printf("%ld\n", buf[0]);
+                //printf("%ld\n", buf[0]);
             }
             buf[0]++;
-            nextsend = currenttime + 50;            
+            nextsend = currenttime + 1;            
         }
         
         if(currenttime > nextprint){
             struct mallinfo mi = mallinfo();
-            if(mode == 1){
+            //if(mode == 1){
             printf("serial_test:: memory: %d send packets: %d list_cnt: %d\n", mi.uordblks, sendpk, rel->list_cnt);
             printf("Hosts alive: %d %d %d %d\n", topo->isalive(0), topo->isalive(1), topo->isalive(2),topo->isalive(3));
 
-            }
+            //}
             sendpk = 0;
             nextprint = currenttime+1000;
         }
@@ -158,7 +167,7 @@ int main(int argc, char** argv) {
         struct packet *pack = 0;
         while(image_out->get(&pack) == 0){
             if(mode == 0){
-                printf("%ld\n", ((uint64_t*) pack->buffer)[0]);
+                //printf("%ld\n", ((uint64_t*) pack->buffer)[0]);
             }
             free(pack->buffer);
             free(pack);
