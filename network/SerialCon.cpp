@@ -30,19 +30,19 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) 
     if ((fd_array[4] = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
         perror("cannot create socket");
     }
-    //server = gethostbyname(DEBUG_SERVER);
-    //if (server == NULL) {
-    //    fprintf(stderr, "ERROR, no such host as %s\n", DEBUG_SERVER);
-    //}
+    server = gethostbyname(DEBUG_SERVER);
+    if (server == NULL) {
+        fprintf(stderr, "ERROR, no such host as %s\n", DEBUG_SERVER);
+    }
     //bzero((char *) &serveraddr, sizeof(serveraddr));
     memset((char *) &serveraddr, 0, sizeof (serveraddr));
     serveraddr.sin_family = AF_INET;
-    //bcopy((char *)server->h_addr, (char *)&serveraddr.sin_addr.s_addr, server->h_length);
+    bcopy((char *)server->h_addr, (char *)&serveraddr.sin_addr.s_addr, server->h_length);
     serveraddr.sin_port = htons(DEBUG_PORT);
-    if (inet_aton(DEBUG_SERVER, &serveraddr.sin_addr) == 0) {
-        printf("inet_aton() failed\n");
+    //if (inet_aton(DEBUG_SERVER, &serveraddr.sin_addr) == 0) {
+    //    printf("inet_aton() failed\n");
         //exit(1);
-    }
+    //}
 
 
     send_buf = sendbuf;

@@ -91,7 +91,7 @@ private:
     unsigned char esc_end = ESC_END;
     unsigned char esc_esc = ESC_ESC;
     
-    //struct hostent *server;
+    struct hostent *server;
     struct sockaddr_in serveraddr;
     
     int slip_send(unsigned char *p, uint16_t len, uint32_t nr);
