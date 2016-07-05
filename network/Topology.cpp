@@ -20,7 +20,7 @@ struct topo_buffer{
 Topology::Topology(UnreliableTransfer **unrel) {
     this->unrel = unrel;
     FILE * file = fopen("/sys/class/net/wlan0/address", "r");
-    uint64_t a,b,c,d,e,f;
+    uint64_t a=0,b=0,c=0,d=0,e=0,f=0;
     fscanf(file, "%lx:%lx:%lx:%lx:%lx:%lx", &a, &b, &c, &d, &e, &f);
     fclose(file);
     mac = 0;
@@ -30,6 +30,10 @@ Topology::Topology(UnreliableTransfer **unrel) {
     alive[1].tv_sec = 0;
     alive[2].tv_sec = 0;
     alive[3].tv_sec = 0;
+    mapping[0] = 0;
+    mapping[1] = 0;
+    mapping[2] = 0;
+    mapping[3] = 0;
 }
 
 
@@ -42,11 +46,7 @@ int Topology::send(){
 #ifdef DEBUG
     printf("Topology::Sending requests\n");
 #endif
-    mapping[0] = 0;
-    mapping[1] = 0;
-    mapping[2] = 0;
-    mapping[3] = 0;
-
+    
     struct topo_buffer *buf0 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
     struct topo_buffer *buf1 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
     struct topo_buffer *buf2 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
