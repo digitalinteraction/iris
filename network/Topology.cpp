@@ -24,7 +24,7 @@ Topology::Topology(UnreliableTransfer **unrel) {
     fscanf(file, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &a, &b, &c, &d, &e, &f);
     fclose(file);
     mac = 0;
-    mac = ((uint64_t)a<<40)|((uint64_t)b<<32)|((uint64_t)c<<24)|((uint64_t)d<<16)|((uint64_t)e<<8)|((uint64_t)f<<0);
+    mac = (((uint64_t)a)<<40)|(((uint64_t)b)<<32)|(((uint64_t)c)<<24)|(((uint64_t)d)<<16)|(((uint64_t)e)<<8)|(((uint64_t)f)<<0);
     printf("Topology:: got MAC %lx\n", mac);
     alive[0].tv_sec = 0;
     alive[1].tv_sec = 0;
