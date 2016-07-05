@@ -81,7 +81,7 @@ SerialCon::~SerialCon() {
 
 int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
     //printf("SerialCon:: sending packet out of nr %d fd %d\n", nr, fd_array[nr]);
-    if (len <= 0 || nr > 3 || p == 0) {
+    if (len <= 0 || p == 0) {
         return -1;
     }
     
