@@ -122,12 +122,12 @@ int main(int argc, char** argv) {
         
         if(currenttime > nextcheck){
             rel->check_timeouts();
-            nextcheck = currenttime + 200;
+            nextcheck = currenttime + 20;
             //topo->send();
         }
         
         if(currenttime > toposend){
-            toposend = currenttime + 1000;
+            toposend = currenttime + 10;
             topo->send();
         }
         
