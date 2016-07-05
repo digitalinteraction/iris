@@ -20,11 +20,11 @@ struct topo_buffer{
 Topology::Topology(UnreliableTransfer **unrel) {
     this->unrel = unrel;
     FILE * file = fopen("/sys/class/net/wlan0/address", "r");
-    uint64_t a=0,b=0,c=0,d=0,e=0,f=0;
-    fscanf(file, "%lx:%lx:%lx:%lx:%lx:%lx", &a, &b, &c, &d, &e, &f);
+    unsigned char a=0,b=0,c=0,d=0,e=0,f=0;
+    fscanf(file, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &a, &b, &c, &d, &e, &f);
     fclose(file);
     mac = 0;
-    mac = (a<<40)|(b<<32)|(c<<24)|(d<<16)|(e<<8)|(f<<0);
+    mac = ((uint8_t)a<<40)|((uint8_t)b<<32)|((uint8_t)c<<24)|((uint8_t)d<<16)|((uint8_t)e<<8)|((uint8_t)f<<0);
     printf("Topology:: got MAC %lx\n", mac);
     alive[0].tv_sec = 0;
     alive[1].tv_sec = 0;
