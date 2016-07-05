@@ -18,6 +18,11 @@
 
 
 //class UnreliableTransfer;
+struct topo_buffer{
+    uint64_t mac;
+    uint8_t addr;
+};
+
 
 class Topology {
 public:
@@ -31,6 +36,7 @@ private:
     uint64_t mac;
     struct timespec alive[4];
     uint64_t mapping[4];
+    struct topo_buffer topo_buf;
 };
 
 #endif /* TOPOLOGY_H */

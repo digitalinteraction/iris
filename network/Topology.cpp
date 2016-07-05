@@ -12,10 +12,6 @@
  */
 
 #include "Topology.h"
-struct topo_buffer{
-    uint64_t mac;
-    uint8_t addr;
-};
 
 Topology::Topology(UnreliableTransfer **unrel) {
     this->unrel = unrel;
@@ -25,7 +21,7 @@ Topology::Topology(UnreliableTransfer **unrel) {
     fclose(file);
     mac = 0;
     mac = (((uint64_t)a)<<40)|(((uint64_t)b)<<32)|(((uint64_t)c)<<24)|(((uint64_t)d)<<16)|(((uint64_t)e)<<8)|(((uint64_t)f)<<0);
-    printf("Topology:: got MAC %lx\n", mac);
+    printf("Topology:: got MAC %llx\n", mac);
     alive[0].tv_sec = 0;
     alive[1].tv_sec = 0;
     alive[2].tv_sec = 0;
@@ -34,6 +30,11 @@ Topology::Topology(UnreliableTransfer **unrel) {
     mapping[1] = 0;
     mapping[2] = 0;
     mapping[3] = 0;
+    
+    topo_buf.addr = 0;
+    topo_buf.mac = mac;
+    
+    
 }
 
 
@@ -47,7 +48,7 @@ int Topology::send(){
     printf("Topology::Sending requests\n");
 #endif
     
-    struct topo_buffer *buf0 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
+    /*struct topo_buffer *buf0 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
     struct topo_buffer *buf1 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
     struct topo_buffer *buf2 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
     struct topo_buffer *buf3 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
@@ -55,23 +56,23 @@ int Topology::send(){
     buf0->mac = mac;
     buf1->mac = mac;
     buf2->mac = mac;
-    buf3->mac = mac;
+    buf3->mac = mac;*/
 
-    buf0->addr = 0;//2;
-    (*unrel)->send((void*) buf0, sizeof (struct topo_buffer), 1, 0);
+    //buf0->addr = 0;//2;
+    (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 0);
 
-    buf1->addr = 1;//3;
-    (*unrel)->send((void*) buf1, sizeof (struct topo_buffer), 1, 1);
+    //buf1->addr = 1;//3;
+    (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 1);
 
-    buf2->addr = 2;//0;
-    (*unrel)->send((void*) buf2, sizeof(struct topo_buffer), 1, 2);
+    //buf2->addr = 2;//0;
+    (*unrel)->send((void*) &topo_buf, sizeof(struct topo_buffer), 1, 2);
     
-    buf3->addr = 3;//1;
-    (*unrel)->send((void*) buf3, sizeof(struct topo_buffer), 1, 3);
-    free(buf0);
-    free(buf1);
-    free(buf2);
-    free(buf3);
+    //buf3->addr = 3;//1;
+    (*unrel)->send((void*) &topo_buf, sizeof(struct topo_buffer), 1, 3);
+    //free(buf0);
+    //free(buf1);
+    //free(buf2);
+    //free(buf3);
 }
 
 int Topology::recv(void* buffer, size_t size, uint8_t addr) {
