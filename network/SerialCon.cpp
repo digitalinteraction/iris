@@ -14,6 +14,8 @@
 #include "SerialCon.h"
 #include <time.h>
 #include <stdlib.h>
+#include "socket/shared.h"
+//#include "socket/socket.c"
 
 SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) {
     //if (deb == 1) {
@@ -27,24 +29,33 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) 
         //fd_array[2] = init_serial(5);
         //fd_array[3] = init_serial(7);
     //}*/
-    if ((fd_array[4] = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
-        perror("cannot create socket");
-    }
-    server = gethostbyname(DEBUG_SERVER);
-    if (server == NULL) {
-        fprintf(stderr, "ERROR, no such host as %s\n", DEBUG_SERVER);
-    }
-    //bzero((char *) &serveraddr, sizeof(serveraddr));
-    memset((char *) &serveraddr, 0, sizeof (serveraddr));
-    serveraddr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr, (char *)&serveraddr.sin_addr.s_addr, server->h_length);
-    serveraddr.sin_port = htons(DEBUG_PORT);
-    //if (inet_aton(DEBUG_SERVER, &serveraddr.sin_addr) == 0) {
-    //    printf("inet_aton() failed\n");
-        //exit(1);
-    //}
 
 
+
+    
+    slen = sizeof (struct sockaddr_in);
+
+    /// Setup socket
+    if (setup_socket(&fd_array[4]) < 0) {
+        printf("Error setting up socket\n");
+    }
+    /// Setup server addr struct
+    if (setup_sockaddr_in(&server_addr, SERVER_PORT, SERVER_IP) == NULL) {
+        printf("Error setting up socket addr server\n");
+    }
+    /// Setup client addr struct
+    if (setup_sockaddr_in(&client_addr, CLIENT_PORT, NULL) == NULL) {
+        printf("Error setting up socket addr client\n");
+    }
+    /// Bind CLIENT_PORT to address structure on sockfd
+    if (bind_socket(fd_array[4], &client_addr) < 0) {
+        printf("Error setting up socket bind\n");
+    }
+
+
+
+    
+    
     send_buf = sendbuf;
     recv_buf = recvbuf;
     fd_array[5] = send_buf->signalfd;
@@ -87,11 +98,7 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
     
     //enable udp transfer based on nr
     if(nr > 256){
-        int serverlen = sizeof(serveraddr);
-        int n = sendto(fd_array[5], p, len, 0, (struct sockaddr *)&serveraddr, serverlen);
-        if (n < 0) 
-            printf("ERROR in sendto udp\n");
-        return 0;
+        send_data_raw(fd_array[4], p, 2048, &server_addr, len); 
     }
     
     
@@ -336,4 +343,61 @@ int SerialCon::init_serial(int nr) {
     tcflush(tty, TCIOFLUSH);
     //printf("Serial port %d has been initialized\n", tty);
     return tty;
+}
+
+int SerialCon::setup_socket(int *sockfd) {
+    if ((*sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
+        return (-1);
+    }
+
+    return *sockfd;
+}
+
+struct sockaddr_in *SerialCon::setup_sockaddr_in(struct sockaddr_in *addr, int port, char *addr_string) {
+
+    memset((char *) addr, 0, sizeof (struct sockaddr_in));
+
+    addr->sin_family = AF_INET;
+    if (port != 0) {
+        addr->sin_port = htons(port);
+    }
+    if (addr_string == NULL) {
+        addr->sin_addr.s_addr = htonl(INADDR_ANY);
+    } else {
+        if (inet_aton(addr_string, &addr->sin_addr) == 0) {
+            fprintf(stderr, "inet_aton() failed\n");
+            return (NULL);
+        }
+    }
+
+    return (addr);
+}
+
+int SerialCon::bind_socket(int sockfd, struct sockaddr_in *addr) {
+
+    if (bind(sockfd, (struct sockaddr *) addr, sizeof (struct sockaddr)) == -1) {
+        fprintf(stderr, "bind() failed\n");
+        return (-1);
+    }
+    return (0);
+}
+
+int SerialCon::send_data_raw(int sockfd, unsigned char buffer[], unsigned int buffer_length, struct sockaddr_in *addr,
+        const socklen_t slen) {
+    if (sendto(sockfd, buffer, buffer_length, 0, (struct sockaddr *) addr, slen) < 0) {
+        fprintf(stderr, "sendto() failed\n");
+        return (-1);
+    }
+    return (0);
+}
+
+int SerialCon::recv_data_raw(int sockfd, unsigned char buffer[], int *recv_len, unsigned int buffer_length,
+        struct sockaddr_in *addr, socklen_t slen) {
+    memset(buffer, 0, buffer_length);
+
+    if ((*recv_len = recvfrom(sockfd, buffer, buffer_length, 0, (struct sockaddr *) addr, &slen)) < 0) {
+        fprintf(stderr, "recvfrom() failed\n");
+        return (-1);
+    }
+    return *recv_len;
 }

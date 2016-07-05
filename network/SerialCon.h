@@ -22,9 +22,9 @@
 #include <cstring>
 
 #include <arpa/inet.h>
-#include <netinet/in.h>
-#include <sys/types.h>
 #include <sys/socket.h>
+
+
 
 #include "Packetbuffer.h"
 
@@ -91,12 +91,19 @@ private:
     unsigned char esc_end = ESC_END;
     unsigned char esc_esc = ESC_ESC;
     
-    struct hostent *server;
-    struct sockaddr_in serveraddr;
+    struct sockaddr_in client_addr;
+    struct sockaddr_in server_addr;
+    socklen_t slen;
+    
     
     int slip_send(unsigned char *p, uint16_t len, uint32_t nr);
     int slip_recv(unsigned char *p, unsigned char c, int *state, int*size);
     int init_serial(int nr);
+    struct sockaddr_in *setup_sockaddr_in(struct sockaddr_in *addr, int port, char *addr_string);
+    int setup_socket(int *sockfd);
+    int bind_socket(int sockfd, struct sockaddr_in *addr);
+    int send_data_raw(int sockfd, unsigned char buffer[], unsigned int buffer_length, struct sockaddr_in *addr, const socklen_t slen);
+    int recv_data_raw(int sockfd, unsigned char buffer[], int *recv_len, unsigned int buffer_length, struct sockaddr_in *addr, socklen_t slen);
 
 };
 
