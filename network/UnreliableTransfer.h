@@ -30,7 +30,7 @@ class SerialCon;
 struct unreliable_packet{
     size_t size;
     uint8_t port;
-    uint8_t addr;
+    uint32_t addr;
     //boost::crc_32_type crc_val;
     crc crc_val;
     //void *buffer;
@@ -40,7 +40,7 @@ class UnreliableTransfer {
 public:
     UnreliableTransfer(ReliableTransfer *rel, Topology *topo, DebugTransfer *debug, uint8_t deb_switch);
     virtual ~UnreliableTransfer();
-    int send(void* buffer, size_t size, uint8_t port, uint8_t addr);
+    int send(void* buffer, size_t size, uint8_t port, uint32_t addr);
     int recv();
     std::thread *serial_comm;
     int recv_fd;

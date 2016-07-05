@@ -20,7 +20,7 @@
 
 struct packet{
     size_t size;
-    uint8_t addr;
+    uint32_t addr;
     void *buffer;
     struct packet *next;
 };
@@ -29,7 +29,7 @@ class Packetbuffer {
 public:
     Packetbuffer();
     virtual ~Packetbuffer();
-    int add(uint32_t size, uint8_t addr, void *buffer);
+    int add(uint32_t size, uint32_t addr, void *buffer);
     int get(struct packet ** pack);
     int signalfd;
 private:

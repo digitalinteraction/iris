@@ -28,9 +28,10 @@ class Topology {
 public:
     Topology(UnreliableTransfer **unrel);
     virtual ~Topology();
-    int recv(void *buffer, size_t size, uint8_t addr);
+    int recv(void *buffer, size_t size, uint32_t addr);
     int send();
-    int isalive(uint8_t addr);
+    int isalive(uint32_t addr);
+    int sendlist();
 private:
     UnreliableTransfer **unrel;
     uint64_t mac;

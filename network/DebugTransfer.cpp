@@ -22,7 +22,7 @@ DebugTransfer::DebugTransfer(const DebugTransfer& orig) {
 DebugTransfer::~DebugTransfer() {
 }
 
-int DebugTransfer::recv(void* buffer, size_t size, uint8_t addr){
+int DebugTransfer::recv(void* buffer, size_t size, uint32_t addr){
     free(buffer);
     return 0;
 }

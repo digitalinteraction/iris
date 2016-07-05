@@ -27,17 +27,34 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) 
         //fd_array[2] = init_serial(5);
         //fd_array[3] = init_serial(7);
     //}*/
+    if ((fd_array[4] = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) < 0) {
+        perror("cannot create socket");
+    }
+    //server = gethostbyname(DEBUG_SERVER);
+    //if (server == NULL) {
+    //    fprintf(stderr, "ERROR, no such host as %s\n", DEBUG_SERVER);
+    //}
+    //bzero((char *) &serveraddr, sizeof(serveraddr));
+    memset((char *) &serveraddr, 0, sizeof (serveraddr));
+    serveraddr.sin_family = AF_INET;
+    //bcopy((char *)server->h_addr, (char *)&serveraddr.sin_addr.s_addr, server->h_length);
+    serveraddr.sin_port = htons(DEBUG_PORT);
+    if (inet_aton(DEBUG_SERVER, &serveraddr.sin_addr) == 0) {
+        printf("inet_aton() failed\n");
+        //exit(1);
+    }
+
 
     send_buf = sendbuf;
     recv_buf = recvbuf;
-    fd_array[4] = send_buf->signalfd;
-    if (fd_array[4] == -1) {
+    fd_array[5] = send_buf->signalfd;
+    if (fd_array[5] == -1) {
         printf("Error in eventfd creation\n");
     }
     //fd_array[5] = pipe_array[1];
 
     int i, max = 0;
-    for (i = 0; i < 5; i++) {
+    for (i = 0; i < 6; i++) {
         if (fd_array[i] >= 0) {
             if (fd_array[i] > max) {
                 max = fd_array[i];
@@ -62,11 +79,21 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) 
 SerialCon::~SerialCon() {
 }
 
-int SerialCon::slip_send(unsigned char *p, uint16_t len, int nr) {
+int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
     //printf("SerialCon:: sending packet out of nr %d fd %d\n", nr, fd_array[nr]);
     if (len <= 0 || nr > 3 || p == 0) {
         return -1;
     }
+    
+    //enable udp transfer based on nr
+    if(nr > 256){
+        int serverlen = sizeof(serveraddr);
+        int n = sendto(fd_array[5], p, len, 0, (struct sockaddr *)&serveraddr, serverlen);
+        if (n < 0) 
+            printf("ERROR in sendto udp\n");
+        return 0;
+    }
+    
     
     
     ssize_t ret = 0;
@@ -159,7 +186,7 @@ void SerialCon::slip_run() {
         FD_ZERO(&exceptfs);
         res = 0;
 
-        for (i = 0; i < 5; i++) {
+        for (i = 0; i < 6; i++) {
             FD_SET(fd_array[i], &readfs);
         }
         Timeout.tv_usec = 5000;
@@ -232,10 +259,10 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            if (FD_ISSET(fd_array[4], &readfs)) {
+            if (FD_ISSET(fd_array[5], &readfs)) {
 
                 uint64_t val = 0;
-                read(fd_array[4], &val, sizeof (uint64_t));
+                read(fd_array[5], &val, sizeof (uint64_t));
                 for (int i = 0; i < val; i++) {
                     struct packet * pack;
                     if (send_buf->get(&pack) == 0) {

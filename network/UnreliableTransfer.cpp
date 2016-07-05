@@ -42,7 +42,7 @@ UnreliableTransfer::UnreliableTransfer(ReliableTransfer *rel, Topology *topo, De
 UnreliableTransfer::~UnreliableTransfer() {
 }
 
-int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint8_t addr) {
+int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint32_t addr) {
     
     
     lock_send.lock();

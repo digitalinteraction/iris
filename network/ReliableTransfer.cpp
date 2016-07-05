@@ -41,7 +41,7 @@ ReliableTransfer::ReliableTransfer(const ReliableTransfer& orig) {
 ReliableTransfer::~ReliableTransfer() {
 }
 
-int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
+int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
     //printf("recv ");
     if(buffer == 0 || size <= 0){
         printf("Error ReliableTransfer: buffer or size is wrong\n");
@@ -135,7 +135,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint8_t addr) {
     return 0;
 }
 
-uint32_t ReliableTransfer::send(void *buffer, size_t size, uint8_t addr, uint8_t broadcast){
+uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_t broadcast){
     if(buffer == 0 || size <= 0){
         printf("Error Reliable Transfer: buffer or size is wrong\n");
         return -1;

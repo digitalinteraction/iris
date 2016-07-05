@@ -35,7 +35,7 @@ Packetbuffer::Packetbuffer() {
 Packetbuffer::~Packetbuffer() {
 }
 
-int Packetbuffer::add(uint32_t size, uint8_t addr, void* buffer) {
+int Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer) {
     if(size <= 0 || addr > 3 || buffer == 0 || cnt > 200){
         printf("Error Packetbuffer add: size %d, addr %d, buffer %p, cnt %d\n", size, addr, buffer, cnt);
         return -1;

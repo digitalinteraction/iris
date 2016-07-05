@@ -75,7 +75,7 @@ int Topology::send(){
     //free(buf3);
 }
 
-int Topology::recv(void* buffer, size_t size, uint8_t addr) {
+int Topology::recv(void* buffer, size_t size, uint32_t addr) {
 
     //printf("Topology:: received an alive packet at time %ld from addr %d\n", temp.tv_sec, addr);
     struct topo_buffer *buf = (struct topo_buffer *) buffer;
@@ -94,7 +94,7 @@ int Topology::recv(void* buffer, size_t size, uint8_t addr) {
     //printf("t free %p\n", buffer);
 }
 
-int Topology::isalive(uint8_t addr){
+int Topology::isalive(uint32_t addr){
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     if(current.tv_sec <= (alive[addr].tv_sec+2)){
@@ -102,4 +102,8 @@ int Topology::isalive(uint8_t addr){
     }else{
         return 0;
     }
+}
+
+int Topology::sendlist(){
+    (*unrel)->send((void*) &mapping, sizeof(mapping), 1, 300);
 }

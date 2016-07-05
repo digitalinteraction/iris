@@ -20,6 +20,12 @@
 #include <unistd.h>
 #include <stdint.h>
 #include <cstring>
+
+#include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+
 #include "Packetbuffer.h"
 
 //SLIP
@@ -29,6 +35,9 @@
 #define ESC_ESC         221
 #define SIZE_LIMIT      2048
 #define NAME_TTY       "/dev/ttyUSB%d"
+
+#define DEBUG_SERVER    "172.16.0.1"
+#define DEBUG_PORT      10000
 //#define NAME_TTY       "/dev/tnt%d"
 //#define NAME_TTY       "/home/tobias/virtualTTY%d"
 
@@ -53,7 +62,7 @@ private:
     char *name_tty1;
     char *name_tty2;
     char *name_tty3;
-    int fd_array[5];
+    int fd_array[6];
     fd_set readfs;
     fd_set writefs;
     fd_set exceptfs;
@@ -82,7 +91,10 @@ private:
     unsigned char esc_end = ESC_END;
     unsigned char esc_esc = ESC_ESC;
     
-    int slip_send(unsigned char *p, uint16_t len, int nr);
+    //struct hostent *server;
+    struct sockaddr_in serveraddr;
+    
+    int slip_send(unsigned char *p, uint16_t len, uint32_t nr);
     int slip_recv(unsigned char *p, unsigned char c, int *state, int*size);
     int init_serial(int nr);
 

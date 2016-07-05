@@ -31,7 +31,7 @@ struct reliable_packet{
 struct linked_header{
     struct reliable_packet* packet;
     struct timespec timeout;
-    uint8_t addr;
+    uint32_t addr;
     struct linked_header* next;
     struct linked_header* prev;
     size_t size;
@@ -44,8 +44,8 @@ public:
     ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out, Topology *topo);
     ReliableTransfer(const ReliableTransfer& orig);
     virtual ~ReliableTransfer();
-    int recv(void *buffer, size_t size, uint8_t addr);
-    uint32_t send(void *buffer, size_t size, uint8_t addr, uint8_t broadcast);
+    int recv(void *buffer, size_t size, uint32_t addr);
+    uint32_t send(void *buffer, size_t size, uint32_t addr, uint8_t broadcast);
     int check_timeouts();
     int send_acks();
     volatile uint32_t list_cnt;

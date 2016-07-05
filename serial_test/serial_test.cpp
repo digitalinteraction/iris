@@ -156,7 +156,7 @@ int main(int argc, char** argv) {
             //if(mode == 1){
             printf("serial_test:: memory: %d send packets: %d list_cnt: %d\n", mi.uordblks, sendpk, rel->list_cnt);
             printf("Hosts alive: %d %d %d %d\n", topo->isalive(0), topo->isalive(1), topo->isalive(2),topo->isalive(3));
-
+            topo->sendlist();
             //}
             sendpk = 0;
             nextprint = currenttime+1000;

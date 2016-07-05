@@ -21,7 +21,7 @@ public:
     DebugTransfer();
     DebugTransfer(const DebugTransfer& orig);
     virtual ~DebugTransfer();
-    int recv(void *buffer, size_t size, uint8_t addr);
+    int recv(void *buffer, size_t size, uint32_t addr);
     int send();
 private:
 
