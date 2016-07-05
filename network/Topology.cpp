@@ -80,11 +80,11 @@ int Topology::recv(void* buffer, size_t size, uint8_t addr) {
     struct topo_buffer *buf = (struct topo_buffer *) buffer;
     //printf("Topology: received a keep alive packet from %d on port %d\n", buf->addr, addr);
     if (addr < 4) {
-        if (mapping[buf->addr] == 0 || mapping[buf->addr] == buf->mac) {
-            mapping[buf->addr] = buf->mac;
+        if (mapping[addr] == 0 || mapping[addr] == buf->mac) {
+            mapping[addr] = buf->mac;
             struct timespec current;
             clock_gettime(CLOCK_REALTIME, &current);
-            alive[buf->addr].tv_sec = current.tv_sec;
+            alive[addr].tv_sec = current.tv_sec;
         } else {
             printf("Error Topology:: Conflicting MACs for the same spot in mapping\n");
         }
