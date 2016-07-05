@@ -19,6 +19,7 @@
             <file>file:/home/tobias/gitcode/cutting_board/network/UnreliableTransfer.cpp</file>
             <file>file:/home/tobias/gitcode/cutting_board/network/SerialCon.cpp</file>
             <file>file:/home/tobias/gitcode/cutting_board/network/Packetbuffer.cpp</file>
+            <file>file:/home/tobias/gitcode/cutting_board/network/Topology.h</file>
             <file>file:/home/tobias/gitcode/cutting_board/network/Topology.cpp</file>
         </group>
     </open-files>
