@@ -78,7 +78,8 @@ int Topology::recv(void* buffer, size_t size, uint8_t addr) {
 
     //printf("Topology:: received an alive packet at time %ld from addr %d\n", temp.tv_sec, addr);
     struct topo_buffer *buf = (struct topo_buffer *) buffer;
-    //printf("Topology: received a keep alive packet from %d on port %d\n", buf->addr, addr);
+    printf("Topology: received a keep alive packet from %d on port %d\n", buf->addr, addr);
+    printf("MAC: %x\n", buf->mac);
     if (addr < 4) {
         if (mapping[addr] == 0 || mapping[addr] == buf->mac) {
             mapping[addr] = buf->mac;
