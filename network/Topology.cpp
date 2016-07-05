@@ -25,7 +25,7 @@ Topology::Topology(UnreliableTransfer **unrel) {
     fclose(file);
     mac = 0;
     mac = (a<<40)|(b<<32)|(c<<24)|(d<<16)|(e<<8)|(f<<0);
-    //printf("Topology:: got MAC %lx\n", mac);
+    printf("Topology:: got MAC %lx\n", mac);
     alive[0].tv_sec = 0;
     alive[1].tv_sec = 0;
     alive[2].tv_sec = 0;
