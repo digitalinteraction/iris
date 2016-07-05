@@ -41,9 +41,8 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) 
     memset((char *) &server_addr, 0, sizeof(server_addr));
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(DEBUG_PORT);
-    if (inet_aton(DEBUG_SERVER, &server_addr.sin_addr)==0) {
-     printf("inet_aton() failed\n");
-    }
+
+    
 
 
 
@@ -91,7 +90,12 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
     
     //enable udp transfer based on nr
     if(nr > 256){
+        //if (inet_aton(DEBUG_SERVER, &server_addr.sin_addr)==0) {
+       ///     printf("inet_aton() failed\n");
+        //}
+        server_addr.sin_addr.s_addr = nr;
         sendto(fd_array[4], p, len, 0, (struct sockaddr *)&server_addr, slen);
+        return 0;
     }
     
     

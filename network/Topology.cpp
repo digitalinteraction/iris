@@ -12,6 +12,9 @@
  */
 
 #include "Topology.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 Topology::Topology(UnreliableTransfer **unrel) {
     this->unrel = unrel;
@@ -105,5 +108,9 @@ int Topology::isalive(uint32_t addr){
 }
 
 int Topology::sendlist(){
-    (*unrel)->send((void*) &mapping, sizeof(mapping), 1, 300);
+    uint32_t addr;
+    if (inet_aton("172.16.0.1", (in_addr *)&addr)==0) {
+     printf("inet_aton() failed\n");
+    }
+    (*unrel)->send((void*) &mapping, sizeof(mapping), 1, addr);
 }
