@@ -190,7 +190,7 @@ void SerialCon::slip_run() {
                     if (slip_recv(recv_buf1, c, &state1, &size1) == 0) {
                         if (size1 > 0) {
  
-                            int ret = recv_buf->add(size1, 0, recv_buf1);
+                            int ret = recv_buf->add(size1, 1, recv_buf1);
                             if (ret != 0) {
                                 //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
@@ -206,7 +206,7 @@ void SerialCon::slip_run() {
                     if (slip_recv(recv_buf2, c, &state2, &size2) == 0) {
                         if (size2 > 0) {
  
-                            int ret = recv_buf->add(size2, 0, recv_buf2);
+                            int ret = recv_buf->add(size2, 2, recv_buf2);
                             if (ret != 0) {
                                 //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
@@ -222,7 +222,7 @@ void SerialCon::slip_run() {
                     if (slip_recv(recv_buf3, c, &state3, &size3) == 0) {
                         if (size3 > 0) {
  
-                            int ret = recv_buf->add(size3, 0, recv_buf3);
+                            int ret = recv_buf->add(size3, 3, recv_buf3);
                             if (ret != 0) {
                                 //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
