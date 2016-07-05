@@ -14,7 +14,6 @@
 #include "SerialCon.h"
 #include <time.h>
 #include <stdlib.h>
-#include "socket/shared.h"
 //#include "socket/socket.c"
 
 SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) {
