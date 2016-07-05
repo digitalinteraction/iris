@@ -91,7 +91,7 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
     
     //enable udp transfer based on nr
     if(nr > 256){
-        sendto(fd_array[4], p, len, 0, &server_addr, slen);
+        sendto(fd_array[4], p, len, 0, (struct sockaddr *)&server_addr, slen);
     }
     
     
