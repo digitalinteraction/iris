@@ -91,9 +91,8 @@ private:
     unsigned char esc_end = ESC_END;
     unsigned char esc_esc = ESC_ESC;
     
-    struct sockaddr_in client_addr;
     struct sockaddr_in server_addr;
-    socklen_t slen;
+    int slen;
     
     
     int slip_send(unsigned char *p, uint16_t len, uint32_t nr);

@@ -33,23 +33,17 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) 
 
 
     
-    slen = sizeof (struct sockaddr_in);
+    slen=sizeof(server_addr);
 
-    /// Setup socket
-    if (setup_socket(&fd_array[4]) < 0) {
-        printf("Error setting up socket\n");
+    if ((fd_array[4]=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1){
+        printf("Error opening udp socket\n");
     }
-    /// Setup server addr struct
-    if (setup_sockaddr_in(&server_addr, SERVER_PORT, SERVER_IP) == NULL) {
-        printf("Error setting up socket addr server\n");
-    }
-    /// Setup client addr struct
-    if (setup_sockaddr_in(&client_addr, CLIENT_PORT, NULL) == NULL) {
-        printf("Error setting up socket addr client\n");
-    }
-    /// Bind CLIENT_PORT to address structure on sockfd
-    if (bind_socket(fd_array[4], &client_addr) < 0) {
-        printf("Error setting up socket bind\n");
+
+    memset((char *) &server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_port = htons(DEBUG_PORT);
+    if (inet_aton(DEBUG_SERVER, &server_addr.sin_addr)==0) {
+     printf("inet_aton() failed\n");
     }
 
 
@@ -98,7 +92,7 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
     
     //enable udp transfer based on nr
     if(nr > 256){
-        send_data_raw(fd_array[4], p, 2048, &server_addr, len); 
+        sendto(fd_array[4], p, len, 0, &server_addr, slen);
     }
     
     
@@ -343,61 +337,4 @@ int SerialCon::init_serial(int nr) {
     tcflush(tty, TCIOFLUSH);
     //printf("Serial port %d has been initialized\n", tty);
     return tty;
-}
-
-int SerialCon::setup_socket(int *sockfd) {
-    if ((*sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1) {
-        return (-1);
-    }
-
-    return *sockfd;
-}
-
-struct sockaddr_in *SerialCon::setup_sockaddr_in(struct sockaddr_in *addr, int port, char *addr_string) {
-
-    memset((char *) addr, 0, sizeof (struct sockaddr_in));
-
-    addr->sin_family = AF_INET;
-    if (port != 0) {
-        addr->sin_port = htons(port);
-    }
-    if (addr_string == NULL) {
-        addr->sin_addr.s_addr = htonl(INADDR_ANY);
-    } else {
-        if (inet_aton(addr_string, &addr->sin_addr) == 0) {
-            fprintf(stderr, "inet_aton() failed\n");
-            return (NULL);
-        }
-    }
-
-    return (addr);
-}
-
-int SerialCon::bind_socket(int sockfd, struct sockaddr_in *addr) {
-
-    if (bind(sockfd, (struct sockaddr *) addr, sizeof (struct sockaddr)) == -1) {
-        fprintf(stderr, "bind() failed\n");
-        return (-1);
-    }
-    return (0);
-}
-
-int SerialCon::send_data_raw(int sockfd, unsigned char buffer[], unsigned int buffer_length, struct sockaddr_in *addr,
-        const socklen_t slen) {
-    if (sendto(sockfd, buffer, buffer_length, 0, (struct sockaddr *) addr, slen) < 0) {
-        fprintf(stderr, "sendto() failed\n");
-        return (-1);
-    }
-    return (0);
-}
-
-int SerialCon::recv_data_raw(int sockfd, unsigned char buffer[], int *recv_len, unsigned int buffer_length,
-        struct sockaddr_in *addr, socklen_t slen) {
-    memset(buffer, 0, buffer_length);
-
-    if ((*recv_len = recvfrom(sockfd, buffer, buffer_length, 0, (struct sockaddr *) addr, &slen)) < 0) {
-        fprintf(stderr, "recvfrom() failed\n");
-        return (-1);
-    }
-    return *recv_len;
 }
