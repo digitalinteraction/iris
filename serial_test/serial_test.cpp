@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
             topo->send();
         }
         
-        if(currenttime > nextsend){
+        /*if(currenttime > nextsend){
             if(rel->send((void*)buf, size, 0, 0) >= 0){
                 sendpk++;
             }
@@ -149,7 +149,7 @@ int main(int argc, char** argv) {
             }
             buf[0]++;
             nextsend = currenttime + 2000;            
-        }
+        }*/
         
         if(currenttime > nextprint){
             struct mallinfo mi = mallinfo();
