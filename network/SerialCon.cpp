@@ -45,7 +45,8 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf) {
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(DEBUG_PORT);
     client_addr.sin_port = htons(DEBUG_PORT);
-    
+    client_addr.sin_family = AF_INET;
+
     if (bind(fd_array[4], (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0) 
         printf("error on binding socket\n");
 #endif
