@@ -111,11 +111,11 @@ int Topology::sendlist() {
         //insert case of timeout/invalid entry
         
 
-        map->mac = mac;
-        map->up = mapping[0];
-        map->down = mapping[3];
-        map->left = mapping[1];
-        map->right = mapping[2];
+        map.mac = mac;
+        map.up = mapping[0];
+        map.down = mapping[3];
+        map.left = mapping[1];
+        map.right = mapping[2];
         
         //print_mapping(map);
         
