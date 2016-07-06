@@ -104,7 +104,7 @@ int Topology::sendlist() {
             printf("inet_aton() failed\n");
         }
         //insert case of timeout/invalid entry
-        struct packet_map *map = malloc(sizeof(struct packet_map));
+        struct packet_map *map = (struct packet_map *)malloc(sizeof(struct packet_map));
         map->mac = mac;
         map->up = mapping[0];
         map->down = mapping[3];
