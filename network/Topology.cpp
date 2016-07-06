@@ -64,6 +64,7 @@ int Topology::recv(void* buffer, size_t size, uint32_t addr) {
 #ifdef CLIENT_SIDE
     struct topo_buffer *buf = (struct topo_buffer *) buffer;
     if (addr < 4) {
+        printf("adding mac %llx to list\n", buf->mac);
         if (mapping[addr] == 0 || mapping[addr] == buf->mac) {
             mapping[addr] = buf->mac;
             struct timespec current;
@@ -108,6 +109,12 @@ int Topology::sendlist() {
         //insert case of timeout/invalid entry
         struct packet_map *map = (struct packet_map *)malloc(sizeof(struct packet_map));
         memset(map, 0, sizeof(struct packet_map));
+        printf("1: %llx\n", mac);
+        printf("2: %llx\n", mapping[0]);
+        printf("3: %llx\n", mapping[1]);
+        printf("4: %llx\n", mapping[2]);
+        printf("5: %llx\n", mapping[3]);
+
         map->mac = mac;
         map->up = mapping[0];
         map->down = mapping[3];
@@ -120,9 +127,9 @@ int Topology::sendlist() {
 }
 
 void Topology::print_mapping(packet_map* map){
-    printf("%ld\n", map->up);
-    printf("%ld::", map->left);
-    printf("%ld::", map->mac);
-    printf("%ld\n", map->right);
-    printf("%ld\n", map->down);
+    printf("%lx\n", map->up);
+    printf("%lx::", map->left);
+    printf("%lx::", map->mac);
+    printf("%lx\n", map->right);
+    printf("%lx\n", map->down);
 }
