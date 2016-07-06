@@ -18,7 +18,7 @@
 #include <stdint.h>
 //#define DEBUG
 
-//#define CLIENT_SIDE
+#define CLIENT_SIDE
 
 struct packet{
     size_t size;
