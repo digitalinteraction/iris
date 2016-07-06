@@ -257,6 +257,7 @@ void SerialCon::slip_run() {
                 }
             }
             if (FD_ISSET(fd_array[4], &readfs)) {
+                printf("got something from udp port\n");
                 int n = recvfrom(fd_array[4], recv_buf4, SIZE_LIMIT, 0, (struct sockaddr *) &client_addr, (socklen_t *)&clen);
                 if (n > 0) {
                     int ret = recv_buf->add(n, client_addr.sin_addr.s_addr, recv_buf4);

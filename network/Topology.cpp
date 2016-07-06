@@ -69,7 +69,10 @@ int Topology::recv(void* buffer, size_t size, uint32_t addr) {
             printf("Error Topology:: Conflicting MACs for the same spot in mapping\n");
         }
     }
+#else
+    printf("Topology: got packet from %d\n", addr);
 #endif
+    
 }
 
 int Topology::isalive(uint32_t addr){

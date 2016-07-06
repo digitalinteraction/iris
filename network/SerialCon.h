@@ -39,7 +39,7 @@
 #define NAME_TTY       "/dev/ttyUSB%d"
 
 #define DEBUG_SERVER    "172.16.0.1"
-#define DEBUG_PORT      10000
+#define DEBUG_PORT      1234
 //#define NAME_TTY       "/dev/tnt%d"
 //#define NAME_TTY       "/home/tobias/virtualTTY%d"
 
