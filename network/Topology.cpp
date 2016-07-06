@@ -36,8 +36,9 @@ Topology::Topology(UnreliableTransfer **unrel) {
     
     topo_buf.addr = 0;
     topo_buf.mac = mac;
-   
+#ifndef CLIENT_SIDE
     in_map = new Packetbuffer();
+#endif
     
 }
 
@@ -77,8 +78,10 @@ int Topology::recv(void* buffer, size_t size, uint32_t addr) {
     char *hostaddrp = inet_ntoa(in);
     printf("Topology: got packet from %s\n", hostaddrp);
     //address trasnlation end
-    struct packet_map *map = malloc(sizeof(struct packet_map));
-    map->mac = 
+    struct packet_map *map = (struct packet_map *)malloc(sizeof(struct packet_map));
+    memcpy(map, buffer, sizeof(struct packet_map));
+    print_mapping(map);
+    in_map->add(sizeof(struct packet_map), addr, map);
     
 #endif
     
@@ -111,4 +114,14 @@ int Topology::sendlist() {
         (*unrel)->send((void*) &map, sizeof (struct packet_map), 1, addr);
         free(map);
 #endif
+}
+
+void Topology::print_mapping(packet_map* map){
+    printf("%-10s", " ");
+    printf("%-20lld\n", map->up);
+    printf("%-10lld", map->left);
+    printf("%-10lld", map->mac);
+    printf("%-10lld\n", map->right);
+    printf("%-10s", " ");
+    printf("%-20lld\n", map->down);
 }
