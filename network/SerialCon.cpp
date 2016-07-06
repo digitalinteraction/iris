@@ -36,7 +36,7 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf) {
         printf("Error opening udp socket\n");
     }
     
-//#ifndef CLIENT_SIDE
+#ifndef CLIENT_SIDE
     int optval = 1;
     setsockopt(fd_array[4], SOL_SOCKET, SO_REUSEADDR,
             (const void *) &optval, sizeof (int));
@@ -44,10 +44,11 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf) {
     server_addr.sin_addr.s_addr =  htonl(INADDR_ANY);
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(DEBUG_PORT);
+    client_addr.sin_port = htons(DEBUG_PORT);
     
     if (bind(fd_array[4], (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0) 
         printf("error on binding socket\n");
-//#endif
+#endif
     
     
 
