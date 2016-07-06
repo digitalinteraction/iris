@@ -16,7 +16,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-Topology::Topology(UnreliableTransfer **unrel, uint8_t deb) {
+Topology::Topology(UnreliableTransfer **unrel) {
     this->unrel = unrel;
     FILE * file = fopen("/sys/class/net/wlan0/address", "r");
     unsigned char a=0,b=0,c=0,d=0,e=0,f=0;
@@ -36,7 +36,6 @@ Topology::Topology(UnreliableTransfer **unrel, uint8_t deb) {
     
     topo_buf.addr = 0;
     topo_buf.mac = mac;
-    this->deb = deb;
     
     
 }
@@ -46,7 +45,7 @@ Topology::~Topology() {
 }
 
 int Topology::send(){
-    if (deb == 0) {
+#ifdef CLIENT_SIDE
         (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 0);
 
         (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 1);
@@ -54,28 +53,23 @@ int Topology::send(){
         (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 2);
 
         (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 3);
-    }
+#endif
 }
 
 int Topology::recv(void* buffer, size_t size, uint32_t addr) {
-
+#ifdef CLIENT_SIDE
     struct topo_buffer *buf = (struct topo_buffer *) buffer;
-    if (deb == 0) {
-        if (addr < 4) {
-            if (mapping[addr] == 0 || mapping[addr] == buf->mac) {
-                mapping[addr] = buf->mac;
-                struct timespec current;
-                clock_gettime(CLOCK_REALTIME, &current);
-                alive[addr].tv_sec = current.tv_sec;
-            } else {
-                printf("Error Topology:: Conflicting MACs for the same spot in mapping\n");
-            }
+    if (addr < 4) {
+        if (mapping[addr] == 0 || mapping[addr] == buf->mac) {
+            mapping[addr] = buf->mac;
+            struct timespec current;
+            clock_gettime(CLOCK_REALTIME, &current);
+            alive[addr].tv_sec = current.tv_sec;
+        } else {
+            printf("Error Topology:: Conflicting MACs for the same spot in mapping\n");
         }
-    }else{
-        printf("got mac list from %d\n", addr);
-        //do something else
     }
-    
+#endif
 }
 
 int Topology::isalive(uint32_t addr){
@@ -89,11 +83,11 @@ int Topology::isalive(uint32_t addr){
 }
 
 int Topology::sendlist() {
-    if (deb == 0) {
+#ifdef CLIENT_SIDE
         uint32_t addr;
         if (inet_aton("172.16.0.1", (in_addr *) & addr) == 0) {
             printf("inet_aton() failed\n");
         }
         (*unrel)->send((void*) &mapping, sizeof (mapping), 1, addr);
-    }
+#endif
 }

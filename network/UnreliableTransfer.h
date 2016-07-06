@@ -38,7 +38,7 @@ struct unreliable_packet{
 
 class UnreliableTransfer {
 public:
-    UnreliableTransfer(ReliableTransfer *rel, Topology *topo, DebugTransfer *debug, uint8_t deb_switch);
+    UnreliableTransfer(ReliableTransfer *rel, Topology *topo, DebugTransfer *debug);
     virtual ~UnreliableTransfer();
     int send(void* buffer, size_t size, uint8_t port, uint32_t addr);
     int recv();

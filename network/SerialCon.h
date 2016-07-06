@@ -46,7 +46,7 @@
 
 class SerialCon {
 public:
-    SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb);
+    SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf);
     virtual ~SerialCon();
     int processing;
     void slip_run();
@@ -100,7 +100,6 @@ private:
     int slen;
     int clen;
     
-    uint8_t deb;
     
     
     int slip_send(unsigned char *p, uint16_t len, uint32_t nr);

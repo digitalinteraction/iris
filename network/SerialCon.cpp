@@ -16,17 +16,14 @@
 #include <stdlib.h>
 //#include "socket/socket.c"
 
-SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) {
+SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf) {
     //init serial
-    this->deb = deb;
-    
-    if (deb == 0) {
+#ifdef CLIENT_SIDE
         fd_array[0] = init_serial(0);
         fd_array[1] = init_serial(1);
         fd_array[2] = init_serial(2);
         fd_array[3] = init_serial(3);
-    }
-    
+#endif
     //init udp socket
     slen=sizeof(server_addr);
 
@@ -178,11 +175,16 @@ void SerialCon::slip_run() {
         FD_ZERO(&writefs);
         FD_ZERO(&exceptfs);
         res = 0;
+        
+#ifdef CLIENT_SIDE
         for (i = 0; i < 6; i++) {
-            if(deb == 0 || (deb == 1 && i >= 4)){
-                FD_SET(fd_array[i], &readfs);
-            }
+            FD_SET(fd_array[i], &readfs);
         }
+#else
+        for (i = 4; i < 6; i++) {
+            FD_SET(fd_array[i], &readfs);
+        }
+#endif
 
         Timeout.tv_usec = 5000;
         Timeout.tv_sec = 0;
@@ -255,7 +257,7 @@ void SerialCon::slip_run() {
                 }
             }
             if (FD_ISSET(fd_array[4], &readfs)) {
-                int n = recvfrom(fd_array[4], recv_buf4,, SIZE_LIMIT, 0, (struct sockaddr *) &client_addr, &clen);
+                int n = recvfrom(fd_array[4], recv_buf4, SIZE_LIMIT, 0, (struct sockaddr *) &client_addr, (socklen_t *)&clen);
                 if (n > 0) {
                     int ret = recv_buf->add(n, client_addr.sin_addr.s_addr, recv_buf4);
                     if (ret != 0) {

@@ -19,13 +19,13 @@
 //#include "crc/crc.h"
 
 
-UnreliableTransfer::UnreliableTransfer(ReliableTransfer *rel, Topology *topo, DebugTransfer *debug, uint8_t deb_switch) {
+UnreliableTransfer::UnreliableTransfer(ReliableTransfer *rel, Topology *topo, DebugTransfer *debug) {
 
     this->send_buf = new Packetbuffer();
     this->recv_buf = new Packetbuffer();
     this->recv_fd = recv_buf->signalfd;
 
-    sercon = new SerialCon(send_buf, recv_buf, deb_switch);
+    sercon = new SerialCon(send_buf, recv_buf);
     F_CRC_InicializaTabla();
     
     this->rel = rel;
