@@ -15,6 +15,8 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <stdio.h>
+#include <string.h>
 
 Topology::Topology(UnreliableTransfer **unrel) {
     this->unrel = unrel;
@@ -105,6 +107,7 @@ int Topology::sendlist() {
         }
         //insert case of timeout/invalid entry
         struct packet_map *map = (struct packet_map *)malloc(sizeof(struct packet_map));
+        memset(map, 0, sizeof(struct packet_map));
         map->mac = mac;
         map->up = mapping[0];
         map->down = mapping[3];
@@ -117,11 +120,9 @@ int Topology::sendlist() {
 }
 
 void Topology::print_mapping(packet_map* map){
-    printf("%-10s", " ");
-    printf("%-20lld\n", map->up);
-    printf("%-10lld", map->left);
-    printf("%-10lld", map->mac);
-    printf("%-10lld\n", map->right);
-    printf("%-10s", " ");
-    printf("%-20lld\n", map->down);
+    printf("%ld\n", map->up);
+    printf("%ld::", map->left);
+    printf("%ld::", map->mac);
+    printf("%ld\n", map->right);
+    printf("%ld\n", map->down);
 }
