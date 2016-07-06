@@ -24,48 +24,40 @@
 
 using namespace std;
 
+
+
 /*
- * 
+ * REDO serial_test to be a class, maybe Control_network or something
  */
 int main(int argc, char** argv) {
     UnreliableTransfer *unrel;
     Packetbuffer *image_out = new Packetbuffer();
-   ReliableTransfer *rel;
-   Topology *topo;
+    Topology *topo = new Topology(&unrel);
+    ReliableTransfer *rel = new ReliableTransfer(&unrel, image_out, topo);
     DebugTransfer *debug = new DebugTransfer();
-    //printf("serial_test:: got arguments %s %s\n", argv[0], argv[1]);
-    uint8_t mode = 0;
-    if(!strcmp(argv[1], "-server")){
-        //printf("starting in mode 1\n");
-        mode = 1;
-        topo = new Topology(&unrel, 1);
-        rel = new ReliableTransfer(&unrel, image_out, topo);
-        unrel = new UnreliableTransfer(rel, topo, debug, 1);
-    }else{
-        //printf("starting in mode 0\n");
-        topo = new Topology(&unrel, 0);
-        rel = new ReliableTransfer(&unrel, image_out, topo);
-        unrel = new UnreliableTransfer(rel, topo, debug, 0);
-    }
+    unrel = new UnreliableTransfer(rel, topo, debug);
+    
     
     Packetbuffer *out = new Packetbuffer();
     
+    //delete
     char sendstring[] = "Testing Reliable Transfer\n";
     size_t size = sizeof(sendstring);
     uint64_t* buf = (uint64_t*)malloc(size + sizeof(uint64_t));
     memcpy(((char*)buf)+sizeof(uint64_t), sendstring, size);
     buf[0] = 0;
-    
+    //delete end
 
-    sleep(2);
+    //sleep(2);
     
+    //prepare in/out file descriptor
     int fd_list[2];
     struct timeval Timeout;
     Timeout.tv_usec = 1000;
     Timeout.tv_sec = 0;
     fd_list[0] = unrel->recv_fd;
     fd_list[1] = out->signalfd;
-    //printf("serial_test:: Connected to recv fd %d and %d\n", fd_list[0], fd_list[1]);
+    
     int res = 0;
     int maxfd = 0;
     fd_set readfs;
@@ -157,11 +149,9 @@ int main(int argc, char** argv) {
         
         if(currenttime > nextprint){
             struct mallinfo mi = mallinfo();
-            //if(mode == 1){
             printf("serial_test:: memory: %d send packets: %d list_cnt: %d\n", mi.uordblks, sendpk, rel->list_cnt);
             printf("Hosts alive: %d %d %d %d\n", topo->isalive(0), topo->isalive(1), topo->isalive(2),topo->isalive(3));
             topo->sendlist();
-            //}
             sendpk = 0;
             nextprint = currenttime+1000;
         }
@@ -170,9 +160,6 @@ int main(int argc, char** argv) {
         
         struct packet *pack = 0;
         while(image_out->get(&pack) == 0){
-            if(mode == 0){
-                //printf("%ld\n", ((uint64_t*) pack->buffer)[0]);
-            }
             free(pack->buffer);
             free(pack);
         }
