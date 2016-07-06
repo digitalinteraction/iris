@@ -47,6 +47,7 @@ private:
     uint64_t mapping[4];
     struct topo_buffer topo_buf;
     void print_mapping(struct packet_map* map);
+    struct packet_map map;
 #ifndef CLIENT_SIDE
     Packetbuffer *in_map;
     

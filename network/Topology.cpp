@@ -109,13 +109,7 @@ int Topology::sendlist() {
             printf("inet_aton() failed\n");
         }
         //insert case of timeout/invalid entry
-        struct packet_map *map = (struct packet_map *)malloc(sizeof(struct packet_map));
-        memset(map, 0, sizeof(struct packet_map));
-        printf("1: %llx\n", mac);
-        printf("2: %llx\n", mapping[0]);
-        printf("3: %llx\n", mapping[1]);
-        printf("4: %llx\n", mapping[2]);
-        printf("5: %llx\n", mapping[3]);
+        
 
         map->mac = mac;
         map->up = mapping[0];
@@ -123,17 +117,24 @@ int Topology::sendlist() {
         map->left = mapping[1];
         map->right = mapping[2];
         
-        print_mapping(map);
+        //print_mapping(map);
         
         (*unrel)->send((void*) &map, sizeof (struct packet_map), 1, addr);
-        free(map);
 #endif
 }
 
 void Topology::print_mapping(struct packet_map* map){
+#ifdef CLIENT_SIDE
     printf("%llx\n", map->up);
     printf("%llx::", map->left);
     printf("%llx::", map->mac);
     printf("%llx\n", map->right);
     printf("%llx\n", map->down);
+#else
+    printf("%lx\n", map->up);
+    printf("%lx::", map->left);
+    printf("%lx::", map->mac);
+    printf("%lx\n", map->right);
+    printf("%lx\n", map->down);
+#endif
 }
