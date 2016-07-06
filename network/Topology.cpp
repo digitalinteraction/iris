@@ -36,7 +36,8 @@ Topology::Topology(UnreliableTransfer **unrel) {
     
     topo_buf.addr = 0;
     topo_buf.mac = mac;
-    
+   
+    in_map = new Packetbuffer();
     
 }
 
@@ -70,7 +71,15 @@ int Topology::recv(void* buffer, size_t size, uint32_t addr) {
         }
     }
 #else
-    printf("Topology: got packet from %d\n", addr);
+    //address trasnlation
+    struct in_addr in;
+    in.s_addr = addr;
+    char *hostaddrp = inet_ntoa(in);
+    printf("Topology: got packet from %s\n", hostaddrp);
+    //address trasnlation end
+    struct packet_map *map = malloc(sizeof(struct packet_map));
+    map->mac = 
+    
 #endif
     
 }
@@ -91,6 +100,15 @@ int Topology::sendlist() {
         if (inet_aton("172.16.0.1", (in_addr *) & addr) == 0) {
             printf("inet_aton() failed\n");
         }
-        (*unrel)->send((void*) &mapping, sizeof (mapping), 1, addr);
+        //insert case of timeout/invalid entry
+        struct packet_map *map = malloc(sizeof(struct packet_map));
+        map->mac = mac;
+        map->up = mapping[0];
+        map->down = mapping[3];
+        map->left = mapping[1];
+        map->right = mapping[2];
+        
+        (*unrel)->send((void*) &map, sizeof (struct packet_map), 1, addr);
+        free(map);
 #endif
 }

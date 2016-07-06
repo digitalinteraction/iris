@@ -23,6 +23,14 @@ struct topo_buffer{
     uint8_t addr;
 };
 
+struct packet_map{
+    uint64_t mac;
+    uint64_t right;
+    uint64_t left;
+    uint64_t up;
+    uint64_t down;
+};
+
 
 class Topology {
 public:
@@ -38,6 +46,9 @@ private:
     struct timespec alive[4];
     uint64_t mapping[4];
     struct topo_buffer topo_buf;
+#ifndef CLIENT_SIDE
+    Packetbuffer *in_map;
+#endif
 };
 
 #endif /* TOPOLOGY_H */

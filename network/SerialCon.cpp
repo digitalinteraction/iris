@@ -280,7 +280,6 @@ void SerialCon::slip_run() {
                 //printf("got something from udp port\n"); fflush(stdout);
                 int n = recvfrom(fd_array[4], &recv_buf4, SIZE_LIMIT, 0, (struct sockaddr *) &client_addr, (socklen_t *)&clen);
                 if (n > 0) {
-                    printf("got packet with lenght %d\n", n);
                     int ret = recv_buf->add(n, client_addr.sin_addr.s_addr, recv_buf4);
                     if (ret != 0) {
                         //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
