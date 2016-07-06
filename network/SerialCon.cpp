@@ -23,19 +23,35 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf) {
         fd_array[1] = init_serial(1);
         fd_array[2] = init_serial(2);
         fd_array[3] = init_serial(3);
+#else
+        fd_array[0] = 0;
+        fd_array[1] = 0;
+        fd_array[2] = 0;
+        fd_array[3] = 0;
 #endif
     //init udp socket
     slen=sizeof(server_addr);
 
-    if ((fd_array[4]=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1){
+    if ((fd_array[4]=socket(AF_INET, SOCK_DGRAM, 0))==-1){
         printf("Error opening udp socket\n");
     }
-
-    memset((char *) &server_addr, 0, sizeof(server_addr));
+    
+//#ifndef CLIENT_SIDE
+    int optval = 1;
+    setsockopt(fd_array[4], SOL_SOCKET, SO_REUSEADDR,
+            (const void *) &optval, sizeof (int));
+    memset((char *) &server_addr, 0, sizeof (server_addr));
+    server_addr.sin_addr.s_addr =  htonl(INADDR_ANY);
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(DEBUG_PORT);
+    
+    if (bind(fd_array[4], (struct sockaddr *) &server_addr, sizeof(server_addr)) < 0) 
+        printf("error on binding socket\n");
+//#endif
+    
+    
 
-    clen = sizeof(client_addr);
+    clen = sizeof (client_addr);
 
     //init data transfer from other network thread    
     send_buf = sendbuf;
@@ -79,8 +95,8 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
     }
     
     if(nr > 256){
-        server_addr.sin_addr.s_addr = nr;
-        sendto(fd_array[4], p, len, 0, (struct sockaddr *)&server_addr, slen);
+        client_addr.sin_addr.s_addr = nr;
+        sendto(fd_array[4], p, len, 0, (struct sockaddr *)&client_addr, slen);
         return 0;
     }
     
@@ -182,6 +198,7 @@ void SerialCon::slip_run() {
         }
 #else
         for (i = 4; i < 6; i++) {
+            //printf("setting %d %d as read\n", i, fd_array[i]);
             FD_SET(fd_array[i], &readfs);
         }
 #endif
@@ -256,10 +273,12 @@ void SerialCon::slip_run() {
                     }
                 }
             }
+            //printf("Socket : %d %d %d\n", FD_ISSET(fd_array[4], &readfs), FD_ISSET(fd_array[4], &writefs), FD_ISSET(fd_array[4], &exceptfs));
             if (FD_ISSET(fd_array[4], &readfs)) {
-                printf("got something from udp port\n");
-                int n = recvfrom(fd_array[4], recv_buf4, SIZE_LIMIT, 0, (struct sockaddr *) &client_addr, (socklen_t *)&clen);
+                //printf("got something from udp port\n"); fflush(stdout);
+                int n = recvfrom(fd_array[4], &recv_buf4, SIZE_LIMIT, 0, (struct sockaddr *) &client_addr, (socklen_t *)&clen);
                 if (n > 0) {
+                    printf("got packet with lenght %d\n", n);
                     int ret = recv_buf->add(n, client_addr.sin_addr.s_addr, recv_buf4);
                     if (ret != 0) {
                         //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");

@@ -44,7 +44,8 @@ UnreliableTransfer::~UnreliableTransfer() {
 
 int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint32_t addr) {
     
-    
+                printf("Data: %ld \n", sizeof(struct unreliable_packet));
+
     lock_send.lock();
     if(size <= 0 || buffer == 0){
         printf("Error Unreliable Transfer:: buffer or size is wrong\n");
@@ -82,6 +83,7 @@ int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint32_t a
 }
 
 int UnreliableTransfer::recv() {
+    
     lock_recv.lock();
     struct packet *pack;
     while (recv_buf->get(&pack) == 0) {
@@ -99,6 +101,12 @@ int UnreliableTransfer::recv() {
         crc comp_crc = F_CRC_CalculaCheckSum((uint8_t*) pack->buffer, pack->size);
 
         if (comp_crc != real_crc) {
+            
+            printf("Data: %ld : ", sizeof(struct unreliable_packet));
+            for(int i = 0; i < pack->size; i++){
+                printf(" %x ", ((unsigned char *)pack->buffer)[i]);
+            }
+            printf("\n");
             printf("Error Unreliable Transfer:: %d CRC did not match %x %x\n", header->port, comp_crc, real_crc);
             free(pack->buffer);
             free(pack);
