@@ -17,21 +17,17 @@
 //#include "socket/socket.c"
 
 SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) {
-    //if (deb == 1) {
+    //init serial
+    this->deb = deb;
+    
+    if (deb == 0) {
         fd_array[0] = init_serial(0);
         fd_array[1] = init_serial(1);
         fd_array[2] = init_serial(2);
         fd_array[3] = init_serial(3);
-    //} /*else {
-        //fd_array[0] = init_serial(1);
-       // fd_array[1] = init_serial(3);
-        //fd_array[2] = init_serial(5);
-        //fd_array[3] = init_serial(7);
-    //}*/
-
-
-
+    }
     
+    //init udp socket
     slen=sizeof(server_addr);
 
     if ((fd_array[4]=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP))==-1){
@@ -42,19 +38,15 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) 
     server_addr.sin_family = AF_INET;
     server_addr.sin_port = htons(DEBUG_PORT);
 
-    
+    clen = sizeof(client_addr);
 
-
-
-    
-    
+    //init data transfer from other network thread    
     send_buf = sendbuf;
     recv_buf = recvbuf;
     fd_array[5] = send_buf->signalfd;
     if (fd_array[5] == -1) {
         printf("Error in eventfd creation\n");
     }
-    //fd_array[5] = pipe_array[1];
 
     int i, max = 0;
     for (i = 0; i < 6; i++) {
@@ -75,7 +67,8 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf, uint8_t deb) 
     state2 = 0;
     memset(recv_buf3, 0, SIZE_LIMIT);
     state3 = 0;
-    
+    memset(recv_buf4, 0, SIZE_LIMIT);
+
     srand(time(NULL));
 }
 
@@ -88,11 +81,7 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
         return -1;
     }
     
-    //enable udp transfer based on nr
     if(nr > 256){
-        //if (inet_aton(DEBUG_SERVER, &server_addr.sin_addr)==0) {
-       ///     printf("inet_aton() failed\n");
-        //}
         server_addr.sin_addr.s_addr = nr;
         sendto(fd_array[4], p, len, 0, (struct sockaddr *)&server_addr, slen);
         return 0;
@@ -189,10 +178,12 @@ void SerialCon::slip_run() {
         FD_ZERO(&writefs);
         FD_ZERO(&exceptfs);
         res = 0;
-
         for (i = 0; i < 6; i++) {
-            FD_SET(fd_array[i], &readfs);
+            if(deb == 0 || (deb == 1 && i >= 4)){
+                FD_SET(fd_array[i], &readfs);
+            }
         }
+
         Timeout.tv_usec = 5000;
         Timeout.tv_sec = 0;
         res = select(maxfd, &readfs, &writefs, &exceptfs, &Timeout);
@@ -263,6 +254,16 @@ void SerialCon::slip_run() {
                     }
                 }
             }
+            if (FD_ISSET(fd_array[4], &readfs)) {
+                int n = recvfrom(fd_array[4], recv_buf4,, SIZE_LIMIT, 0, (struct sockaddr *) &client_addr, &clen);
+                if (n > 0) {
+                    int ret = recv_buf->add(n, client_addr.sin_addr.s_addr, recv_buf4);
+                    if (ret != 0) {
+                        //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
+                    }
+                }
+            }
+
             if (FD_ISSET(fd_array[5], &readfs)) {
 
                 uint64_t val = 0;

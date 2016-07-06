@@ -26,7 +26,7 @@ struct topo_buffer{
 
 class Topology {
 public:
-    Topology(UnreliableTransfer **unrel);
+    Topology(UnreliableTransfer **unrel, uint8_t deb);
     virtual ~Topology();
     int recv(void *buffer, size_t size, uint32_t addr);
     int send();
@@ -38,6 +38,7 @@ private:
     struct timespec alive[4];
     uint64_t mapping[4];
     struct topo_buffer topo_buf;
+    uint8_t deb;
 };
 
 #endif /* TOPOLOGY_H */

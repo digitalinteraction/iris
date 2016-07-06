@@ -30,17 +30,20 @@ using namespace std;
 int main(int argc, char** argv) {
     UnreliableTransfer *unrel;
     Packetbuffer *image_out = new Packetbuffer();
-    Topology *topo = new Topology(&unrel);
-    ReliableTransfer *rel = new ReliableTransfer(&unrel, image_out, topo);
+   
     DebugTransfer *debug = new DebugTransfer();
     //printf("serial_test:: got arguments %s %s\n", argv[0], argv[1]);
     uint8_t mode = 0;
-    if(!strcmp(argv[1], "-a")){
+    if(!strcmp(argv[1], "-server")){
         //printf("starting in mode 1\n");
         mode = 1;
+        Topology *topo = new Topology(&unrel, 1);
+        ReliableTransfer *rel = new ReliableTransfer(&unrel, image_out, topo);
         unrel = new UnreliableTransfer(rel, topo, debug, 1);
     }else{
         //printf("starting in mode 0\n");
+        Topology *topo = new Topology(&unrel, 0);
+        ReliableTransfer *rel = new ReliableTransfer(&unrel, image_out, topo);
         unrel = new UnreliableTransfer(rel, topo, debug, 0);
     }
     

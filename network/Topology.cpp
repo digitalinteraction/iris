@@ -16,7 +16,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-Topology::Topology(UnreliableTransfer **unrel) {
+Topology::Topology(UnreliableTransfer **unrel, uint8_t deb) {
     this->unrel = unrel;
     FILE * file = fopen("/sys/class/net/wlan0/address", "r");
     unsigned char a=0,b=0,c=0,d=0,e=0,f=0;
@@ -36,6 +36,7 @@ Topology::Topology(UnreliableTransfer **unrel) {
     
     topo_buf.addr = 0;
     topo_buf.mac = mac;
+    this->deb = deb;
     
     
 }
@@ -44,57 +45,37 @@ Topology::Topology(UnreliableTransfer **unrel) {
 Topology::~Topology() {
 }
 
-//call this function every 250ms
 int Topology::send(){
-    
-#ifdef DEBUG
-    printf("Topology::Sending requests\n");
-#endif
-    
-    /*struct topo_buffer *buf0 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
-    struct topo_buffer *buf1 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
-    struct topo_buffer *buf2 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
-    struct topo_buffer *buf3 = (struct topo_buffer*) malloc(sizeof (struct topo_buffer));
+    if (deb == 0) {
+        (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 0);
 
-    buf0->mac = mac;
-    buf1->mac = mac;
-    buf2->mac = mac;
-    buf3->mac = mac;*/
+        (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 1);
 
-    //buf0->addr = 0;//2;
-    (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 0);
+        (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 2);
 
-    //buf1->addr = 1;//3;
-    (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 1);
-
-    //buf2->addr = 2;//0;
-    (*unrel)->send((void*) &topo_buf, sizeof(struct topo_buffer), 1, 2);
-    
-    //buf3->addr = 3;//1;
-    (*unrel)->send((void*) &topo_buf, sizeof(struct topo_buffer), 1, 3);
-    //free(buf0);
-    //free(buf1);
-    //free(buf2);
-    //free(buf3);
+        (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 3);
+    }
 }
 
 int Topology::recv(void* buffer, size_t size, uint32_t addr) {
 
-    //printf("Topology:: received an alive packet at time %ld from addr %d\n", temp.tv_sec, addr);
     struct topo_buffer *buf = (struct topo_buffer *) buffer;
-    //printf("Topology: received a keep alive packet from %d on port %d\n", buf->addr, addr);
-    //printf("MAC: %llx, Size: %ld\n", buf->mac, size);
-    if (addr < 4) {
-        if (mapping[addr] == 0 || mapping[addr] == buf->mac) {
-            mapping[addr] = buf->mac;
-            struct timespec current;
-            clock_gettime(CLOCK_REALTIME, &current);
-            alive[addr].tv_sec = current.tv_sec;
-        } else {
-            printf("Error Topology:: Conflicting MACs for the same spot in mapping\n");
+    if (deb == 0) {
+        if (addr < 4) {
+            if (mapping[addr] == 0 || mapping[addr] == buf->mac) {
+                mapping[addr] = buf->mac;
+                struct timespec current;
+                clock_gettime(CLOCK_REALTIME, &current);
+                alive[addr].tv_sec = current.tv_sec;
+            } else {
+                printf("Error Topology:: Conflicting MACs for the same spot in mapping\n");
+            }
         }
+    }else{
+        printf("got mac list from %d\n", addr);
+        //do something else
     }
-    //printf("t free %p\n", buffer);
+    
 }
 
 int Topology::isalive(uint32_t addr){
@@ -107,10 +88,12 @@ int Topology::isalive(uint32_t addr){
     }
 }
 
-int Topology::sendlist(){
-    uint32_t addr;
-    if (inet_aton("172.16.0.1", (in_addr *)&addr)==0) {
-     printf("inet_aton() failed\n");
+int Topology::sendlist() {
+    if (deb == 0) {
+        uint32_t addr;
+        if (inet_aton("172.16.0.1", (in_addr *) & addr) == 0) {
+            printf("inet_aton() failed\n");
+        }
+        (*unrel)->send((void*) &mapping, sizeof (mapping), 1, addr);
     }
-    (*unrel)->send((void*) &mapping, sizeof(mapping), 1, addr);
 }

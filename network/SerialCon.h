@@ -82,6 +82,8 @@ private:
     unsigned char recv_buf3[SIZE_LIMIT];
     int state3;
     int size3;
+    unsigned char recv_buf4[SIZE_LIMIT];
+
     
     unsigned char recv_ipc[SIZE_LIMIT];
     
@@ -94,7 +96,11 @@ private:
     unsigned char esc_esc = ESC_ESC;
     
     struct sockaddr_in server_addr;
+    struct sockaddr_in client_addr;
     int slen;
+    int clen;
+    
+    uint8_t deb;
     
     
     int slip_send(unsigned char *p, uint16_t len, uint32_t nr);
