@@ -124,7 +124,6 @@ int Topology::sendlist() {
         map->right = mapping[2];
         
         print_mapping(map);
-        printf("siezof %ld\n", sizeof(struct packet_map));
         
         (*unrel)->send((void*) &map, sizeof (struct packet_map), 1, addr);
         free(map);
@@ -132,9 +131,9 @@ int Topology::sendlist() {
 }
 
 void Topology::print_mapping(struct packet_map* map){
-    printf("%lx\n", map->up);
-    printf("%lx::", map->left);
-    printf("%lx::", map->mac);
-    printf("%lx\n", map->right);
-    printf("%lx\n", map->down);
+    printf("%llx\n", map->up);
+    printf("%llx::", map->left);
+    printf("%llx::", map->mac);
+    printf("%llx\n", map->right);
+    printf("%llx\n", map->down);
 }
