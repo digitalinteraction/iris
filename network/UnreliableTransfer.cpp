@@ -44,7 +44,6 @@ UnreliableTransfer::~UnreliableTransfer() {
 
 int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint32_t addr) {
     
-                printf("Data: %ld \n", sizeof(struct unreliable_packet));
 
     lock_send.lock();
     if(size <= 0 || buffer == 0){

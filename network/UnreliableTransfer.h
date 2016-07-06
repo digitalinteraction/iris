@@ -28,7 +28,7 @@ class DebugTransfer;
 class SerialCon;
 
 struct unreliable_packet{
-    size_t size;
+    uint64_t size;
     uint8_t port;
     uint32_t addr;
     //boost::crc_32_type crc_val;
