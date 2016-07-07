@@ -39,6 +39,7 @@ Topology::Topology(UnreliableTransfer **unrel) {
     topo_buf.addr = 0;
     topo_buf.mac = mac;
 #ifndef CLIENT_SIDE
+    first = 0;
     in_map = new Packetbuffer();
 #endif
     
@@ -80,13 +81,10 @@ int Topology::recv(void* buffer, size_t size, uint32_t addr) {
     in.s_addr = addr;
     char *hostaddrp = inet_ntoa(in);
     printf("Topology: got packet from %s\n", hostaddrp);
-    //address trasnlation end
-    struct packet_map *map = (struct packet_map *)malloc(sizeof(struct packet_map));
-
-    memcpy(map, buffer, sizeof(struct packet_map));
-        print_mapping((struct packet_map*)buffer);
-
-    in_map->add(sizeof(struct packet_map), addr, map);
+    
+    struct packet_map *map = (struct packet_map *)buffer;
+    add_device_entry(map);
+    build_mapping();
     
 #endif
     
@@ -138,3 +136,189 @@ void Topology::print_mapping(struct packet_map* map){
     printf("%lx\n", map->down);
 #endif
 }
+
+void Topology::add_device_entry(struct packet_map* map){
+    struct device_info *item = device_first;
+    uint8_t success = 0;
+    while(item != 0){
+        if(item->mac == map->mac){
+            success = 1;
+        }
+        if(success == 0){
+            item = item->next;
+        }
+    }
+    
+    struct timespec current;
+    clock_gettime(CLOCK_REALTIME, &current);
+    unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
+    
+    if(success == 1){
+        memcpy(item->map, map, sizeof(struct packet_map));
+        item->timeout = currenttime + 5000;
+    }else{
+        struct device_info* dev = (struct device_info*) malloc(sizeof(struct device_info));
+        memset(dev, 0, sizeof(struct device_info));
+        dev->map = (struct packet_map *) malloc(sizeof(struct packet_map));
+        memcpy(dev->map, map, sizeof(struct packet_map));
+        dev->timeout = currenttime + 5000;
+        dev->mac = map->mac;
+        
+        if(device_first == 0){
+            device_first = dev;
+            device_last = dev;
+        }else{
+            device_last->next = dev;
+            device_last = dev;
+        }
+        
+    }
+    
+}
+
+struct device_info* Topology::get_device_entry(uint64_t mac){
+    struct timespec current;
+    clock_gettime(CLOCK_REALTIME, &current);
+    unsigned long currenttime = current.tv_sec * 1000 + current.tv_nsec / 1000000;
+    
+    if(mac == 0) {
+        currenttime += 5000;
+        struct device_info *item = device_first;
+        struct device_info *ret;
+        while (item != 0) {
+            if (item->timeout < currenttime) {
+                currenttime = item->timeout;
+                ret = item;
+            }
+            item = item->next;
+        }
+        return ret;
+    } else {
+        
+        
+        struct device_info *item = device_first;
+        while (item != 0) {
+            if (item->mac == map->mac && item->timeout > currenttime) {
+                return item;
+            }
+            item = item->next;
+        }
+    }
+    return 0;
+}
+
+
+
+void Topology::add_unexplored_entry(uint64_t mac, unsigned long timeout){
+    struct topo_unexplored* item = (struct topo_unexplored *) malloc(sizeof(struct topo_unexplored));
+    memset(item, 0, sizeof(struct topo_unexplored));
+    item->mac = mac;
+    item->timeout = timeout;
+    
+    if(unexp_first == 0){
+        unexp_first = item;
+        unexp_last = item;
+    }else{
+        unexp_last->next = item;
+        unexp_last = item;
+    }
+}
+
+struct topo_unexplored* Topology::get_unexplored_entry(){
+    struct topo_unexplored* item = unexp_first;
+    struct topo_unexplored* ret = 0;
+    struct timespec current;
+    clock_gettime(CLOCK_REALTIME, &current);
+    unsigned long currenttime = current.tv_sec * 1000 + current.tv_nsec / 1000000;
+    currenttime += 5000;
+
+    while (item != 0) {
+        if (item->timeout < currenttime) {
+            currenttime = item->timeout;
+            ret = item;
+        }
+        item = item->next;
+    }
+    return ret;
+}
+
+struct temp_topo* Topology::search_topo(struct temp_topo*cur, uint64_t mac, uint8_t search){
+    if(cur == 0){
+        return 0;
+    }
+    struct temp_topo* ret = 0;
+    if (cur->search == (search-1)) {
+        cur->search++;
+        
+        ret += search_topo(cur->down, mac, search);
+        ret += search_topo(cur->up, mac, search);
+        ret += search_topo(cur->left, mac, search);
+        ret += search_topo(cur->right, mac, search);
+
+        if (cur->mac == mac) {
+            ret = cur;
+        }
+    }
+    return ret;
+}
+
+void Topology::build_mapping(){
+    printf("starting building map\n");
+    struct device_info* root = get_device_entry(0);
+    add_unexplored_entry(root->mac, root->timeout);
+
+    struct temp_topo* first = 0;
+    first = (struct temp_topo *) malloc(sizeof (struct temp_topo));
+    memset(first, 0, sizeof (struct temp_topo));
+    first->mac = root->mac;
+    struct temp_topo* current = first;
+    
+
+
+    while (unexp_first != 0) {
+        struct topo_unexplored* item = get_unexplored_entry();
+        current = search_topo(item->mac);
+        struct device_info* cur = get_device_entry(item->mac);
+        
+        printf("Current mac address %lx\n", current->mac);
+        
+        struct device_info* temp;
+        temp = get_device_entry(cur->map->down);
+        if(temp != 0){
+            current->down = (struct temp_topo *) malloc(sizeof (struct temp_topo));
+            memset(current->down, 0, sizeof (struct temp_topo));
+            current->down->mac = temp->mac;
+            current->down->up = current;
+            add_unexplored_entry(temp->mac, temp->timeout);
+        }
+        temp = get_device_entry(cur->map->up);
+        if(temp != 0){
+            current->up = (struct temp_topo *) malloc(sizeof (struct temp_topo));
+            memset(current->up, 0, sizeof (struct temp_topo));
+            current->up->mac = temp->mac;
+            current->up->down = current;
+            add_unexplored_entry(temp->mac, temp->timeout);
+        }
+        temp = get_device_entry(cur->map->left);
+        if(temp != 0){
+            current->left = (struct temp_topo *) malloc(sizeof (struct temp_topo));
+            memset(current->left, 0, sizeof (struct temp_topo));
+            current->left->mac = temp->mac;
+            current->left->right = current;
+            add_unexplored_entry(temp->mac, temp->timeout);
+        }
+        temp = get_device_entry(cur->map->right);
+        if(temp != 0){
+            current->right = (struct temp_topo *) malloc(sizeof (struct temp_topo));
+            memset(current->right, 0, sizeof (struct temp_topo));
+            current->right->mac = temp->mac;
+            current->right->left = current;
+            add_unexplored_entry(temp->mac, temp->timeout);
+        }            
+    }
+    
+    
+}
+
+
+

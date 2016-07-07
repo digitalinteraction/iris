@@ -1,1 +1,1 @@
-g++ serial_test.cpp ../network/UnreliableTransfer.cpp ../network/ReliableTransfer.cpp ../network/Topology.cpp ../network/DebugTransfer.cpp ../network/Packetbuffer.cpp ../network/SerialCon.cpp ../network/crc/crc.c ../network/socket/socket.c -std=c++11 -lpthread -o testprog
+g++ serial_test.cpp ../network/UnreliableTransfer.cpp ../network/ReliableTransfer.cpp ../network/Topology.cpp ../network/DebugTransfer.cpp ../network/Packetbuffer.cpp ../network/SerialCon.cpp ../network/crc/crc.c -std=c++11 -lpthread -o testprog

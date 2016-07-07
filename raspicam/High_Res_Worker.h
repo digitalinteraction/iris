@@ -17,12 +17,13 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
+#include "../network/Packetbuffer.h"
 
 using namespace cv;
 
 class High_Res_Worker {
 public:
-    High_Res_Worker(Buffer *buffer);
+    High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf);
     virtual ~High_Res_Worker();
     int processing;
     void run();
@@ -34,6 +35,8 @@ private:
     Mat convert(RASPITEX_PATCH *patch);
     void find_features(RASPITEX_PATCH *patch, uint8_t group);
     Ptr<FastFeatureDetector> detector;
+    Packetbuffer *out;
+    Packetbuffer *in;
 
 
 };

@@ -218,6 +218,8 @@
       <df name="network">
         <in>DebugTransfer.cpp</in>
         <in>DebugTransfer.h</in>
+        <in>NetworkControl.cpp</in>
+        <in>NetworkControl.h</in>
         <in>Packetbuffer.cpp</in>
         <in>Packetbuffer.h</in>
         <in>ReliableTransfer.cpp</in>
@@ -929,6 +931,10 @@
       <item path="network/DebugTransfer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="network/DebugTransfer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="network/NetworkControl.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="network/NetworkControl.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="network/Packetbuffer.cpp" ex="false" tool="1" flavor2="0">
       </item>

@@ -17,10 +17,12 @@
 using namespace std;
 
 
-High_Res_Worker::High_Res_Worker(Buffer *buffer) {
+High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf) {
     buf = buffer;
     cnt = 0;
     prev_group = 0;
+    out = out_buf;
+    in = in_buf;
     // Default parameters of ORB
     
 int nfeatures=500;

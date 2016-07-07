@@ -18,11 +18,12 @@
 #include <stdint.h>
 //#define DEBUG
 
-#define CLIENT_SIDE
+//#define CLIENT_SIDE
 
 struct packet{
     size_t size;
     uint32_t addr;
+    uint8_t broadcast;
     void *buffer;
     struct packet *next;
 };
