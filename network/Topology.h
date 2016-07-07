@@ -80,7 +80,6 @@ private:
     struct temp_topo* search_topo(struct temp_topo*cur, uint64_t mac, uint8_t search);
     void build_mapping();
     struct packet_map map;
-#ifndef CLIENT_SIDE
     Packetbuffer *in_map;
     
     struct device_info* device_first;
@@ -92,7 +91,6 @@ private:
     uint8_t cols;
     uint8_t rows;
 
-#endif
 };
 
 #endif /* TOPOLOGY_H */
