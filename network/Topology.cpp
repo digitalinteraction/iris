@@ -277,7 +277,7 @@ void Topology::build_mapping(){
 
     while (unexp_first != 0) {
         struct topo_unexplored* item = get_unexplored_entry();
-        current = search_topo(item->mac);
+        current = search_topo(first, item->mac, first->search);
         struct device_info* cur = get_device_entry(item->mac);
         
         printf("Current mac address %lx\n", current->mac);
