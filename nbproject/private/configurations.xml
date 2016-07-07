@@ -652,14 +652,12 @@
       <df name="server">
         <df name="build-server-Desktop_Qt_5_7_0_GCC_64bit-Debug">
           <in>moc_mainwindow.cpp</in>
-          <in>moc_networkcontrol.cpp</in>
           <in>ui_mainwindow.h</in>
         </df>
         <df name="server">
           <in>main.cpp</in>
           <in>mainwindow.cpp</in>
           <in>mainwindow.h</in>
-          <in>networkcontrol.cpp</in>
         </df>
       </df>
       <df name="setup">

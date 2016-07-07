@@ -49,6 +49,7 @@ void NetworkControl::run(){
     unsigned long nextprint = currenttime +1000;
     unsigned long nextcheck = currenttime +20;
     unsigned long toposend = currenttime +1000;
+    unsigned long buildtopo = currenttime +3000;
     
     while (true) {
         FD_ZERO(&readfs);
@@ -90,6 +91,12 @@ void NetworkControl::run(){
         if(currenttime > toposend){
             toposend = currenttime + 10;
             topo->send();
+        }
+        
+        if(currenttime > buildtopo){
+            topo->build_mapping();
+            buildtopo = currenttime + 2456;
+
         }
        
 #ifdef CLIENT_SIDE

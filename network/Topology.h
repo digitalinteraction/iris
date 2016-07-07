@@ -39,6 +39,8 @@ struct temp_topo{
     struct temp_topo* up;
     struct temp_topo* right;
     struct temp_topo* down;
+    int8_t x;
+    int8_t y;
 };
 
 struct device_info{
@@ -47,8 +49,6 @@ struct device_info{
     uint64_t mac;
     unsigned long timeout;
     uint8_t reachable;
-    uint8_t x;
-    uint8_t y;
     struct device_info* next;
 };
 
@@ -56,6 +56,17 @@ struct topo_unexplored{
     uint64_t mac;
     unsigned long timeout;
     struct topo_unexplored* next;
+};
+
+struct topo_list{
+    uint8_t x;
+    uint8_t y;
+    uint64_t mac;
+};
+
+struct topo_header{
+    uint8_t sizex;
+    uint8_t sizey;
 };
 
 class Topology {
@@ -66,6 +77,8 @@ public:
     int send();
     int isalive(uint32_t addr);
     int sendlist();
+    void build_mapping();
+
 private:
     UnreliableTransfer **unrel;
     uint64_t mac;
@@ -78,7 +91,8 @@ private:
     void add_unexplored_entry(uint64_t mac, unsigned long timeout);
     struct topo_unexplored* get_unexplored_entry();
     struct temp_topo* search_topo(struct temp_topo*cur, uint64_t mac, uint8_t search);
-    void build_mapping();
+    void calc_topo(struct temp_topo* cur, uint8_t search, int8_t x, int8_t y, uint8_t mode);
+    void set_devices_reach();
     struct packet_map map;
     Packetbuffer *in_map;
     
@@ -88,8 +102,12 @@ private:
     struct topo_unexplored* unexp_last;
 
     uint64_t **map_array;
-    uint8_t cols;
-    uint8_t rows;
+    unsigned char * start;
+    
+    int8_t min_x;
+    int8_t max_x;
+    int8_t min_y;
+    int8_t max_y;
 
 };
 
