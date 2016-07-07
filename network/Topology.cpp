@@ -39,7 +39,7 @@ Topology::Topology(UnreliableTransfer **unrel) {
     topo_buf.addr = 0;
     topo_buf.mac = mac;
 #ifndef CLIENT_SIDE
-    first = 0;
+    //first = 0;
     in_map = new Packetbuffer();
 #endif
     
