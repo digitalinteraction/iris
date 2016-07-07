@@ -198,7 +198,7 @@ struct device_info* Topology::get_device_entry(uint64_t mac){
         
         struct device_info *item = device_first;
         while (item != 0) {
-            if (item->mac == map->mac && item->timeout > currenttime) {
+            if (item->mac == mac && item->timeout > currenttime) {
                 return item;
             }
             item = item->next;
@@ -249,11 +249,11 @@ struct temp_topo* Topology::search_topo(struct temp_topo*cur, uint64_t mac, uint
     struct temp_topo* ret = 0;
     if (cur->search == (search-1)) {
         cur->search++;
-        
-        ret += search_topo(cur->down, mac, search);
-        ret += search_topo(cur->up, mac, search);
-        ret += search_topo(cur->left, mac, search);
-        ret += search_topo(cur->right, mac, search);
+        struct temp_topo* temp = 0;
+        ret = search_topo(cur->down, mac, search);
+        ret = search_topo(cur->up, mac, search);
+        ret = search_topo(cur->left, mac, search);
+        ret = search_topo(cur->right, mac, search);
 
         if (cur->mac == mac) {
             ret = cur;
