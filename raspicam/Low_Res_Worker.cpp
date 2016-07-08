@@ -19,7 +19,7 @@
 
 using namespace std;
 
-Low_Res_Worker::Low_Res_Worker() {
+Low_Res_Worker::Low_Res_Worker(Packetbuffer *out) {
     processing = 0;
     pMOG2 = createBackgroundSubtractorMOG2(100, 16, false);
     cnt = 0;
@@ -32,6 +32,8 @@ Low_Res_Worker::Low_Res_Worker() {
     {
         printf("mutex init failed\n");
     }
+    
+    this->out = out;
     
     //pMOG2 = bgsegm::createBackgroundSubtractorGMG();
 }
@@ -202,5 +204,32 @@ Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
     }else{
         Mat null;
         return null;
+    }
+}
+
+void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size){
+    if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 4) && image_size < 42000) {
+        uint8_t *img = (uint8_t *) malloc(LOW_OUTPUT_X * LOW_OUTPUT_Y * 3 * sizeof(uint8_t));
+        size_t new_size = 0;
+        for(int i = 0; i < image_size; i++){
+            if(i % 4 != 0){
+                img[new_size] = image[i];
+                new_size++;
+            }
+        }
+        uint32_t addr;
+        if (inet_aton("172.16.0.1", (in_addr *) & addr) == 0) {
+            printf("inet_aton() failed\n");
+        }
+        
+        new_size = LOW_OUTPUT_X * LOW_OUTPUT_Y * 3 * sizeof(uint8_t);
+        size_t part_size = new_size/10;
+        int ret = 0;
+        for(int i = 0; i < 10; i++){
+            ret = 0;
+            ret = out->add(part_size, addr, (void*)(img+i*part_size));
+            if(ret != 0)
+                i--;
+        }
     }
 }

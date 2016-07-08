@@ -19,7 +19,7 @@ int main() {
     NetworkControl *nc = new NetworkControl();
     
     Buffer *buffer = new Buffer(32);
-    Low_Res_Worker *low = new Low_Res_Worker();
+    Low_Res_Worker *low = new Low_Res_Worker(nc->image_in);
     Image_Capture *cap = new Image_Capture(buffer, low);
     High_Res_Worker *high = new High_Res_Worker(buffer, nc->image_in, nc->image_out);
     cap->capturing = 1;

@@ -48,8 +48,8 @@ extern "C"{
 #define UNDISTORT_Y 1458
 #define HIGH_OUTPUT_X 1944
 #define HIGH_OUTPUT_Y 1458
-#define LOW_OUTPUT_X 128//128//256//128//400//972
-#define LOW_OUTPUT_Y 96//192//96//300//729
+#define LOW_OUTPUT_X 400//128//256//128//400//972
+#define LOW_OUTPUT_Y 300//192//96//300//729
     
 #define FRAMEBUFFER_CNT 4
     

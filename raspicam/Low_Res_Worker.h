@@ -25,14 +25,14 @@
 #include <opencv2/features2d.hpp>
 #include "RaspiTex.h"
 #include <pthread.h>
-
+#include "../network/Packetbuffer.h"
 
 using namespace cv;
 
 
 class Low_Res_Worker {
 public:
-    Low_Res_Worker();
+    Low_Res_Worker(Packetbuffer *out);
     ~Low_Res_Worker();
     void run();
     int processing;
@@ -48,12 +48,14 @@ private:
     void process_image(uint8_t *image, size_t image_size);
     Mat convert(uint8_t *image, size_t image_size);
     int interprete_params(double mean, double sum);
+    void send_to_server(uint8_t* image, size_t image_size);
     Mat mask;
     Ptr<BackgroundSubtractor> pMOG2;
     Mat previous;
     int cnt;
     int nr_img;
     float learning;
+    Packetbuffer *out;
 };
 
 #endif /* LOW_RES_WORKER_H */
