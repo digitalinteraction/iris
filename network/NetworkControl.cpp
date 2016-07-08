@@ -77,6 +77,7 @@ void NetworkControl::run(){
                 read(fd_list[1], &val, sizeof (uint64_t));
                 struct packet* pack;
                 while(image_in->get(&pack) == 0){
+                    printf("sending out image packets\n");
                     if(rel->send(pack->buffer, pack->size, pack->addr, pack->broadcast) != 0){
                         printf("Error NetworkControl: sending reliable packet not working\n");
                     }
