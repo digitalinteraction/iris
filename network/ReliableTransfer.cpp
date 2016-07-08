@@ -29,6 +29,7 @@ ReliableTransfer::ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out
     ack.broadcast = 0;
     ack.filler = 0;
     ack.id = 0;
+    list_cnt = 0;
     last_broadcast = 0;
     this->topo = topo;
     list_lock.unlock();
