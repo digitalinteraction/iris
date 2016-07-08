@@ -79,6 +79,7 @@ int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint32_t a
     
     free(total_buf);
     lock_send.unlock();
+    return 0;
 }
 
 int UnreliableTransfer::recv() {
@@ -139,4 +140,5 @@ int UnreliableTransfer::recv() {
     }
     lock_recv.unlock();
     
+    return 0;
 }

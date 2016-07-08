@@ -13,8 +13,28 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    ../../network/DebugTransfer.cpp \
+    ../../network/NetworkControl.cpp \
+    ../../network/Packetbuffer.cpp \
+    ../../network/ReliableTransfer.cpp \
+    ../../network/SerialCon.cpp \
+    ../../network/Topology.cpp \
+    ../../network/UnreliableTransfer.cpp \
+    ../../network/crc/crc.c \
+    handleinput.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    ../../network/crc/crc.h \
+    ../../network/DebugTransfer.h \
+    ../../network/NetworkControl.h \
+    ../../network/Packetbuffer.h \
+    ../../network/ReliableTransfer.h \
+    ../../network/SerialCon.h \
+    ../../network/Topology.h \
+    ../../network/UnreliableTransfer.h \
+    handleinput.h
 
 FORMS    += mainwindow.ui
+
+#CONFIG += console

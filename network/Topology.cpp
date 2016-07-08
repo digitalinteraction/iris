@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 
-Topology::Topology(UnreliableTransfer **unrel) {
+Topology::Topology(UnreliableTransfer **unrel, Packetbuffer* out_map) {
     this->unrel = unrel;
     FILE * file = fopen("/sys/class/net/wlan0/address", "r");
     unsigned char a=0,b=0,c=0,d=0,e=0,f=0;
@@ -38,10 +38,13 @@ Topology::Topology(UnreliableTransfer **unrel) {
     
     topo_buf.addr = 0;
     topo_buf.mac = mac;
-#ifndef CLIENT_SIDE
     //first = 0;
-    in_map = new Packetbuffer();
-#endif
+    this->out_map = out_map;
+    
+    device_first = 0;
+    device_last = 0;
+    unexp_first = 0;
+    unexp_last = 0;
     
 }
 
@@ -59,6 +62,7 @@ int Topology::send(){
 
         (*unrel)->send((void*) &topo_buf, sizeof (struct topo_buffer), 1, 3);
 #endif
+        return 0;
 }
 
 int Topology::recv(void* buffer, size_t size, uint32_t addr) {
@@ -80,11 +84,12 @@ int Topology::recv(void* buffer, size_t size, uint32_t addr) {
     struct in_addr in;
     in.s_addr = addr;
     char *hostaddrp = inet_ntoa(in);
-    printf("Topology: got packet from %s\n", hostaddrp);
+    printf("ATopology: got packet from %s with size %ld\n", hostaddrp, size);
     
     struct packet_map *map = (struct packet_map *)buffer;
     add_device_entry(map);
 #endif
+    return 0;
     
 }
 
@@ -117,6 +122,7 @@ int Topology::sendlist() {
         
         (*unrel)->send((void*) &map, sizeof (struct packet_map), 1, addr);
 #endif
+        return 0;
 }
 
 void Topology::print_mapping(struct packet_map* map){
@@ -310,87 +316,89 @@ void Topology::build_mapping(){
     first->mac = root->mac;
     struct temp_topo* current = first;
     uint8_t search_var = 1;
-    
+
     while (unexp_first != 0) {
         //printf("get first item!\n");
         struct topo_unexplored* item = get_unexplored_entry();
         //printf("item :%p\n", item);
-        current = search_topo(first, item->mac, search_var);
-        search_var++;
-        //printf("current: %p\n", current);
-        struct device_info* cur = get_device_entry(item->mac);
-        if (cur != 0) {
-            cur->reachable = 1;
-            free(item);
-            //printf("Current mac address %lx\n", current->mac);
+        if (item != 0) {
+            current = search_topo(first, item->mac, search_var);
+            if (current != 0) {
+                search_var++;
+                //printf("current: %p\n", current);
+                struct device_info* cur = get_device_entry(item->mac);
+                if (cur != 0) {
+                    cur->reachable = 1;
+                    free(item);
+                    //printf("Current mac address %lx\n", current->mac);
 
-            struct device_info* temp;
-            temp = get_device_entry(cur->map->down);
-            if (temp != 0 && temp->reachable == 0) {
-                current->down = (struct temp_topo *) malloc(sizeof (struct temp_topo));
-                memset(current->down, 0, sizeof (struct temp_topo));
-                current->down->mac = temp->mac;
-                current->down->up = current;
-                add_unexplored_entry(temp->mac, temp->timeout);
-            }
-            temp = get_device_entry(cur->map->up);
-            if (temp != 0 && temp->reachable == 0) {
-                current->up = (struct temp_topo *) malloc(sizeof (struct temp_topo));
-                memset(current->up, 0, sizeof (struct temp_topo));
-                current->up->mac = temp->mac;
-                current->up->down = current;
-                add_unexplored_entry(temp->mac, temp->timeout);
-            }
-            temp = get_device_entry(cur->map->left);
-            if (temp != 0 && temp->reachable == 0) {
-                current->left = (struct temp_topo *) malloc(sizeof (struct temp_topo));
-                memset(current->left, 0, sizeof (struct temp_topo));
-                current->left->mac = temp->mac;
-                current->left->right = current;
-                add_unexplored_entry(temp->mac, temp->timeout);
-            }
-            temp = get_device_entry(cur->map->right);
-            if (temp != 0 && temp->reachable == 0) {
-                current->right = (struct temp_topo *) malloc(sizeof (struct temp_topo));
-                memset(current->right, 0, sizeof (struct temp_topo));
-                current->right->mac = temp->mac;
-                current->right->left = current;
-                add_unexplored_entry(temp->mac, temp->timeout);
+                    struct device_info* temp;
+                    temp = get_device_entry(cur->map->down);
+                    if (temp != 0 && temp->reachable == 0) {
+                        current->down = (struct temp_topo *) malloc(sizeof (struct temp_topo));
+                        memset(current->down, 0, sizeof (struct temp_topo));
+                        current->down->mac = temp->mac;
+                        current->down->up = current;
+                        add_unexplored_entry(temp->mac, temp->timeout);
+                    }
+                    temp = get_device_entry(cur->map->up);
+                    if (temp != 0 && temp->reachable == 0) {
+                        current->up = (struct temp_topo *) malloc(sizeof (struct temp_topo));
+                        memset(current->up, 0, sizeof (struct temp_topo));
+                        current->up->mac = temp->mac;
+                        current->up->down = current;
+                        add_unexplored_entry(temp->mac, temp->timeout);
+                    }
+                    temp = get_device_entry(cur->map->left);
+                    if (temp != 0 && temp->reachable == 0) {
+                        current->left = (struct temp_topo *) malloc(sizeof (struct temp_topo));
+                        memset(current->left, 0, sizeof (struct temp_topo));
+                        current->left->mac = temp->mac;
+                        current->left->right = current;
+                        add_unexplored_entry(temp->mac, temp->timeout);
+                    }
+                    temp = get_device_entry(cur->map->right);
+                    if (temp != 0 && temp->reachable == 0) {
+                        current->right = (struct temp_topo *) malloc(sizeof (struct temp_topo));
+                        memset(current->right, 0, sizeof (struct temp_topo));
+                        current->right->mac = temp->mac;
+                        current->right->left = current;
+                        add_unexplored_entry(temp->mac, temp->timeout);
+                    }
+                }
             }
         }
     }
     set_devices_reach();
-    min_x = 0;
-    min_y = 0;
-    max_x = 0;
-    max_y = 0;
+    min_x = 0; min_y = 0; max_x = 0; max_y = 0;
     calc_topo(first, search_var, 0, 0, 0);
     search_var++;
     uint8_t offx = abs(min_x);
     uint8_t offy = abs(min_y);
-    min_x = 0;
-    min_y = 0;
-    max_x = 0;
-    max_y = 0;
-    //TODO do that again!!!!!!!!
+    min_x = 0; min_y = 0; max_x = 0; max_y = 0;
+    
     calc_topo(first, search_var, offx, offy, 0);
     search_var++;
-    
-    uint8_t num_elem = (abs(min_x + max_x)+1) * (abs(min_y + max_y)+1);
-    void *buf = malloc(sizeof(struct topo_header) + num_elem*sizeof(struct topo_list));
-    printf("allocating %p with size %ld, header is %ld\n", buf, sizeof(struct topo_header) + num_elem*sizeof(struct topo_list), sizeof(struct topo_header));
+
+    uint8_t num_elem = (abs(min_x + max_x) + 1) * (abs(min_y + max_y) + 1);
+    size_t total_size = sizeof (struct topo_header) + num_elem * sizeof (struct topo_list);
+    void *buf = malloc(total_size);
+    //printf("m alloc %p size %ld\n", buf, total_size);
+    //printf("allocating %p with size %ld, header is %ld\n", buf, sizeof(struct topo_header) + num_elem*sizeof(struct topo_list), sizeof(struct topo_header));
     struct topo_header* header = (struct topo_header*) buf;
     printf("needed array of %d %d\n", abs(min_x) + max_x+1, abs(min_y) + max_y+1);
 
-    header->sizex = abs(min_x) + max_x+1;
-    header->sizey = abs(min_y) + max_y+1;
-    start = (unsigned char*) buf + sizeof(struct topo_header);
-    calc_topo(first, search_var, abs(min_x), abs(min_y), 2);
+    header->sizex = abs(min_x) + max_x + 1;
+    header->sizey = abs(min_y) + max_y + 1;
+    start = (unsigned char*) buf + sizeof (struct topo_header);
+    calc_topo(first, search_var, offx, offy, 2);
     search_var++;
     //write it to buffer
-    calc_topo(first, search_var, abs(min_x), abs(min_y), 1);
+    calc_topo(first, search_var, offx, offy, 1);
     search_var++;
-    
+    out_map->add(total_size, 5, buf);
+    //printf("m free %p\n", buf);
+    free(buf);
 }
 
 
@@ -401,7 +409,7 @@ void Topology::calc_topo(struct temp_topo* cur, uint8_t search, int8_t x, int8_t
             cur->x = x;
             cur->y = y;
             if (mode == 0) {
-                printf("Pos: (%d %d) mac %lx\n", cur->x, cur->y, cur->mac);
+                //printf("Pos: (%d %d) mac %lx\n", cur->x, cur->y, cur->mac);
 
                 if (min_x > x)
                     min_x = x;
@@ -411,21 +419,22 @@ void Topology::calc_topo(struct temp_topo* cur, uint8_t search, int8_t x, int8_t
                     min_y = y;
                 if (max_y < y)
                     max_y = y;
+                
             }
             if(mode == 2){
-                printf("max_y: %d %ld %ld\n", max_y, x*sizeof((max_y+1)*sizeof(struct topo_list)), (max_y+1)*sizeof(struct topo_list));
-                struct topo_list* own = (struct topo_list*) (start + x*sizeof((max_y+1)*sizeof(struct topo_list)) + y*sizeof(struct topo_list));
-                printf("adding element %d %d on pos %p with mac %ld %ld\n", x,y,own,cur->mac,sizeof(struct topo_list));
+                //printf("max_y: %d %ld %ld\n", max_y, x*((max_y+1)*sizeof(struct topo_list)), (max_y+1)*sizeof(struct topo_list));
+                struct topo_list* own = (struct topo_list*) (start + x*(max_y+1)*sizeof(struct topo_list) + y*sizeof(struct topo_list));
+                //printf("adding element %d %d on pos %p with mac %ld %ld\n", x,y,own,cur->mac,sizeof(struct topo_list));
                 own->mac = cur->mac;
                 own->x = x;
                 own->y = y;
-                
             }
             calc_topo(cur->down, search, x, y + 1, mode);
             calc_topo(cur->up, search, x, y - 1, mode);
             calc_topo(cur->left, search, x - 1, y, mode);
             calc_topo(cur->right, search, x+1, y, mode);
             if(mode == 1){
+                //printf("t free %p\n", cur);
                 free(cur);
             }
         }

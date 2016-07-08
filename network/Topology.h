@@ -67,11 +67,12 @@ struct topo_list{
 struct topo_header{
     uint8_t sizex;
     uint8_t sizey;
+    uint8_t total_size;
 };
 
 class Topology {
 public:
-    Topology(UnreliableTransfer **unrel);
+    Topology(UnreliableTransfer **unrel, Packetbuffer *out_map);
     virtual ~Topology();
     int recv(void *buffer, size_t size, uint32_t addr);
     int send();
@@ -94,7 +95,7 @@ private:
     void calc_topo(struct temp_topo* cur, uint8_t search, int8_t x, int8_t y, uint8_t mode);
     void set_devices_reach();
     struct packet_map map;
-    Packetbuffer *in_map;
+    Packetbuffer *out_map;
     
     struct device_info* device_first;
     struct device_info* device_last;

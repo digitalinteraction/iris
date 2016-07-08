@@ -1,50 +1,61 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QtConcurrent/QtConcurrent>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    scene = new QGraphicsScene(QRect(0, 0, 700, 500));
-    view = new QGraphicsView(ui->centralWidget);
 
-    QPixmap item_map("/home/tobias/Pictures/a.png");
-
-    item = new QGraphicsPixmapItem();
-    item->setPixmap(item_map.scaledToHeight(100, Qt::SmoothTransformation));
-    item2 = new QGraphicsPixmapItem(QPixmap("/home/tobias/Pictures/a.png"));
-    item3 = new QGraphicsPixmapItem(QPixmap("/home/tobias/Pictures/a.png"));
-//get rednering contxt
-    button = new QPushButton(ui->centralWidget);
-    button->setGeometry(QRect(850,50,50,50));
-    button->setText("Push me");
-    connect(button, SIGNAL (released()), this, SLOT (handleButton()));
+    /*for(int i = 0; i < x; i++){
+        for(int j = 0; j < y; j++){
+            QLabel *img = new QLabel();
+            img->setScaledContents(true);
+            QPixmap pix("/home/tobias/Pictures/a.png");
+            img->setPixmap(pix);
+            img->setText("Unknown");
+            ui->gridLayout->addWidget(img, i, j);
+        }
+    }*/
 
 
+    nc = new NetworkControl();
 
-    item->setPos(0,0);
-    item2->setPos(100,100);
-    item3->setPos(200,200);
-    scene->addItem(item);
-    scene->addItem(item2);
-    scene->addItem(item3);
-
-
-    view->setScene(scene);
-    view->setGeometry(QRect(0, 0, 800, 600));
-    view->show();
+    hi = new HandleInput();
+    //hi->init(in, out);
+    hi->init(nc->image_out, nc->image_in);
+    QObject::connect(hi, SIGNAL(MACChanged(int, int, long)), this, SLOT(changeMAC(int, int, long)));
+    //QFuture<void> fut = QtConcurrent::run(nc, &NetworkControl::run);
+    //QFuture<void> fut2 = QtConcurrent::run(hi, &HandleInput::run);
+    net_thread = new std::thread(&NetworkControl::run, nc);
+    con_thread = new std::thread(&HandleInput::run, hi);
 
 }
-
 MainWindow::~MainWindow()
 {
     delete ui;
 }
 
+void MainWindow::changeMAC(int x, int y, long mac){
+    qDebug() <<"slot called!" << x << " " << y << " " << mac;
+    QLayoutItem *temp = (QLayoutItem *) ui->gridLayout->itemAtPosition(x, y);
+    qDebug() << "aa" << temp;
+    if(temp == NULL){
+        qDebug() << "inserting new object";
+        QLabel *img = new QLabel();
+        img->setScaledContents(true);
+        QPixmap pix("/home/tobias/Pictures/a.png");
+        img->setText(QString::number(mac, 16).toUpper());
+        img->setPixmap(pix);
+        ui->gridLayout->addWidget(img, x, y);
+    }else{
+        //QLabel *label =(QLabel *) temp->widget();
 
-void MainWindow::handleButton(){
-    scene->removeItem(item2);
-    scene->removeItem(item);
+        //label->setText(QString::number(mac, 16).toUpper());
+    }
+    qDebug("end");
+
 }
 

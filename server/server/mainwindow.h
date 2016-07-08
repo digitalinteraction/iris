@@ -7,6 +7,10 @@
 #include <QGraphicsPixmapItem>
 #include <QPushButton>
 #include <QPixmap>
+#include <QLabel>
+#include <thread>
+#include "../../network/NetworkControl.h"
+#include "handleinput.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,19 +23,18 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
-private slots:
-    void handleButton();
+public slots:
+    void changeMAC(int x, int y, long mac);
 private:
     Ui::MainWindow *ui;
     QGraphicsView *view;
     QGraphicsScene *scene;
-
-    QGraphicsPixmapItem *item;
-    QGraphicsPixmapItem *item2;
-    QGraphicsPixmapItem *item3;
-    QPushButton *button;
-
+    int x;
+    int y;
+    NetworkControl *nc;
+    HandleInput *hi;
+    std::thread *net_thread;
+    std::thread *con_thread;
 };
 
 #endif // MAINWINDOW_H
