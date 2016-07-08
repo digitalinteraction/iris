@@ -76,6 +76,7 @@ void NetworkControl::run(){
                 uint64_t val = 0;
                 read(fd_list[1], &val, sizeof (uint64_t));
                 struct packet* pack;
+                printf("recieved something fro image_in\n");
                 while(image_in->get(&pack) == 0){
                     printf("sending out image packets\n");
                     if(rel->send(pack->buffer, pack->size, pack->addr, pack->broadcast) != 0){
@@ -110,7 +111,17 @@ void NetworkControl::run(){
             struct mallinfo mi = mallinfo();
             printf("Hosts alive: %d %d %d %d\n", topo->isalive(0), topo->isalive(1), topo->isalive(2),topo->isalive(3));
             topo->sendlist();
-            nextprint = currenttime+1000;
+            nextprint = currenttime + 1000;
+        }
+
+        struct packet* pack;
+        while (image_in->get(&pack) == 0) {
+            printf("sending the conventional way\n");
+            if (rel->send(pack->buffer, pack->size, pack->addr, pack->broadcast) != 0) {
+                printf("Error NetworkControl: sending reliable packet not working\n");
+            }
+            free(pack->buffer);
+            free(pack);
         }
 #endif
         //delete on attaching other class
@@ -118,9 +129,9 @@ void NetworkControl::run(){
         while(image_out->get(&pack) == 0){
             //printf("n free %p %p\n", pack, pack->buffer);
             free(pack->buffer);
-            free(pack);
-            printf("got mapping from topology\n");
-        }*/
+                free(pack);
+                printf("got mapping from topology\n");
+            }*/
         //end delete
         //printf("nc running end\n");
     }
