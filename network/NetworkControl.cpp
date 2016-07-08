@@ -54,7 +54,7 @@ void NetworkControl::run(){
     unsigned long buildtopo = currenttime +3000;
     
     while (true) {
-        printf("nc running start\n");
+        //printf("nc running start\n");
         FD_ZERO(&readfs);
         clock_gettime(CLOCK_REALTIME, &current);
         currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
@@ -85,17 +85,17 @@ void NetworkControl::run(){
                 }
             }
         }
-        printf("A\n");
+        //printf("A\n");
         if(currenttime > nextcheck){
             rel->check_timeouts();
             nextcheck = currenttime + 20;
         }
-        printf("B\n");
+        //printf("B\n");
         if(currenttime > toposend){
             toposend = currenttime + 10;
             topo->send();
         }
-        printf("C\n");
+        //printf("C\n");
 #ifndef CLIENT_SIDE
         if(currenttime > buildtopo){
             topo->build_mapping();
@@ -103,7 +103,7 @@ void NetworkControl::run(){
 
         }
 #endif
-       printf("D\n");
+       //printf("D\n");
 #ifdef CLIENT_SIDE
         if(currenttime > nextprint){
             struct mallinfo mi = mallinfo();
