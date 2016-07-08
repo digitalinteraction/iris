@@ -117,7 +117,7 @@ void NetworkControl::run(){
         struct packet* pack;
         while (image_in->get(&pack) == 0) {
             printf("sending the conventional way, size: %ld addr: %d\n", pack->size, pack->addr);
-            if (rel->send(pack->buffer, pack->size, pack->addr, pack->broadcast) != 0) {
+            if (unrel->send(pack->buffer, pack->size, 0, pack->addr) != 0) {
                 printf("Error NetworkControl: sending reliable packet not working\n");
             }
             free(pack->buffer);
