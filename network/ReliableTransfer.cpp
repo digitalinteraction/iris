@@ -136,6 +136,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
 }
 
 uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_t broadcast){
+    printf("%p %ld %d %d %d %d\n", buffer, size, addr, broadcast, list_cnt, topo->isalive(addr));
     if(buffer == 0 || size <= 0){
         printf("Error Reliable Transfer: buffer or size is wrong\n");
         return -1;
