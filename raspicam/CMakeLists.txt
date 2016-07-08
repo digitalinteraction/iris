@@ -14,6 +14,7 @@ include_directories(${PROJECT_SOURCE_DIR}/../libs/bcm_host/include)
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/..)
 include_directories(${PROJECT_SOURCE_DIR}/../network)
+include_directories(${PROJECT_SOURCE_DIR}/../network/crc)
 include_directories(${PROJECT_SOURCE_DIR}/../interface/vcos/pthreads)
 include_directories(${PROJECT_SOURCE_DIR}/../wiringPi)
 include_directories(/opt/vc/include/interface/vmcs_host/linux)
@@ -33,7 +34,7 @@ set (COMMON_SOURCES
    RaspiPreview.c)
 
 #add_executable(raspistill ${COMMON_SOURCES} RaspiStill.c  RaspiTex.c RaspiTexUtil.c tga.c ${GL_SCENE_SOURCES})
-add_executable(main ${COMMON_SOURCES} main.cpp Image_Capture.cpp Low_Res_Worker.cpp High_Res_Worker.cpp Buffer.cpp  RaspiTex.c RaspiTexUtil.c tga.c ../network/DebugTransfer.cpp ../network/NetworkControl.cpp ../network/Packetbuffer.cpp ../network/ReliableTransfer.cpp ../network/SerialCon.cpp ../network/Topology.cpp ../network/UnreliableTransfer.cpp ${GL_SCENE_SOURCES})
+add_executable(main ${COMMON_SOURCES} main.cpp Image_Capture.cpp Low_Res_Worker.cpp High_Res_Worker.cpp Buffer.cpp  RaspiTex.c RaspiTexUtil.c tga.c ../network/DebugTransfer.cpp ../network/NetworkControl.cpp ../network/Packetbuffer.cpp ../network/ReliableTransfer.cpp ../network/SerialCon.cpp ../network/Topology.cpp ../network/UnreliableTransfer.cpp ../network/crc/crc.c ${GL_SCENE_SOURCES})
 
 set (MMAL_LIBS mmal_core mmal_util mmal_vc_client)
 
