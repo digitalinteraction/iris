@@ -93,14 +93,19 @@ int Topology::recv(void* buffer, size_t size, uint32_t addr) {
     
 }
 
-int Topology::isalive(uint32_t addr){
-    struct timespec current;
-    clock_gettime(CLOCK_REALTIME, &current);
-    if(current.tv_sec <= (alive[addr].tv_sec+2)){
-        return 1;
+int Topology::isalive(uint32_t addr) {
+    if (addr < 4) {
+        struct timespec current;
+        clock_gettime(CLOCK_REALTIME, &current);
+        if (current.tv_sec <= (alive[addr].tv_sec + 2)) {
+            return 1;
+        } else {
+            return 0;
+        }
     }else{
-        return 0;
+        return 1;
     }
+    
 }
 
 int Topology::sendlist() {
