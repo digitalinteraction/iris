@@ -35,7 +35,7 @@
 #define ESC             219
 #define ESC_END         220
 #define ESC_ESC         221
-#define SIZE_LIMIT      42000
+#define SIZE_LIMIT      65000
 #define NAME_TTY       "/dev/ttyUSB%d"
 
 #define DEBUG_SERVER    "172.16.0.1"
