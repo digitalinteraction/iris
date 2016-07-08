@@ -59,7 +59,7 @@ void NetworkControl::run(){
         clock_gettime(CLOCK_REALTIME, &current);
         currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
         
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 2; i++) {
             FD_SET(fd_list[i], &readfs);
         }
         Timeout.tv_usec = 1000;
