@@ -160,11 +160,11 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         }
         
         ///////////////////////////////////////////////////////////////
-        imshow("H", channel[0]);
-        imshow("S", channel[1]);
-        imshow("V", channel[2]);
-        imshow("cleaned", cleaned);
-        imshow("Mask", drawing);
+        //imshow("H", channel[0]);
+        //imshow("S", channel[1]);
+        //imshow("V", channel[2]);
+        //imshow("cleaned", cleaned);
+        //imshow("Mask", drawing);
         
         char filename[30];
         
@@ -180,7 +180,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         imwrite(filename, channel[2]);
         memset(filename, 0, 30);*/
         
-        snprintf(filename, 30, "pics/%d_lowres_cleaned.png", nr_img);
+        /*snprintf(filename, 30, "pics/%d_lowres_cleaned.png", nr_img);
         imwrite(filename, cleaned);
         memset(filename, 0, 30);
         
@@ -188,7 +188,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         imwrite(filename, mask);
         memset(filename, 0, 30);
 
-        waitKey(30);
+        waitKey(30);*/
         hsv.release();
         channel[0].release();
         channel[1].release();

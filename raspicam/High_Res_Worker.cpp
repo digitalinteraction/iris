@@ -129,14 +129,14 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //char tmp[] = "testing00a.png";
         //char tmp2[] = "testing00b.png";
         
-        char filename[30];
+        /*char filename[30];
         snprintf(filename, 30, "pics/%d_%d_highres_out.png", group, cnt);
         imwrite(filename, out);
         memset(filename, 0, 30);
         
         snprintf(filename, 30, "pics/%d_%d_highres_draw.png", group, cnt);
         imwrite(filename, drawing);
-        memset(filename, 0, 30);
+        memset(filename, 0, 30);*/
         
         /*tmp[7] = group + '0';
         tmp[8] = cnt + '0';
