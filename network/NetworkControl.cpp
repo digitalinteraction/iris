@@ -96,11 +96,13 @@ void NetworkControl::run(){
             topo->send();
         }
         printf("C\n");
+#ifndef CLIENT_SIDE
         if(currenttime > buildtopo){
             topo->build_mapping();
             buildtopo = currenttime + 2456;
 
         }
+#endif
        printf("D\n");
 #ifdef CLIENT_SIDE
         if(currenttime > nextprint){
