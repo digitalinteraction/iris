@@ -218,7 +218,7 @@ Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
 }
 
 void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size){
-    printf("sending image to server\n");
+    printf("sending image to server %lld \n", image_size);
     if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 4) && image_size < 42000) {
         uint8_t *img = (uint8_t *) malloc(LOW_OUTPUT_X * LOW_OUTPUT_Y * 3 * sizeof(uint8_t));
         size_t new_size = 0;
