@@ -33,7 +33,7 @@ set (COMMON_SOURCES
    RaspiPreview.c)
 
 #add_executable(raspistill ${COMMON_SOURCES} RaspiStill.c  RaspiTex.c RaspiTexUtil.c tga.c ${GL_SCENE_SOURCES})
-add_executable(main ${COMMON_SOURCES} main.cpp Image_Capture.cpp Low_Res_Worker.cpp High_Res_Worker.cpp Buffer.cpp  RaspiTex.c RaspiTexUtil.c tga.c ${GL_SCENE_SOURCES})
+add_executable(main ${COMMON_SOURCES} main.cpp Image_Capture.cpp Low_Res_Worker.cpp High_Res_Worker.cpp Buffer.cpp  RaspiTex.c RaspiTexUtil.c tga.c ../network/DebugTransfer.cpp ../network/NetworkControl.cpp ../network/Packetbuffer.cpp ../network/ReliableTransfer.cpp ../network/SerialCon.cpp ../network/Topology.cpp ../network/UnreliableTrasnfer.cpp ${GL_SCENE_SOURCES})
 
 set (MMAL_LIBS mmal_core mmal_util mmal_vc_client)
 
