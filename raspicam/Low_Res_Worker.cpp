@@ -52,11 +52,16 @@ void Low_Res_Worker::run(){
     uint8_t *image;
     size_t image_size;
     int light;
+    int nr = 0;
     while(processing){
         if(new_low_buffer == 1){
             pthread_mutex_lock(&buffer_lock);
             counter++;
-            process_image(low_patch.buffer, low_patch.size);
+            //process_image(low_patch.buffer, low_patch.size);
+            if(nr % 40 == 0){
+                send_to_server(low_patch.buffer, low_patch.size);
+            }
+            nr++;
             nr_img++;
             free(low_patch.buffer);
             new_low_buffer = 0;
@@ -213,6 +218,7 @@ Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
 }
 
 void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size){
+    printf("sending image to server\n");
     if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 4) && image_size < 42000) {
         uint8_t *img = (uint8_t *) malloc(LOW_OUTPUT_X * LOW_OUTPUT_Y * 3 * sizeof(uint8_t));
         size_t new_size = 0;
