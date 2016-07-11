@@ -94,7 +94,7 @@ void NetworkControl::run(){
         }
         //printf("B\n");
         if(currenttime > toposend){
-            toposend = currenttime + 10;
+            toposend = currenttime + 100;
             topo->send();
         }
         //printf("C\n");
