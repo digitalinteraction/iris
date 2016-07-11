@@ -58,7 +58,8 @@ SOURCES       = ../server/main.cpp \
 		../../network/Topology.cpp \
 		../../network/UnreliableTransfer.cpp \
 		../../network/crc/crc.c \
-		../server/handleinput.cpp moc_mainwindow.cpp \
+		../server/handleinput.cpp \
+		../server/list_map.cpp moc_mainwindow.cpp \
 		moc_handleinput.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
@@ -71,6 +72,7 @@ OBJECTS       = main.o \
 		UnreliableTransfer.o \
 		crc.o \
 		handleinput.o \
+		list_map.o \
 		moc_mainwindow.o \
 		moc_handleinput.o
 DIST          = ../../../../qt/qt/5.7/gcc_64/mkspecs/features/spec_pre.prf \
@@ -231,7 +233,8 @@ DIST          = ../../../../qt/qt/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../network/SerialCon.h \
 		../../network/Topology.h \
 		../../network/UnreliableTransfer.h \
-		../server/handleinput.h ../server/main.cpp \
+		../server/handleinput.h \
+		../server/list_map.h ../server/main.cpp \
 		../server/mainwindow.cpp \
 		../../network/DebugTransfer.cpp \
 		../../network/NetworkControl.cpp \
@@ -241,7 +244,8 @@ DIST          = ../../../../qt/qt/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../network/Topology.cpp \
 		../../network/UnreliableTransfer.cpp \
 		../../network/crc/crc.c \
-		../server/handleinput.cpp
+		../server/handleinput.cpp \
+		../server/list_map.cpp
 QMAKE_TARGET  = server
 DESTDIR       = 
 TARGET        = server
@@ -574,8 +578,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../server/mainwindow.h ../../network/crc/crc.h ../../network/DebugTransfer.h ../../network/NetworkControl.h ../../network/Packetbuffer.h ../../network/ReliableTransfer.h ../../network/SerialCon.h ../../network/Topology.h ../../network/UnreliableTransfer.h ../server/handleinput.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../server/main.cpp ../server/mainwindow.cpp ../../network/DebugTransfer.cpp ../../network/NetworkControl.cpp ../../network/Packetbuffer.cpp ../../network/ReliableTransfer.cpp ../../network/SerialCon.cpp ../../network/Topology.cpp ../../network/UnreliableTransfer.cpp ../../network/crc/crc.c ../server/handleinput.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../server/mainwindow.h ../../network/crc/crc.h ../../network/DebugTransfer.h ../../network/NetworkControl.h ../../network/Packetbuffer.h ../../network/ReliableTransfer.h ../../network/SerialCon.h ../../network/Topology.h ../../network/UnreliableTransfer.h ../server/handleinput.h ../server/list_map.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../server/main.cpp ../server/mainwindow.cpp ../../network/DebugTransfer.cpp ../../network/NetworkControl.cpp ../../network/Packetbuffer.cpp ../../network/ReliableTransfer.cpp ../../network/SerialCon.cpp ../../network/Topology.cpp ../../network/UnreliableTransfer.cpp ../../network/crc/crc.c ../server/handleinput.cpp ../server/list_map.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../server/mainwindow.ui $(DISTDIR)/
 
 
@@ -737,6 +741,8 @@ moc_mainwindow.cpp: ../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QMainWindow \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug \
+		../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QList \
 		../server/mainwindow.h \
 		../../../../qt/qt/5.7/gcc_64/bin/moc
 	/home/tobias/qt/qt/5.7/gcc_64/bin/moc $(DEFINES) -I/home/tobias/qt/qt/5.7/gcc_64/mkspecs/linux-g++ -I/home/tobias/gitcode/cutting_board/server/server -I/home/tobias/qt/qt/5.7/gcc_64/include -I/home/tobias/qt/qt/5.7/gcc_64/include/QtWidgets -I/home/tobias/qt/qt/5.7/gcc_64/include/QtGui -I/home/tobias/qt/qt/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../server/mainwindow.h -o moc_mainwindow.cpp
@@ -853,6 +859,8 @@ moc_handleinput.cpp: ../../network/NetworkControl.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlabel.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qframe.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug \
+		../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QList \
 		../server/handleinput.h \
 		../../../../qt/qt/5.7/gcc_64/bin/moc
 	/home/tobias/qt/qt/5.7/gcc_64/bin/moc $(DEFINES) -I/home/tobias/qt/qt/5.7/gcc_64/mkspecs/linux-g++ -I/home/tobias/gitcode/cutting_board/server/server -I/home/tobias/qt/qt/5.7/gcc_64/include -I/home/tobias/qt/qt/5.7/gcc_64/include/QtWidgets -I/home/tobias/qt/qt/5.7/gcc_64/include/QtGui -I/home/tobias/qt/qt/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../server/handleinput.h -o moc_handleinput.cpp
@@ -1009,6 +1017,8 @@ main.o: ../server/main.cpp ../server/mainwindow.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug \
+		../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QList \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QApplication \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qapplication.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1151,6 +1161,8 @@ mainwindow.o: ../server/mainwindow.cpp ../server/mainwindow.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug \
+		../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QList \
 		ui_mainwindow.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/QVariant \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QAction \
@@ -1473,8 +1485,13 @@ handleinput.o: ../server/handleinput.cpp ../server/handleinput.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QLabel \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlabel.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qframe.h \
-		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug \
+		../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QList
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o handleinput.o ../server/handleinput.cpp
+
+list_map.o: ../server/list_map.cpp ../server/list_map.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o list_map.o ../server/list_map.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

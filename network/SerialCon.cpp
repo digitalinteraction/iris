@@ -327,7 +327,7 @@ void SerialCon::slip_run() {
 
 int SerialCon::init_serial(int nr) {
     int tty = -1;
-    struct termios * temp = tio[nr];
+    struct termios * temp = &tio[nr];
     char * name = (char*) malloc(sizeof (NAME_TTY));
     /*switch (nr) {
         case 0:

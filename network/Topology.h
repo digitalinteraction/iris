@@ -58,17 +58,7 @@ struct topo_unexplored{
     struct topo_unexplored* next;
 };
 
-struct topo_list{
-    uint8_t x;
-    uint8_t y;
-    uint64_t mac;
-};
 
-struct topo_header{
-    uint8_t sizex;
-    uint8_t sizey;
-    uint8_t total_size;
-};
 
 class Topology {
 public:
@@ -79,10 +69,11 @@ public:
     int isalive(uint32_t addr);
     int sendlist();
     void build_mapping();
+    uint64_t mac;
+
 
 private:
     UnreliableTransfer **unrel;
-    uint64_t mac;
     struct timespec alive[4];
     uint64_t mapping[4];
     struct topo_buffer topo_buf;

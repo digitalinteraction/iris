@@ -34,12 +34,12 @@ public:
     void run();
     Packetbuffer *image_out;
     Packetbuffer *image_in;
-
-private:
     UnreliableTransfer *unrel;
     Topology *topo;
     ReliableTransfer *rel;
     DebugTransfer *debug;
+private:
+    
     int fd_list[2];
     struct timeval Timeout;
     fd_set readfs;

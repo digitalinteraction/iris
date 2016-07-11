@@ -27,6 +27,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //hi->init(in, out);
     hi->init(nc->image_out, nc->image_in);
     QObject::connect(hi, SIGNAL(MACChanged(int, int, long)), this, SLOT(changeMAC(int, int, long)));
+    QObject::connect(hi, SIGNAL(NewImageData(int, int, unsigned char *, int, int)), this, SLOT(changeImageData(int, int, unsigned char, int, int)));
+
     //QFuture<void> fut = QtConcurrent::run(nc, &NetworkControl::run);
     //QFuture<void> fut2 = QtConcurrent::run(hi, &HandleInput::run);
     net_thread = new std::thread(&NetworkControl::run, nc);
@@ -44,12 +46,17 @@ void MainWindow::changeMAC(int x, int y, long mac){
     qDebug() << "aa" << temp;
     if(temp == NULL){
         qDebug() << "inserting new object";
-        QLabel *img = new QLabel();
-        img->setScaledContents(true);
-        QPixmap pix("/home/tobias/Pictures/a.png");
-        img->setText(QString::number(mac, 16).toUpper());
-        img->setPixmap(pix);
-        ui->gridLayout->addWidget(img, x, y);
+        QVBoxLayout *layout = new QVBoxLayout;
+        for(int i = 0; i < 10; i++){
+            QLabel *img = new QLabel();
+            img->setScaledContents(true);
+            QPixmap pix("/home/tobias/Pictures/a.png");
+            img->setText(QString::number(mac, 16).toUpper());
+            img->setPixmap(pix);
+            layout->addWidget(img);
+        }
+        //ui->gridLayout->addWidget(img, x, y);
+        ui->gridLayout->addLayout(layout, x,y);
     }else{
         //QLabel *label =(QLabel *) temp->widget();
 
@@ -59,3 +66,15 @@ void MainWindow::changeMAC(int x, int y, long mac){
 
 }
 
+void MainWindow::changeImageData(int posx, int posy, unsigned char *buf, int size, int pos){
+    qDebug() << "image slot called" << posx << posy << size << pos;
+    QVBoxLayout *temp = (QVBoxLayout *) ui->gridLayout->itemAtPosition(posx, posy);
+    if(temp != NULL){
+        QLabel *label = (QLabel *)temp->itemAt(pos);
+        if(label != NULL){
+            QImage img(buf, 400, 30, QImage::Format_RGB888);
+            label->setPixmap(QPixmap::fromImage(img));
+        }
+    }
+
+}

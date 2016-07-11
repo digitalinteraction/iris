@@ -25,6 +25,7 @@ public:
     ~MainWindow();
 public slots:
     void changeMAC(int x, int y, long mac);
+    void changeImageData(int posx, int posy, unsigned char *buf, int size, int pos);
 private:
     Ui::MainWindow *ui;
     QGraphicsView *view;

@@ -4,6 +4,11 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QDebug>
+#include "list_map.h"
+#include <QList>
+
+
+
 
 class HandleInput : public QWidget
 {
@@ -17,8 +22,12 @@ public:
 private:
     Packetbuffer *in;
     Packetbuffer *out;
+    QList<List_Map *> *list_mac;
+    uint8_t sizex;
+    uint8_t sizey;
 signals:
     void MACChanged(int x, int y, long mac);
+    void NewImageData(int posx, int posy, unsigned char *buf, int size, int pos);
 };
 
 #endif // HANDLEINPUT_H

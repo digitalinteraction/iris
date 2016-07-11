@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     ../../network/Topology.cpp \
     ../../network/UnreliableTransfer.cpp \
     ../../network/crc/crc.c \
-    handleinput.cpp
+    handleinput.cpp \
+    list_map.cpp
 
 HEADERS  += mainwindow.h \
     ../../network/crc/crc.h \
@@ -33,7 +34,8 @@ HEADERS  += mainwindow.h \
     ../../network/SerialCon.h \
     ../../network/Topology.h \
     ../../network/UnreliableTransfer.h \
-    handleinput.h
+    handleinput.h \
+    list_map.h
 
 FORMS    += mainwindow.ui
 

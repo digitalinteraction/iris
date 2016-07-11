@@ -20,6 +20,30 @@
 
 #define CLIENT_SIDE
 
+#define IMAGE_PACKET 1
+#define TOPO_PACKET 2
+#define CONTROL_PACKET 3
+
+struct low_res_header{
+    uint8_t port;
+    uint8_t pos;
+    uint64_t mac;
+    uint32_t size;
+};
+
+struct topo_list{
+    uint8_t x;
+    uint8_t y;
+    uint64_t mac;
+};
+
+struct topo_header{
+    uint8_t port;
+    uint8_t sizex;
+    uint8_t sizey;
+    uint8_t total_size;
+};
+
 struct packet{
     size_t size;
     uint32_t addr;

@@ -24,7 +24,7 @@
 
 using namespace std;
 
-Low_Res_Worker::Low_Res_Worker(Packetbuffer *out) {
+Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc) {
     processing = 0;
     pMOG2 = createBackgroundSubtractorMOG2(100, 16, false);
     cnt = 0;
@@ -39,6 +39,7 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out) {
     }
     
     this->out = out;
+    this->nc = nc;
     
     //pMOG2 = bgsegm::createBackgroundSubtractorGMG();
 }
@@ -238,7 +239,15 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size){
         int ret = 0;
         for(int i = 0; i < 10; i++){
             ret = 0;
-            ret = out->add(part_size, addr, (void*)(img+i*part_size));
+            uint32_t size = part_size + sizeof(struct low_res_header);
+            struct low_res_header * header = malloc(size);
+            memcpy(((unsigned char *)low_res_header+sizeof(struct low_res_header)), (void*)(img+i*part_size), part_size);
+
+            header->port = IMAGE_PACKET;
+            header->pos = i;
+            header->mac = nc->topo->mac;
+            header->size = part_size;
+            ret = out->add(size, addr, (void*)header);
             if(ret != 0)
                 i--;
         }

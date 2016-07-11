@@ -116,7 +116,6 @@ int Topology::sendlist() {
         }
         //insert case of timeout/invalid entry
         
-
         map.mac = mac;
         map.up = mapping[0];
         map.down = mapping[3];
@@ -395,6 +394,7 @@ void Topology::build_mapping(){
 
     header->sizex = abs(min_x) + max_x + 1;
     header->sizey = abs(min_y) + max_y + 1;
+    header->port = TOPO_PACKET;
     start = (unsigned char*) buf + sizeof (struct topo_header);
     calc_topo(first, search_var, offx, offy, 2);
     search_var++;
