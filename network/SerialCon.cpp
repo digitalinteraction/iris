@@ -327,9 +327,9 @@ void SerialCon::slip_run() {
 
 int SerialCon::init_serial(int nr) {
     int tty = -1;
-    struct termios * temp;
+    struct termios * temp = tio[nr];
     char * name = (char*) malloc(sizeof (NAME_TTY));
-    switch (nr) {
+    /*switch (nr) {
         case 0:
             temp = &tio0;
             break;
@@ -342,10 +342,10 @@ int SerialCon::init_serial(int nr) {
         case 3:
             temp = &tio3;
             break;
-    }
+    }*/
     snprintf(name, sizeof (NAME_TTY) + 1, NAME_TTY, nr);
     //printf("%s\n", name);
-    memset(temp, 0, sizeof (tio0));
+    memset(temp, 0, sizeof (tio[0]));
     temp->c_iflag = 0;
     temp->c_oflag = 0;
     temp->c_cflag = (CS8 | CREAD | CLOCAL)&~(PARENB|CSTOPB|CRTSCTS); // 8n1, see termios.h for more information

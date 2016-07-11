@@ -56,14 +56,15 @@ public:
 
 private:
     int tty_fd;
-    struct termios tio0;
-    struct termios tio1;
-    struct termios tio2;
-    struct termios tio3;
-    char *name_tty0;
-    char *name_tty1;
-    char *name_tty2;
-    char *name_tty3;
+    //struct termios tio0;
+    //struct termios tio1;
+    //struct termios tio2;
+    //struct termios tio3;
+    struct termios tio[4];
+    //char *name_tty0;
+    //char *name_tty1;
+    //char *name_tty2;
+    //char *name_tty3;
     int fd_array[6];
     fd_set readfs;
     fd_set writefs;

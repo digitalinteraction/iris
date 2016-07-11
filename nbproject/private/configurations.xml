@@ -522,7 +522,6 @@
         <df name="crc">
           <in>crc.c</in>
           <in>crc.h</in>
-          <in>main.c</in>
         </df>
         <in>DebugTransfer.cpp</in>
         <in>DebugTransfer.h</in>
@@ -651,10 +650,18 @@
       </df>
       <df name="server">
         <df name="build-server-Desktop_Qt_5_7_0_GCC_64bit-Debug">
+          <in>moc_handleinput.cpp</in>
+          <in>moc_mainwindow.cpp</in>
+          <in>ui_mainwindow.h</in>
+        </df>
+        <df name="build-server-Desktop_Qt_5_7_0_GCC_64bit-Release">
+          <in>moc_handleinput.cpp</in>
           <in>moc_mainwindow.cpp</in>
           <in>ui_mainwindow.h</in>
         </df>
         <df name="server">
+          <in>handleinput.cpp</in>
+          <in>handleinput.h</in>
           <in>main.cpp</in>
           <in>mainwindow.cpp</in>
           <in>mainwindow.h</in>
