@@ -411,6 +411,26 @@
           </df>
         </df>
         <df name="server">
+          <df name="build">
+            <df name="CMakeFiles">
+              <df name="2.8.12.2">
+                <df name="CompilerIdC">
+                  <in>CMakeCCompilerId.c</in>
+                </df>
+                <df name="CompilerIdCXX">
+                  <in>CMakeCXXCompilerId.cpp</in>
+                </df>
+              </df>
+              <df name="CMakeTmp">
+              </df>
+              <df name="main.dir">
+                <df name="src">
+                </df>
+              </df>
+              <df name="Progress">
+              </df>
+            </df>
+          </df>
           <in>MyShader.cpp</in>
           <in>MyShader.h</in>
           <in>main.cpp</in>

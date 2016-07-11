@@ -18,7 +18,6 @@ public:
 	MyShader(const GLchar* vertexPath, const GLchar* fragmentPath);
   	// Use the program
   	void Use();
-private:
 };
   
 #endif
