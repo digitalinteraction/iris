@@ -240,7 +240,7 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size){
         for(int i = 0; i < 10; i++){
             ret = 0;
             uint32_t size = part_size + sizeof(struct low_res_header);
-            struct low_res_header * header = malloc(size);
+            struct low_res_header * header =  (struct low_res_header *)malloc(size);
             memcpy(((unsigned char *)low_res_header+sizeof(struct low_res_header)), (void*)(img+i*part_size), part_size);
 
             header->port = IMAGE_PACKET;
