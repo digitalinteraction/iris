@@ -27,7 +27,7 @@ private:
     uint8_t sizey;
 signals:
     void MACChanged(int x, int y, long mac);
-    void NewImageData(int posx, int posy, unsigned char *buf, int size, int pos);
+    void NewImageData(int posx, int posy, QPixmap *pic, int pos);
 };
 
 #endif // HANDLEINPUT_H

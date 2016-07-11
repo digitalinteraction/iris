@@ -1,6 +1,7 @@
 #ifndef LIST_MAP_H
 #define LIST_MAP_H
 #include <cstdint>
+#include <QPixmap>
 
 class List_Map
 {
@@ -9,6 +10,7 @@ public:
     int x;
     int y;
     uint64_t mac;
+    QPixmap *pix;
 };
 
 #endif // LIST_MAP_H

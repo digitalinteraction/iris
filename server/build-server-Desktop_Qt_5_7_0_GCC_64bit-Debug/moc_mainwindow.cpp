@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[13];
-    char stringdata0[84];
+    QByteArrayData data[12];
+    char stringdata0[73];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -38,15 +38,14 @@ QT_MOC_LITERAL(5, 26, 3), // "mac"
 QT_MOC_LITERAL(6, 30, 15), // "changeImageData"
 QT_MOC_LITERAL(7, 46, 4), // "posx"
 QT_MOC_LITERAL(8, 51, 4), // "posy"
-QT_MOC_LITERAL(9, 56, 14), // "unsigned char*"
-QT_MOC_LITERAL(10, 71, 3), // "buf"
-QT_MOC_LITERAL(11, 75, 4), // "size"
-QT_MOC_LITERAL(12, 80, 3) // "pos"
+QT_MOC_LITERAL(9, 56, 8), // "QPixmap*"
+QT_MOC_LITERAL(10, 65, 3), // "pic"
+QT_MOC_LITERAL(11, 69, 3) // "pos"
 
     },
     "MainWindow\0changeMAC\0\0x\0y\0mac\0"
-    "changeImageData\0posx\0posy\0unsigned char*\0"
-    "buf\0size\0pos"
+    "changeImageData\0posx\0posy\0QPixmap*\0"
+    "pic\0pos"
 };
 #undef QT_MOC_LITERAL
 
@@ -65,11 +64,11 @@ static const uint qt_meta_data_MainWindow[] = {
 
  // slots: name, argc, parameters, tag, flags
        1,    3,   24,    2, 0x0a /* Public */,
-       6,    5,   31,    2, 0x0a /* Public */,
+       6,    4,   31,    2, 0x0a /* Public */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::Int, QMetaType::Int, QMetaType::Long,    3,    4,    5,
-    QMetaType::Void, QMetaType::Int, QMetaType::Int, 0x80000000 | 9, QMetaType::Int, QMetaType::Int,    7,    8,   10,   11,   12,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int, 0x80000000 | 9, QMetaType::Int,    7,    8,   10,   11,
 
        0        // eod
 };
@@ -81,7 +80,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->changeMAC((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< long(*)>(_a[3]))); break;
-        case 1: _t->changeImageData((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< unsigned char*(*)>(_a[3])),(*reinterpret_cast< int(*)>(_a[4])),(*reinterpret_cast< int(*)>(_a[5]))); break;
+        case 1: _t->changeImageData((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< QPixmap*(*)>(_a[3])),(*reinterpret_cast< int(*)>(_a[4]))); break;
         default: ;
         }
     }

@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //hi->init(in, out);
     hi->init(nc->image_out, nc->image_in);
     QObject::connect(hi, SIGNAL(MACChanged(int, int, long)), this, SLOT(changeMAC(int, int, long)));
-    QObject::connect(hi, SIGNAL(NewImageData(int, int, unsigned char *, int, int)), this, SLOT(changeImageData(int, int, unsigned char *, int, int)));
+    QObject::connect(hi, SIGNAL(NewImageData(int, int, QPixmap *, int)), this, SLOT(changeImageData(int, int, QPixmap *, int)), Qt::QueuedConnection);
 
     //QFuture<void> fut = QtConcurrent::run(nc, &NetworkControl::run);
     //QFuture<void> fut2 = QtConcurrent::run(hi, &HandleInput::run);
@@ -48,12 +48,17 @@ void MainWindow::changeMAC(int x, int y, long mac){
         qDebug() << "inserting new object";
         QVBoxLayout *layout = new QVBoxLayout;
         for(int i = 0; i < 10; i++){
-            QLabel *img = new QLabel();
-            img->setScaledContents(true);
-            QPixmap pix("/home/tobias/Pictures/a.png");
-            img->setText(QString::number(mac, 16).toUpper());
-            img->setPixmap(pix);
-            layout->addWidget(img);
+            //QLabel *img = new QLabel();
+            //img->setScaledContents(true);
+            //QPixmap pix("/home/tobias/Pictures/a.png");
+            //img->setText(QString::number(mac, 16).toUpper());
+            //img->setPixmap(pix);
+
+            QGraphicsView * view = new QGraphicsView();
+            QGraphicsScene *scene = new QGraphicsScene(0,0,400,30);
+            view->setScene(scene);
+            layout->addWidget(view);
+            //layout->addWidget(img);
         }
         //ui->gridLayout->addWidget(img, x, y);
         ui->gridLayout->addLayout(layout, x,y);
@@ -66,26 +71,40 @@ void MainWindow::changeMAC(int x, int y, long mac){
 
 }
 
-void MainWindow::changeImageData(int posx, int posy, unsigned char *buf, int size, int pos){
-    qDebug() << "image slot called" << posx << posy << size << pos;
+void MainWindow::changeImageData(int posx, int posy, QPixmap* pic, int pos){
+    qDebug() << "image slot called" << posx << posy << pos << pic;
     QVBoxLayout *temp = (QVBoxLayout *) ui->gridLayout->itemAtPosition(posx, posy);
     qDebug() << "a";
     if(temp != NULL){
         qDebug() << "b";
 
-        QLabel *label = (QLabel *)temp->itemAt(pos);
+        QGraphicsView *view = (QGraphicsView *)temp->itemAt(pos);
         qDebug() << "c";
 
-        if(label != NULL){
-            qDebug() << "d";
+        if(view != NULL){
+            qDebug() << "g";
+            if(pic != NULL){
+                qDebug() << "h";
+                //QGraphicsScene *scene = view->scene();
+                qDebug() << "e";
+                QGraphicsScene *scene = new QGraphicsScene();
+                QPixmap *pix = new QPixmap(*pic);
+                QGraphicsPixmapItem *item = new QGraphicsPixmapItem(*pix);
 
-            QImage *img = new QImage(buf, 400, 30, QImage::Format_RGB888);
+                    qDebug() << "f";
+                    qDebug() << item->x() << item->y();
+                    scene->addItem(item);
+                    qDebug() << "s";
+                    view->setScene(scene);
+                    //label->setScene(scene);
+                    qDebug() << "d";
+                qDebug() << "t";
+
+            }
             qDebug() << "e";
 
-            label->setPixmap(QPixmap::fromImage(*img));
-            qDebug() << "f";
-
         }
+        qDebug("g");
     }
 
 }

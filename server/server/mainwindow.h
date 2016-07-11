@@ -25,11 +25,11 @@ public:
     ~MainWindow();
 public slots:
     void changeMAC(int x, int y, long mac);
-    void changeImageData(int posx, int posy, unsigned char *buf, int size, int pos);
+    void changeImageData(int posx, int posy, QPixmap *pic, int pos);
 private:
     Ui::MainWindow *ui;
-    QGraphicsView *view;
-    QGraphicsScene *scene;
+    //QGraphicsView *view;
+    //QGraphicsScene *scene;
     int x;
     int y;
     NetworkControl *nc;

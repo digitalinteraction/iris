@@ -39,12 +39,12 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(1200, 800);
+        MainWindow->resize(899, 632);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         gridLayoutWidget = new QWidget(centralWidget);
         gridLayoutWidget->setObjectName(QStringLiteral("gridLayoutWidget"));
-        gridLayoutWidget->setGeometry(QRect(20, 20, 711, 431));
+        gridLayoutWidget->setGeometry(QRect(20, 20, 851, 541));
         gridLayout = new QGridLayout(gridLayoutWidget);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
@@ -53,7 +53,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1200, 20));
+        menuBar->setGeometry(QRect(0, 0, 899, 20));
         menuVisualization_Imaging_Surface_Device = new QMenu(menuBar);
         menuVisualization_Imaging_Surface_Device->setObjectName(QStringLiteral("menuVisualization_Imaging_Surface_Device"));
         MainWindow->setMenuBar(menuBar);

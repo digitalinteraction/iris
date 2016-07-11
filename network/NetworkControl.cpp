@@ -47,8 +47,8 @@ void NetworkControl::run(){
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
-    unsigned long nextsend = currenttime + 500;
-    unsigned long nextprint = currenttime +1000;
+    //unsigned long nextsend = currenttime + 500;
+    //unsigned long nextprint = currenttime +1000;
     unsigned long nextcheck = currenttime +20;
     unsigned long toposend = currenttime +1000;
     unsigned long buildtopo = currenttime +3000;

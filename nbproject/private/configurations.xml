@@ -10,6 +10,412 @@
         <df name="jpg">
         </df>
       </df>
+      <df name="glfw">
+        <df name="glew-1.13.0">
+          <df name="auto">
+            <df name="bin">
+            </df>
+            <df name="core">
+              <df name="gl">
+              </df>
+            </df>
+            <df name="doc">
+            </df>
+            <df name="extensions">
+              <df name="gl">
+              </df>
+            </df>
+            <df name="lib">
+              <df name="OpenGL">
+              </df>
+            </df>
+            <df name="src">
+              <in>glew_head.c</in>
+              <in>glew_head.h</in>
+              <in>glew_init_gl.c</in>
+              <in>glew_init_glx.c</in>
+              <in>glew_init_tail.c</in>
+              <in>glew_init_wgl.c</in>
+              <in>glew_license.h</in>
+              <in>glew_str_glx.c</in>
+              <in>glew_str_head.c</in>
+              <in>glew_str_tail.c</in>
+              <in>glew_str_wgl.c</in>
+              <in>glew_tail.h</in>
+              <in>glewinfo_gl.c</in>
+              <in>glewinfo_glx.c</in>
+              <in>glewinfo_head.c</in>
+              <in>glewinfo_tail.c</in>
+              <in>glewinfo_wgl.c</in>
+              <in>glxew_head.h</in>
+              <in>glxew_mid.h</in>
+              <in>glxew_tail.h</in>
+              <in>khronos_license.h</in>
+              <in>mesa_license.h</in>
+              <in>wglew_head.h</in>
+              <in>wglew_mid.h</in>
+              <in>wglew_tail.h</in>
+            </df>
+          </df>
+          <df name="bin">
+          </df>
+          <df name="build">
+            <df name="cmake">
+              <df name="testbuild">
+                <in>main.c</in>
+              </df>
+            </df>
+            <df name="vc10">
+            </df>
+            <df name="vc12">
+            </df>
+            <df name="vc6">
+            </df>
+          </df>
+          <df name="CMakeFiles">
+          </df>
+          <df name="config">
+          </df>
+          <df name="doc">
+          </df>
+          <df name="include">
+            <df name="GL">
+              <in>glew.h</in>
+              <in>glxew.h</in>
+              <in>wglew.h</in>
+            </df>
+          </df>
+          <df name="lib">
+          </df>
+          <df name="src">
+            <in>glew.c</in>
+            <in>glewinfo.c</in>
+            <in>visualinfo.c</in>
+          </df>
+          <df name="tmp">
+            <df name="linux">
+              <df name="default">
+                <df name="shared">
+                </df>
+                <df name="static">
+                </df>
+              </df>
+            </df>
+          </df>
+        </df>
+        <df name="glfw-3.2">
+          <df name=".github">
+          </df>
+          <df name="CMake">
+            <df name="modules">
+            </df>
+          </df>
+          <df name="CMakeFiles">
+            <df name="2.8.12.2">
+              <df name="CompilerIdC">
+                <in>CMakeCCompilerId.c</in>
+              </df>
+            </df>
+            <df name="CMakeTmp">
+            </df>
+            <df name="Export">
+              <df name="lib">
+                <df name="cmake">
+                  <df name="glfw3">
+                  </df>
+                </df>
+              </df>
+            </df>
+            <df name="uninstall.dir">
+            </df>
+          </df>
+          <df name="deps">
+            <df name="glad">
+              <in>glad.h</in>
+            </df>
+            <df name="KHR">
+              <in>khrplatform.h</in>
+            </df>
+            <df name="mingw">
+              <in>_mingw_dxhelper.h</in>
+              <in>dinput.h</in>
+              <in>xinput.h</in>
+            </df>
+            <df name="vulkan">
+              <in>vk_platform.h</in>
+              <in>vulkan.h</in>
+            </df>
+            <in>getopt.c</in>
+            <in>getopt.h</in>
+            <in>glad.c</in>
+            <in>linmath.h</in>
+            <in>tinycthread.c</in>
+            <in>tinycthread.h</in>
+          </df>
+          <df name="docs">
+            <df name="CMakeFiles">
+              <df name="docs.dir">
+              </df>
+            </df>
+            <df name="html">
+              <df name="search">
+              </df>
+            </df>
+          </df>
+          <df name="examples">
+            <df name="CMakeFiles">
+              <df name="boing.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="gears.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="heightmap.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="particles.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="simple.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="splitview.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="wave.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+            </df>
+            <in>boing.c</in>
+            <in>gears.c</in>
+            <in>heightmap.c</in>
+            <in>particles.c</in>
+            <in>simple.c</in>
+            <in>splitview.c</in>
+            <in>wave.c</in>
+          </df>
+          <df name="include">
+            <df name="GLFW">
+              <in>glfw3.h</in>
+              <in>glfw3native.h</in>
+            </df>
+          </df>
+          <df name="src">
+            <df name="CMakeFiles">
+              <df name="glfw.dir">
+              </df>
+            </df>
+            <in>cocoa_init.m</in>
+            <in>cocoa_joystick.h</in>
+            <in>cocoa_joystick.m</in>
+            <in>cocoa_monitor.m</in>
+            <in>cocoa_platform.h</in>
+            <in>cocoa_time.c</in>
+            <in>cocoa_window.m</in>
+            <in>context.c</in>
+            <in>egl_context.c</in>
+            <in>egl_context.h</in>
+            <in>glfw_config.h</in>
+            <in>glx_context.c</in>
+            <in>glx_context.h</in>
+            <in>init.c</in>
+            <in>input.c</in>
+            <in>internal.h</in>
+            <in>linux_joystick.c</in>
+            <in>linux_joystick.h</in>
+            <in>mir_init.c</in>
+            <in>mir_monitor.c</in>
+            <in>mir_platform.h</in>
+            <in>mir_window.c</in>
+            <in>monitor.c</in>
+            <in>nsgl_context.h</in>
+            <in>nsgl_context.m</in>
+            <in>posix_time.c</in>
+            <in>posix_time.h</in>
+            <in>posix_tls.c</in>
+            <in>posix_tls.h</in>
+            <in>vulkan.c</in>
+            <in>wgl_context.c</in>
+            <in>wgl_context.h</in>
+            <in>win32_init.c</in>
+            <in>win32_joystick.c</in>
+            <in>win32_joystick.h</in>
+            <in>win32_monitor.c</in>
+            <in>win32_platform.h</in>
+            <in>win32_time.c</in>
+            <in>win32_tls.c</in>
+            <in>win32_window.c</in>
+            <in>window.c</in>
+            <in>wl_init.c</in>
+            <in>wl_monitor.c</in>
+            <in>wl_platform.h</in>
+            <in>wl_window.c</in>
+            <in>x11_init.c</in>
+            <in>x11_monitor.c</in>
+            <in>x11_platform.h</in>
+            <in>x11_window.c</in>
+            <in>xkb_unicode.c</in>
+            <in>xkb_unicode.h</in>
+          </df>
+          <df name="tests">
+            <df name="CMakeFiles">
+              <df name="clipboard.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="cursor.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="empty.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="events.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="gamma.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="glfwinfo.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="icon.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="iconify.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="joysticks.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="monitors.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="msaa.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="reopen.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="sharing.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="tearing.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="threads.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="timeout.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="title.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+              <df name="windows.dir">
+                <df name="__">
+                  <df name="deps">
+                  </df>
+                </df>
+              </df>
+            </df>
+            <in>clipboard.c</in>
+            <in>cursor.c</in>
+            <in>empty.c</in>
+            <in>events.c</in>
+            <in>gamma.c</in>
+            <in>glfwinfo.c</in>
+            <in>icon.c</in>
+            <in>iconify.c</in>
+            <in>joysticks.c</in>
+            <in>monitors.c</in>
+            <in>msaa.c</in>
+            <in>reopen.c</in>
+            <in>sharing.c</in>
+            <in>tearing.c</in>
+            <in>threads.c</in>
+            <in>timeout.c</in>
+            <in>title.c</in>
+            <in>vulkan.c</in>
+            <in>windows.c</in>
+          </df>
+        </df>
+        <df name="server">
+          <in>MyShader.cpp</in>
+          <in>MyShader.h</in>
+          <in>main.cpp</in>
+        </df>
+      </df>
       <df name="interface">
         <df name="khronos">
           <df name="common">
@@ -662,6 +1068,8 @@
         <df name="server">
           <in>handleinput.cpp</in>
           <in>handleinput.h</in>
+          <in>list_map.cpp</in>
+          <in>list_map.h</in>
           <in>main.cpp</in>
           <in>mainwindow.cpp</in>
           <in>mainwindow.h</in>

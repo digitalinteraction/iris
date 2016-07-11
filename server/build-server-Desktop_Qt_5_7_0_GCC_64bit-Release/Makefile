@@ -58,7 +58,8 @@ SOURCES       = ../server/main.cpp \
 		../../network/Topology.cpp \
 		../../network/UnreliableTransfer.cpp \
 		../../network/crc/crc.c \
-		../server/handleinput.cpp moc_mainwindow.cpp \
+		../server/handleinput.cpp \
+		../server/list_map.cpp moc_mainwindow.cpp \
 		moc_handleinput.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
@@ -71,6 +72,7 @@ OBJECTS       = main.o \
 		UnreliableTransfer.o \
 		crc.o \
 		handleinput.o \
+		list_map.o \
 		moc_mainwindow.o \
 		moc_handleinput.o
 DIST          = ../../../../qt/qt/5.7/gcc_64/mkspecs/features/spec_pre.prf \
@@ -204,6 +206,7 @@ DIST          = ../../../../qt/qt/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/features/qt_config.prf \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/features/spec_post.prf \
+		../server/.qmake.stash \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/features/default_pre.prf \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/features/resolve_config.prf \
@@ -229,7 +232,8 @@ DIST          = ../../../../qt/qt/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../network/SerialCon.h \
 		../../network/Topology.h \
 		../../network/UnreliableTransfer.h \
-		../server/handleinput.h ../server/main.cpp \
+		../server/handleinput.h \
+		../server/list_map.h ../server/main.cpp \
 		../server/mainwindow.cpp \
 		../../network/DebugTransfer.cpp \
 		../../network/NetworkControl.cpp \
@@ -239,7 +243,8 @@ DIST          = ../../../../qt/qt/5.7/gcc_64/mkspecs/features/spec_pre.prf \
 		../../network/Topology.cpp \
 		../../network/UnreliableTransfer.cpp \
 		../../network/crc/crc.c \
-		../server/handleinput.cpp
+		../server/handleinput.cpp \
+		../server/list_map.cpp
 QMAKE_TARGET  = server
 DESTDIR       = 
 TARGET        = server
@@ -382,6 +387,7 @@ Makefile: ../server/server.pro ../../../../qt/qt/5.7/gcc_64/mkspecs/linux-g++/qm
 		../../../../qt/qt/5.7/gcc_64/mkspecs/features/qt_config.prf \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/linux-g++/qmake.conf \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/features/exclusive_builds.prf \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/features/default_pre.prf \
 		../../../../qt/qt/5.7/gcc_64/mkspecs/features/resolve_config.prf \
@@ -534,6 +540,7 @@ Makefile: ../server/server.pro ../../../../qt/qt/5.7/gcc_64/mkspecs/linux-g++/qm
 ../../../../qt/qt/5.7/gcc_64/mkspecs/features/qt_config.prf:
 ../../../../qt/qt/5.7/gcc_64/mkspecs/linux-g++/qmake.conf:
 ../../../../qt/qt/5.7/gcc_64/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../../qt/qt/5.7/gcc_64/mkspecs/features/exclusive_builds.prf:
 ../../../../qt/qt/5.7/gcc_64/mkspecs/features/default_pre.prf:
 ../../../../qt/qt/5.7/gcc_64/mkspecs/features/resolve_config.prf:
@@ -568,8 +575,8 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../server/mainwindow.h ../../network/crc/crc.h ../../network/DebugTransfer.h ../../network/NetworkControl.h ../../network/Packetbuffer.h ../../network/ReliableTransfer.h ../../network/SerialCon.h ../../network/Topology.h ../../network/UnreliableTransfer.h ../server/handleinput.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../server/main.cpp ../server/mainwindow.cpp ../../network/DebugTransfer.cpp ../../network/NetworkControl.cpp ../../network/Packetbuffer.cpp ../../network/ReliableTransfer.cpp ../../network/SerialCon.cpp ../../network/Topology.cpp ../../network/UnreliableTransfer.cpp ../../network/crc/crc.c ../server/handleinput.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../server/mainwindow.h ../../network/crc/crc.h ../../network/DebugTransfer.h ../../network/NetworkControl.h ../../network/Packetbuffer.h ../../network/ReliableTransfer.h ../../network/SerialCon.h ../../network/Topology.h ../../network/UnreliableTransfer.h ../server/handleinput.h ../server/list_map.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../server/main.cpp ../server/mainwindow.cpp ../../network/DebugTransfer.cpp ../../network/NetworkControl.cpp ../../network/Packetbuffer.cpp ../../network/ReliableTransfer.cpp ../../network/SerialCon.cpp ../../network/Topology.cpp ../../network/UnreliableTransfer.cpp ../../network/crc/crc.c ../server/handleinput.cpp ../server/list_map.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../server/mainwindow.ui $(DISTDIR)/
 
 
@@ -730,6 +737,9 @@ moc_mainwindow.cpp: ../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QMainWindow \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlayout.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug \
+		../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QList \
 		../server/mainwindow.h \
 		../../../../qt/qt/5.7/gcc_64/bin/moc
 	/home/tobias/qt/qt/5.7/gcc_64/bin/moc $(DEFINES) -I/home/tobias/qt/qt/5.7/gcc_64/mkspecs/linux-g++ -I/home/tobias/gitcode/cutting_board/server/server -I/home/tobias/qt/qt/5.7/gcc_64/include -I/home/tobias/qt/qt/5.7/gcc_64/include/QtWidgets -I/home/tobias/qt/qt/5.7/gcc_64/include/QtGui -I/home/tobias/qt/qt/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../server/mainwindow.h -o moc_mainwindow.cpp
@@ -845,6 +855,10 @@ moc_handleinput.cpp: ../../network/NetworkControl.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QLabel \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlabel.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qframe.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug \
+		../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/QPixmap \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QList \
 		../server/handleinput.h \
 		../../../../qt/qt/5.7/gcc_64/bin/moc
 	/home/tobias/qt/qt/5.7/gcc_64/bin/moc $(DEFINES) -I/home/tobias/qt/qt/5.7/gcc_64/mkspecs/linux-g++ -I/home/tobias/gitcode/cutting_board/server/server -I/home/tobias/qt/qt/5.7/gcc_64/include -I/home/tobias/qt/qt/5.7/gcc_64/include/QtWidgets -I/home/tobias/qt/qt/5.7/gcc_64/include/QtGui -I/home/tobias/qt/qt/5.7/gcc_64/include/QtCore -I. -I/usr/include/c++/4.8 -I/usr/include/x86_64-linux-gnu/c++/4.8 -I/usr/include/c++/4.8/backward -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../server/handleinput.h -o moc_handleinput.cpp
@@ -1000,6 +1014,9 @@ main.o: ../server/main.cpp ../server/mainwindow.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlayout.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug \
+		../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QList \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QApplication \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qapplication.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1141,7 +1158,47 @@ mainwindow.o: ../server/mainwindow.cpp ../server/mainwindow.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlayout.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlayoutitem.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug \
+		../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QList \
 		ui_mainwindow.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QVariant \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QAction \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qaction.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QApplication \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qapplication.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qcoreapplication.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qeventloop.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qguiapplication.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qinputmethod.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QButtonGroup \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qbuttongroup.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QHeaderView \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qheaderview.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qabstractitemview.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qstyleoption.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qvalidator.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qregularexpression.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qslider.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qabstractslider.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qstyle.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qtabbar.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qrubberband.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QMenu \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qmenu.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QMenuBar \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qmenubar.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QStatusBar \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qstatusbar.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QToolBar \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qtoolbar.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QWidget \
 		../../../../qt/qt/5.7/gcc_64/include/QtConcurrent/QtConcurrent \
 		../../../../qt/qt/5.7/gcc_64/include/QtConcurrent/QtConcurrentDepends \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/QtCore \
@@ -1177,10 +1234,8 @@ mainwindow.o: ../server/mainwindow.cpp ../server/mainwindow.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qtemporarydir.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/QScopedPointer \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qtemporaryfile.h \
-		../../../../qt/qt/5.7/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qabstractproxymodel.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qidentityproxymodel.h \
-		../../../../qt/qt/5.7/gcc_64/include/QtCore/qitemselectionmodel.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qsortfilterproxymodel.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qstringlistmodel.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qjsonarray.h \
@@ -1188,10 +1243,8 @@ mainwindow.o: ../server/mainwindow.cpp ../server/mainwindow.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qjsondocument.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qjsonobject.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qabstracteventdispatcher.h \
-		../../../../qt/qt/5.7/gcc_64/include/QtCore/qeventloop.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qbasictimer.h \
-		../../../../qt/qt/5.7/gcc_64/include/QtCore/qcoreapplication.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qmath.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qmetaobject.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qmimedata.h \
@@ -1245,7 +1298,6 @@ mainwindow.o: ../server/mainwindow.cpp ../server/mainwindow.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qlinkedlist.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qmessageauthenticationcode.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qqueue.h \
-		../../../../qt/qt/5.7/gcc_64/include/QtCore/qregularexpression.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qscopedvaluerollback.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qstack.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtCore/qtextboundaryfinder.h \
@@ -1430,8 +1482,89 @@ handleinput.o: ../server/handleinput.cpp ../server/handleinput.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/QLabel \
 		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qlabel.h \
-		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qframe.h
+		../../../../qt/qt/5.7/gcc_64/include/QtWidgets/qframe.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QDebug \
+		../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/QPixmap \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/QList
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o handleinput.o ../server/handleinput.cpp
+
+list_map.o: ../server/list_map.cpp ../server/list_map.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/QPixmap \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qpixmap.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qpaintdevice.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qwindowdefs.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qglobal.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qconfig.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qfeatures.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qsystemdetection.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qprocessordetection.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qtypeinfo.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qtypetraits.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qisenum.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qsysinfo.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qlogging.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qflags.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qatomic.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qbasicatomic.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qgenericatomic.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qglobalstatic.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qmutex.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qnumeric.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qversiontagging.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qnamespace.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qwindowdefs_win.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qrect.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qmargins.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qsize.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qpoint.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qcolor.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qrgb.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qstringlist.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qlist.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qalgorithms.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qiterator.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qrefcount.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qarraydata.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qhashfunctions.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qchar.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qpair.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qbytearraylist.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qbytearray.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qstring.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qstringbuilder.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qregexp.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qstringmatcher.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qrgba64.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qsharedpointer.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qshareddata.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qhash.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qobject.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qcoreevent.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qmetatype.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qobject_impl.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qimage.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qpixelformat.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qtransform.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qmatrix.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qpolygon.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qvector.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qregion.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qdatastream.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qiodevice.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtCore/qline.h \
+		../../../../qt/qt/5.7/gcc_64/include/QtGui/qpainterpath.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o list_map.o ../server/list_map.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

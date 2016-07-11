@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[6];
-    char stringdata0[30];
+    QByteArrayData data[12];
+    char stringdata0[73];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,10 +34,18 @@ QT_MOC_LITERAL(1, 11, 9), // "changeMAC"
 QT_MOC_LITERAL(2, 21, 0), // ""
 QT_MOC_LITERAL(3, 22, 1), // "x"
 QT_MOC_LITERAL(4, 24, 1), // "y"
-QT_MOC_LITERAL(5, 26, 3) // "mac"
+QT_MOC_LITERAL(5, 26, 3), // "mac"
+QT_MOC_LITERAL(6, 30, 15), // "changeImageData"
+QT_MOC_LITERAL(7, 46, 4), // "posx"
+QT_MOC_LITERAL(8, 51, 4), // "posy"
+QT_MOC_LITERAL(9, 56, 8), // "QPixmap*"
+QT_MOC_LITERAL(10, 65, 3), // "pic"
+QT_MOC_LITERAL(11, 69, 3) // "pos"
 
     },
-    "MainWindow\0changeMAC\0\0x\0y\0mac"
+    "MainWindow\0changeMAC\0\0x\0y\0mac\0"
+    "changeImageData\0posx\0posy\0QPixmap*\0"
+    "pic\0pos"
 };
 #undef QT_MOC_LITERAL
 
@@ -47,7 +55,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -55,10 +63,12 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    3,   19,    2, 0x0a /* Public */,
+       1,    3,   24,    2, 0x0a /* Public */,
+       6,    4,   31,    2, 0x0a /* Public */,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::Int, QMetaType::Int, QMetaType::Int,    3,    4,    5,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int, QMetaType::Long,    3,    4,    5,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int, 0x80000000 | 9, QMetaType::Int,    7,    8,   10,   11,
 
        0        // eod
 };
@@ -69,7 +79,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         MainWindow *_t = static_cast<MainWindow *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->changeMAC((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< int(*)>(_a[3]))); break;
+        case 0: _t->changeMAC((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< long(*)>(_a[3]))); break;
+        case 1: _t->changeImageData((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< QPixmap*(*)>(_a[3])),(*reinterpret_cast< int(*)>(_a[4]))); break;
         default: ;
         }
     }
@@ -100,13 +111,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 2)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 2;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 1)
+        if (_id < 2)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }

@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_HandleInput_t {
-    QByteArrayData data[13];
-    char stringdata0[83];
+    QByteArrayData data[12];
+    char stringdata0[72];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -38,15 +38,14 @@ QT_MOC_LITERAL(5, 28, 3), // "mac"
 QT_MOC_LITERAL(6, 32, 12), // "NewImageData"
 QT_MOC_LITERAL(7, 45, 4), // "posx"
 QT_MOC_LITERAL(8, 50, 4), // "posy"
-QT_MOC_LITERAL(9, 55, 14), // "unsigned char*"
-QT_MOC_LITERAL(10, 70, 3), // "buf"
-QT_MOC_LITERAL(11, 74, 4), // "size"
-QT_MOC_LITERAL(12, 79, 3) // "pos"
+QT_MOC_LITERAL(9, 55, 8), // "QPixmap*"
+QT_MOC_LITERAL(10, 64, 3), // "pic"
+QT_MOC_LITERAL(11, 68, 3) // "pos"
 
     },
     "HandleInput\0MACChanged\0\0x\0y\0mac\0"
-    "NewImageData\0posx\0posy\0unsigned char*\0"
-    "buf\0size\0pos"
+    "NewImageData\0posx\0posy\0QPixmap*\0pic\0"
+    "pos"
 };
 #undef QT_MOC_LITERAL
 
@@ -65,11 +64,11 @@ static const uint qt_meta_data_HandleInput[] = {
 
  // signals: name, argc, parameters, tag, flags
        1,    3,   24,    2, 0x06 /* Public */,
-       6,    5,   31,    2, 0x06 /* Public */,
+       6,    4,   31,    2, 0x06 /* Public */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::Int, QMetaType::Int, QMetaType::Long,    3,    4,    5,
-    QMetaType::Void, QMetaType::Int, QMetaType::Int, 0x80000000 | 9, QMetaType::Int, QMetaType::Int,    7,    8,   10,   11,   12,
+    QMetaType::Void, QMetaType::Int, QMetaType::Int, 0x80000000 | 9, QMetaType::Int,    7,    8,   10,   11,
 
        0        // eod
 };
@@ -81,7 +80,7 @@ void HandleInput::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->MACChanged((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< long(*)>(_a[3]))); break;
-        case 1: _t->NewImageData((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< unsigned char*(*)>(_a[3])),(*reinterpret_cast< int(*)>(_a[4])),(*reinterpret_cast< int(*)>(_a[5]))); break;
+        case 1: _t->NewImageData((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< QPixmap*(*)>(_a[3])),(*reinterpret_cast< int(*)>(_a[4]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -95,7 +94,7 @@ void HandleInput::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
             }
         }
         {
-            typedef void (HandleInput::*_t)(int , int , unsigned char * , int , int );
+            typedef void (HandleInput::*_t)(int , int , QPixmap * , int );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&HandleInput::NewImageData)) {
                 *result = 1;
                 return;
@@ -148,9 +147,9 @@ void HandleInput::MACChanged(int _t1, int _t2, long _t3)
 }
 
 // SIGNAL 1
-void HandleInput::NewImageData(int _t1, int _t2, unsigned char * _t3, int _t4, int _t5)
+void HandleInput::NewImageData(int _t1, int _t2, QPixmap * _t3, int _t4)
 {
-    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)), const_cast<void*>(reinterpret_cast<const void*>(&_t5)) };
+    void *_a[] = { Q_NULLPTR, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)), const_cast<void*>(reinterpret_cast<const void*>(&_t4)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 QT_END_MOC_NAMESPACE
