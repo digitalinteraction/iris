@@ -13,7 +13,8 @@
 
 #include "DebugTransfer.h"
 
-DebugTransfer::DebugTransfer() {
+DebugTransfer::DebugTransfer(Packetbuffer *out) {
+    this->out = out;
 }
 
 DebugTransfer::DebugTransfer(const DebugTransfer& orig) {
@@ -23,7 +24,8 @@ DebugTransfer::~DebugTransfer() {
 }
 
 int DebugTransfer::recv(void* buffer, size_t size, uint32_t addr){
-    free(buffer);
+    //free(buffer);
+    out->add(size, addr, buffer);
     return 0;
 }
 

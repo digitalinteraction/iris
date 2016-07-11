@@ -83,7 +83,7 @@ int UnreliableTransfer::send(void* buffer, size_t size, uint8_t port, uint32_t a
 }
 
 int UnreliableTransfer::recv() {
-    
+    printf("recv packet\n");
     lock_recv.lock();
     struct packet *pack;
     while (recv_buf->get(&pack) == 0) {
@@ -120,9 +120,11 @@ int UnreliableTransfer::recv() {
         uint8_t port = header->port;
         size_t size = header->size;
         uint32_t addr = pack->addr;
+                printf("got port %d\n", port);
+
         free(pack->buffer);
         free(pack);
-
+        printf("got port %d\n", port);
         switch(port){
             case 0:
                 debug->recv(buffer, size, addr);
@@ -139,6 +141,6 @@ int UnreliableTransfer::recv() {
         free(buffer);
     }
     lock_recv.unlock();
-    
+    printf("end recv\n");
     return 0;
 }

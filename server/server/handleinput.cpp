@@ -53,8 +53,6 @@ void HandleInput::run(){
                     list_mac->append(temp);
                     emit MACChanged(item->x, item->y, item->mac);
                 }
-                free(pack->buffer);
-                free(pack);
                 break;
             }
             case IMAGE_PACKET:
@@ -83,6 +81,9 @@ void HandleInput::run(){
                 break;
             }
             }
+
+            free(pack->buffer);
+            free(pack);
 
 
         }

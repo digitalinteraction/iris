@@ -19,7 +19,7 @@ NetworkControl::NetworkControl() {
 
     topo = new Topology(&unrel, image_out);
     rel = new ReliableTransfer(&unrel, image_out, topo);
-    debug = new DebugTransfer();
+    debug = new DebugTransfer(image_out);
     unrel = new UnreliableTransfer(rel, topo, debug);
     
     image_in = new Packetbuffer();

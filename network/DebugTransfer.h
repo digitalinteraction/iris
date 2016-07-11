@@ -18,12 +18,13 @@
 
 class DebugTransfer {
 public:
-    DebugTransfer();
+    DebugTransfer(Packetbuffer *out);
     DebugTransfer(const DebugTransfer& orig);
     virtual ~DebugTransfer();
     int recv(void *buffer, size_t size, uint32_t addr);
     int send();
 private:
+    Packetbuffer *out;
 
 };
 

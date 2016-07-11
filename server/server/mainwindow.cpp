@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //hi->init(in, out);
     hi->init(nc->image_out, nc->image_in);
     QObject::connect(hi, SIGNAL(MACChanged(int, int, long)), this, SLOT(changeMAC(int, int, long)));
-    QObject::connect(hi, SIGNAL(NewImageData(int, int, unsigned char *, int, int)), this, SLOT(changeImageData(int, int, unsigned char, int, int)));
+    QObject::connect(hi, SIGNAL(NewImageData(int, int, unsigned char *, int, int)), this, SLOT(changeImageData(int, int, unsigned char *, int, int)));
 
     //QFuture<void> fut = QtConcurrent::run(nc, &NetworkControl::run);
     //QFuture<void> fut2 = QtConcurrent::run(hi, &HandleInput::run);
@@ -69,11 +69,22 @@ void MainWindow::changeMAC(int x, int y, long mac){
 void MainWindow::changeImageData(int posx, int posy, unsigned char *buf, int size, int pos){
     qDebug() << "image slot called" << posx << posy << size << pos;
     QVBoxLayout *temp = (QVBoxLayout *) ui->gridLayout->itemAtPosition(posx, posy);
+    qDebug() << "a";
     if(temp != NULL){
+        qDebug() << "b";
+
         QLabel *label = (QLabel *)temp->itemAt(pos);
+        qDebug() << "c";
+
         if(label != NULL){
-            QImage img(buf, 400, 30, QImage::Format_RGB888);
-            label->setPixmap(QPixmap::fromImage(img));
+            qDebug() << "d";
+
+            QImage *img = new QImage(buf, 400, 30, QImage::Format_RGB888);
+            qDebug() << "e";
+
+            label->setPixmap(QPixmap::fromImage(*img));
+            qDebug() << "f";
+
         }
     }
 
