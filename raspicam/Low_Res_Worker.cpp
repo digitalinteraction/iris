@@ -59,7 +59,7 @@ void Low_Res_Worker::run(){
             pthread_mutex_lock(&buffer_lock);
             counter++;
             //process_image(low_patch.buffer, low_patch.size);
-            if(nr % 20 == 0){
+            if(nr % 4 == 0){
                 send_to_server(low_patch.buffer, low_patch.size);
             }
             nr++;
@@ -224,7 +224,7 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size){
         uint8_t *img = (uint8_t *) malloc(LOW_OUTPUT_X * LOW_OUTPUT_Y * 3 * sizeof(uint8_t));
         size_t new_size = 0;
         for(int i = 0; i < image_size; i++){
-            if(i % 4 != 0){
+            if((i+1) % 4 != 0){
                 img[new_size] = image[i];
                 new_size++;
             }
