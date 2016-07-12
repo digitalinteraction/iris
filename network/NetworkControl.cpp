@@ -16,10 +16,11 @@
 NetworkControl::NetworkControl() {
     
     image_out = new Packetbuffer();
-
+    unrel_out = new Packetbuffer();
+    unrel_in = new Packetbuffer();
     topo = new Topology(&unrel, image_out);
     rel = new ReliableTransfer(&unrel, image_out, topo);
-    debug = new DebugTransfer(image_out);
+    debug = new DebugTransfer(unrel_out, unrel_in);
     unrel = new UnreliableTransfer(rel, topo, debug);
     
     image_in = new Packetbuffer();
@@ -29,12 +30,14 @@ NetworkControl::NetworkControl() {
     Timeout.tv_sec = 0;
     fd_list[0] = unrel->recv_fd;
     fd_list[1] = image_in->signalfd;
+    fd_list[2] = unrel_in->signalfd;
     
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
         if (fd_list[i] > maxfd) {
             maxfd = fd_list[i];
         }
     }
+    maxfd++;
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
@@ -63,7 +66,7 @@ void NetworkControl::run(){
         clock_gettime(CLOCK_REALTIME, &current);
         unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
         
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 3; i++) {
             FD_SET(fd_list[i], &readfs);
         }
         Timeout.tv_usec = 1000;
@@ -80,11 +83,25 @@ void NetworkControl::run(){
                 uint64_t val = 0;
                 read(fd_list[1], &val, sizeof (uint64_t));
                 struct packet* pack;
-                printf("recieved something fro image_in\n");
+                //printf("recieved something fro image_in\n");
                 while(image_in->get(&pack) == 0){
-                    printf("sending out image packets\n");
+                    //printf("sending out image packets\n");
                     if(rel->send(pack->buffer, pack->size, pack->addr, pack->broadcast) != 0){
                         printf("Error NetworkControl: sending reliable packet not working\n");
+                    }
+                    free(pack->buffer);
+                    free(pack);
+                }
+            }
+            if (FD_ISSET(fd_list[2], &readfs)) {
+                uint64_t val = 0;
+                read(fd_list[2], &val, sizeof (uint64_t));
+                struct packet* pack;
+                //printf("recieved something fro image_in\n");
+                while(unrel_in->get(&pack) == 0){
+                    //printf("sending out image packets\n");
+                    if(unrel->send(pack->buffer, pack->size, 0, pack->addr) != 0){
+                        printf("Error NetworkControl: sending unreliable packet not working\n");
                     }
                     free(pack->buffer);
                     free(pack);
@@ -104,7 +121,7 @@ void NetworkControl::run(){
         //printf("C\n");
 #ifndef CLIENT_SIDE
         if(currenttime > buildtopo){
-            printf("build mapping\n");
+            //printf("build mapping\n");
             topo->build_mapping();
             buildtopo = currenttime + 2456;
 
@@ -121,7 +138,7 @@ void NetworkControl::run(){
 
         struct packet* pack;
         while (image_in->get(&pack) == 0) {
-            printf("sending the conventional way, size: %ld addr: %d\n", pack->size, pack->addr);
+            //printf("sending the conventional way, size: %ld addr: %d\n", pack->size, pack->addr);
             if (unrel->send(pack->buffer, pack->size, 0, pack->addr) != 0) {
                 printf("Error NetworkControl: sending reliable packet not working\n");
             }

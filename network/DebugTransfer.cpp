@@ -13,8 +13,9 @@
 
 #include "DebugTransfer.h"
 
-DebugTransfer::DebugTransfer(Packetbuffer *out) {
+DebugTransfer::DebugTransfer(Packetbuffer *out, Packetbuffer *in) {
     this->out = out;
+    this->in = in;
 }
 
 DebugTransfer::DebugTransfer(const DebugTransfer& orig) {

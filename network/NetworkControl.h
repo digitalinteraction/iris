@@ -35,13 +35,15 @@ public:
     void run_inf();
     Packetbuffer *image_out;
     Packetbuffer *image_in;
+    Packetbuffer *unrel_out;
+    Packetbuffer *unrel_in;
     UnreliableTransfer *unrel;
     Topology *topo;
     ReliableTransfer *rel;
     DebugTransfer *debug;
 private:
     
-    int fd_list[2];
+    int fd_list[3];
     struct timeval Timeout;
     fd_set readfs;
     int maxfd = 0;

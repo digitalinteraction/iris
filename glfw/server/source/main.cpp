@@ -346,7 +346,7 @@ void AppMain() {
     // create buffer and fill it with the points of the triangle
     LoadTriangle();
     nc = new NetworkControl();
-    in = nc->image_out;
+    in = nc->unrel_out;
     //std::thread net_work(&NetworkControl::run, nc);
 
     // run while the window is open

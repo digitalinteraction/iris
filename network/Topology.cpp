@@ -84,7 +84,7 @@ int Topology::recv(void* buffer, size_t size, uint32_t addr) {
     struct in_addr in;
     in.s_addr = addr;
     char *hostaddrp = inet_ntoa(in);
-    printf("ATopology: got packet from %s with size %ld\n", hostaddrp, size);
+    //printf("ATopology: got packet from %s with size %ld\n", hostaddrp, size);
     
     struct packet_map *map = (struct packet_map *)buffer;
     add_device_entry(map);
@@ -312,6 +312,7 @@ void Topology::build_mapping(){
     //printf("starting building map\n");
     struct device_info* root = get_device_entry(0);
     //printf("root: %lx %ld\n", root->mac, root->timeout);
+    if(root != 0){
     add_unexplored_entry(root->mac, root->timeout);
     
     struct temp_topo* first = 0;
@@ -390,7 +391,7 @@ void Topology::build_mapping(){
     //printf("m alloc %p size %ld\n", buf, total_size);
     //printf("allocating %p with size %ld, header is %ld\n", buf, sizeof(struct topo_header) + num_elem*sizeof(struct topo_list), sizeof(struct topo_header));
     struct topo_header* header = (struct topo_header*) buf;
-    printf("needed array of %d %d\n", abs(min_x) + max_x+1, abs(min_y) + max_y+1);
+    //printf("needed array of %d %d\n", abs(min_x) + max_x+1, abs(min_y) + max_y+1);
 
     header->sizex = abs(min_x) + max_x + 1;
     header->sizey = abs(min_y) + max_y + 1;
@@ -404,6 +405,7 @@ void Topology::build_mapping(){
     out_map->add(total_size, 5, buf);
     //printf("m free %p\n", buf);
     free(buf);
+    }
 }
 
 
