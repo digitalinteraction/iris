@@ -35,6 +35,13 @@ NetworkControl::NetworkControl() {
             maxfd = fd_list[i];
         }
     }
+    struct timespec current;
+    clock_gettime(CLOCK_REALTIME, &current);
+    unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
+    nextcheck = currenttime +20;
+    toposend = currenttime +1000;
+    buildtopo = currenttime +3000;
+    nextprint = currenttime + 1000;
 }
 
 NetworkControl::NetworkControl(const NetworkControl& orig) {
@@ -45,19 +52,16 @@ NetworkControl::~NetworkControl() {
 
 void NetworkControl::run(){
     struct timespec current;
-    clock_gettime(CLOCK_REALTIME, &current);
-    unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
+   
     //unsigned long nextsend = currenttime + 500;
     //unsigned long nextprint = currenttime +1000;
-    unsigned long nextcheck = currenttime +20;
-    unsigned long toposend = currenttime +1000;
-    unsigned long buildtopo = currenttime +3000;
     
-    while (true) {
+    
+    
         //printf("nc running start\n");
         FD_ZERO(&readfs);
         clock_gettime(CLOCK_REALTIME, &current);
-        currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
+        unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
         
         for (int i = 0; i < 2; i++) {
             FD_SET(fd_list[i], &readfs);
@@ -100,6 +104,7 @@ void NetworkControl::run(){
         //printf("C\n");
 #ifndef CLIENT_SIDE
         if(currenttime > buildtopo){
+            printf("build mapping\n");
             topo->build_mapping();
             buildtopo = currenttime + 2456;
 
@@ -134,7 +139,14 @@ void NetworkControl::run(){
             }*/
         //end delete
         //printf("nc running end\n");
-    }
+    
 
-    unrel->serial_comm->join();
+    //unrel->serial_comm->join();
+}
+
+
+void NetworkControl::run_inf(){
+    while(true){
+        run();
+    }
 }

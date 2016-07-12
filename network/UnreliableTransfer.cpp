@@ -124,7 +124,7 @@ int UnreliableTransfer::recv() {
 
         free(pack->buffer);
         free(pack);
-       // printf("got port %d\n", port);
+        printf("got port %d\n", port);
         switch(port){
             case 0:
                 debug->recv(buffer, size, addr);

@@ -26,6 +26,7 @@ DebugTransfer::~DebugTransfer() {
 int DebugTransfer::recv(void* buffer, size_t size, uint32_t addr){
     //free(buffer);
     out->add(size, addr, buffer);
+    printf("DebugTransfer: recv packet %ld %ld\n", size, addr);
     return 0;
 }
 

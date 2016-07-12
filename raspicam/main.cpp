@@ -26,7 +26,7 @@ int main() {
     low->processing = 1;
     high->processing = 1;
     
-    std::thread net_work(&NetworkControl::run, nc);
+    std::thread net_work(&NetworkControl::run_inf, nc);
     std::thread low_work(&Low_Res_Worker::run, low);
     std::thread high_work(&High_Res_Worker::run, high);
     std::thread img_cap(&Image_Capture::run, cap);

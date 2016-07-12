@@ -59,7 +59,7 @@ void Low_Res_Worker::run(){
             pthread_mutex_lock(&buffer_lock);
             counter++;
             //process_image(low_patch.buffer, low_patch.size);
-            if(nr % 40 == 0){
+            if(nr % 20 == 0){
                 send_to_server(low_patch.buffer, low_patch.size);
             }
             nr++;

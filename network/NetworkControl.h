@@ -32,6 +32,7 @@ public:
     NetworkControl(const NetworkControl& orig);
     virtual ~NetworkControl();
     void run();
+    void run_inf();
     Packetbuffer *image_out;
     Packetbuffer *image_in;
     UnreliableTransfer *unrel;
@@ -44,6 +45,10 @@ private:
     struct timeval Timeout;
     fd_set readfs;
     int maxfd = 0;
+    unsigned long nextcheck;
+    unsigned long toposend;
+    unsigned long buildtopo;
+    unsigned long nextprint;
 
 };
 

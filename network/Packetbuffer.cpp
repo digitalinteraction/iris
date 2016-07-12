@@ -36,11 +36,12 @@ Packetbuffer::~Packetbuffer() {
 }
 
 int Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer) {
+    lock.lock();
     if(size <= 0 || buffer == 0 || cnt > 200){
         printf("Error Packetbuffer add: size %d, addr %d, buffer %p, cnt %d\n", size, addr, buffer, cnt);
         return -1;
     }
-    lock.lock();
+    
     struct packet * pack = (struct packet *) malloc(sizeof (struct packet));
     pack->addr = addr;
     pack->size = size;
