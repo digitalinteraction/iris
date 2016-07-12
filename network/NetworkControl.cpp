@@ -20,7 +20,7 @@ NetworkControl::NetworkControl() {
     unrel_in = new Packetbuffer();
     topo = new Topology(&unrel, image_out);
     rel = new ReliableTransfer(&unrel, image_out, topo);
-    debug = new DebugTransfer(unrel_out, unrel_in);
+    debug = new DebugTransfer(unrel_out, &unrel);
     unrel = new UnreliableTransfer(rel, topo, debug);
     
     image_in = new Packetbuffer();
@@ -100,9 +100,10 @@ void NetworkControl::run(){
                 //printf("recieved something fro image_in\n");
                 while(unrel_in->get(&pack) == 0){
                     //printf("sending out image packets\n");
-                    if(unrel->send(pack->buffer, pack->size, 0, pack->addr) != 0){
-                        printf("Error NetworkControl: sending unreliable packet not working\n");
-                    }
+                    debug->send(pack);
+                    //if(unrel->send(pack->buffer, pack->size, 0, pack->addr) != 0){
+                     //   printf("Error NetworkControl: sending unreliable packet not working\n");
+                    //}
                     free(pack->buffer);
                     free(pack);
                 }

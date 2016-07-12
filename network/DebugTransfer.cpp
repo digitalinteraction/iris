@@ -13,9 +13,9 @@
 
 #include "DebugTransfer.h"
 
-DebugTransfer::DebugTransfer(Packetbuffer *out, Packetbuffer *in) {
+DebugTransfer::DebugTransfer(Packetbuffer *out, UnreliableTransfer **unrel) {
     this->out = out;
-    this->in = in;
+    this->unrel = unrel;
 }
 
 DebugTransfer::DebugTransfer(const DebugTransfer& orig) {
@@ -27,10 +27,12 @@ DebugTransfer::~DebugTransfer() {
 int DebugTransfer::recv(void* buffer, size_t size, uint32_t addr){
     //free(buffer);
     out->add(size, addr, buffer);
-    printf("DebugTransfer: recv packet %ld %ld\n", size, addr);
+    //printf("DebugTransfer: recv packet %ld %ld\n", size, addr);
     return 0;
 }
 
-int DebugTransfer::send(){
-    printf("Error DebugTransfer:: send not implemented yet\n");
+int DebugTransfer::send(struct packet* pack){
+    if((*unrel)->send(pack->buffer, pack->size, 0, pack->addr) != 0){
+        printf("Error DebugTransfer: could not send unreliable packet\n");
+    }
 }
