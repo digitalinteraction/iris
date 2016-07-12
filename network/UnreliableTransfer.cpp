@@ -102,11 +102,11 @@ int UnreliableTransfer::recv() {
 
         if (comp_crc != real_crc) {
             
-            printf("Data: %ld : ", sizeof(struct unreliable_packet));
+            /*printf("Data: %ld : ", sizeof(struct unreliable_packet));
             for(int i = 0; i < pack->size; i++){
                 printf(" %x ", ((unsigned char *)pack->buffer)[i]);
             }
-            printf("\n");
+            printf("\n");*/
             printf("Error Unreliable Transfer:: %d CRC did not match %x %x\n", header->port, comp_crc, real_crc);
             free(pack->buffer);
             free(pack);
@@ -124,7 +124,7 @@ int UnreliableTransfer::recv() {
 
         free(pack->buffer);
         free(pack);
-        printf("got port %d\n", port);
+        //printf("got port %d\n", port);
         switch(port){
             case 0:
                 debug->recv(buffer, size, addr);

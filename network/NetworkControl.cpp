@@ -99,7 +99,7 @@ void NetworkControl::run(){
                 struct packet* pack;
                 //printf("recieved something fro image_in\n");
                 while(unrel_in->get(&pack) == 0){
-                    printf("sending out image packets\n");
+                    //printf("sending out image packets\n");
                     debug->send(pack);
                     //if(unrel->send(pack->buffer, pack->size, 0, pack->addr) != 0){
                      //   printf("Error NetworkControl: sending unreliable packet not working\n");

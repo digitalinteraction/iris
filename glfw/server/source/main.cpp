@@ -37,8 +37,8 @@
 #include "tdogl/Texture.h"
 #include <thread>
 
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 400
+#define HEIGHT 300
 // constants
 const glm::vec2 SCREEN_SIZE(800, 600);
 
@@ -197,19 +197,40 @@ struct mac_list * searchList(uint64_t mac, uint8_t del) {
 }
 
 void updateBuffer() {
-    printf("aa");
+    //printf("aa");
     struct packet *pack = 0;
     struct topo_header* header = 0;
     while (in->get(&pack) == 0) {
-        printf("packet received\n");
+        //printf("packet received\n");
         header = (struct topo_header*) pack->buffer;
         switch (header->port) {
             case TOPO_PACKET:
             {
                 unsigned char* list = ((unsigned char *) pack->buffer) + sizeof (struct topo_header);
-                printf("got topo packet: %d %d\n", header->sizex, header->sizey);
-                posx = header->sizex;
-                posy = header->sizey;
+                //printf("got topo packet: %d %d\n", header->sizex, header->sizey);
+                if (posx != header->sizex || posy != header->sizey) {
+                    posx = header->sizex;
+                    posy = header->sizey;
+                    myimage = (unsigned char *) malloc(WIDTH * HEIGHT * 3 * sizeof (unsigned char)*posx*posy);
+                    glDeleteTextures(1, &mytexture);
+                    glGenTextures(1, &mytexture);
+                    glBindTexture(GL_TEXTURE_2D, mytexture);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+                    glTexImage2D(GL_TEXTURE_2D,
+                            0,
+                            GL_RGB,
+                            WIDTH*posx,
+                            HEIGHT*posy,
+                            0,
+                            GL_RGB,
+                            GL_UNSIGNED_BYTE,
+                            myimage);
+                    glBindTexture(GL_TEXTURE_2D, 0);
+                    
+                }
 
                 for (int i = 0; i < (header->sizex * header->sizey); i++) {
                     struct topo_list *item = (struct topo_list *) (list + i * sizeof (struct topo_list));
@@ -223,19 +244,20 @@ void updateBuffer() {
             }
             case IMAGE_PACKET:
             {
+                if(posx != 0){
                 struct low_res_header* low_header = (struct low_res_header*) pack->buffer;
-                printf("image packet recv from %ld\n", low_header->mac);
+                //printf("image packet recv from %ld\n", low_header->mac);
 
                 struct mac_list * item = searchList(low_header->mac, 0);
                 if (item != 0) {
-                    printf("item: %d %d, pos %d\n", item->x, item->y, low_header->pos);
+                   // printf("item: %d %d, pos %d\n", item->x, item->y, low_header->pos);
                     unsigned char * image_part = ((unsigned char *) pack->buffer) + sizeof (struct low_res_header);
                     //unsigned char * dest_part = myimage + 400 * 300 * 3 * (item->x + posy * item->y) + low_header->pos * 400 * 30 * 3;
                     //printf("inserting in offset: %d\n", 400 * 300 * 3 * (item->x + posy * item->y) + low_header->pos * 400 * 30 * 3);
                     //memcpy(dest_part, image_part, 400 * 30 * 3);
                     unsigned int offsetx = 400*item->x;
                     unsigned int offsety = 300*item->y + low_header->pos*30;
-                    printf("offset: x: %d, y: %d\n", offsetx, offsety);
+                    //printf("offset: x: %d, y: %d\n", offsetx, offsety);
                     glTexSubImage2D(GL_TEXTURE_2D,
                             0,
                             offsetx,
@@ -245,6 +267,7 @@ void updateBuffer() {
                             GL_RGB,
                             GL_UNSIGNED_BYTE,
                             image_part);
+                }
                 }
                 free(pack->buffer);
                 free(pack);
