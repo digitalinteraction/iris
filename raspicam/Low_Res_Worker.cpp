@@ -19,7 +19,6 @@
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <string.h>
-#include "zlib.h"
 
 
 
@@ -61,7 +60,7 @@ void Low_Res_Worker::run(){
             pthread_mutex_lock(&buffer_lock);
             counter++;
             //process_image(low_patch.buffer, low_patch.size);
-            if(nr % 25 == 0){
+            if(nr % 10 == 0){
                 send_to_server(low_patch.buffer, low_patch.size);
             }
             nr++;
@@ -238,82 +237,25 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size){
         
         new_size = LOW_OUTPUT_X * LOW_OUTPUT_Y * 3 * sizeof(uint8_t);
         
-        
-        
         size_t part_size = new_size/10;
         int ret = 0;
         for(int i = 0; i < 10; i++){
             ret = 0;
 
             uint32_t size = part_size + sizeof(struct low_res_header);
-            //memcpy((((unsigned char *)header) + sizeof(struct low_res_header)), (void*)(img+i*part_size), part_size);
-            
-            uint32_t out_buffer_max_size = GetMaxCompressedLen(part_size);
-            unsigned char *out_buf = (unsigned char*) malloc(sizeof(struct low_res_header) + out_buffer_max_size);
-            uint32_t comp_buffer_size = CompressData((img+i*part_size), part_size, out_buf+sizeof(struct low_res_header), out_buffer_max_size);
-            
-            struct low_res_header * header =  (struct low_res_header *)out_buf;
-
+            struct low_res_header * header =  (struct low_res_header *)malloc(size);
+            memcpy((((unsigned char *)header) + sizeof(struct low_res_header)), (void*)(img+i*part_size), part_size);
             header->mac = nc->topo->mac;
             header->port = IMAGE_PACKET;
             header->pos = i;
             header->mac = nc->topo->mac;
             header->size = part_size;
-            header->comp_size = comp_buffer_size;
-            header->resx = 400;
-            header->resy = 30;
-            printf("sending image part %d: size %ld comp_size %ld\n", i, part_size, comp_buffer_size);
             ret = out->add(sizeof(struct low_res_header)+comp_buffer_size, addr, (void*)header);
             if(ret != 0)
                 i--;
-            free(out_buf);
+            free(header);
 
         }
+        printf("Send 10 packets: buffer length: %d\n", out->getCnt());
     }
-}
-
-
-int Low_Res_Worker::GetMaxCompressedLen( int nLenSrc ) 
-{
-    int n16kBlocks = (nLenSrc+16383) / 16384; // round up any fraction of a block
-    return ( nLenSrc + 6 + (n16kBlocks*5) );
-}
-int Low_Res_Worker::CompressData( const unsigned char* abSrc, int nLenSrc, unsigned char* abDst, int nLenDst )
-{
-    z_stream zInfo ={0};
-    zInfo.total_in=  zInfo.avail_in=  nLenSrc;
-    zInfo.total_out= zInfo.avail_out= nLenDst;
-    zInfo.next_in= (unsigned char*)abSrc;
-    zInfo.next_out= abDst;
-
-    int nErr, nRet= -1;
-    nErr= deflateInit( &zInfo, Z_DEFAULT_COMPRESSION ); // zlib function
-    if ( nErr == Z_OK ) {
-        nErr= deflate( &zInfo, Z_FINISH );              // zlib function
-        if ( nErr == Z_STREAM_END ) {
-            nRet= zInfo.total_out;
-        }
-    }
-    deflateEnd( &zInfo );    // zlib function
-    return( nRet );
-}
-
-int Low_Res_Worker::UncompressData( const unsigned char* abSrc, int nLenSrc, unsigned char* abDst, int nLenDst )
-{
-    z_stream zInfo ={0};
-    zInfo.total_in=  zInfo.avail_in=  nLenSrc;
-    zInfo.total_out= zInfo.avail_out= nLenDst;
-    zInfo.next_in= (unsigned char*)abSrc;
-    zInfo.next_out= abDst;
-
-    int nErr, nRet= -1;
-    nErr= inflateInit( &zInfo );               // zlib function
-    if ( nErr == Z_OK ) {
-        nErr= inflate( &zInfo, Z_FINISH );     // zlib function
-        if ( nErr == Z_STREAM_END ) {
-            nRet= zInfo.total_out;
-        }
-    }
-    inflateEnd( &zInfo );   // zlib function
-    return( nRet ); // -1 or len of output
 }

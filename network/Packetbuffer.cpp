@@ -78,3 +78,8 @@ int Packetbuffer::get(struct packet** pack) {
     lock.unlock();
     return 0;
 }
+
+uint16_t Packetbuffer::getCnt(){
+    return cnt;
+}
+    

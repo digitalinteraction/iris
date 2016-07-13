@@ -30,9 +30,6 @@ struct low_res_header{
     uint8_t pos;
     uint64_t mac;
     uint32_t size;
-    uint32_t comp_size;
-    uint16_t resx;
-    uint16_t resy;
 };
 
 struct topo_list{
@@ -63,6 +60,7 @@ public:
     int add(uint32_t size, uint32_t addr, void *buffer);
     int get(struct packet ** pack);
     int signalfd;
+    uint16_t getCnt();
 private:
     struct packet *first;
     struct packet *last;
