@@ -388,11 +388,18 @@ void AppMain() {
     // run while the window is open
     while(!glfwWindowShouldClose(gWindow)){
         // process pending events
+                printf("a\n");
+
         glfwPollEvents();
+        printf("b\n");
         nc->run();
         //updateBuffer();
         // draw one frame
+                printf("c\n");
+
         Render();
+                printf("d\n");
+
     }
 
     // clean up and exit
