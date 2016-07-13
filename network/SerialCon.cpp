@@ -197,11 +197,12 @@ void SerialCon::slip_run() {
 
 
     while (processing) {
+        printf("start");
         FD_ZERO(&readfs);
         FD_ZERO(&writefs);
         FD_ZERO(&exceptfs);
         res = 0;
-        
+        printf("fd zero set\n");
 #ifdef CLIENT_SIDE
         for (i = 0; i < 6; i++) {
             FD_SET(fd_array[i], &readfs);
@@ -212,8 +213,10 @@ void SerialCon::slip_run() {
             FD_SET(fd_array[i], &readfs);
         }
 #endif
+        printf("fd set set\n");
         Timeout.tv_usec = 5000;
         Timeout.tv_sec = 0;
+        printf("calling select\n");
         res = select(maxfd, &readfs, &writefs, &exceptfs, &Timeout);
         if (res <= 0) {
         } else {
@@ -314,6 +317,7 @@ void SerialCon::slip_run() {
             }
 
         }
+        printf("end\n");
         //slip_send(test, 7, 0);
         //slip_send(test, 7, 1);
         //slip_send(test, 7, 2);
