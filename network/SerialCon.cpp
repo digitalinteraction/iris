@@ -193,6 +193,7 @@ void SerialCon::slip_run() {
         FD_ZERO(&writefs);
         FD_ZERO(&exceptfs);
         res = 0;
+        printf("A\n");
         
 #ifdef CLIENT_SIDE
         for (i = 0; i < 6; i++) {
@@ -204,13 +205,13 @@ void SerialCon::slip_run() {
             FD_SET(fd_array[i], &readfs);
         }
 #endif
-
+printf("B\n");
         Timeout.tv_usec = 5000;
         Timeout.tv_sec = 0;
         res = select(maxfd, &readfs, &writefs, &exceptfs, &Timeout);
         if (res <= 0) {
         } else {
-
+printf("C\n");
             if (FD_ISSET(fd_array[0], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[0], &c, 1) > 0){
@@ -227,6 +228,7 @@ void SerialCon::slip_run() {
                     }
                 }
             }
+printf("D\n");
             if (FD_ISSET(fd_array[1], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[1], &c, 1) > 0){
@@ -243,6 +245,7 @@ void SerialCon::slip_run() {
                     }
                 }
             }
+printf("E\n");
             if (FD_ISSET(fd_array[2], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[2], &c, 1) > 0){
@@ -259,6 +262,7 @@ void SerialCon::slip_run() {
                     }
                 }
             }
+printf("F\n");
             if (FD_ISSET(fd_array[3], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[3], &c, 1) > 0){
@@ -275,6 +279,7 @@ void SerialCon::slip_run() {
                     }
                 }
             }
+printf("G\n");
             //printf("Socket : %d %d %d\n", FD_ISSET(fd_array[4], &readfs), FD_ISSET(fd_array[4], &writefs), FD_ISSET(fd_array[4], &exceptfs));
             if (FD_ISSET(fd_array[4], &readfs)) {
                 //printf("got something from udp port\n"); fflush(stdout);
@@ -286,7 +291,7 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-
+printf("H\n");
             if (FD_ISSET(fd_array[5], &readfs)) {
 
                 uint64_t val = 0;
@@ -308,10 +313,10 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-
+printf("I\n");
 
         }
-
+printf("J\n");
         //slip_send(test, 7, 0);
         //slip_send(test, 7, 1);
         //slip_send(test, 7, 2);

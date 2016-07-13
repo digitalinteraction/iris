@@ -61,7 +61,7 @@ void NetworkControl::run(){
     
     
     
-        printf("nc running start\n");
+        //printf("nc running start\n");
         FD_ZERO(&readfs);
         clock_gettime(CLOCK_REALTIME, &current);
         unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
@@ -109,17 +109,17 @@ void NetworkControl::run(){
                 }
             }
         }
-        printf("A\n");
+        //printf("A\n");
         if(currenttime > nextcheck){
             rel->check_timeouts();
             nextcheck = currenttime + 20;
         }
-        printf("B\n");
+        //printf("B\n");
         if(currenttime > toposend){
             toposend = currenttime + 100;
             topo->send();
         }
-        printf("C\n");
+        //printf("C\n");
 #ifndef CLIENT_SIDE
         if(currenttime > buildtopo){
             //printf("build mapping\n");
@@ -128,7 +128,7 @@ void NetworkControl::run(){
 
         }
 #endif
-       printf("D\n");
+       //printf("D\n");
 #ifdef CLIENT_SIDE
         if(currenttime > nextprint){
             struct mallinfo mi = mallinfo();
@@ -146,7 +146,7 @@ void NetworkControl::run(){
             free(pack->buffer);
             free(pack);
         }
-        printf("E\n");
+        //printf("E\n");
 #endif
         //delete on attaching other class
         /*struct packet *pack = 0;
@@ -157,7 +157,7 @@ void NetworkControl::run(){
                 printf("got mapping from topology\n");
             }*/
         //end delete
-        printf("nc running end\n");
+        //printf("nc running end\n");
     
 
     //unrel->serial_comm->join();
