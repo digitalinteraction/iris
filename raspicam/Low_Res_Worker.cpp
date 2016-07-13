@@ -250,7 +250,7 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size){
             header->pos = i;
             header->mac = nc->topo->mac;
             header->size = part_size;
-            ret = out->add(sizeof(struct low_res_header)+comp_buffer_size, addr, (void*)header);
+            ret = out->add(size, addr, (void*)header);
             if(ret != 0)
                 i--;
             free(header);
