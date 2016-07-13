@@ -18,7 +18,7 @@
 #include <stdint.h>
 //#define DEBUG
 
-#define CLIENT_SIDE
+//#define CLIENT_SIDE
 
 #define IMAGE_PACKET 1
 #define TOPO_PACKET 2
@@ -42,7 +42,6 @@ struct topo_header{
     uint8_t port;
     uint8_t sizex;
     uint8_t sizey;
-    uint8_t total_size;
 };
 
 struct packet{

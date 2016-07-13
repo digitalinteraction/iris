@@ -61,7 +61,7 @@ void Low_Res_Worker::run(){
             counter++;
             //process_image(low_patch.buffer, low_patch.size);
             if(nr % 10 == 0){
-                send_to_server(low_patch.buffer, low_patch.size);
+                send_to_server(low_patch.buffer, low_patch.size, 1);
             }
             nr++;
             nr_img++;
@@ -219,16 +219,31 @@ Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
     }
 }
 
-void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size) {
+void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t mode) {
     //printf("sending image to server %ld \n", image_size);
     if (nc->unrel->send_buf->getCnt() < 70) {
         if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 4) && image_size < 500000) {
-            uint8_t *img = (uint8_t *) malloc(LOW_OUTPUT_X * LOW_OUTPUT_Y * 3 * sizeof (uint8_t));
+            uint8_t color = 0;
+            if (mode == 0) {
+                color = 3;
+            } else {
+                color = 1;
+            }
+
+
+            uint8_t *img = (uint8_t *) malloc(LOW_OUTPUT_X * LOW_OUTPUT_Y * color * sizeof (uint8_t));
             size_t new_size = 0;
             for (int i = 0; i < image_size; i++) {
-                if ((i + 1) % 4 != 0) {
-                    img[new_size] = image[i];
-                    new_size++;
+                if (mode == 0) {
+                    if ((i + 1) % 4 != 0) {
+                        img[new_size] = image[i];
+                        new_size++;
+                    }
+                } else {
+                    if(i%4 == 0){
+                        img[new_size] = image[i]/3 + image[i+1]/3 + image[i+2]/3;
+                        new_size++;
+                    }
                 }
             }
             uint32_t addr;
@@ -236,7 +251,7 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size) {
                 printf("inet_aton() failed\n");
             }
 
-            new_size = LOW_OUTPUT_X * LOW_OUTPUT_Y * 3 * sizeof (uint8_t);
+            new_size = LOW_OUTPUT_X * LOW_OUTPUT_Y * color * sizeof (uint8_t);
 
             size_t part_size = new_size / 10;
             int ret = 0;

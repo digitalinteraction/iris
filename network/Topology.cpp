@@ -388,6 +388,7 @@ void Topology::build_mapping(){
     uint8_t num_elem = (abs(min_x + max_x) + 1) * (abs(min_y + max_y) + 1);
     size_t total_size = sizeof (struct topo_header) + num_elem * sizeof (struct topo_list);
     void *buf = malloc(total_size);
+    memset(buf, 0, total_size);
     //printf("m alloc %p size %ld\n", buf, total_size);
     //printf("allocating %p with size %ld, header is %ld\n", buf, sizeof(struct topo_header) + num_elem*sizeof(struct topo_list), sizeof(struct topo_header));
     struct topo_header* header = (struct topo_header*) buf;

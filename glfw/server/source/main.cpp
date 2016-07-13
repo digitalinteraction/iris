@@ -238,19 +238,31 @@ void updateBuffer() {
                             GL_RGB,
                             GL_UNSIGNED_BYTE,
                             myimage);
-                    glBindTexture(GL_TEXTURE_2D, 0);
+                    //glBindTexture(GL_TEXTURE_2D, 0);
                     glfwSetWindowSize(gWindow, WIDTH*posy, HEIGHT*posx);
                     deleteList();
+                    printf("finished changing\n");
                 }
 
+                printf("pack size %ld\n", pack->size);
                 for (int i = 0; i < (header->sizex * header->sizey); i++) {
+                    printf("accessing new elem, %d %d %d\n", header->sizex, header->sizey, i);
                     struct topo_list *item = (struct topo_list *) (list + i * sizeof (struct topo_list));
-                    if (searchList(item->mac, 0) != 0) {
-                        struct mac_list * temp = searchList(item->mac, 1);
-                        free(temp);
+                    printf("first\n");
+                    if (item->mac != 0) {
+                        printf("second\n");
+                        if (searchList(item->mac, 0) != 0) {
+                            printf("third\n");
+                            struct mac_list * temp = searchList(item->mac, 1);
+                            printf("mac list %p\n", temp);
+                            //free(temp);
+                        }
+                        printf("fourth\n");
+                        insertList(item->x, item->y, item->mac);
+                        printf("inserting elem: %d %d %ld\n", item->x, item->y, item->mac);
                     }
-                    insertList(item->x, item->y, item->mac);
-                    //printf("inserting elem: %d %d\n", item->x, item->y);
+                    printf("finsihed\n");
+                    
                 }
                 break;
             }
@@ -269,7 +281,7 @@ void updateBuffer() {
                     //memcpy(dest_part, image_part, 400 * 30 * 3);
                     unsigned int offsetx = 400*item->y;
                     unsigned int offsety = 300*item->x + low_header->pos*30;
-                    //printf("offset: x: %d, y: %d %ld\n", offsetx, offsety, low_header->mac);
+                    printf("offset: x: %d, y: %d %ld\n", offsetx, offsety, low_header->mac);
                     glTexSubImage2D(GL_TEXTURE_2D,
                             0,
                             offsetx,
