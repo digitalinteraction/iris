@@ -44,8 +44,9 @@ public:
     int recv();
     std::thread *serial_comm;
     int recv_fd;
-private:
     Packetbuffer *send_buf;
+
+private:
     Packetbuffer *recv_buf;
     
     ReliableTransfer *rel;

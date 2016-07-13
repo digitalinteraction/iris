@@ -112,11 +112,11 @@ void NetworkControl::run(){
         //printf("A\n");
         if(currenttime > nextcheck){
             rel->check_timeouts();
-            nextcheck = currenttime + 20;
+            nextcheck = currenttime + 200;
         }
         //printf("B\n");
         if(currenttime > toposend){
-            toposend = currenttime + 100;
+            toposend = currenttime + 500;
             topo->send();
         }
         //printf("C\n");
