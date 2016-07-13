@@ -209,7 +209,7 @@ void updateBuffer() {
     struct packet *pack = 0;
     struct topo_header* header = 0;
     while (in->get(&pack) == 0) {
-        printf("packet received\n");
+        //printf("packet received\n");
         header = (struct topo_header*) pack->buffer;
         switch (header->port) {
             case TOPO_PACKET:
@@ -250,7 +250,7 @@ void updateBuffer() {
                         free(temp);
                     }
                     insertList(item->x, item->y, item->mac);
-                    printf("inserting elem: %d %d\n", item->x, item->y);
+                    //printf("inserting elem: %d %d\n", item->x, item->y);
                 }
                 break;
             }
@@ -258,7 +258,7 @@ void updateBuffer() {
             {
                 if(posx != 0){
                 struct low_res_header* low_header = (struct low_res_header*) pack->buffer;
-                printf("image packet recv from %ld\n", low_header->mac);
+               // printf("image packet recv from %ld\n", low_header->mac);
 
                 struct mac_list * item = searchList(low_header->mac, 0);
                 if (item != 0) {
@@ -269,7 +269,7 @@ void updateBuffer() {
                     //memcpy(dest_part, image_part, 400 * 30 * 3);
                     unsigned int offsetx = 400*item->y;
                     unsigned int offsety = 300*item->x + low_header->pos*30;
-                    printf("offset: x: %d, y: %d %ld\n", offsetx, offsety, low_header->mac);
+                    //printf("offset: x: %d, y: %d %ld\n", offsetx, offsety, low_header->mac);
                     glTexSubImage2D(GL_TEXTURE_2D,
                             0,
                             offsetx,
@@ -387,17 +387,13 @@ void AppMain() {
     // run while the window is open
     while(!glfwWindowShouldClose(gWindow)){
         // process pending events
-                printf("a\n");
 
         glfwPollEvents();
-        printf("b\n");
         nc->run();
         //updateBuffer();
         // draw one frame
-                printf("c\n");
 
         Render();
-                printf("d\n");
 
     }
 
