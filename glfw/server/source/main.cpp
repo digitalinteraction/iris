@@ -210,7 +210,7 @@ void updateBuffer() {
     struct packet *pack = 0;
     struct topo_header* header = 0;
     while (in->get(&pack) == 0) {
-        //printf("packet received\n");
+        printf("packet received\n");
         header = (struct topo_header*) pack->buffer;
         switch (header->port) {
             case TOPO_PACKET:
@@ -259,7 +259,7 @@ void updateBuffer() {
             {
                 if(posx != 0){
                 struct low_res_header* low_header = (struct low_res_header*) pack->buffer;
-                //printf("image packet recv from %ld\n", low_header->mac);
+                printf("image packet recv from %ld\n", low_header->mac);
 
                 struct mac_list * item = searchList(low_header->mac, 0);
                 if (item != 0) {
