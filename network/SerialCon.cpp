@@ -222,7 +222,7 @@ void SerialCon::slip_run() {
         if (res <= 0) {
             printf("timeout\n");
         } else {
-            printf("checking fd 0\n");
+            printf("checking fd 0 %d\n", FD_ISSET(fd_array[0], &readfs);
             if (FD_ISSET(fd_array[0], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[0], &c, 1) > 0){
@@ -239,7 +239,7 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            printf("checking fd 1\n");
+            printf("checking fd 1 %d\n", FD_ISSET(fd_array[1], &readfs);
             if (FD_ISSET(fd_array[1], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[1], &c, 1) > 0){
@@ -256,7 +256,7 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            printf("checking fd 2\n");
+            printf("checking fd 2 %d\n", FD_ISSET(fd_array[2], &readfs);
             if (FD_ISSET(fd_array[2], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[2], &c, 1) > 0){
@@ -273,7 +273,7 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            printf("checking fd 3\n");
+            printf("checking fd 3 %d\n", FD_ISSET(fd_array[3], &readfs);
             if (FD_ISSET(fd_array[3], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[3], &c, 1) > 0){
@@ -290,7 +290,7 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            printf("checking fd 4\n");
+            printf("checking fd 4 %d\n", FD_ISSET(fd_array[4], &readfs);
             //printf("Socket : %d %d %d\n", FD_ISSET(fd_array[4], &readfs), FD_ISSET(fd_array[4], &writefs), FD_ISSET(fd_array[4], &exceptfs));
             if (FD_ISSET(fd_array[4], &readfs)) {
                 //printf("got something from udp port\n"); fflush(stdout);
@@ -302,10 +302,12 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            printf("checking fd 5\n");
+            printf("checking fd 5 %d\n", FD_ISSET(fd_array[5], &readfs);
             if (FD_ISSET(fd_array[5], &readfs)) {
                 uint64_t val = 0;
+                printf("read\n");
                 read(fd_array[5], &val, sizeof (uint64_t));
+                printf("read end\n");
                 struct packet * pack;
                 if (send_buf->get(&pack) == 0) {
                     if (pack->size > 0) {
