@@ -310,7 +310,7 @@ void SerialCon::slip_run() {
                     printf("free end\n");
 
                 }
-                printf("send %d packets, line: %lld\n\n", cnt, val);
+                printf("send packets, line: %lld\n\n", val);
             }
 
         }
