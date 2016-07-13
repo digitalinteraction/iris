@@ -296,7 +296,7 @@ void SerialCon::slip_run() {
                 uint64_t val = 0;
                 read(fd_array[5], &val, sizeof (uint64_t));
                 struct packet * pack;
-
+                uint32_t cnt = 0;
                 while (send_buf->get(&pack) == 0) {
                     if (pack->size > 0) {
                         int ret = slip_send((unsigned char*) pack->buffer, pack->size, pack->addr);
@@ -309,8 +309,10 @@ void SerialCon::slip_run() {
                     free(pack->buffer);
                     free(pack);
                     printf("free end\n");
+                    cnt++;
 
                 }
+                printf("send %d packets, line: %lld\n\n", cnt, val);
             }
 
         }
