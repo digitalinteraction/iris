@@ -131,11 +131,11 @@ void LoadTexture() {
     //printf("test\n");
     glTexImage2D(GL_TEXTURE_2D,
                  0, 
-                 GL_RGB,
+                 GL_RED, //GL_RGB
                  WIDTH, 
                  HEIGHT,
                  0, 
-                 GL_RGB, 
+                 GL_RED, //GL_RGB
                  GL_UNSIGNED_BYTE, 
                  myimage);
     //printf("test2\n");
@@ -202,14 +202,13 @@ void deleteList(){
         free(item);
         item = next;
     }
+    first_item = 0;
 }
 
 void updateBuffer() {
-    //printf("aa");
     struct packet *pack = 0;
     struct topo_header* header = 0;
     while (in->get(&pack) == 0) {
-        //printf("packet received\n");
         header = (struct topo_header*) pack->buffer;
         switch (header->port) {
             case TOPO_PACKET:
@@ -231,73 +230,79 @@ void updateBuffer() {
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
                     glTexImage2D(GL_TEXTURE_2D,
                             0,
-                            GL_RGB,
+                            GL_RED, //GL_RGB
                             WIDTH*posy,
                             HEIGHT*posx,
                             0,
-                            GL_RGB,
+                            GL_RED, //GL_RGB
                             GL_UNSIGNED_BYTE,
                             myimage);
                     //glBindTexture(GL_TEXTURE_2D, 0);
                     glfwSetWindowSize(gWindow, WIDTH*posy, HEIGHT*posx);
                     deleteList();
-                    printf("finished changing\n");
                 }
 
-                printf("pack size %ld\n", pack->size);
                 for (int i = 0; i < (header->sizex * header->sizey); i++) {
-                    printf("accessing new elem, %d %d %d\n", header->sizex, header->sizey, i);
                     struct topo_list *item = (struct topo_list *) (list + i * sizeof (struct topo_list));
-                    printf("first\n");
                     if (item->mac != 0) {
-                        printf("second\n");
                         if (searchList(item->mac, 0) != 0) {
-                            printf("third\n");
                             struct mac_list * temp = searchList(item->mac, 1);
-                            printf("mac list %p\n", temp);
                             //free(temp);
                         }
-                        printf("fourth\n");
                         insertList(item->x, item->y, item->mac);
                         printf("inserting elem: %d %d %ld\n", item->x, item->y, item->mac);
-                    }
-                    printf("finsihed\n");
-                    
+                    }else{
+                        unsigned int offsetx = 400 * item->y;
+                        unsigned int offsety = 300 * item->x;
+                        glTexSubImage2D(GL_TEXTURE_2D,
+                                0,
+                                offsetx,
+                                offsety,
+                                400,
+                                300,
+                                GL_RED, //GL_RGB
+                                GL_UNSIGNED_BYTE,
+                                myimage);
+                    }            
                 }
                 break;
             }
             case IMAGE_PACKET:
             {
-                if(posx != 0){
-                struct low_res_header* low_header = (struct low_res_header*) pack->buffer;
-               // printf("image packet recv from %ld\n", low_header->mac);
+                if (posx != 0) {
+                    struct low_res_header* low_header = (struct low_res_header*) pack->buffer;
+                    printf("image packet recv from %ld\n", low_header->mac);
 
-                struct mac_list * item = searchList(low_header->mac, 0);
-                if (item != 0) {
-                    printf("item: %d %d, pos %d\n", item->x, item->y, low_header->pos);
-                    unsigned char * image_part = ((unsigned char *) pack->buffer) + sizeof (struct low_res_header);
-                    //unsigned char * dest_part = myimage + 400 * 300 * 3 * (item->x + posy * item->y) + low_header->pos * 400 * 30 * 3;
-                    //printf("inserting in offset: %d\n", 400 * 300 * 3 * (item->x + posy * item->y) + low_header->pos * 400 * 30 * 3);
-                    //memcpy(dest_part, image_part, 400 * 30 * 3);
-                    unsigned int offsetx = 400*item->y;
-                    unsigned int offsety = 300*item->x + low_header->pos*30;
-                    printf("offset: x: %d, y: %d %ld\n", offsetx, offsety, low_header->mac);
-                    glTexSubImage2D(GL_TEXTURE_2D,
-                            0,
-                            offsetx,
-                            offsety,
-                            400,
-                            30,
-                            GL_RGB,
-                            GL_UNSIGNED_BYTE,
-                            image_part);
-                }
+                    struct mac_list * item = searchList(low_header->mac, 0);
+                    if (item != 0) {
+                        //printf("item: %d %d, pos %d\n", item->x, item->y, low_header->pos);
+                        unsigned char * image_part = ((unsigned char *) pack->buffer) + sizeof (struct low_res_header);
+                        //unsigned char * dest_part = myimage + 400 * 300 * 3 * (item->x + posy * item->y) + low_header->pos * 400 * 30 * 3;
+                        //printf("inserting in offset: %d\n", 400 * 300 * 3 * (item->x + posy * item->y) + low_header->pos * 400 * 30 * 3);
+                        //memcpy(dest_part, image_part, 400 * 30 * 3);
+                        unsigned int offsetx = 400 * item->y;
+                        unsigned int offsety = 300 * item->x + low_header->pos * 30;
+                        printf("offset: x: %d, y: %d %ld\n", offsetx, offsety, low_header->mac);
+                        glTexSubImage2D(GL_TEXTURE_2D,
+                                0,
+                                offsetx,
+                                offsety,
+                                400,
+                                30,
+                                GL_RED, //GL_RGB
+                                GL_UNSIGNED_BYTE,
+                                image_part);
+                    }
                 }
                 free(pack->buffer);
                 free(pack);
 
                 break;
             }
+            default:
+                printf("strange packet arrived\n");
+                free(pack->buffer);
+                free(pack);
         }
     }
 }
@@ -328,22 +333,24 @@ static void Render() {
                  GL_UNSIGNED_BYTE, 
                  myimage);*/
     updateBuffer();
-    
     gProgram->setUniform("tex", 0); //set to 0 because the texture is bound to GL_TEXTURE0
 
     // bind the VAO (the triangle)
     glBindVertexArray(gVAO);
-    
+
     // draw the VAO
     glDrawArrays(GL_TRIANGLES, 0, 6);
-    
+
     // unbind the VAO, the program and the texture
     glBindVertexArray(0);
+
     glBindTexture(GL_TEXTURE_2D, 0);
+
     gProgram->stopUsing();
-    
+
     // swap the display buffers (displays what was just drawn)
     glfwSwapBuffers(gWindow);
+
 }
 // the program starts here
 void AppMain() {

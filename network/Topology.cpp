@@ -190,6 +190,7 @@ void Topology::add_device_entry(struct packet_map* map){
 }
 
 struct device_info* Topology::get_device_entry(uint64_t mac){
+    printf("search for mac: %ld ", mac);
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     unsigned long currenttime = current.tv_sec * 1000 + current.tv_nsec / 1000000;
@@ -197,10 +198,10 @@ struct device_info* Topology::get_device_entry(uint64_t mac){
     struct device_info *item = device_first;
 
     if (mac == 0) {
-        currenttime += 5000;
+        //currenttime += 5000;
         while (item != 0) {
-            //printf("time comp: %ld %ld\n", item->timeout, currenttime);
-            if (item->timeout <= currenttime) {
+            printf("time comp: %ld %ld %lx\n", item->timeout, currenttime, item->mac);
+            if (item->timeout > currenttime) {
                 currenttime = item->timeout;
                 ret = item;
             }
@@ -208,11 +209,16 @@ struct device_info* Topology::get_device_entry(uint64_t mac){
         }
     } else {
         while (item != 0) {
-            if (item->mac == mac && item->timeout > currenttime) {
+            if (item->mac == mac && item->timeout >= currenttime) {
                 ret = item;
             }
             item = item->next;
         }
+    }
+    if(ret != 0){
+        printf("device found: %lx\n", ret->mac);
+    }else{
+        printf("device found: null");
     }
     return ret;
 }
@@ -228,7 +234,7 @@ void Topology::set_devices_reach(){
 
 
 void Topology::add_unexplored_entry(uint64_t mac, unsigned long timeout){
-    //printf("add unexplored entry %lx, %ld\n", mac, timeout);
+    printf("add unexplored entry %lx, %ld\n", mac, timeout);
 
     struct topo_unexplored* item = (struct topo_unexplored *) malloc(sizeof(struct topo_unexplored));
     memset(item, 0, sizeof(struct topo_unexplored));
@@ -272,6 +278,12 @@ struct topo_unexplored* Topology::get_unexplored_entry(){
     }
     if(ret != 0 && old != 0){
         old->next = ret->next;
+    }
+    if(ret != 0){
+        printf("get unexp: %lx\n", ret->mac);
+    }
+    else{
+        printf("get unexp: null\n");
     }
     return ret;
 }
@@ -417,7 +429,7 @@ void Topology::calc_topo(struct temp_topo* cur, uint8_t search, int8_t x, int8_t
             cur->x = x;
             cur->y = y;
             if (mode == 0) {
-                //printf("Pos: (%d %d) mac %lx\n", cur->x, cur->y, cur->mac);
+                printf("Pos: (%d %d) mac %lx\n", cur->x, cur->y, cur->mac);
 
                 if (min_x > x)
                     min_x = x;

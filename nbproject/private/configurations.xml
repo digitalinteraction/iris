@@ -2077,6 +2077,198 @@
       </df>
       <df name="wiringPi">
       </df>
+      <df name="zlib">
+        <df name="zlib-1.2.8">
+          <df name="amiga">
+          </df>
+          <df name="as400">
+          </df>
+          <df name="CMakeFiles">
+            <df name="2.8.12.2">
+              <df name="CompilerIdC">
+                <in>CMakeCCompilerId.c</in>
+              </df>
+            </df>
+            <df name="CheckTypeSize">
+              <in>OFF64_T.c</in>
+            </df>
+            <df name="CMakeTmp">
+            </df>
+            <df name="example.dir">
+              <df name="test">
+              </df>
+            </df>
+            <df name="example64.dir">
+              <df name="test">
+              </df>
+            </df>
+            <df name="minigzip.dir">
+              <df name="test">
+              </df>
+            </df>
+            <df name="minigzip64.dir">
+              <df name="test">
+              </df>
+            </df>
+            <df name="zlib.dir">
+            </df>
+            <df name="zlibstatic.dir">
+            </df>
+          </df>
+          <df name="contrib">
+            <df name="ada">
+            </df>
+            <df name="amd64">
+              <in>amd64-match.S</in>
+            </df>
+            <df name="asm686">
+              <in>match.S</in>
+            </df>
+            <df name="blast">
+              <in>blast.c</in>
+              <in>blast.h</in>
+            </df>
+            <df name="delphi">
+            </df>
+            <df name="dotzlib">
+              <df name="DotZLib">
+              </df>
+            </df>
+            <df name="gcc_gvmat64">
+              <in>gvmat64.S</in>
+            </df>
+            <df name="infback9">
+              <in>infback9.c</in>
+              <in>infback9.h</in>
+              <in>inffix9.h</in>
+              <in>inflate9.h</in>
+              <in>inftree9.c</in>
+              <in>inftree9.h</in>
+            </df>
+            <df name="inflate86">
+              <in>inffas86.c</in>
+              <in>inffast.S</in>
+            </df>
+            <df name="iostream">
+              <in>test.cpp</in>
+              <in>zfstream.cpp</in>
+              <in>zfstream.h</in>
+            </df>
+            <df name="iostream2">
+              <in>zstream.h</in>
+              <in>zstream_test.cpp</in>
+            </df>
+            <df name="iostream3">
+              <in>test.cc</in>
+              <in>zfstream.cc</in>
+              <in>zfstream.h</in>
+            </df>
+            <df name="masmx64">
+              <in>gvmat64.asm</in>
+              <in>inffas8664.c</in>
+              <in>inffasx64.asm</in>
+            </df>
+            <df name="masmx86">
+              <in>inffas32.asm</in>
+              <in>match686.asm</in>
+            </df>
+            <df name="minizip">
+              <in>crypt.h</in>
+              <in>ioapi.c</in>
+              <in>ioapi.h</in>
+              <in>iowin32.c</in>
+              <in>iowin32.h</in>
+              <in>miniunz.c</in>
+              <in>minizip.c</in>
+              <in>mztools.c</in>
+              <in>mztools.h</in>
+              <in>unzip.c</in>
+              <in>unzip.h</in>
+              <in>zip.c</in>
+              <in>zip.h</in>
+            </df>
+            <df name="pascal">
+            </df>
+            <df name="puff">
+              <in>puff.c</in>
+              <in>puff.h</in>
+              <in>pufftest.c</in>
+            </df>
+            <df name="testzlib">
+              <in>testzlib.c</in>
+            </df>
+            <df name="untgz">
+              <in>untgz.c</in>
+            </df>
+            <df name="vstudio">
+              <df name="vc10">
+              </df>
+              <df name="vc11">
+              </df>
+              <df name="vc9">
+              </df>
+            </df>
+          </df>
+          <df name="doc">
+          </df>
+          <df name="examples">
+            <in>enough.c</in>
+            <in>fitblk.c</in>
+            <in>gun.c</in>
+            <in>gzappend.c</in>
+            <in>gzjoin.c</in>
+            <in>gzlog.c</in>
+            <in>gzlog.h</in>
+            <in>zpipe.c</in>
+            <in>zran.c</in>
+          </df>
+          <df name="msdos">
+          </df>
+          <df name="nintendods">
+          </df>
+          <df name="old">
+            <df name="os2">
+            </df>
+          </df>
+          <df name="qnx">
+          </df>
+          <df name="test">
+            <in>example.c</in>
+            <in>infcover.c</in>
+            <in>minigzip.c</in>
+          </df>
+          <df name="watcom">
+          </df>
+          <df name="win32">
+          </df>
+          <in>adler32.c</in>
+          <in>compress.c</in>
+          <in>crc32.c</in>
+          <in>crc32.h</in>
+          <in>deflate.c</in>
+          <in>deflate.h</in>
+          <in>gzclose.c</in>
+          <in>gzguts.h</in>
+          <in>gzlib.c</in>
+          <in>gzread.c</in>
+          <in>gzwrite.c</in>
+          <in>infback.c</in>
+          <in>inffast.c</in>
+          <in>inffast.h</in>
+          <in>inffixed.h</in>
+          <in>inflate.c</in>
+          <in>inflate.h</in>
+          <in>inftrees.c</in>
+          <in>inftrees.h</in>
+          <in>trees.c</in>
+          <in>trees.h</in>
+          <in>uncompr.c</in>
+          <in>zconf.h</in>
+          <in>zlib.h</in>
+          <in>zutil.c</in>
+          <in>zutil.h</in>
+        </df>
+      </df>
     </df>
   </logicalFolder>
   <projectmakefile></projectmakefile>
