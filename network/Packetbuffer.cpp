@@ -21,7 +21,7 @@
 #include <cstring>
 
 Packetbuffer::Packetbuffer(uint8_t id) {
-    signalfd = eventfd(0, 0);
+    signalfd = eventfd(0, EFD_SEMAPHORE);
     first = 0;
     last = 0;
     cnt = 0;
