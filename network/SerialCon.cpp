@@ -300,12 +300,15 @@ void SerialCon::slip_run() {
                 while (send_buf->get(&pack) == 0) {
                     if (pack->size > 0) {
                         int ret = slip_send((unsigned char*) pack->buffer, pack->size, pack->addr);
+                        printf("ret val is %d\n", ret);
                         if (ret != 0) {
                             printf("Error SerialCon: sending packet did not work\n");
                         }
                     }
+                    printf("free %p %p\n", pack->buffer, pack);
                     free(pack->buffer);
                     free(pack);
+                    printf("free end\n");
 
                 }
             }
