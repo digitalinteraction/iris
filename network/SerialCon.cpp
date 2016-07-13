@@ -90,20 +90,23 @@ SerialCon::SerialCon(Packetbuffer *sendbuf, Packetbuffer *recvbuf) {
 SerialCon::~SerialCon() {
 }
 
-int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
+int SerialCon::slip_send(unsigned char *p, uint32_t len, uint32_t nr) {
     //printf("SerialCon:: sending packet out of nr %d fd %d\n", nr, fd_array[nr]);
     if (len <= 0 || p == 0) {
         return -1;
     }
+    printf("send: %p %d %d\n", p, len, nr);
     
-    if(nr > 256){
+    if(nr >= 4){
+        printf("start_udp\n");
         client_addr.sin_addr.s_addr = nr;
         sendto(fd_array[4], p, len, 0, (struct sockaddr *)&client_addr, clen);
+        printf("end udp\n");
         return 0;
     }
     
     
-    
+    printf("start serial\n");
     ssize_t ret = 0;
 
     write(fd_array[nr], &end, 1);
@@ -117,6 +120,7 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
                 ret = write(fd_array[nr], &esc, 1);
                 ret += write(fd_array[nr], &esc_end, 1);
                 if (ret != 2) {
+                    printf("serial error 0\n");
                     return -1;
                 }
                 break;
@@ -126,6 +130,7 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
                 ret = write(fd_array[nr], &esc, 1);
                 ret += write(fd_array[nr], &esc_esc, 1);
                 if (ret != 2) {
+                    printf("serial error 1\n");
                     return -1;
                 }
                 break;
@@ -133,6 +138,7 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
                 //send_char(*p);
                 ret = write(fd_array[nr], p, 1);
                 if (ret != 1) {
+                    printf("serial error 2\n");
                     return -1;
                 }
         }
@@ -141,8 +147,10 @@ int SerialCon::slip_send(unsigned char *p, uint16_t len, uint32_t nr) {
     //send_char(END);
     ret = write(fd_array[nr], &end, 1);
     if (ret != 1) {
+        printf("serial error 3\n");
         return -1;
     }
+    printf("end serial\n");
     return 0;
 }
 
@@ -284,29 +292,21 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-printf("H\n");
             if (FD_ISSET(fd_array[5], &readfs)) {
                 uint64_t val = 0;
                 read(fd_array[5], &val, sizeof (uint64_t));
-                printf("sending: val %lld", val);
+                struct packet * pack;
 
-                for (int i = 0; i < val; i++) {
-                    struct packet * pack;
-                    if (send_buf->get(&pack) == 0) {
-                        printf(" size: %ld", pack->size);
-                        if (pack->size > 0) {
-                            printf("sending to addr: %ld\n", pack->addr);
-                            int ret = slip_send((unsigned char*) pack->buffer, pack->size, pack->addr);
-                            if (ret != 0) {
-                                printf("Error SerialCon: sending packet did not work\n");
-                            }
+                while (send_buf->get(&pack) == 0) {
+                    if (pack->size > 0) {
+                        int ret = slip_send((unsigned char*) pack->buffer, pack->size, pack->addr);
+                        if (ret != 0) {
+                            printf("Error SerialCon: sending packet did not work\n");
                         }
-                        free(pack->buffer);
-                        free(pack);
-
-                    } else {
-                        printf("Error SerialCon: Buffer send_buffer is empty although select indicates data in buffer\n");
                     }
+                    free(pack->buffer);
+                    free(pack);
+
                 }
             }
 

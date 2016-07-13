@@ -103,7 +103,7 @@ private:
     
     
     
-    int slip_send(unsigned char *p, uint16_t len, uint32_t nr);
+    int slip_send(unsigned char *p, uint32_t len, uint32_t nr);
     int slip_recv(unsigned char *p, unsigned char c, int *state, int*size);
     int init_serial(int nr);
     
