@@ -36,6 +36,7 @@
 #include "tdogl/Program.h"
 #include "tdogl/Texture.h"
 #include <thread>
+#include <zlib.h>
 
 #define WIDTH 400
 #define HEIGHT 300
@@ -67,6 +68,50 @@ struct mac_list *last_item = 0;
 uint8_t posx = 0;
 uint8_t posy = 0;
 
+int GetMaxCompressedLen( int nLenSrc ) 
+{
+    int n16kBlocks = (nLenSrc+16383) / 16384; // round up any fraction of a block
+    return ( nLenSrc + 6 + (n16kBlocks*5) );
+}
+int CompressData( const unsigned char* abSrc, int nLenSrc, unsigned char* abDst, int nLenDst )
+{
+    z_stream zInfo ={0};
+    zInfo.total_in=  zInfo.avail_in=  nLenSrc;
+    zInfo.total_out= zInfo.avail_out= nLenDst;
+    zInfo.next_in= (unsigned char*)abSrc;
+    zInfo.next_out= abDst;
+
+    int nErr, nRet= -1;
+    nErr= deflateInit( &zInfo, Z_DEFAULT_COMPRESSION ); // zlib function
+    if ( nErr == Z_OK ) {
+        nErr= deflate( &zInfo, Z_FINISH );              // zlib function
+        if ( nErr == Z_STREAM_END ) {
+            nRet= zInfo.total_out;
+        }
+    }
+    deflateEnd( &zInfo );    // zlib function
+    return( nRet );
+}
+
+int UncompressData( const unsigned char* abSrc, int nLenSrc, unsigned char* abDst, int nLenDst )
+{
+    z_stream zInfo ={0};
+    zInfo.total_in=  zInfo.avail_in=  nLenSrc;
+    zInfo.total_out= zInfo.avail_out= nLenDst;
+    zInfo.next_in= (unsigned char*)abSrc;
+    zInfo.next_out= abDst;
+
+    int nErr, nRet= -1;
+    nErr= inflateInit( &zInfo );               // zlib function
+    if ( nErr == Z_OK ) {
+        nErr= inflate( &zInfo, Z_FINISH );     // zlib function
+        if ( nErr == Z_STREAM_END ) {
+            nRet= zInfo.total_out;
+        }
+    }
+    inflateEnd( &zInfo );   // zlib function
+    return( nRet ); // -1 or len of output
+}
 
 // loads the vertex shader and fragment shader, and links them to make the global gProgram
 static void LoadShaders() {

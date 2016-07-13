@@ -24,6 +24,7 @@ link_directories(/opt/vc/lib)
 
 #find_package(OpenCV REQUIRED core imgproc highgui video)
 find_package(OpenCV REQUIRED)
+find_package(ZLIB REQUIRED)
 
 set (GL_SCENE_SOURCES
    gl_scenes/own.c)

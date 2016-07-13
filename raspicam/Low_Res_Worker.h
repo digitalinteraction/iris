@@ -60,6 +60,9 @@ private:
     float learning;
     Packetbuffer *out;
     NetworkControl *nc;
+    int GetMaxCompressedLen( int nLenSrc );
+    int CompressData( const unsigned char* abSrc, int nLenSrc, unsigned char* abDst, int nLenDst );
+    int UncompressData( const unsigned char* abSrc, int nLenSrc, unsigned char* abDst, int nLenDst );
 };
 
 #endif /* LOW_RES_WORKER_H */

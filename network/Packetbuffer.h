@@ -23,12 +23,16 @@
 #define IMAGE_PACKET 1
 #define TOPO_PACKET 2
 #define CONTROL_PACKET 3
+#define MAX_PACKET_SIZE 60000
 
 struct low_res_header{
     uint8_t port;
     uint8_t pos;
     uint64_t mac;
     uint32_t size;
+    uint32_t comp_size;
+    uint16_t resx;
+    uint16_t resy;
 };
 
 struct topo_list{

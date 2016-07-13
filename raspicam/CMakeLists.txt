@@ -24,6 +24,7 @@ link_directories(/opt/vc/lib)
 
 #find_package(OpenCV REQUIRED core imgproc highgui video)
 find_package(OpenCV REQUIRED)
+find_package(ZLIB REQUIRED)
 
 set (GL_SCENE_SOURCES
    gl_scenes/own.c)
@@ -39,7 +40,7 @@ add_executable(main ${COMMON_SOURCES} main.cpp Image_Capture.cpp Low_Res_Worker.
 set (MMAL_LIBS mmal_core mmal_util mmal_vc_client)
 
 #target_link_libraries(raspistill ${MMAL_LIBS} vcos bcm_host GLESv2 EGL m)
-target_link_libraries(main ${MMAL_LIBS} vcos bcm_host GLESv2 EGL m wiringPi ${OpenCV_LIBS})
+target_link_libraries(main ${MMAL_LIBS} vcos bcm_host GLESv2 EGL m wiringPi ${OpenCV_LIBS} ${ZLIB_LIBRARIES})
 
 
 #install(TARGETS raspistill RUNTIME DESTINATION bin)
