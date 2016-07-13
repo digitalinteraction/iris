@@ -55,7 +55,7 @@ struct packet{
 
 class Packetbuffer {
 public:
-    Packetbuffer();
+    Packetbuffer(uint8_t id);
     virtual ~Packetbuffer();
     int add(uint32_t size, uint32_t addr, void *buffer);
     int get(struct packet ** pack);
@@ -66,7 +66,7 @@ private:
     struct packet *last;
     uint16_t cnt;
     std::mutex lock;
-    int id;
+    uint8_t id;
 };
 
 #endif /* PACKETBUFFER_H */

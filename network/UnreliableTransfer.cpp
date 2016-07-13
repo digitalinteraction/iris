@@ -21,8 +21,8 @@
 
 UnreliableTransfer::UnreliableTransfer(ReliableTransfer *rel, Topology *topo, DebugTransfer *debug) {
 
-    this->send_buf = new Packetbuffer();
-    this->recv_buf = new Packetbuffer();
+    this->send_buf = new Packetbuffer(5);
+    this->recv_buf = new Packetbuffer(6);
     this->recv_fd = recv_buf->signalfd;
 
     sercon = new SerialCon(send_buf, recv_buf);

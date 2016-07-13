@@ -31,14 +31,14 @@ using namespace std;
  */
 int main(int argc, char** argv) {
     UnreliableTransfer *unrel;
-    Packetbuffer *image_out = new Packetbuffer();
+    Packetbuffer *image_out = new Packetbuffer(7);
     Topology *topo = new Topology(&unrel);
     ReliableTransfer *rel = new ReliableTransfer(&unrel, image_out, topo);
     DebugTransfer *debug = new DebugTransfer();
     unrel = new UnreliableTransfer(rel, topo, debug);
     
     
-    Packetbuffer *out = new Packetbuffer();
+    Packetbuffer *out = new Packetbuffer(8);
     
     //delete
     char sendstring[] = "Testing Reliable Transfer\n";

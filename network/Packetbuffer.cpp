@@ -20,13 +20,13 @@
 #include <stdint.h>
 #include <cstring>
 
-Packetbuffer::Packetbuffer() {
+Packetbuffer::Packetbuffer(uint8_t id) {
     signalfd = eventfd(0, 0);
     first = 0;
     last = 0;
     cnt = 0;
     lock.unlock();
-    id = rand()%20;
+    this->id = id;
 #ifdef DEBUG
     printf("Packetbuffer:: startup completed\n");
 #endif
@@ -38,7 +38,7 @@ Packetbuffer::~Packetbuffer() {
 int Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer) {
     lock.lock();
     if(size <= 0 || buffer == 0 || cnt > 100){
-        printf("Error Packetbuffer add: size %d, addr %d, buffer %p, cnt %d\n", size, addr, buffer, cnt);
+        printf("Error Packetbuffer add: size %d, addr %d, buffer %p, cnt %d, id %d\n", size, addr, buffer, cnt, id);
         return -1;
     }
     
