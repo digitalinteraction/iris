@@ -98,7 +98,7 @@ int SerialCon::slip_send(unsigned char *p, uint32_t len, uint32_t nr) {
     
     if(nr >= 4){
         client_addr.sin_addr.s_addr = nr;
-        sendto(fd_array[4], p, len, 0, (struct sockaddr *)&client_addr, clen);
+        sendto(fd_array[4], p, len, MSG_DONTWAIT, (struct sockaddr *)&client_addr, clen);
         return 0;
     }
     
