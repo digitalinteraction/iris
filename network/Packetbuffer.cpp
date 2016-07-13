@@ -39,6 +39,7 @@ int Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer) {
     lock.lock();
     if(size <= 0 || buffer == 0 || cnt > 100){
         printf("Error Packetbuffer add: size %d, addr %d, buffer %p, cnt %d, id %d\n", size, addr, buffer, cnt, id);
+        lock.unlock();
         return -1;
     }
     

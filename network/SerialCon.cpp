@@ -95,18 +95,14 @@ int SerialCon::slip_send(unsigned char *p, uint32_t len, uint32_t nr) {
     if (len <= 0 || p == 0) {
         return -1;
     }
-    printf("send: %p %d %d\n", p, len, nr);
     
     if(nr >= 4){
-        printf("start_udp\n");
         client_addr.sin_addr.s_addr = nr;
         sendto(fd_array[4], p, len, 0, (struct sockaddr *)&client_addr, clen);
-        printf("end udp\n");
         return 0;
     }
     
     
-    printf("start serial\n");
     ssize_t ret = 0;
 
     write(fd_array[nr], &end, 1);
@@ -120,7 +116,6 @@ int SerialCon::slip_send(unsigned char *p, uint32_t len, uint32_t nr) {
                 ret = write(fd_array[nr], &esc, 1);
                 ret += write(fd_array[nr], &esc_end, 1);
                 if (ret != 2) {
-                    printf("serial error 0\n");
                     return -1;
                 }
                 break;
@@ -130,7 +125,6 @@ int SerialCon::slip_send(unsigned char *p, uint32_t len, uint32_t nr) {
                 ret = write(fd_array[nr], &esc, 1);
                 ret += write(fd_array[nr], &esc_esc, 1);
                 if (ret != 2) {
-                    printf("serial error 1\n");
                     return -1;
                 }
                 break;
@@ -138,7 +132,6 @@ int SerialCon::slip_send(unsigned char *p, uint32_t len, uint32_t nr) {
                 //send_char(*p);
                 ret = write(fd_array[nr], p, 1);
                 if (ret != 1) {
-                    printf("serial error 2\n");
                     return -1;
                 }
         }
@@ -147,10 +140,8 @@ int SerialCon::slip_send(unsigned char *p, uint32_t len, uint32_t nr) {
     //send_char(END);
     ret = write(fd_array[nr], &end, 1);
     if (ret != 1) {
-        printf("serial error 3\n");
         return -1;
     }
-    printf("end serial\n");
     return 0;
 }
 
@@ -197,12 +188,10 @@ void SerialCon::slip_run() {
 
 
     while (processing) {
-        printf("start");
         FD_ZERO(&readfs);
         FD_ZERO(&writefs);
         FD_ZERO(&exceptfs);
         res = 0;
-        printf("fd zero set\n");
 #ifdef CLIENT_SIDE
         for (i = 0; i < 6; i++) {
             FD_SET(fd_array[i], &readfs);
@@ -213,16 +202,11 @@ void SerialCon::slip_run() {
             FD_SET(fd_array[i], &readfs);
         }
 #endif
-        printf("fd set set\n");
         Timeout.tv_usec = 5000;
         Timeout.tv_sec = 0;
-        printf("calling select\n");
         res = select(maxfd, &readfs, &writefs, &exceptfs, &Timeout);
-        printf("select found something\n");
         if (res <= 0) {
-            printf("timeout\n");
         } else {
-            printf("checking fd 0 %d\n", FD_ISSET(fd_array[0], &readfs));
             if (FD_ISSET(fd_array[0], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[0], &c, 1) > 0){
@@ -239,7 +223,6 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            printf("checking fd 1 %d\n", FD_ISSET(fd_array[1], &readfs));
             if (FD_ISSET(fd_array[1], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[1], &c, 1) > 0){
@@ -256,7 +239,6 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            printf("checking fd 2 %d\n", FD_ISSET(fd_array[2], &readfs));
             if (FD_ISSET(fd_array[2], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[2], &c, 1) > 0){
@@ -273,7 +255,6 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            printf("checking fd 3 %d\n", FD_ISSET(fd_array[3], &readfs));
             if (FD_ISSET(fd_array[3], &readfs)) {
                 unsigned char c;
                 while(read(fd_array[3], &c, 1) > 0){
@@ -290,7 +271,6 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            printf("checking fd 4 %d\n", FD_ISSET(fd_array[4], &readfs));
             //printf("Socket : %d %d %d\n", FD_ISSET(fd_array[4], &readfs), FD_ISSET(fd_array[4], &writefs), FD_ISSET(fd_array[4], &exceptfs));
             if (FD_ISSET(fd_array[4], &readfs)) {
                 //printf("got something from udp port\n"); fflush(stdout);
@@ -302,35 +282,24 @@ void SerialCon::slip_run() {
                     }
                 }
             }
-            printf("checking fd 5 %d\n", FD_ISSET(fd_array[5], &readfs));
             if (FD_ISSET(fd_array[5], &readfs)) {
                 uint64_t val = 0;
-                printf("read\n");
                 read(fd_array[5], &val, sizeof (uint64_t));
-                printf("read end\n");
                 struct packet * pack;
-                printf("start if\n");
                 if (send_buf->get(&pack) == 0) {
-                    printf("in if\n");
                     if (pack->size > 0) {
-                        printf("send\n");
                         int ret = slip_send((unsigned char*) pack->buffer, pack->size, pack->addr);
-                        printf("ret val is %d\n", ret);
                         if (ret != 0) {
                             printf("Error SerialCon: sending packet did not work\n");
                         }
                     }
-                    printf("free %p %p\n", pack->buffer, pack);
                     free(pack->buffer);
                     free(pack);
-                    printf("free end\n");
 
                 }
-                printf("send packets, line: %lld\n\n", val);
             }
 
         }
-        printf("end\n");
         //slip_send(test, 7, 0);
         //slip_send(test, 7, 1);
         //slip_send(test, 7, 2);
