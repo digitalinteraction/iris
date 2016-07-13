@@ -309,8 +309,11 @@ void SerialCon::slip_run() {
                 read(fd_array[5], &val, sizeof (uint64_t));
                 printf("read end\n");
                 struct packet * pack;
+                printf("start if\n");
                 if (send_buf->get(&pack) == 0) {
+                    printf("in if\n");
                     if (pack->size > 0) {
+                        printf("send\n");
                         int ret = slip_send((unsigned char*) pack->buffer, pack->size, pack->addr);
                         printf("ret val is %d\n", ret);
                         if (ret != 0) {
