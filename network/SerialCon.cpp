@@ -219,7 +219,7 @@ void SerialCon::slip_run() {
  
                             int ret = recv_buf->add(size0, 0, recv_buf0);
                             if (ret != 0) {
-                               // printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
+                                printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
                         state0 = 0;
@@ -235,7 +235,7 @@ void SerialCon::slip_run() {
  
                             int ret = recv_buf->add(size1, 1, recv_buf1);
                             if (ret != 0) {
-                                //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
+                                printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
                         state1 = 0;
@@ -251,7 +251,7 @@ void SerialCon::slip_run() {
  
                             int ret = recv_buf->add(size2, 2, recv_buf2);
                             if (ret != 0) {
-                                //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
+                                printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
                         state2 = 0;
@@ -267,7 +267,7 @@ void SerialCon::slip_run() {
  
                             int ret = recv_buf->add(size3, 3, recv_buf3);
                             if (ret != 0) {
-                                //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
+                                printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
                         state3 = 0;
@@ -282,7 +282,7 @@ void SerialCon::slip_run() {
                 if (n > 0) {
                     int ret = recv_buf->add(n, client_addr.sin_addr.s_addr, recv_buf4);
                     if (ret != 0) {
-                        //printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
+                        printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                     }
                 }
             }
@@ -295,15 +295,9 @@ void SerialCon::slip_run() {
                     struct packet * pack;
                     if (send_buf->get(&pack) == 0) {
                         if (pack->size > 0) {
-                            /*
-                            int r = rand() % 10000;
-                            if (r == 5423) {
-                                //printf("error inserted\n");
-                                ((unsigned char*)pack->buffer)[0] = 0xFF;
-                            }*/
                             int ret = slip_send((unsigned char*) pack->buffer, pack->size, pack->addr);
                             if (ret != 0) {
-                                //printf("Error SerialCon: sending packet did not work\n");
+                                printf("Error SerialCon: sending packet did not work\n");
                             }
                         }
                         free(pack->buffer);
@@ -354,10 +348,10 @@ int SerialCon::init_serial(int nr) {
     temp->c_cc[VTIME] = 5;
     tty = open(name, O_RDWR | O_NONBLOCK | O_NOCTTY);
     free(name);
-    //cfsetospeed(temp, B9600); // 115200 baud
-    //cfsetispeed(temp, B9600); // 115200 baud
-    cfsetospeed(temp, B1000000); // 115200 baud
-    cfsetispeed(temp, B1000000); // 115200 baud
+    cfsetospeed(temp, B38400); // 115200 baud
+    cfsetispeed(temp, B38400); // 115200 baud
+    //cfsetospeed(temp, B1000000); // 115200 baud
+    //cfsetispeed(temp, B1000000); // 115200 baud
     tcsetattr(tty, TCSANOW, temp);
     //sleep(2); //required to make flush work, for some reason
     //sleep(2);
