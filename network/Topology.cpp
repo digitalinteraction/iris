@@ -118,10 +118,10 @@ int Topology::sendlist() {
         //insert case of timeout/invalid entry
         
         map.mac = mac;
-        map.up = mapping[1];
-        map.down = mapping[0];
-        map.left = mapping[3];
-        map.right = mapping[2];
+        map.up = mapping[0]; //1
+        map.down = mapping[3]; //0
+        map.left = mapping[1]; //3
+        map.right = mapping[2]; //2
         
         //print_mapping(map);
         
@@ -357,6 +357,7 @@ void Topology::build_mapping(){
                         memset(current->down, 0, sizeof (struct temp_topo));
                         current->down->mac = temp->mac;
                         current->down->up = current;
+                        printf("setting %lx as down\n", temp->mac);
                         add_unexplored_entry(temp->mac, temp->timeout);
                     }
                     temp = get_device_entry(cur->map->up);
@@ -365,6 +366,7 @@ void Topology::build_mapping(){
                         memset(current->up, 0, sizeof (struct temp_topo));
                         current->up->mac = temp->mac;
                         current->up->down = current;
+                        printf("setting %lx as up\n", temp->mac);
                         add_unexplored_entry(temp->mac, temp->timeout);
                     }
                     temp = get_device_entry(cur->map->left);
@@ -373,6 +375,7 @@ void Topology::build_mapping(){
                         memset(current->left, 0, sizeof (struct temp_topo));
                         current->left->mac = temp->mac;
                         current->left->right = current;
+                        printf("setting %lx as left\n", temp->mac);
                         add_unexplored_entry(temp->mac, temp->timeout);
                     }
                     temp = get_device_entry(cur->map->right);
@@ -381,6 +384,7 @@ void Topology::build_mapping(){
                         memset(current->right, 0, sizeof (struct temp_topo));
                         current->right->mac = temp->mac;
                         current->right->left = current;
+                        printf("setting %lx as right\n", temp->mac);
                         add_unexplored_entry(temp->mac, temp->timeout);
                     }
                 }
