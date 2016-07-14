@@ -120,8 +120,8 @@ int Topology::sendlist() {
         map.mac = mac;
         map.up = mapping[0]; //1
         map.down = mapping[3]; //0
-        map.left = mapping[1]; //3
-        map.right = mapping[2]; //2
+        map.left = mapping[2]; //3
+        map.right = mapping[1]; //2
         
         //print_mapping(map);
         
