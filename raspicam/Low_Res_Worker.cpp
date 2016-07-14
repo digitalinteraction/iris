@@ -41,6 +41,7 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc) {
     
     this->out = out;
     this->nc = nc;
+    pos = 0;
     
     //pMOG2 = bgsegm::createBackgroundSubtractorGMG();
 }
@@ -60,8 +61,12 @@ void Low_Res_Worker::run(){
             pthread_mutex_lock(&buffer_lock);
             counter++;
             //process_image(low_patch.buffer, low_patch.size);
-            if(nr % 10 == 0){
-                send_to_server(low_patch.buffer, low_patch.size, 1);
+            if(nr % 2 == 0){
+                send_to_server(low_patch.buffer, low_patch.size, 1, pos);
+                pos++;
+                if(pos == 10){
+                    pos = 0;
+                }
             }
             nr++;
             nr_img++;
@@ -219,7 +224,7 @@ Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
     }
 }
 
-void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t mode) {
+void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos) {
     //printf("sending image to server %ld \n", image_size);
     if (nc->unrel->send_buf->getCnt() < 70) {
         if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 4) && image_size < 500000) {
@@ -254,24 +259,25 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t m
             new_size = LOW_OUTPUT_X * LOW_OUTPUT_Y * color * sizeof (uint8_t);
 
             size_t part_size = new_size / 10;
-            int ret = 0;
-            for (int i = 0; i < 10; i++) {
-                ret = 0;
+            //int ret = 0;
+            //for (int i = 0; i < 10; i++) {
+                //ret = 0;
 
                 uint32_t size = part_size + sizeof (struct low_res_header);
                 struct low_res_header * header = (struct low_res_header *) malloc(size);
-                memcpy((((unsigned char *) header) + sizeof (struct low_res_header)), (void*) (img + i * part_size), part_size);
+                memcpy((((unsigned char *) header) + sizeof (struct low_res_header)), (void*) (img + pos * part_size), part_size);
                 header->mac = nc->topo->mac;
                 header->port = IMAGE_PACKET;
-                header->pos = i;
+                header->pos = pos;
                 header->mac = nc->topo->mac;
                 header->size = part_size;
-                ret = out->add(size, addr, (void*) header);
-                if (ret != 0)
-                    i--;
+                //ret = out->add(size, addr, (void*) header);
+                out->add(size, addr, (void*) header);
+                //if (ret != 0)
+                //    i--;
                 free(header);
 
-            }
+            //}
             printf("Send 10 packets: buffer length: %d\n", out->getCnt());
         }
     }
