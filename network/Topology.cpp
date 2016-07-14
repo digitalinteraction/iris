@@ -454,8 +454,8 @@ void Topology::calc_topo(struct temp_topo* cur, uint8_t search, int8_t x, int8_t
                 own->x = x;
                 own->y = y;
             }
-            calc_topo(cur->down, search, x, y + 1, mode);
-            calc_topo(cur->up, search, x, y - 1, mode);
+            calc_topo(cur->down, search, x, y - 1, mode);
+            calc_topo(cur->up, search, x, y + 1, mode);
             calc_topo(cur->left, search, x - 1, y, mode);
             calc_topo(cur->right, search, x+1, y, mode);
             if(mode == 1){

@@ -219,7 +219,7 @@ void updateBuffer() {
                 if (posx != (header->sizex) || posy != (header->sizey)) {
                     posx = header->sizex;
                     posy = header->sizey;
-                    printf("changing framebuffer to %d %d %d %d\n", WIDTH*posx, HEIGHT*posy, posx, posy);
+                    printf("changing framebuffer to %d %d %d %d\n", HEIGHT*posx, WIDTH*posy, posx, posy);
                     free(myimage);
                     size_t size = WIDTH * HEIGHT * 1 * sizeof (unsigned char)*posx*posy;
                     myimage = (unsigned char *) malloc(size);
@@ -234,16 +234,26 @@ void updateBuffer() {
                     glTexImage2D(GL_TEXTURE_2D,
                             0,
                             GL_RED, //GL_RGB
-                            WIDTH*posx,
-                            HEIGHT*posy,
+                            WIDTH*posy,
+                            HEIGHT*posx,
                             0,
                             GL_RED, //GL_RGB
                             GL_UNSIGNED_BYTE,
                             myimage);
                     //glBindTexture(GL_TEXTURE_2D, 0);
-                    glfwSetWindowSize(gWindow, WIDTH*posx, HEIGHT*posy);
-                    glViewport(0,0,WIDTH*posx, HEIGHT*posy);
-                    printf("SETTING window to size: %d %d\n", WIDTH*posx, HEIGHT*posy);
+                    
+                    /*int resx = 0;
+                    int resy = 0;
+                    if(posy > posx){
+                        resx = 800;
+                        resy = (800/posy)*posx;
+                    }else{
+                        resy = 800;
+                        resx = (800/posx)*posy;
+                    }
+                    glfwSetWindowSize(gWindow, resx, resy);
+                    glViewport(0,0,WIDTH*posy,HEIGHT*posx);
+                    printf("SETTING window to size: %d %d\n", HEIGHT*posx, WIDTH*posy);*/
                     deleteList();
                 }
 
@@ -255,7 +265,7 @@ void updateBuffer() {
                             free(temp);
                         }
                         insertList(item->x, item->y, item->mac);
-                        printf("inserting elem: %d %d %ld\n", item->x, item->y, item->mac);
+                        printf("inserting elem: %d %d %lx\n", item->x, item->y, item->mac);
                     }else{
                         /*unsigned int offsetx = 400 * item->x;
                         unsigned int offsety = 300 * item->y;
@@ -285,24 +295,37 @@ void updateBuffer() {
                         //unsigned char * dest_part = myimage + 400 * 300 * 3 * (item->x + posy * item->y) + low_header->pos * 400 * 30 * 3;
                         //printf("inserting in offset: %d\n", 400 * 300 * 3 * (item->x + posy * item->y) + low_header->pos * 400 * 30 * 3);
                         //memcpy(dest_part, image_part, 400 * 30 * 3);
-                        /*uint8_t colr = 70*(item->x + item->y)+40;
+                        
+                        /*uint8_t colr = 70*(item->x + item->y)+4*low_header->pos;
                         for(int i =0; i < 400*30; i++){
                             image_part[i] = colr;
                         }*/
                         
-                        unsigned int offsetx = 400 * item->x;
-                        unsigned int offsety = 300 * item->y + low_header->pos * 30;
-                        //printf("offset: x: %d, y: %d %ld\n", offsetx, offsety, low_header->mac);
+                        //flip image
+                        unsigned char * temp_buf = (unsigned char *)malloc(400*30);
+                        for(int i = 0; i < 30; i++){
+                            for(int j = 0; j < 400; j++){
+                                temp_buf[i*400 + (399-j)] = image_part[i*400 + j];
+                            }
+                        }
+                        
+                        
+                        unsigned int offsety = HEIGHT * (posx - item->x - 1) + low_header->pos * 30;
+                        unsigned int offsetx = WIDTH * item->y;
+
+                        printf("%d %d %d offset: x: %d, y: %d %ld\n", item->x, item->y, low_header->pos, offsetx, offsety, low_header->mac);
                         //printf("setting rect %d %d to %d %d\n", offsetx, offsety, offsetx+400, offsety+30);
-                        glTexSubImage2D(GL_TEXTURE_2D,
-                                0,
-                                offsetx,
-                                offsety,
-                                400,
-                                30,
-                                GL_RED, //GL_RGB
-                                GL_UNSIGNED_BYTE,
-                                image_part);
+                            
+                            glTexSubImage2D(GL_TEXTURE_2D,
+                                    0,
+                                    offsetx,
+                                    offsety,
+                                    400,
+                                    30,
+                                    GL_RED, //GL_RGB
+                                    GL_UNSIGNED_BYTE,
+                                    temp_buf);
+                            free(temp_buf);
                     }
                 }
                 free(pack->buffer);
