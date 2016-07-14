@@ -87,6 +87,7 @@ int Topology::recv(void* buffer, size_t size, uint32_t addr) {
     //printf("ATopology: got packet from %s with size %ld\n", hostaddrp, size);
     
     struct packet_map *map = (struct packet_map *)buffer;
+    
     add_device_entry(map);
 #endif
     return 0;
@@ -117,9 +118,9 @@ int Topology::sendlist() {
         //insert case of timeout/invalid entry
         
         map.mac = mac;
-        map.up = mapping[0];
-        map.down = mapping[3];
-        map.left = mapping[1];
+        map.up = mapping[1];
+        map.down = mapping[0];
+        map.left = mapping[3];
         map.right = mapping[2];
         
         //print_mapping(map);
@@ -164,7 +165,7 @@ void Topology::add_device_entry(struct packet_map* map){
     if(success == 1){
         memcpy(item->map, map, sizeof(struct packet_map));
         item->timeout = currenttime + 5000;
-        //printf("updating packet %lx with time %ld\n", item->mac, item->timeout);
+        printf("updating packet %lx with time %ld\n", item->mac, item->timeout);
 
     }else{
         struct device_info* dev = (struct device_info*) malloc(sizeof(struct device_info));
@@ -173,12 +174,12 @@ void Topology::add_device_entry(struct packet_map* map){
         memcpy(dev->map, map, sizeof(struct packet_map));
         dev->timeout = currenttime + 5000;
         dev->mac = map->mac;
-        //printf("inserting packet %lx with time %ld\n", dev->mac, dev->timeout);
+        printf("inserting packet %lx with time %ld\n", dev->mac, dev->timeout);
         if(device_first == 0){
             device_first = dev;
             device_last = dev;
             dev->next = 0;
-            //printf("insert as start\n");
+            printf("insert as start\n");
         }else{
             device_last->next = dev;
             device_last = dev;
@@ -190,14 +191,14 @@ void Topology::add_device_entry(struct packet_map* map){
 }
 
 struct device_info* Topology::get_device_entry(uint64_t mac){
-    printf("search for mac: %ld ", mac);
+    printf("search for mac: %lx \n", mac);
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     unsigned long currenttime = current.tv_sec * 1000 + current.tv_nsec / 1000000;
     struct device_info *ret = 0;
     struct device_info *item = device_first;
 
-    if (mac == 0) {
+    if (mac == 1) {
         //currenttime += 5000;
         while (item != 0) {
             printf("time comp: %ld %ld %lx\n", item->timeout, currenttime, item->mac);
@@ -218,7 +219,7 @@ struct device_info* Topology::get_device_entry(uint64_t mac){
     if(ret != 0){
         printf("device found: %lx\n", ret->mac);
     }else{
-        printf("device found: null");
+        printf("device found: null\n");
     }
     return ret;
 }
@@ -295,7 +296,7 @@ struct temp_topo* Topology::search_topo(struct temp_topo*cur, uint64_t mac, uint
     struct temp_topo* ret = 0;
     struct temp_topo* temp = 0;
     //printf("search topo: %d %d\n", cur->search, search);
-    //printf("searching fro %lx in %lx\n", mac, cur->mac);
+    printf("searching fro %lx in %lx\n", mac, cur->mac);
     if (cur->search != search) {
         cur->search = search;
         temp = search_topo(cur->down, mac, search);
@@ -312,18 +313,18 @@ struct temp_topo* Topology::search_topo(struct temp_topo*cur, uint64_t mac, uint
             ret = temp;
 
         if (cur->mac == mac) {
-            //printf("found it!\n");
+            printf("found it!\n");
             ret = cur;
         }
     }
-    //printf("return %p\n", ret);
+    printf("return %p\n", ret);
     return ret;
 }
 
 void Topology::build_mapping(){
-    //printf("starting building map\n");
-    struct device_info* root = get_device_entry(0);
-    //printf("root: %lx %ld\n", root->mac, root->timeout);
+    printf("starting building map\n");
+    struct device_info* root = get_device_entry(1);
+    printf("root: %lx %ld\n", root->mac, root->timeout);
     if(root != 0){
     add_unexplored_entry(root->mac, root->timeout);
     
@@ -335,19 +336,19 @@ void Topology::build_mapping(){
     uint8_t search_var = 1;
 
     while (unexp_first != 0) {
-        //printf("get first item!\n");
+        printf("get first item!\n");
         struct topo_unexplored* item = get_unexplored_entry();
-        //printf("item :%p\n", item);
+        printf("item :%p\n", item);
         if (item != 0) {
             current = search_topo(first, item->mac, search_var);
             if (current != 0) {
                 search_var++;
-                //printf("current: %p\n", current);
+                printf("current: %p\n", current);
                 struct device_info* cur = get_device_entry(item->mac);
                 if (cur != 0) {
                     cur->reachable = 1;
                     free(item);
-                    //printf("Current mac address %lx\n", current->mac);
+                    printf("Current mac address %lx\n", current->mac);
 
                     struct device_info* temp;
                     temp = get_device_entry(cur->map->down);

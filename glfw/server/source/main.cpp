@@ -54,8 +54,8 @@ unsigned char *myimage;
 NetworkControl *nc;
 Packetbuffer *in;
 struct mac_list{
-    uint8_t x;
-    uint8_t y;
+    uint32_t x;
+    uint32_t y;
     uint64_t mac;
     uint8_t active;
     struct mac_list *next;
@@ -117,10 +117,11 @@ void LoadTexture() {
     //printf("%d %d %d\n", bmp.format(), bmp.height(), bmp.width());
     //bmp.flipVertically();
     //gTexture = new tdogl::Texture(bmp);
-    myimage = (unsigned char *) malloc(WIDTH*HEIGHT*3*sizeof(unsigned char));
+    myimage = (unsigned char *) malloc(WIDTH*HEIGHT*1*sizeof(unsigned char));
     //for(int i = 0; i < (WIDTH*HEIGHT*3); i++){
     //    myimage[i] = 128;
     //}
+    memset(myimage, 0, WIDTH*HEIGHT*1*sizeof(unsigned char));
     
     glGenTextures(1, &mytexture);
     glBindTexture(GL_TEXTURE_2D, mytexture);
@@ -218,9 +219,11 @@ void updateBuffer() {
                 if (posx != (header->sizex) || posy != (header->sizey)) {
                     posx = header->sizex;
                     posy = header->sizey;
-                    printf("changing framebuffer to %d %d %d %d\n", WIDTH*posy, HEIGHT*posx, posx, posy);
-
-                    myimage = (unsigned char *) malloc(WIDTH * HEIGHT * 3 * sizeof (unsigned char)*posx*posy);
+                    printf("changing framebuffer to %d %d %d %d\n", WIDTH*posx, HEIGHT*posy, posx, posy);
+                    free(myimage);
+                    size_t size = WIDTH * HEIGHT * 1 * sizeof (unsigned char)*posx*posy;
+                    myimage = (unsigned char *) malloc(size);
+                    memset(myimage, 0, size);
                     glDeleteTextures(1, &mytexture);
                     glGenTextures(1, &mytexture);
                     glBindTexture(GL_TEXTURE_2D, mytexture);
@@ -231,14 +234,16 @@ void updateBuffer() {
                     glTexImage2D(GL_TEXTURE_2D,
                             0,
                             GL_RED, //GL_RGB
-                            WIDTH*posy,
-                            HEIGHT*posx,
+                            WIDTH*posx,
+                            HEIGHT*posy,
                             0,
                             GL_RED, //GL_RGB
                             GL_UNSIGNED_BYTE,
                             myimage);
                     //glBindTexture(GL_TEXTURE_2D, 0);
-                    glfwSetWindowSize(gWindow, WIDTH*posy, HEIGHT*posx);
+                    glfwSetWindowSize(gWindow, WIDTH*posx, HEIGHT*posy);
+                    glViewport(0,0,WIDTH*posx, HEIGHT*posy);
+                    printf("SETTING window to size: %d %d\n", WIDTH*posx, HEIGHT*posy);
                     deleteList();
                 }
 
@@ -247,13 +252,13 @@ void updateBuffer() {
                     if (item->mac != 0) {
                         if (searchList(item->mac, 0) != 0) {
                             struct mac_list * temp = searchList(item->mac, 1);
-                            //free(temp);
+                            free(temp);
                         }
                         insertList(item->x, item->y, item->mac);
                         printf("inserting elem: %d %d %ld\n", item->x, item->y, item->mac);
                     }else{
-                        unsigned int offsetx = 400 * item->y;
-                        unsigned int offsety = 300 * item->x;
+                        /*unsigned int offsetx = 400 * item->x;
+                        unsigned int offsety = 300 * item->y;
                         glTexSubImage2D(GL_TEXTURE_2D,
                                 0,
                                 offsetx,
@@ -262,7 +267,7 @@ void updateBuffer() {
                                 300,
                                 GL_RED, //GL_RGB
                                 GL_UNSIGNED_BYTE,
-                                myimage);
+                                myimage);*/
                     }            
                 }
                 break;
@@ -271,7 +276,7 @@ void updateBuffer() {
             {
                 if (posx != 0) {
                     struct low_res_header* low_header = (struct low_res_header*) pack->buffer;
-                    printf("image packet recv from %ld\n", low_header->mac);
+                    //printf("image packet recv from %ld\n", low_header->mac);
 
                     struct mac_list * item = searchList(low_header->mac, 0);
                     if (item != 0) {
@@ -280,9 +285,15 @@ void updateBuffer() {
                         //unsigned char * dest_part = myimage + 400 * 300 * 3 * (item->x + posy * item->y) + low_header->pos * 400 * 30 * 3;
                         //printf("inserting in offset: %d\n", 400 * 300 * 3 * (item->x + posy * item->y) + low_header->pos * 400 * 30 * 3);
                         //memcpy(dest_part, image_part, 400 * 30 * 3);
-                        unsigned int offsetx = 400 * item->y;
-                        unsigned int offsety = 300 * item->x + low_header->pos * 30;
-                        printf("offset: x: %d, y: %d %ld\n", offsetx, offsety, low_header->mac);
+                        /*uint8_t colr = 70*(item->x + item->y)+40;
+                        for(int i =0; i < 400*30; i++){
+                            image_part[i] = colr;
+                        }*/
+                        
+                        unsigned int offsetx = 400 * item->x;
+                        unsigned int offsety = 300 * item->y + low_header->pos * 30;
+                        //printf("offset: x: %d, y: %d %ld\n", offsetx, offsety, low_header->mac);
+                        //printf("setting rect %d %d to %d %d\n", offsetx, offsety, offsetx+400, offsety+30);
                         glTexSubImage2D(GL_TEXTURE_2D,
                                 0,
                                 offsetx,

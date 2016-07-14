@@ -14,7 +14,7 @@
             <file>file:/home/tobias/gitcode/cutting_board/network/Packetbuffer.h</file>
             <file>file:/home/tobias/gitcode/cutting_board/raspicam/Low_Res_Worker.h</file>
             <file>file:/home/tobias/gitcode/cutting_board/raspicam/Low_Res_Worker.cpp</file>
-            <file>file:/home/tobias/gitcode/cutting_board/network/SerialCon.cpp</file>
+            <file>file:/home/tobias/gitcode/cutting_board/network/DebugTransfer.cpp</file>
             <file>file:/home/tobias/gitcode/cutting_board/network/Topology.cpp</file>
         </group>
     </open-files>

@@ -35,4 +35,5 @@ int DebugTransfer::send(struct packet* pack){
     if((*unrel)->send(pack->buffer, pack->size, 0, pack->addr) != 0){
         printf("Error DebugTransfer: could not send unreliable packet\n");
     }
+    return 0;
 }
