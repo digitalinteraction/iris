@@ -71,7 +71,8 @@ int main(int argc,char** argv) {
     int i = 0;
 
     uint32_t  sum0=0, sum1=0, sum2=0, sum3=0;
-    
+	int j = 0;
+    for(j = 0; j < 5; j++){
     while (i < 64) {
         sum0 += read_channel(I2CFile, 0);
         sum1 += read_channel(I2CFile, 1);
@@ -79,14 +80,14 @@ int main(int argc,char** argv) {
         sum3 += read_channel(I2CFile, 3);
 
         i++;
-        usleep(100000);
+        usleep(40000);
     }
 	sum0 = sum0/64;
 	sum1 = sum1/64;
 	sum2 = sum2/64;
 	sum3 = sum3/64;
-	printf("sum: %d, ch0: %d, ch1: %d, ch2: %d, ch3: %d\n", sum0+sum1+sum2+sum3, sum0, sum1, sum2, sum3);
-
+	printf("%d,%d,%d,%d,%d\n", sum0+sum1+sum2+sum3, sum0, sum1, sum2, sum3);
+}
 
     close(I2CFile);
 
