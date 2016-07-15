@@ -83,7 +83,7 @@ float calc_force(uint16_t val){
     printf("factor: %f\n", factor);
     float force = force2 + (force1 - force2)*factor;
     printf("force: %f\n", force);
-    force = force/9.81*1000;
+    force = force/9.81;
     return force;
 }
 
