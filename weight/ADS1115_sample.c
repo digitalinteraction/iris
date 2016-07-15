@@ -53,9 +53,9 @@ struct mapping map[12] = {
 
 float calc_force(uint16_t val){
     float mvol = (val*0.09375);
-    printf("millivolt: %f\n", mvol);
+    //printf("millivolt: %f\n", mvol);
     float res = (10000*(5000 - mvol))/mvol;
-    printf("resistance: %f\n", res);
+    //printf("resistance: %f\n", res);
     
     
     if(res < 0) res = 0;
@@ -75,14 +75,14 @@ float calc_force(uint16_t val){
         }
         i++;
     }
-    printf("Between::\n");
-    printf("1: res %f force %f\n", res1, force1);
-    printf("2: res %f force %f\n", res2, force2);
+    //printf("Between::\n");
+    //printf("1: res %f force %f\n", res1, force1);
+    //printf("2: res %f force %f\n", res2, force2);
     float diffres = res2 - res1;
     float factor = (res - res1)/diffres;
-    printf("factor: %f\n", factor);
+    //printf("factor: %f\n", factor);
     float force = force2 + (force1 - force2)*factor;
-    printf("force: %f\n", force);
+    //printf("force: %f\n", force);
     force = force/9.81;
     return force;
 }
