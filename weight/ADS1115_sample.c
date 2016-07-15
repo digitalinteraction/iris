@@ -53,7 +53,7 @@ float calc_force(float res){
             force2 = map[i].force;
             res1 = map[i-1].res;
             res2 = map[i].res;
-            i = 10;
+            i = 12;
         }
         i++;
     }
