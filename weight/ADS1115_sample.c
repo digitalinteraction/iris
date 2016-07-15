@@ -18,6 +18,52 @@
 uint8_t writeBuf[3]; // Buffer to store the 3 bytes that we write to the I2C device
 uint8_t readBuf[2]; // 2 byte buffer to store the data read from the I2C device
 
+struct mapping{
+    float res;
+    float force;
+};
+
+struct mapping map[12] = {
+    {0,0},
+    {20, 30},
+    {50, 10},
+    {100, 6},
+    {250, 3.5},
+    {500, 2},
+    {1000, 1.2},
+    {2000, 0.7},
+    {4000, 0.45},
+    {7000, 0.3},
+    {10000, 0.25},
+    {100000, 0}};
+
+
+float calc_force(float res){
+    
+    if(res < 0) res = 0;
+    
+    float force1 = 0;
+    float force2 = 0;
+    float res1 = 0;
+    float res2 = 0;
+    uint8_t i = 0;
+    while(i < 12){
+        if(map[i].res > res){
+            force1 = map[i-1].force;
+            force2 = map[i].force;
+            res1 = map[i-1].res;
+            res2 = map[i].res;
+            i = 10;
+        }
+        i++;
+    }
+    float diffres = res2 - res1;
+    float factor = (res - res1)/diffres;
+    float force = force1 + (force2 - force1)*factor;
+    return force;
+}
+
+
 int16_t read_channel(int I2CFile, uint8_t sel) {
 
     
@@ -87,7 +133,19 @@ int main(int argc,char** argv) {
         sum1 = read_channel(I2CFile, 1);
         sum2 = read_channel(I2CFile, 2);
         sum3 = read_channel(I2CFile, 3);
-        pos++; if(pos == 10) pos = 0;
+        //pos++; if(pos == 10) pos = 0;
+        
+        float mvol0 = (sum0*0.09375);
+        float mvol1 = (sum1*0.09375);
+        float mvol2 = (sum2*0.09375);
+        float mvol3 = (sum3*0.09375);
+        
+        float res0 = calc_force((10000*(5000 - mvol0))/mvol0);
+        float res1 = calc_force((10000*(5000 - mvol1))/mvol1);
+        float res2 = calc_force((10000*(5000 - mvol2))/mvol2);
+        float res3 = calc_force((10000*(5000 - mvol3))/mvol3);
+        
+        
         
         
         
@@ -106,7 +164,8 @@ int main(int argc,char** argv) {
         
         if(i > 20){
             //printf("%d;%d;%d;%d\n", sum0, sum1, sum2, sum3);
-            printf("%08d;%08d;%08d;%08d\n", sum0, sum1, sum2, sum3);
+            //printf("%08d;%08d;%08d;%08d\n", sum0, sum1, sum2, sum3);
+            printf("%08f::%08f::%08f::%08f\n", res0/9.81, res1/9.81, res2/9.81, res3/9.81);
 
         }
         i++;
