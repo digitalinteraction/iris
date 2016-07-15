@@ -18,7 +18,19 @@
 uint8_t writeBuf[3]; // Buffer to store the 3 bytes that we write to the I2C device
 uint8_t readBuf[2]; // 2 byte buffer to store the data read from the I2C device
 
+#define ARRAY_SIZE 64
 
+uint16_t array0[ARRAY_SIZE];
+uint16_t array1[ARRAY_SIZE];
+uint16_t array2[ARRAY_SIZE];
+uint16_t array3[ARRAY_SIZE];
+
+ 
+int intcmp(const void *aa, const void *bb)
+{
+    const uint16_t *a = aa, *b = bb;
+    return (*a < *b) ? -1 : (*a > *b);
+}
 
 int16_t read_channel(int I2CFile, uint8_t sel) {
 
@@ -59,6 +71,11 @@ int16_t read_channel(int I2CFile, uint8_t sel) {
 
 }
 
+uint32_t median(uint16_t *array){
+	qsort(array, ARRAY_SIZE, sizeof(uint16_t), intcmp);
+	return (array[ARRAY_SIZE/2] + array[ARRAY_SIZE/2+1])/2
+}
+
 int main(int argc,char** argv) {
 
     int ADS_address = 0x48; // Address of our device on the I2C bus
@@ -73,20 +90,30 @@ int main(int argc,char** argv) {
     uint32_t  sum0=0, sum1=0, sum2=0, sum3=0;
 	int j = 0;
     for(j = 0; j < 5; j++){
-    while (i < 64) {
-        sum0 += read_channel(I2CFile, 0);
-        sum1 += read_channel(I2CFile, 1);
-        sum2 += read_channel(I2CFile, 2);
-        sum3 += read_channel(I2CFile, 3);
+
+	int p;
+	for(p=0;p<ARRAY_SIZE;p++){
+		array0[p] = 0;
+		array1[p] = 0;
+		array2[p] = 0;
+		array3[p] = 0;
+	}
+    while (i < ARRAY_SIZE) {
+        array0[i] = read_channel(I2CFile, 0);
+        array1[i] = read_channel(I2CFile, 1);
+        array2[i] = read_channel(I2CFile, 2);
+        array3[i] = read_channel(I2CFile, 3);
 
         i++;
         usleep(40000);
     }
-	sum0 = sum0/64;
-	sum1 = sum1/64;
-	sum2 = sum2/64;
-	sum3 = sum3/64;
+
+	sum0 = median(array0);
+	sum1 = median(array1);
+	sum2 = median(array2);
+	sum3 = median(array3);
 	printf("%d,%d,%d,%d,%d\n", sum0+sum1+sum2+sum3, sum0, sum1, sum2, sum3);
+	sum0=0;sum1=0;sum2=0;sum3=0; i=0;
 }
 
     close(I2CFile);
