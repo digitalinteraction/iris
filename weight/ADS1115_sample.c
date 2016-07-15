@@ -38,7 +38,12 @@ struct mapping map[12] = {
     {100000, 0}};
 
 
-float calc_force(float res){
+float calc_force(uint16_t val){
+    float mvol = (val*0.09375);
+    printf("millivolt: %f\n", mvol);
+    float res = (10000*(5000 - mvol))/mvol;
+    printf("resistance: %f\n", res);
+    
     
     if(res < 0) res = 0;
     
@@ -57,9 +62,15 @@ float calc_force(float res){
         }
         i++;
     }
+    printf("Between::\n");
+    printf("1: res %f force %f\n", res1, force1);
+    printf("2: res %f force %f\n", res2, force2);
     float diffres = res2 - res1;
     float factor = (res - res1)/diffres;
+    printf("factor: %f\n", factor)
     float force = force1 + (force2 - force1)*factor;
+    printf("force: %f\n", force);
+    force = force/9.81*1000;
     return force;
 }
 
@@ -127,26 +138,15 @@ int main(int argc,char** argv) {
         ch1[pos] = read_channel(I2CFile, 1);
         ch2[pos] = read_channel(I2CFile, 2);
         ch3[pos] = read_channel(I2CFile, 3);*/
-        uint16_t sum0=0, sum1=0, sum2=0, sum3=0;
+        float  sum0=0, sum1=0, sum2=0, sum3=0;
 
-        sum0 = read_channel(I2CFile, 0);
-        sum1 = read_channel(I2CFile, 1);
-        sum2 = read_channel(I2CFile, 2);
-        sum3 = read_channel(I2CFile, 3);
+        sum0 = calc_force(read_channel(I2CFile, 0));
+        sum1 = calc_force(read_channel(I2CFile, 1));
+        sum2 = calc_force(read_channel(I2CFile, 2));
+        sum3 = calc_force(read_channel(I2CFile, 3));
         //pos++; if(pos == 10) pos = 0;
         
-        float mvol0 = (sum0*0.09375);
-        float mvol1 = (sum1*0.09375);
-        float mvol2 = (sum2*0.09375);
-        float mvol3 = (sum3*0.09375);
-        
-        float res0 = calc_force((10000*(5000 - mvol0))/mvol0);
-        float res1 = calc_force((10000*(5000 - mvol1))/mvol1);
-        float res2 = calc_force((10000*(5000 - mvol2))/mvol2);
-        float res3 = calc_force((10000*(5000 - mvol3))/mvol3);
-        
-        
-        float end = (res0+res1+res2+res3)/9.81*1000;
+        float end = sum0+sum1+sum2+sum3;
         
         
         /*int j=0;
