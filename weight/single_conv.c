@@ -18,6 +18,14 @@
 uint8_t writeBuf[3]; // Buffer to store the 3 bytes that we write to the I2C device
 uint8_t readBuf[2]; // 2 byte buffer to store the data read from the I2C device
 
+
+/* Fomula for uint16_t sensor values to gram starting from 0, so negative values not
+allowed and baseline must be substracted, only on sum of all four values
+f(x) =  1.3782624288086005e+000 * x^0
+     +  1.4627313573521233e-002 * x^1
+     +  7.6822624506915741e-007 * x^2
+*/
+
 #define ARRAY_SIZE 64
 
 uint16_t array0[ARRAY_SIZE];

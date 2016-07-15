@@ -18,6 +18,13 @@
 uint8_t writeBuf[3]; // Buffer to store the 3 bytes that we write to the I2C device
 uint8_t readBuf[2]; // 2 byte buffer to store the data read from the I2C device
 
+
+/* Fomula for uint16_t sensor values to gram
+f(x) =  1.3782624288086005e+000 * x^0
+     +  1.4627313573521233e-002 * x^1
+     +  7.6822624506915741e-007 * x^2
+*/
+
 #define ARRAY_SIZE 64
 
 uint16_t array0[ARRAY_SIZE];
@@ -73,7 +80,7 @@ int16_t read_channel(int I2CFile, uint8_t sel) {
 
 uint32_t median(uint16_t *array){
 	qsort(array, ARRAY_SIZE, sizeof(uint16_t), intcmp);
-	return (array[ARRAY_SIZE/2] + array[ARRAY_SIZE/2+1])/2
+	return (array[ARRAY_SIZE/2] + array[ARRAY_SIZE/2+1])/2;
 }
 
 int main(int argc,char** argv) {

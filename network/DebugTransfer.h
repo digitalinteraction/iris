@@ -16,6 +16,8 @@
 #include <stdint.h>
 #include "UnreliableTransfer.h"
 
+#define WEIGHT_ARRAY 64
+
 class DebugTransfer {
 public:
     DebugTransfer(Packetbuffer *out, UnreliableTransfer **unrel);
@@ -23,9 +25,28 @@ public:
     virtual ~DebugTransfer();
     int recv(void *buffer, size_t size, uint32_t addr);
     int send(struct packet *pack);
+    double get_weight();
 private:
     Packetbuffer *out;
     UnreliableTransfer **unrel;
+    void update_weight();
+    void read_channel(int I2CFile, uint8_t sel, uint16_t *array, uint16_t count);
+    int intcmp(const void *aa, const void *bb);
+    uint32_t median(uint16_t *array);
+    uint8_t writeBuf[3];
+    uint8_t readBuf[2];
+    int i2cfile;
+    uint16_t array0[WEIGHT_ARRAY];
+    uint16_t array1[WEIGHT_ARRAY];
+    uint16_t array2[WEIGHT_ARRAY];
+    uint16_t array3[WEIGHT_ARRAY];
+    uint16_t count0;
+    uint16_t count1;
+    uint16_t count2;
+    uint16_t count3;
+    uint32_t baseline;
+    
+
 
 };
 
