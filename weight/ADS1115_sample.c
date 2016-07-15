@@ -23,7 +23,7 @@ struct mapping{
     float force;
 };
 
-struct mapping map[12] = {
+/*struct mapping map[12] = {
     {0,0.000},
     {20, 30},
     {50, 10},
@@ -35,7 +35,7 @@ struct mapping map[12] = {
     {4000, 0.45},
     {7000, 0.3},
     {10000, 0.25},
-    {100000, 0}};
+    {100000, 0}};*/
 
 struct mapping map[12] = {
     {0,100000},
