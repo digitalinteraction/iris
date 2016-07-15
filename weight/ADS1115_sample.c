@@ -81,7 +81,7 @@ int main(int argc,char** argv) {
         ch1[pos] = read_channel(I2CFile, 1);
         ch2[pos] = read_channel(I2CFile, 2);
         ch3[pos] = read_channel(I2CFile, 3);*/
-        int16_t sum0=0, sum1=0, sum2=0, sum3=0;
+        uint16_t sum0=0, sum1=0, sum2=0, sum3=0;
 
         sum0 = read_channel(I2CFile, 0);
         sum1 = read_channel(I2CFile, 1);
@@ -106,7 +106,7 @@ int main(int argc,char** argv) {
         
         if(i > 20){
             //printf("%d;%d;%d;%d\n", sum0, sum1, sum2, sum3);
-            printf("%d;%d;%d;%d\n", sum0, sum1, sum2, sum3);
+            printf("%08d;%08d;%08d;%08d\n", sum0, sum1, sum2, sum3);
 
         }
         i++;
