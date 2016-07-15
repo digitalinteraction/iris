@@ -18,7 +18,7 @@
 #include <stdint.h>
 //#define DEBUG
 
-#define CLIENT_SIDE
+//#define CLIENT_SIDE
 
 #define IMAGE_PACKET 1
 #define TOPO_PACKET 2

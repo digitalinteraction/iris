@@ -46,7 +46,7 @@ cd ups
 wget http://www.pimodules.com/_zip/UPS_PIco_Supporting_Files.zip
 unzip UPS_PIco_Supporting_Files.zip
 #sudo mv rc.local /etc/
-echo "sudo python /home/pi/picofssd.py &" >> /etc/rc.local
+sudo sh -c "echo \"sudo python /home/pi/ups/picofssd.py &\" >> /etc/rc.local"
 echo "echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-1/new_device( sleep 4; hwclock -s ) &" >> /etc/rc.local
 sudo chmod +x /etc/rc.local
 echo "**************Done**************"
