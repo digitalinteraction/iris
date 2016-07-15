@@ -146,7 +146,7 @@ int main(int argc,char** argv) {
         float res3 = calc_force((10000*(5000 - mvol3))/mvol3);
         
         
-        
+        float end = (res0+res1+res2+res3)/9.81*1000;
         
         
         /*int j=0;
@@ -165,8 +165,8 @@ int main(int argc,char** argv) {
         if(i > 20){
             //printf("%d;%d;%d;%d\n", sum0, sum1, sum2, sum3);
             //printf("%08d;%08d;%08d;%08d\n", sum0, sum1, sum2, sum3);
-            printf("%08f::%08f::%08f::%08f\n", res0/9.81, res1/9.81, res2/9.81, res3/9.81);
-
+            //printf("%08f::%08f::%08f::%08f\n", res0/9.81*1000, res1/9.81*1000, res2/9.81*1000, res3/9.81*1000);
+            printf("weight: %08f grams\n", end);
         }
         i++;
         usleep(100000);
