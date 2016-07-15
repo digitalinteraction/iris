@@ -87,6 +87,7 @@ int main(int argc,char** argv) {
 	sum2 = sum2/64;
 	sum3 = sum3/64;
 	printf("%d,%d,%d,%d,%d\n", sum0+sum1+sum2+sum3, sum0, sum1, sum2, sum3);
+	sum0=0;sum1=0;sum2=0;sum3=0; i=0;
 }
 
     close(I2CFile);

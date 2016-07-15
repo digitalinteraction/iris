@@ -80,7 +80,7 @@ int main(int argc,char** argv) {
         sum3 += read_channel(I2CFile, 3);
 
         i++;
-        usleep(100000);
+        usleep(40000);
     }
 	sum0 = sum0/64;
 	sum1 = sum1/64;
