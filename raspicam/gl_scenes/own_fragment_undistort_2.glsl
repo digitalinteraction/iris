@@ -14,7 +14,8 @@ void main()
     #ifdef A
     vec2 lookup_coord = lookup(texcoord);
     gl_FragColor = texture2D(alt_tex, lookup_coord);
-    gl_FragColor = texture2D(tex, lookup_coord);
+    //gl_FragColor = texture2D(tex, lookup_coord);
+    gl_FragColor = texture2D(tex, texcoord); 
     #else
     vec2 lookup_coord = lookup(texcoord);
     gl_FragColor = texture2D(tex, lookup_coord);
