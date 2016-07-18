@@ -173,13 +173,11 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //imshow("cleaned", cleaned);
         //imshow("Mask", drawing);
 
-        if (nr % 2 == 0) {
-            //send_to_server(low_patch.buffer, low_patch.size, 1, pos);
-            send_to_server(drawing->data, low_patch.size, 1, pos);
-            pos++;
-            if (pos == 10) {
-                pos = 0;
-            }
+        //send_to_server(low_patch.buffer, low_patch.size, 1, pos);
+        send_to_server(drawing->data, low_patch.size, 1, pos);
+        pos++;
+        if (pos == 10) {
+            pos = 0;
         }
 
         //char filename[30];
