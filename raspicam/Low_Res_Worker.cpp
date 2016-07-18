@@ -172,7 +172,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //imshow("V", channel[2]);
         //imshow("cleaned", cleaned);
         //imshow("Mask", drawing);
-        printf("Mat size: %d, channels: %d\n", drawing.total(), drawing.channels());
+        printf("Mat size: %d, channels: %d total_size: \n", drawing.total(), drawing.channels(), drawing.total()*drawing.elemSize());
         //send_to_server(low_patch.buffer, low_patch.size, 1, pos);
         send_to_server(drawing.data, low_patch.size, 1, pos);
         pos++;
