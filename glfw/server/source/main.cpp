@@ -122,11 +122,13 @@ void LoadTexture() {
     //printf("%d %d %d\n", bmp.format(), bmp.height(), bmp.width());
     //bmp.flipVertically();
     //gTexture = new tdogl::Texture(bmp);
-    myimage = (unsigned char *) malloc(WIDTH*HEIGHT*1*sizeof(unsigned char));
+    size_t size = (WIDTH + (2*20))*(HEIGHT + (2*20));
+
+    myimage = (unsigned char *) malloc(size);
     //for(int i = 0; i < (WIDTH*HEIGHT*3); i++){
     //    myimage[i] = 128;
     //}
-    memset(myimage, 0, WIDTH*HEIGHT*1*sizeof(unsigned char));
+    memset(myimage, 20, size);
     
     glGenTextures(1, &mytexture);
     glBindTexture(GL_TEXTURE_2D, mytexture);
@@ -138,8 +140,8 @@ void LoadTexture() {
     glTexImage2D(GL_TEXTURE_2D,
                  0, 
                  GL_RED, //GL_RGB
-                 WIDTH, 
-                 HEIGHT,
+                 WIDTH*1 + (1*2*20),
+                 HEIGHT*1 + (1*2*20),
                  0, 
                  GL_RED, //GL_RGB
                  GL_UNSIGNED_BYTE, 
@@ -227,9 +229,10 @@ void updateBuffer() {
                     posy = header->sizey;
                     printf("changing framebuffer to %d %d %d %d\n", HEIGHT*posx, WIDTH*posy, posx, posy);
                     free(myimage);
-                    size_t size = WIDTH * HEIGHT * 1 * sizeof (unsigned char)*posx*posy + posy*posx*2*20;
+                    //size_t size = WIDTH * HEIGHT * 1 * sizeof (unsigned char)*posx*posy + posy*posx*2*20;
+                    size_t size = (WIDTH*posy + (posy*2*20))*(HEIGHT*posx + (posx*2*20));
                     myimage = (unsigned char *) malloc(size);
-                    memset(myimage, 0, size);
+                    memset(myimage, 20, size);
                     glDeleteTextures(1, &mytexture);
                     glGenTextures(1, &mytexture);
                     glBindTexture(GL_TEXTURE_2D, mytexture);
@@ -246,6 +249,8 @@ void updateBuffer() {
                             GL_RED, //GL_RGB
                             GL_UNSIGNED_BYTE,
                             myimage);
+                        //glClearColor(0.1, 0.1, 0.1, 1); // black
+                        //glClear(GL_COLOR_BUFFER_BIT);
                     //glBindTexture(GL_TEXTURE_2D, 0);
                     
                     /*int resx = 0;
@@ -352,7 +357,7 @@ void updateBuffer() {
 
 static void Render() {
     // clear everything
-    glClearColor(0, 0, 0, 1); // black
+    glClearColor(0.1, 0.1, 0.1, 1); // black
     glClear(GL_COLOR_BUFFER_BIT);
     
     // bind the program (the shaders)
