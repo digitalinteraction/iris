@@ -16,7 +16,7 @@
 #include <stdint.h>
 #include "UnreliableTransfer.h"
 
-#define WEIGHT_ARRAY 64
+#define WEIGHT_ARRAY 256
 
 class DebugTransfer {
 public:
