@@ -136,7 +136,7 @@ void DebugTransfer::read_channel(int I2CFile, uint8_t sel, uint16_t *array, uint
     
 }
 
-static int DebugTransfer::intcmp(const void *aa, const void *bb)
+int DebugTransfer::intcmp(const void *aa, const void *bb)
 {
     const uint16_t *a = (const uint16_t *)aa, *b = (const uint16_t *)bb;
     return (*a < *b) ? -1 : (*a > *b);
