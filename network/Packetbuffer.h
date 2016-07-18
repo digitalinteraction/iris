@@ -30,6 +30,7 @@ struct low_res_header{
     uint8_t pos;
     uint64_t mac;
     uint32_t size;
+    double weight;
 };
 
 struct topo_list{

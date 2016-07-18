@@ -26,13 +26,14 @@ public:
     int recv(void *buffer, size_t size, uint32_t addr);
     int send(struct packet *pack);
     double get_weight();
+    void update_weight();
+
 private:
     Packetbuffer *out;
     UnreliableTransfer **unrel;
-    void update_weight();
-    void read_channel(int I2CFile, uint8_t sel, uint16_t *array, uint16_t count);
+    void read_channel(int I2CFile, uint8_t sel, uint16_t *array, uint16_t *count);
     int intcmp(const void *aa, const void *bb);
-    uint32_t median(uint16_t *array);
+    uint16_t median(uint16_t *array);
     uint8_t writeBuf[3];
     uint8_t readBuf[2];
     int i2cfile;

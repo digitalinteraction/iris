@@ -27,6 +27,11 @@ DebugTransfer::DebugTransfer(Packetbuffer *out, UnreliableTransfer **unrel) {
         array3[i] = 0;
     }
     count0 = 0; count1 = 0; count2 = 0; count3 = 0;
+    
+    for(int i = 0; i < WEIGHT_ARRAY; i++){
+        update_weight();
+    }
+    baseline = (median(array0)+median(array1)+median(array2)+median(array3))/4;
 }
 
 DebugTransfer::DebugTransfer(const DebugTransfer& orig) {
@@ -82,7 +87,7 @@ uint16_t DebugTransfer::update_weight(){
     read_channel(i2cfile, 3, array3, &count1);
 }
 
-void DebugTransfer::read_channel(int I2CFile, uint8_t sel, uint16_t *array, uint16_t count) {
+void DebugTransfer::read_channel(int I2CFile, uint8_t sel, uint16_t *array, uint16_t *count) {
 
     
     uint16_t val;

@@ -271,6 +271,7 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t m
                 header->pos = pos;
                 header->mac = nc->topo->mac;
                 header->size = part_size;
+                header->weight = nc->debug->get_weight();
                 //ret = out->add(size, addr, (void*) header);
                 out->add(size, addr, (void*) header);
                 //if (ret != 0)

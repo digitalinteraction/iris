@@ -146,6 +146,8 @@ void NetworkControl::run(){
             free(pack->buffer);
             free(pack);
         }
+        
+        debug->update_weight();
         //printf("E\n");
 #endif
         //delete on attaching other class
