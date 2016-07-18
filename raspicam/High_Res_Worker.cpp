@@ -13,6 +13,11 @@
 
 #include "High_Res_Worker.h"
 #include "tga.h"
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <string.h>
 
 using namespace std;
 
