@@ -37,7 +37,8 @@ DebugTransfer::DebugTransfer(Packetbuffer *out, UnreliableTransfer **unrel) {
     for(int i = 0; i < WEIGHT_ARRAY; i++){
         update_weight();
     }
-    baseline = (median(array0)+median(array1)+median(array2)+median(array3))/4;
+    baseline = (median(array0)+median(array1)+median(array2)+median(array3));
+    printf("Weight sensor baseline is %ld\n", baseline);
 #endif
 }
 
@@ -73,7 +74,7 @@ double DebugTransfer::get_weight(){
     uint16_t ch3 = median(temp_array);
     
     uint32_t sum = ch0+ch1+ch2+ch3;
-    
+    printf("Weight is %ld, baseline is %ld\n", sum, baseline);
     sum = sum - baseline;
     if(sum < 0)
         sum = 0;
@@ -83,7 +84,7 @@ double DebugTransfer::get_weight(){
     double f1 = 1.4627313573521233E-002;
     double f2 = 7.6822624506915741E-007;
     double weight = f0 + f1*x + f2*pow(x, 2.0);
-    printf("Weight: %08f %08f\n", x, weight);
+    //printf("Weight: %08f %08f\n", x, weight);
     return weight;
 }
 
