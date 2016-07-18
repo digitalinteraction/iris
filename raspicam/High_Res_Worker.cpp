@@ -98,10 +98,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         resize(gray, gray, Size(256,192));
         
-        send_to_server(&gray, 1, pos);
-        pos++;
-        if (pos == 8) {
-            pos = 0;
+        for(int i = 0; i < 8; i++){
+        send_to_server(&gray, 1, i);
         }
         
         //channel[1];
