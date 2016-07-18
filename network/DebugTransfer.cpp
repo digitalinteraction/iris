@@ -131,7 +131,7 @@ void DebugTransfer::read_channel(int I2CFile, uint8_t sel, uint16_t *array, uint
     read(I2CFile, readBuf, 2);
 
     val = (readBuf[0] << 8) | readBuf[1];
-    
+    printf("val is %d, inserting at pos %d\n", val, *count);
     array[*count] = val;
     *count++;
     if(*count == WEIGHT_ARRAY){
