@@ -23,7 +23,7 @@ using namespace cv;
 
 class High_Res_Worker {
 public:
-    High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf);
+    High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf, NetworkControl *nc);
     virtual ~High_Res_Worker();
     int processing;
     void run();
@@ -34,9 +34,12 @@ private:
     uint8_t prev_group;
     Mat convert(RASPITEX_PATCH *patch);
     void find_features(RASPITEX_PATCH *patch, uint8_t group);
+    void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
     Ptr<FastFeatureDetector> detector;
     Packetbuffer *out;
     Packetbuffer *in;
+    NetworkControl *nc;
+    uint8_t pos;
 
 
 };

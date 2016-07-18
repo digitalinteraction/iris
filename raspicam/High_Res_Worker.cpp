@@ -17,12 +17,14 @@
 using namespace std;
 
 
-High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf) {
+High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf, NetworkControl *nc) {
     buf = buffer;
     cnt = 0;
     prev_group = 0;
     out = out_buf;
     in = in_buf;
+    this->nc = nc;
+    pos = 0;
     // Default parameters of ORB
     
 int nfeatures=500;
@@ -85,6 +87,17 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         circle(marker, Point(img_size.width,img_size.height), 5, CV_RGB(255,255,255), -1);
         
         watershed(rgb, marker);
+        
+        Mat gray;
+        cvtColor(marker, gray, COLOR_BGR2GRAY);
+        
+        resize(gray, gray, Size(256,192));
+        
+        send_to_server(&gray, 1, pos);
+        pos++;
+        if (pos == 8) {
+            pos = 0;
+        }
         
         //channel[1];
         //threshold(channel[1], mask, 40, 255, THRESH_BINARY);
@@ -165,4 +178,44 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
 Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {
         Mat mat_image(patch->width, patch->height, CV_8UC4, (void*)patch->buffer);
         return mat_image;
+}
+
+
+void High_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
+    //printf("sending image to server %ld with pos %d \n", image_size, pos);
+    if (nc->unrel->send_buf->getCnt() < 70) {
+        
+        if((img->total()*img->elemSize()) != 0){
+            uint32_t addr;
+            if (inet_aton("172.16.0.1", (in_addr *) & addr) == 0) {
+                printf("inet_aton() failed\n");
+            }
+
+            uint32_t new_size = img->total()*img->elemSize();
+
+            size_t part_size = new_size / 8;
+            //int ret = 0;
+            //for (int i = 0; i < 10; i++) {
+                //ret = 0;
+
+                uint32_t size = part_size + sizeof (struct low_res_header);
+                struct low_res_header * header = (struct low_res_header *) malloc(size);
+                memcpy((((unsigned char *) header) + sizeof (struct low_res_header)), (void*) (img->data + pos * part_size), part_size);
+                header->mac = nc->topo->mac;
+                header->port = IMAGE_PACKET;
+                header->pos = pos;
+                header->mac = nc->topo->mac;
+                header->size = part_size;
+                header->weight = nc->debug->get_weight();
+                //ret = out->add(size, addr, (void*) header);
+                out->add(size, addr, (void*) header);
+                //if (ret != 0)
+                //    i--;
+                free(header);
+
+            //}
+            //printf("Send 10 packets: buffer length: %d\n", out->getCnt());
+        }
+        
+    }
 }

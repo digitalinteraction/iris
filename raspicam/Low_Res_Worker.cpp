@@ -178,7 +178,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //Mat send_img(channel[1]);
         Mat gray;
         cvtColor(drawing, gray, COLOR_BGR2GRAY);
-        send_to_server(&gray, 1, pos);
+        //send_to_server(&gray, 1, pos);
         pos++;
         if (pos == 8) {
             pos = 0;
@@ -265,62 +265,6 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
             //}
             //printf("Send 10 packets: buffer length: %d\n", out->getCnt());
         }
-        /*if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 3) && image_size < 500000) {
-            uint8_t color = 0;
-            if (mode == 0) {
-                color = 3;
-            } else {
-                color = 1;
-            }
-
-
-            uint8_t *img = (uint8_t *) malloc(LOW_OUTPUT_X * LOW_OUTPUT_Y * color * sizeof (uint8_t));
-            size_t new_size = 0;
-            for (int i = 0; i < image_size; i++) {
-                if (mode == 0) {
-                    //if ((i + 1) % 4 != 0) {
-                        img[new_size] = image[i];
-                        new_size++;
-                    //}
-                } else {
-                    if(i%3 == 0){
-                        img[new_size] = image[i]/3 + image[i+1]/3 + image[i+2]/3;
-                        new_size++;
-                    }
-                }
-            }
-            uint32_t addr;
-            if (inet_aton("172.16.0.1", (in_addr *) & addr) == 0) {
-                printf("inet_aton() failed\n");
-            }
-
-            new_size = LOW_OUTPUT_X * LOW_OUTPUT_Y * color * sizeof (uint8_t);
-
-            size_t part_size = new_size / 8;
-            //int ret = 0;
-            //for (int i = 0; i < 10; i++) {
-                //ret = 0;
-
-                uint32_t size = part_size + sizeof (struct low_res_header);
-                struct low_res_header * header = (struct low_res_header *) malloc(size);
-                memcpy((((unsigned char *) header) + sizeof (struct low_res_header)), (void*) (img + pos * part_size), part_size);
-                header->mac = nc->topo->mac;
-                header->port = IMAGE_PACKET;
-                header->pos = pos;
-                header->mac = nc->topo->mac;
-                header->size = part_size;
-                header->weight = nc->debug->get_weight();
-                //ret = out->add(size, addr, (void*) header);
-                out->add(size, addr, (void*) header);
-                //if (ret != 0)
-                //    i--;
-                free(header);
-
-            //}
-            printf("Send 10 packets: buffer length: %d\n", out->getCnt());
         
-        
-        }
-         * */
     }
 }
