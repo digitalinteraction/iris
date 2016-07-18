@@ -37,6 +37,7 @@
 #include "tdogl/Texture.h"
 #include <thread>
 
+
 #define WIDTH 400
 #define HEIGHT 300
 // constants
@@ -58,6 +59,7 @@ struct mac_list{
     uint32_t y;
     uint64_t mac;
     uint8_t active;
+    uint8_t nr;
     struct mac_list *next;
     struct mac_list *prev;
 };
@@ -66,6 +68,8 @@ struct mac_list *first_item = 0;
 struct mac_list *last_item = 0;
 uint8_t posx = 0;
 uint8_t posy = 0;
+
+double weight[4];
 
 // loads the vertex shader and fragment shader, and links them to make the global gProgram
 static void LoadShaders() {
@@ -151,11 +155,12 @@ void OnError(int errorCode, const char* msg) {
     throw std::runtime_error(msg);
 }
 
-void insertList(uint8_t x, uint8_t y, uint64_t mac){
+void insertList(uint8_t x, uint8_t y, uint64_t mac, uint8_t nr){
     struct mac_list *item = (struct mac_list *)malloc(sizeof(struct mac_list));
     item->x = x;
     item->y = y;
     item->mac = mac;
+    item->nr = nr;
     
     if(first_item == 0){
         first_item = item;
@@ -264,7 +269,7 @@ void updateBuffer() {
                             struct mac_list * temp = searchList(item->mac, 1);
                             free(temp);
                         }
-                        insertList(item->x, item->y, item->mac);
+                        insertList(item->x, item->y, item->mac, i);
                         printf("inserting elem: %d %d %lx\n", item->x, item->y, item->mac);
                     }else{
                         /*unsigned int offsetx = 400 * item->x;
@@ -301,6 +306,8 @@ void updateBuffer() {
                             image_part[i] = colr;
                         }*/
                         
+                        weight[item->nr] = low_header->weight;
+                        
                         //flip image
                         unsigned char * temp_buf = (unsigned char *)malloc(400*30);
                         for(int i = 0; i < 30; i++){
@@ -326,6 +333,7 @@ void updateBuffer() {
                                     GL_UNSIGNED_BYTE,
                                     temp_buf);
                             free(temp_buf);
+                            
                     }
                 }
                 free(pack->buffer);
@@ -435,6 +443,7 @@ void AppMain() {
     LoadTriangle();
     nc = new NetworkControl();
     in = nc->unrel_out;
+
     //std::thread net_work(&NetworkControl::run, nc);
 
     // run while the window is open
@@ -447,6 +456,7 @@ void AppMain() {
         // draw one frame
 
         Render();
+        printf("Weight: %04f %04f %04f %04f\n", weight[0],weight[1],weight[2],weight[3]);
 
     }
 

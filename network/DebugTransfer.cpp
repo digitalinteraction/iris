@@ -23,6 +23,7 @@
 DebugTransfer::DebugTransfer(Packetbuffer *out, UnreliableTransfer **unrel) {
     this->out = out;
     this->unrel = unrel;
+#ifdef CLIENT_SIDE
     i2cfile = open("/dev/i2c-1", O_RDWR);
     ioctl(i2cfile, I2C_SLAVE, 0x48);
     for(int i = 0; i < WEIGHT_ARRAY; i++){
@@ -37,6 +38,7 @@ DebugTransfer::DebugTransfer(Packetbuffer *out, UnreliableTransfer **unrel) {
         update_weight();
     }
     baseline = (median(array0)+median(array1)+median(array2)+median(array3))/4;
+#endif
 }
 
 DebugTransfer::DebugTransfer(const DebugTransfer& orig) {
@@ -81,6 +83,7 @@ double DebugTransfer::get_weight(){
     double f1 = 1.4627313573521233E-002;
     double f2 = 7.6822624506915741E-007;
     double weight = f0 + f1*x + f2*pow(x, 2.0);
+    printf("Weight: %08f %08f\n", x, weight);
     return weight;
 }
 
