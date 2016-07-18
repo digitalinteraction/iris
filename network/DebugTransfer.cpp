@@ -92,8 +92,8 @@ double DebugTransfer::get_weight(){
 void DebugTransfer::update_weight(){
     read_channel(i2cfile, 0, array0, &count0);
     read_channel(i2cfile, 1, array1, &count1);
-    read_channel(i2cfile, 2, array2, &count1);
-    read_channel(i2cfile, 3, array3, &count1);
+    read_channel(i2cfile, 2, array2, &count2);
+    read_channel(i2cfile, 3, array3, &count3);
 }
 
 void DebugTransfer::read_channel(int I2CFile, uint8_t sel, uint16_t *array, uint16_t *count) {
