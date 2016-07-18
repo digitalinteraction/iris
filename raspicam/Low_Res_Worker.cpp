@@ -138,8 +138,8 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     }
                 }
                 if ((xmax - xmin) > 10 && (ymax - ymin) > 10) {
-                    //requests[cnt].fb = low_patch.fb;
-                    //requests[cnt].token = low_patch.token;
+                    requests[cnt].fb = low_patch.fb;
+                    requests[cnt].token = low_patch.token;
                     //printf("Low Res: %d %d %d %d\n", xmin, ymin, xmax, ymax);
                     float factorx = (float) HIGH_OUTPUT_X / LOW_OUTPUT_X;
                     float factory = (float) HIGH_OUTPUT_Y / LOW_OUTPUT_Y;
@@ -151,10 +151,10 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     float width = (xmax + 5) * factorx + factorx - x;
                     if ((y + height) > HIGH_OUTPUT_Y) height = HIGH_OUTPUT_Y - y;
                     if ((x + width) > HIGH_OUTPUT_X) width = HIGH_OUTPUT_X - x;
-                    //requests[cnt].x = (int) x;
-                    //requests[cnt].y = (int) y;
-                    //requests[cnt].height = (int) (width + 1.5);
-                    //requests[cnt].width = (int) (height + 1.5);
+                    requests[cnt].x = (int) x;
+                    requests[cnt].y = (int) y;
+                    requests[cnt].height = (int) (width + 1.5);
+                    requests[cnt].width = (int) (height + 1.5);
                     //add limits for request in ImageCapture
                     cnt++;
                 }
@@ -163,7 +163,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         /////////////////////////////////////////////////////
         
         if(cnt > 0){
-            //requests_pending = cnt;
+            requests_pending = cnt;
         }
         
         ///////////////////////////////////////////////////////////////
@@ -177,7 +177,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //send_to_server(cleaned.data, cleaned.total()*cleaned.elemSize(), 1, pos);
         //Mat send_img(channel[1]);
         Mat gray;
-        cvtColor(img, gray, COLOR_BGR2GRAY);
+        cvtColor(drawing, gray, COLOR_BGR2GRAY);
         send_to_server(&gray, 1, pos);
         pos++;
         if (pos == 8) {
