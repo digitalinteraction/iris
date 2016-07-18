@@ -14,6 +14,11 @@
 #include "DebugTransfer.h"
 #include <linux/i2c-dev.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/ioctl.h>
+#include <math.h>
 
 DebugTransfer::DebugTransfer(Packetbuffer *out, UnreliableTransfer **unrel) {
     this->out = out;
@@ -80,7 +85,7 @@ double DebugTransfer::get_weight(){
 }
 
 //call this function every 10ms or something like that
-uint16_t DebugTransfer::update_weight(){
+void DebugTransfer::update_weight(){
     read_channel(i2cfile, 0, array0, &count0);
     read_channel(i2cfile, 1, array1, &count1);
     read_channel(i2cfile, 2, array2, &count1);
@@ -133,7 +138,7 @@ void DebugTransfer::read_channel(int I2CFile, uint8_t sel, uint16_t *array, uint
 
 int DebugTransfer::intcmp(const void *aa, const void *bb)
 {
-    const uint16_t *a = aa, *b = bb;
+    const uint16_t *a = (const uint16_t *)aa, *b = (const uint16_t *)bb;
     return (*a < *b) ? -1 : (*a > *b);
 }
 
