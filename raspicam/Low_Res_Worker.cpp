@@ -174,7 +174,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //imshow("Mask", drawing);
         printf("Mat size: %d, channels: %d total_size: %d\n", drawing.total(), drawing.channels(), drawing.total()*drawing.elemSize());
         //send_to_server(low_patch.buffer, low_patch.size, 1, pos);
-        send_to_server(drawing.data, low_patch.size, 1, pos);
+        send_to_server(drawing.data, drawing.total()*drawing.elemSize(), 1, pos);
         pos++;
         if (pos == 8) {
             pos = 0;
@@ -229,7 +229,7 @@ Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
 void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos) {
     printf("sending image to server %ld with pos %d \n", image_size, pos);
     if (nc->unrel->send_buf->getCnt() < 70) {
-        if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 4) && image_size < 500000) {
+        if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 3) && image_size < 500000) {
             uint8_t color = 0;
             if (mode == 0) {
                 color = 3;
@@ -242,12 +242,12 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t m
             size_t new_size = 0;
             for (int i = 0; i < image_size; i++) {
                 if (mode == 0) {
-                    if ((i + 1) % 4 != 0) {
+                    //if ((i + 1) % 4 != 0) {
                         img[new_size] = image[i];
                         new_size++;
-                    }
+                    //}
                 } else {
-                    if(i%4 == 0){
+                    if(i%3 == 0){
                         img[new_size] = image[i]/3 + image[i+1]/3 + image[i+2]/3;
                         new_size++;
                     }
