@@ -77,6 +77,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         Mat marker = Mat::zeros(img.size(), CV_32SC1);
         Size img_size = img.size();
+        printf("patch size: %d %d at %d %d\n", img_size.width, img_size.height, patch->x, patch->y);
         circle(marker, Point(img_size.width/2, img_size.height/2), 100, CV_RGB(1,1,1),-1);
         circle(marker, Point(0,0), 5, CV_RGB(255,255,255), -1);
         circle(marker, Point(0,img_size.height), 5, CV_RGB(255,255,255), -1);
@@ -92,7 +93,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
         //////////////////////////////////////////////////////////
         
-        //////////////////////////////////////////////////////////
+        /*//////////////////////////////////////////////////////////
         std::vector<vector<Point> > contours;
         RNG rng(12345);
         findContours(marker, contours, CV_RETR_FLOODFILL, CV_CHAIN_APPROX_SIMPLE);
@@ -122,7 +123,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Mat out, rgb2;
         cvtColor(img, rgb2, COLOR_RGBA2RGB);
         drawKeypoints(rgb2, kp, out, Scalar::all(255));
-        
+        */
         
         
         
@@ -152,11 +153,11 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         rgb.release();
         marker.release();
-        drawing.release();
-        part_img.release();
-        inv_marker.release();
-        out.release();
-        rgb2.release();
+        //drawing.release();
+        //part_img.release();
+        //inv_marker.release();
+        //out.release();
+        //rgb2.release();
     }
     img.release();
 }
