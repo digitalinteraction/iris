@@ -94,7 +94,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         watershed(rgb, marker);
         
         Mat gray;
-        cvtColor(marker, gray, COLOR_BGR2GRAY);
+        cvtColor(rgb, gray, COLOR_BGR2GRAY);
         
         resize(gray, gray, Size(256,192));
         
