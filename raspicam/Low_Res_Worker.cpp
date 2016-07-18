@@ -174,7 +174,8 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //imshow("Mask", drawing);
         printf("Mat size: %d, channels: %d total_size: %d\n", cleaned.total(), cleaned.channels(), cleaned.total()*cleaned.elemSize());
         //send_to_server(low_patch.buffer, low_patch.size, 1, pos);
-        send_to_server(cleaned.data, cleaned.total()*cleaned.elemSize(), 1, pos);
+        //send_to_server(cleaned.data, cleaned.total()*cleaned.elemSize(), 1, pos);
+        send_to_server(&cleaned, 1, pos);
         pos++;
         if (pos == 8) {
             pos = 0;
@@ -226,10 +227,42 @@ Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
     }
 }
 
-void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos) {
+void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
     //printf("sending image to server %ld with pos %d \n", image_size, pos);
     if (nc->unrel->send_buf->getCnt() < 70) {
-        if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 3) && image_size < 500000) {
+        
+        if((img->total()*img->elemSize()) != 0){
+            uint32_t addr;
+            if (inet_aton("172.16.0.1", (in_addr *) & addr) == 0) {
+                printf("inet_aton() failed\n");
+            }
+
+            uint32_t new_size = img->total()*img->elemSize();
+
+            size_t part_size = new_size / 8;
+            //int ret = 0;
+            //for (int i = 0; i < 10; i++) {
+                //ret = 0;
+
+                uint32_t size = part_size + sizeof (struct low_res_header);
+                struct low_res_header * header = (struct low_res_header *) malloc(size);
+                memcpy((((unsigned char *) header) + sizeof (struct low_res_header)), (void*) (img->data + pos * part_size), part_size);
+                header->mac = nc->topo->mac;
+                header->port = IMAGE_PACKET;
+                header->pos = pos;
+                header->mac = nc->topo->mac;
+                header->size = part_size;
+                header->weight = nc->debug->get_weight();
+                //ret = out->add(size, addr, (void*) header);
+                out->add(size, addr, (void*) header);
+                //if (ret != 0)
+                //    i--;
+                free(header);
+
+            //}
+            //printf("Send 10 packets: buffer length: %d\n", out->getCnt());
+        }
+        /*if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 3) && image_size < 500000) {
             uint8_t color = 0;
             if (mode == 0) {
                 color = 3;
@@ -282,6 +315,9 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t m
 
             //}
             printf("Send 10 packets: buffer length: %d\n", out->getCnt());
+        
+        
         }
+         * */
     }
 }

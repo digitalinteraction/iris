@@ -51,7 +51,9 @@ private:
     void process_image(uint8_t *image, size_t image_size);
     Mat convert(uint8_t *image, size_t image_size);
     int interprete_params(double mean, double sum);
-    void send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos);
+    //void send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos);
+    void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
+
     Mat mask;
     Ptr<BackgroundSubtractor> pMOG2;
     Mat previous;
