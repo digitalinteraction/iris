@@ -18,6 +18,7 @@
 #include <opencv2/features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
 #include "../network/Packetbuffer.h"
+#include "../network/NetworkControl.h"
 
 using namespace cv;
 
