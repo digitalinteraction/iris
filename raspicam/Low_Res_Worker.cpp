@@ -172,9 +172,9 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //imshow("V", channel[2]);
         //imshow("cleaned", cleaned);
         //imshow("Mask", drawing);
-        printf("Mat size: %d, channels: %d total_size: %d\n", drawing.total(), drawing.channels(), drawing.total()*drawing.elemSize());
+        //printf("Mat size: %d, channels: %d total_size: %d\n", drawing.total(), drawing.channels(), drawing.total()*drawing.elemSize());
         //send_to_server(low_patch.buffer, low_patch.size, 1, pos);
-        send_to_server(drawing.data, drawing.total()*drawing.elemSize(), 1, pos);
+        send_to_server(cleaned.data, cleaned.total()*cleaned.elemSize(), 1, pos);
         pos++;
         if (pos == 8) {
             pos = 0;
@@ -227,7 +227,7 @@ Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
 }
 
 void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos) {
-    printf("sending image to server %ld with pos %d \n", image_size, pos);
+    //printf("sending image to server %ld with pos %d \n", image_size, pos);
     if (nc->unrel->send_buf->getCnt() < 70) {
         if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 3) && image_size < 500000) {
             uint8_t color = 0;
