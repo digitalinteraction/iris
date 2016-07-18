@@ -32,7 +32,7 @@ private:
     Packetbuffer *out;
     UnreliableTransfer **unrel;
     void read_channel(int I2CFile, uint8_t sel, uint16_t *array, uint16_t *count);
-    int intcmp(const void *aa, const void *bb);
+    static int intcmp(const void *aa, const void *bb);
     uint16_t median(uint16_t *array);
     uint8_t writeBuf[3];
     uint8_t readBuf[2];
