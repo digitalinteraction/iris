@@ -60,14 +60,9 @@ void Low_Res_Worker::run(){
         if(new_low_buffer == 1){
             pthread_mutex_lock(&buffer_lock);
             counter++;
-            //process_image(low_patch.buffer, low_patch.size);
-            if(nr % 2 == 0){
-                send_to_server(low_patch.buffer, low_patch.size, 1, pos);
-                pos++;
-                if(pos == 10){
-                    pos = 0;
-                }
-            }
+            
+            process_image(low_patch.buffer, low_patch.size);
+
             nr++;
             nr_img++;
             free(low_patch.buffer);
@@ -143,8 +138,8 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     }
                 }
                 if ((xmax - xmin) > 10 && (ymax - ymin) > 10) {
-                    requests[cnt].fb = low_patch.fb;
-                    requests[cnt].token = low_patch.token;
+                    //requests[cnt].fb = low_patch.fb;
+                    //requests[cnt].token = low_patch.token;
                     //printf("Low Res: %d %d %d %d\n", xmin, ymin, xmax, ymax);
                     float factorx = (float) HIGH_OUTPUT_X / LOW_OUTPUT_X;
                     float factory = (float) HIGH_OUTPUT_Y / LOW_OUTPUT_Y;
@@ -156,10 +151,10 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     float width = (xmax + 5) * factorx + factorx - x;
                     if ((y + height) > HIGH_OUTPUT_Y) height = HIGH_OUTPUT_Y - y;
                     if ((x + width) > HIGH_OUTPUT_X) width = HIGH_OUTPUT_X - x;
-                    requests[cnt].x = (int) x;
-                    requests[cnt].y = (int) y;
-                    requests[cnt].height = (int) (width + 1.5);
-                    requests[cnt].width = (int) (height + 1.5);
+                    //requests[cnt].x = (int) x;
+                    //requests[cnt].y = (int) y;
+                    //requests[cnt].height = (int) (width + 1.5);
+                    //requests[cnt].width = (int) (height + 1.5);
                     //add limits for request in ImageCapture
                     cnt++;
                 }
@@ -168,7 +163,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         /////////////////////////////////////////////////////
         
         if(cnt > 0){
-            requests_pending = cnt;
+            //requests_pending = cnt;
         }
         
         ///////////////////////////////////////////////////////////////
@@ -177,9 +172,18 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //imshow("V", channel[2]);
         //imshow("cleaned", cleaned);
         //imshow("Mask", drawing);
-        
-        char filename[30];
-        
+
+        if (nr % 2 == 0) {
+            //send_to_server(low_patch.buffer, low_patch.size, 1, pos);
+            send_to_server(drawing->data, low_patch.size, 1, pos);
+            pos++;
+            if (pos == 10) {
+                pos = 0;
+            }
+        }
+
+        //char filename[30];
+
         /*snprintf(filename, 30, "pics/%d_lowres_ch0.png", nr_img);
         imwrite(filename, channel[0]);
         memset(filename, 0, 30);
@@ -258,7 +262,7 @@ void Low_Res_Worker::send_to_server(uint8_t* image, size_t image_size, uint8_t m
 
             new_size = LOW_OUTPUT_X * LOW_OUTPUT_Y * color * sizeof (uint8_t);
 
-            size_t part_size = new_size / 10;
+            size_t part_size = new_size / 8;
             //int ret = 0;
             //for (int i = 0; i < 10; i++) {
                 //ret = 0;
