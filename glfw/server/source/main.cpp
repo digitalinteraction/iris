@@ -318,12 +318,12 @@ void updateBuffer() {
                         }
                         
                         
-                        unsigned int offsety = HEIGHT * (posx - item->x - 1) + low_header->pos * DIVISION - 20*(item->x+1);
+                        unsigned int offsety = HEIGHT * (posx - item->x - 1) + low_header->pos * (HEIGHT/DIVISION) + 20*(posx - item->x);
                         unsigned int offsetx = WIDTH * item->y + 20*(item->y+1);
-
-                        //printf("%d %d %d offset: x: %d, y: %d %ld\n", item->x, item->y, low_header->pos, offsetx, offsety, low_header->mac);
+                        if(low_header->pos == 0){
+                        printf("%d %d %d offset: x: %d, y: %d %ld\n", item->x, item->y, low_header->pos, offsetx, offsety, low_header->mac);
                         //printf("setting rect %d %d to %d %d\n", offsetx, offsety, offsetx+400, offsety+30);
-                            
+                        }
                             glTexSubImage2D(GL_TEXTURE_2D,
                                     0,
                                     offsetx,

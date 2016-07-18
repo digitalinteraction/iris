@@ -324,8 +324,8 @@ struct temp_topo* Topology::search_topo(struct temp_topo*cur, uint64_t mac, uint
 void Topology::build_mapping(){
     printf("starting building map\n");
     struct device_info* root = get_device_entry(1);
-    printf("root: %lx %ld\n", root->mac, root->timeout);
     if(root != 0){
+    printf("root: %lx %ld\n", root->mac, root->timeout);
     add_unexplored_entry(root->mac, root->timeout);
     
     struct temp_topo* first = 0;
