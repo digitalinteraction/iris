@@ -6,7 +6,7 @@ varying vec2 texcoord;
 
 vec2 lookup(vec2 incoord){
     vec4 temp = texture2D(undist, incoord).rgba;
-    return vec2(((temp.r) + (temp.g)/256.0)+0.05, ((temp.b) + (temp.a)/256.0) + 0.1);
+    return vec2(((temp.r) + (temp.g)/256.0)+0.01, ((temp.b) + (temp.a)/256.0) + 0.02);
 }
 
 void main()
