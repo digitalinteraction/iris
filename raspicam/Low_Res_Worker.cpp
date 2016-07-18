@@ -176,8 +176,9 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //send_to_server(low_patch.buffer, low_patch.size, 1, pos);
         //send_to_server(cleaned.data, cleaned.total()*cleaned.elemSize(), 1, pos);
         //Mat send_img(channel[1]);
-        
-        //send_to_server(&channel[1], 1, pos);
+        Mat gray;
+        cvtColor(img, gray, COLOR_BGR2GRAY);
+        send_to_server(&gray, 1, pos);
         pos++;
         if (pos == 8) {
             pos = 0;
