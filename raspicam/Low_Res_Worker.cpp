@@ -113,6 +113,8 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours, i, color, 2);
         }
+        
+        printf("Contours found %d \n", contours.size());
         /////////////////////////////////////////////////////
         
         //FIND MAX/MIN POINTS////////////////////////////////
@@ -163,7 +165,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         /////////////////////////////////////////////////////
         
         if(cnt > 0){
-            requests_pending = cnt;
+            //requests_pending = cnt;
         }
         
         ///////////////////////////////////////////////////////////////
