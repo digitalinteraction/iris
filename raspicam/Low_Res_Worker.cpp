@@ -113,11 +113,11 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours, i, color, 2);
         }
-        Scalar mean;
-        Scalar stddev;
+        Scalar mean(0,0,0);
+        Scalar stddev(0,0,0);
         meanStdDev(hsv, mean, stddev, drawing);
         
-        for(int i = 0; i < mean.size(); i++){
+        for(int i = 0; i < 3; i++){
             printf("Mean: %f Stddev %f\n", mean[i], stddev[i]);
         }
         
