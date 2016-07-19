@@ -123,11 +123,11 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                 printf("Mean: %f Stddev %f\n", mean[i], stddev[i]);
             }
             double min, max;
-            minMaxLoc(channels[0], &min, &max, 0, 0, cleaned);
+            minMaxLoc(channel[0], &min, &max, 0, 0, cleaned);
             printf("channel 0 min %f max %f\n", min, max);
-            minMaxLoc(channels[1], &min, &max, 0, 0, cleaned);
+            minMaxLoc(channel[1], &min, &max, 0, 0, cleaned);
             printf("channel 1 min %f max %f\n", min, max);
-            minMaxLoc(channels[2], &min, &max, 0, 0, cleaned);
+            minMaxLoc(channel[2], &min, &max, 0, 0, cleaned);
             printf("channel 3 min %f max %f\n", min, max);
 
             printf("Contours found %d \n", contours.size());
