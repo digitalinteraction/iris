@@ -30,7 +30,11 @@
 
 using namespace cv;
 
-
+struct object_info{
+    vector<Point> points;
+    uint8_t thres_low;
+    uint8_t thres_high;
+};
 
 
 class Low_Res_Worker {
@@ -63,6 +67,13 @@ private:
     Packetbuffer *out;
     NetworkControl *nc;
     uint8_t pos;
+    
+    uint8_t thresH_low;
+    uint8_t thresH_high;
+    uint8_t thresS_low;
+    uint8_t thresS_high;
+    uint8_t thresV_low;
+    uint8_t thresV_high;
 };
 
 #endif /* LOW_RES_WORKER_H */
