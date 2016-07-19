@@ -197,6 +197,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //Mat send_img(channel[1]);
         
         Mat gray, roi;
+        printf("size %d mask size %d", img.total(), cleaned.total());
         roi.copyTo(img, cleaned);
         cvtColor(hsv, gray, COLOR_BGR2GRAY);
         send_to_server(&gray, 1, pos);
