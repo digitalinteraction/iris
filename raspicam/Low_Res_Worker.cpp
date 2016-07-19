@@ -113,15 +113,25 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours, i, color, 2);
         }
-        Scalar mean(0,0,0);
-        Scalar stddev(0,0,0);
-        meanStdDev(hsv, mean, stddev, cleaned);
-        
-        for(int i = 0; i < 3; i++){
-            printf("Mean: %f Stddev %f\n", mean[i], stddev[i]);
+
+
+        if (contours.size() > 0) {
+            Scalar mean(0, 0, 0);
+            Scalar stddev(0, 0, 0);
+            meanStdDev(hsv, mean, stddev, cleaned);
+            for (int i = 0; i < 3; i++) {
+                printf("Mean: %f Stddev %f\n", mean[i], stddev[i]);
+            }
+            double min, max;
+            minMaxLoc(channels[0], &min, &max, 0, 0, cleaned);
+            printf("channel 0 min %f max %f\n", min, max);
+            minMaxLoc(channels[1], &min, &max, 0, 0, cleaned);
+            printf("channel 1 min %f max %f\n", min, max);
+            minMaxLoc(channels[2], &min, &max, 0, 0, cleaned);
+            printf("channel 3 min %f max %f\n", min, max);
+
+            printf("Contours found %d \n", contours.size());
         }
-        
-        printf("Contours found %d \n", contours.size());
         /////////////////////////////////////////////////////
         
         //FIND MAX/MIN POINTS////////////////////////////////
