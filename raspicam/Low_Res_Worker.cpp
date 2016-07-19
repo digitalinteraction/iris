@@ -115,7 +115,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         }
         Scalar mean(0,0,0);
         Scalar stddev(0,0,0);
-        meanStdDev(hsv, mean, stddev, drawing);
+        meanStdDev(hsv, mean, stddev, cleaned);
         
         for(int i = 0; i < 3; i++){
             printf("Mean: %f Stddev %f\n", mean[i], stddev[i]);
