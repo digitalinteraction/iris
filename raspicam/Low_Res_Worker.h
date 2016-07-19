@@ -30,11 +30,7 @@
 
 using namespace cv;
 
-struct object_info{
-    vector<Point> points;
-    uint8_t thres_low;
-    uint8_t thres_high;
-};
+
 
 
 class Low_Res_Worker {
