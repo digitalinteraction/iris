@@ -116,7 +116,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
 
 
         if (contours.size() > 0) {
-            dilate(cleaned, cleaned, Mat(), Point(-1, -1), 5, 1, 0);
+            erode(cleaned, cleaned, Mat(), Point(-1, -1), 5, 1, 0);
             Scalar mean(0, 0, 0);
             Scalar stddev(0, 0, 0);
             meanStdDev(hsv, mean, stddev, cleaned);
