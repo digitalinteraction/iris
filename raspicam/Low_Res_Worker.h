@@ -36,7 +36,7 @@ using namespace std;
 
 
 struct objects{
-    vector<Points> *contour;
+    vector<Point> *contour;
     uint8_t id;
     struct objects *next;
 };
