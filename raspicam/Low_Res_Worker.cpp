@@ -103,25 +103,25 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         /////////////////////////////////////////////////////
         
         //GET SHAPE//////////////////////////////////////////
-        vector<vector<Point> > contours;
+        vector<vector<Point> > *contours = new vector<vector<Point>>;
         RNG rng(12345);
         findContours(cleaned, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
-        for(int i = 0; i < contours.size();i++){
+        for(int i = 0; i < contours->size();i++){
             match_contours(contours[i]);
         }
         
         //DRAW CONTOURS//////////////////////////////////////
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
-        for (int i = 0; i < contours.size(); i++) {
+        for (int i = 0; i < contours->size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours, i, color, 2);
         }
         /////////////////////////////////////////////////////
         
         //FIND MAX/MIN POINTS////////////////////////////////
-        int cnt = 0;
-        if(contours.size() > 0 && contours.size() < 10){
+        /*int cnt = 0;
+        if(contours->size() > 0 && contours->size() < 10){
             for(int i = 0;i< contours.size();i++){
                 int xmin = contours[i][0].x;
                 int ymin = contours[i][0].y;
@@ -168,7 +168,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         
         if(cnt > 0){
             //requests_pending = cnt;
-        }
+        }*/
         
         ///////////////////////////////////////////////////////////////
         //imshow("H", channel[0]);
