@@ -200,7 +200,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         Mat gray, roi;
         printf("size %d mask size %d", img.total(), cleaned.total());
         img.copyTo(roi, cleaned);
-        cvtColor(roi, gray, COLOR_BGR2GRAY);
+        cvtColor(img, gray, COLOR_BGR2GRAY);
         send_to_server(&gray, 1, pos);
         pos++;
         if (pos == 8) {
