@@ -24,7 +24,10 @@
 
 #include "UnreliableTransfer.h"
 
-
+#define CHECK_TIME 200
+#define TOPOSEND_TIME 500
+#define BUILDTOPO_TIME 3000
+#define PRINT_TIME 1000
 
 class NetworkControl {
 public:

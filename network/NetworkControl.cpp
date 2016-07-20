@@ -41,10 +41,10 @@ NetworkControl::NetworkControl() {
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     unsigned long currenttime = current.tv_sec*1000 + current.tv_nsec/1000000;
-    nextcheck = currenttime +20;
-    toposend = currenttime +1000;
-    buildtopo = currenttime +3000;
-    nextprint = currenttime + 1000;
+    nextcheck = currenttime +CHECK_TIME;
+    toposend = currenttime +TOPOSEND_TIME;
+    buildtopo = currenttime +BUILDTOPO_TIME;
+    nextprint = currenttime + PRINT_TIME;
 }
 
 NetworkControl::NetworkControl(const NetworkControl& orig) {
@@ -112,11 +112,11 @@ void NetworkControl::run(){
         //printf("A\n");
         if(currenttime > nextcheck){
             rel->check_timeouts();
-            nextcheck = currenttime + 200;
+            nextcheck = currenttime + CHECK_TIME;
         }
         //printf("B\n");
         if(currenttime > toposend){
-            toposend = currenttime + 500;
+            toposend = currenttime + TOPOSEND_TIME;
             topo->send();
         }
         //printf("C\n");
@@ -124,7 +124,7 @@ void NetworkControl::run(){
         if(currenttime > buildtopo){
             //printf("build mapping\n");
             topo->build_mapping();
-            buildtopo = currenttime + 2456;
+            buildtopo = currenttime + BUILDTOPO_TIME;
 
         }
 #endif
@@ -134,7 +134,7 @@ void NetworkControl::run(){
             struct mallinfo mi = mallinfo();
             printf("Hosts alive: %d %d %d %d\n", topo->isalive(0), topo->isalive(1), topo->isalive(2),topo->isalive(3));
             topo->sendlist();
-            nextprint = currenttime + 1000;
+            nextprint = currenttime + PRINT_TIME;
         }
 
         struct packet* pack;
