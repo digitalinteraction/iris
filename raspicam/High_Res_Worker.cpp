@@ -61,10 +61,12 @@ void High_Res_Worker::run(){
 
             
             find_features(patch, group);
+            free(patch->buffer);
+            free(patch);
             
             cnt++;
             prev_group = group;
-            buf->release();
+            
         }
     }
 }

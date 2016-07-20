@@ -9,92 +9,59 @@
 
 
 Buffer::Buffer(int size){
-    array = new Buffer_Item[size];
     this->size = size;
-    for(int i = 0; i< size;i++){
-        array[i].patch = 0;
-        array[i].status = 0;
-        array[i].lock.unlock();
-    }
-    
-    add_pos = 0;
-    get_pos = 0;
-    curr_size = 0;
+    first = 0;
+    last = 0;
+    cnt = 0;
+    lock.unlock();
 }
 
 Buffer::~Buffer(){
-    delete[] array;
 }
 
 int Buffer::add(RASPITEX_PATCH *patch, uint8_t group){
-    add_pos++;
-    if(add_pos == size){
-        add_pos = 0;
+    lock.lock();
+    if(patch == 0 || cnt > size){
+        lock.unlock();
+        return -1;
     }
     
-    array[add_pos].lock.lock();
-    if(array[add_pos].status == 0){
-        array[add_pos].patch = patch;
-        array[add_pos].group = group;
-        array[add_pos].status = 1;
-        curr_size++;
-        //printf("added buffer %d\n", add_pos);
-    }else{
-        array[add_pos].lock.unlock();
-        add_pos--;
-        return 1;
+    struct Buffer_Item * pack = (struct Buffer_Item *) malloc(sizeof (struct Buffer_Item));
+    pack->patch = patch;
+    pack->group = group;
+    pack->next = 0;
+
+    if (first == 0) {
+        first = pack;
+        last = pack;
+    } else {
+        last->next = pack;
+        last = pack;
     }
-    array[add_pos].lock.unlock();
+    cnt++; 
+    lock.unlock();
+
     return 0;
 }
 
-int Buffer::free_space(){
-    int temp_pos = add_pos+1;
-    if(temp_pos == size){
-        temp_pos = 0;
-    }
-    
-    if(array[temp_pos].status == 0){
-        return 0;
-    }
-    
-    return 1;
-}
 
 int Buffer::get(RASPITEX_PATCH **patch, uint8_t *group){
-    get_pos++;
-    if(get_pos == size){
-        get_pos = 0;
+    lock.lock();
+    if (first == 0) {
+        lock.unlock();
+        return -1;
+    } else {
+        struct Buffer_Item *temp = first;
+        *patch = first->patch;
+        *group = first->group;
+        first = first->next;
+        free(temp);
+        cnt--;
     }
-    
-    array[get_pos].lock.lock();
-    if(array[get_pos].status == 1){
-        *patch = array[get_pos].patch;
-        *group = array[get_pos].group;
-        array[get_pos].status = 2;
-        //printf("gotten buffer %d\n", get_pos);
-    }else{
-        array[get_pos].lock.unlock();
-        get_pos--;
-        return 1;
-    }
-    array[get_pos].lock.unlock();
+    lock.unlock();
     return 0;
 }
 
-int Buffer::release(){
-    array[get_pos].lock.lock();
-    if(array[get_pos].status == 2){
-        free(array[get_pos].patch->buffer);
-        free(array[get_pos].patch);
-        curr_size--;
-        array[get_pos].patch = 0;
-        array[get_pos].status = 0;
-    }else{
-        array[get_pos].lock.unlock();
-        return 1;
-    }
-
-    array[get_pos].lock.unlock();
-    return 0;
+uint16_t Packetbuffer::getCnt(){
+    return cnt;
 }
