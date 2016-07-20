@@ -7,7 +7,7 @@
 #include <chrono>
 #include "Image_Capture.h"
 #include "../network/NetworkControl.h"
-//#include "Low_Res_Worker.h"
+#include "Low_Res_Worker.h"
 //#include "High_Res_Worker.h"
 
 using namespace std;
