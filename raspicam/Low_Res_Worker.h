@@ -63,6 +63,8 @@ private:
     Packetbuffer *out;
     NetworkControl *nc;
     uint8_t pos;
+    uint8_t next_send;
+
     
     uint8_t thresH_low;
     uint8_t thresH_high;

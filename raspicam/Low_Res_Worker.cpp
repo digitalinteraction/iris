@@ -42,6 +42,7 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc) {
     this->out = out;
     this->nc = nc;
     pos = 0;
+    next_send = 0;
     
     //pMOG2 = bgsegm::createBackgroundSubtractorGMG();
 }
@@ -121,17 +122,17 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             Scalar stddev(0, 0, 0);
             meanStdDev(hsv, mean, stddev, cleaned);
             for (int i = 0; i < 3; i++) {
-                printf("Mean: %f Stddev %f\n", mean[i], stddev[i]);
+                //printf("Mean: %f Stddev %f\n", mean[i], stddev[i]);
             }
             double min, max;
             minMaxLoc(channel[0], &min, &max, 0, 0, cleaned);
-            printf("channel 0 min %f max %f\n", min, max);
+            //printf("channel 0 min %f max %f\n", min, max);
             minMaxLoc(channel[1], &min, &max, 0, 0, cleaned);
-            printf("channel 1 min %f max %f\n", min, max);
+            //printf("channel 1 min %f max %f\n", min, max);
             minMaxLoc(channel[2], &min, &max, 0, 0, cleaned);
-            printf("channel 3 min %f max %f\n", min, max);
+            //printf("channel 3 min %f max %f\n", min, max);
 
-            printf("Contours found %d \n", contours.size());
+            //printf("Contours found %d \n", contours.size());
         }
         /////////////////////////////////////////////////////
         
@@ -201,11 +202,13 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //printf("size %d mask size %d", img.total(), cleaned.total());
         img.copyTo(roi, cleaned);
         cvtColor(img, gray, COLOR_BGR2GRAY);
+        if(next_send % 2 == 0){
         send_to_server(&gray, 1, pos);
         pos++;
         if (pos == 8) {
             pos = 0;
-        }
+        }}
+        next_send++;
 
         //char filename[30];
 
