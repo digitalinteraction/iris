@@ -31,7 +31,7 @@
 #include <string.h>
 #include <vector>
 
-//#include "Buffer.h"
+#include "Buffer.h"
 
 using namespace cv;
 using namespace std;
@@ -42,7 +42,7 @@ struct objects{
     struct objects *next;
 };
 
-class Buffer;
+//class Buffer;
 
 class Low_Res_Worker {
 public:
