@@ -88,7 +88,6 @@ void Low_Res_Worker::run(){
 void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     //Mat is in format BGRA
     Mat img = convert(image, image_size);
-    printf("image converted\n");
     if (img.empty() == 0) {
 
         //imwrite("test.png", img);
@@ -100,25 +99,28 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             learning = std::numeric_limits< double >::min();
         }*/
         /////////////////////////////////////////////////////
+        printf("A\n");
         Mat hsv;
         cvtColor(img, hsv, COLOR_BGR2HSV);
         Mat channel[3];
         split(hsv, channel);
         //channel[1];
+        printf("B\n");
         threshold(channel[1], mask, 40, 255, THRESH_BINARY);
-                
+                printf("C\n");
         //CLEANING UP////////////////////////////////////////
         Mat kernel = Mat::ones(3, 3, CV_8U);
         Mat cleaned;
         morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
         
-        
+        printf("D\n");
         /////////////////////////////////////////////////////
         
         //GET SHAPE//////////////////////////////////////////
         vector<vector<Point> > *contours = new vector<vector<Point>>;
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        printf("E\n");
         /////////////////////////////////////////////////////
         for(int i = 0; i < contours->size();i++){
             match_contours(&contours->at(i));
