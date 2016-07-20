@@ -15,7 +15,6 @@
 #include "RaspiCLI.h"
 #include "RaspiTex.h"
 
-#include "Low_Res_Worker.h"
 #include "High_Res_Worker.h"
 
 // Standard port setting for the camera component
