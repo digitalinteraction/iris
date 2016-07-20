@@ -53,7 +53,6 @@
 
 
 
-
 using namespace std;
 /*static MMAL_STATUS_T create_camera_component(RASPISTILL_STATE *state);
 static void camera_control_callback(MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer);

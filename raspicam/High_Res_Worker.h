@@ -13,7 +13,6 @@
 
 #ifndef HIGH_RES_WORKER_H
 #define HIGH_RES_WORKER_H
-#include "Buffer.h"
 #include <opencv2/opencv.hpp>
 #include <opencv2/features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
@@ -21,6 +20,8 @@
 #include "../network/NetworkControl.h"
 
 using namespace cv;
+
+class Buffer;
 
 class High_Res_Worker {
 public:

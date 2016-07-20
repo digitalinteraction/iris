@@ -18,6 +18,7 @@
 #include <arpa/inet.h>
 #include <stdio.h>
 #include <string.h>
+#include "Buffer.h"
 
 using namespace std;
 
