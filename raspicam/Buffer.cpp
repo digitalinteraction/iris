@@ -26,7 +26,7 @@ int Buffer::add(RASPITEX_PATCH *patch, uint8_t group){
         return -1;
     }
     
-    struct Buffer_Item * pack = (struct Buffer_Item *) malloc(sizeof (struct Buffer_Item));
+    Buffer_Item * pack = (Buffer_Item *) malloc(sizeof (Buffer_Item));
     pack->patch = patch;
     pack->group = group;
     pack->next = 0;
@@ -51,7 +51,7 @@ int Buffer::get(RASPITEX_PATCH **patch, uint8_t *group){
         lock.unlock();
         return -1;
     } else {
-        struct Buffer_Item *temp = first;
+        Buffer_Item *temp = first;
         *patch = first->patch;
         *group = first->group;
         first = first->next;

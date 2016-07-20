@@ -19,7 +19,7 @@
 typedef struct{
     RASPITEX_PATCH *patch;
     uint8_t group;
-    struct Buffer_Item * next;
+    Buffer_Item * next;
 } Buffer_Item;
 
 class Buffer {
