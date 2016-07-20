@@ -30,6 +30,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <vector>
+#include "Buffer.h"
+
 
 using namespace cv;
 using namespace std;

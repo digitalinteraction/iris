@@ -13,7 +13,6 @@
 
 #include "Low_Res_Worker.h"
 #include "tga.h"
-#include "Buffer.h"
 #include <limits>
 #include <sys/socket.h>
 #include <netinet/in.h>
