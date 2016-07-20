@@ -32,6 +32,7 @@
 #include <vector>
 
 using namespace cv;
+using namespace std;
 
 
 struct objects{
