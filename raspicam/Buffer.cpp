@@ -62,6 +62,6 @@ int Buffer::get(RASPITEX_PATCH **patch, uint8_t *group){
     return 0;
 }
 
-uint16_t Packetbuffer::getCnt(){
+uint16_t Buffer::getCnt(){
     return cnt;
 }
