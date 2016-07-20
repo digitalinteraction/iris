@@ -18,6 +18,8 @@
 #include <opencv2/xfeatures2d.hpp>
 #include "../network/Packetbuffer.h"
 #include "../network/NetworkControl.h"
+#include "RaspiTex.h"
+
 
 using namespace cv;
 
