@@ -75,10 +75,11 @@ void Low_Res_Worker::run(){
         uint8_t group;
         if(images_in->get(&patch, &group) == 0){
             counter++;
-            process_image(patch.buffer, patch.size);
+            process_image(patch->buffer, patch->size);
             nr++;
             nr_img++;
-            free(patch.buffer);
+            free(patch->buffer);
+            free(patch);
         }
     }
 }
