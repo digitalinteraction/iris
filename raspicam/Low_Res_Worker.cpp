@@ -44,6 +44,8 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *im
     this->nc = nc;
     pos = 0;
     next_send = 0;
+    this->first = 0;
+    this->last = 0;
     
     //pMOG2 = bgsegm::createBackgroundSubtractorGMG();
 }
