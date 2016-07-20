@@ -33,6 +33,7 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc) {
     new_low_buffer = 0;
     requests_pending = 0;
     nr_img = 0;
+    id_cnt = 0;
     if (pthread_mutex_init(&buffer_lock, NULL) != 0)
     {
         printf("mutex init failed\n");
@@ -289,12 +290,12 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour){
     if(first == 0){
         first = (struct objects *) malloc(sizeof(struct objects));
         first->contour = contour;
-        first->id = this->id++;
+        first->id = this->id_cnt++;
         last = first;
     }else{
         last->next = (struct objects *) malloc(sizeof(struct objects));
         last->next->contour = contour;
-        last->next->id = this->id++;
+        last->next->id = this->id_cnt++;
         last = last->next;
     }
     return 0;
