@@ -230,7 +230,7 @@ void updateBuffer() {
                     printf("changing framebuffer to %d %d %d %d\n", HEIGHT*posx, WIDTH*posy, posx, posy);
                     free(myimage);
                     //size_t size = WIDTH * HEIGHT * 1 * sizeof (unsigned char)*posx*posy + posy*posx*2*20;
-                    size_t size = (WIDTH*posy + (posy*2*20))*(HEIGHT*posx + (posx*2*20));
+                    size_t size = (WIDTH*posx + (posx*2*20))*(HEIGHT*posy + (posy*2*20));
                     myimage = (unsigned char *) malloc(size);
                     memset(myimage, 20, size);
                     glDeleteTextures(1, &mytexture);
@@ -243,8 +243,8 @@ void updateBuffer() {
                     glTexImage2D(GL_TEXTURE_2D,
                             0,
                             GL_RED, //GL_RGB
-                            WIDTH*posy + (posy*2*20),
-                            HEIGHT*posx + (posx*2*20),
+                            WIDTH*posx + (posx*2*20),
+                            HEIGHT*posy + (posy*2*20),
                             0,
                             GL_RED, //GL_RGB
                             GL_UNSIGNED_BYTE,
@@ -315,20 +315,18 @@ void updateBuffer() {
                         weight[item->nr] = low_header->weight;
                         
                         //flip image
-                        unsigned char * temp_buf = (unsigned char *)malloc(WIDTH*(HEIGHT/DIVISION));
+                        /*unsigned char * temp_buf = (unsigned char *)malloc(WIDTH*(HEIGHT/DIVISION));
                         for(int i = 0; i < (HEIGHT/DIVISION); i++){
                             for(int j = 0; j < WIDTH; j++){
                                 temp_buf[i*WIDTH + (WIDTH-1-j)] = image_part[i*WIDTH + j];
                             }
-                        }
+                        }*/
                         
                         
-                        unsigned int offsety = HEIGHT * (posx - item->x - 1) + low_header->pos * (HEIGHT/DIVISION) + 20*(posx - item->x);
-                        unsigned int offsetx = WIDTH * item->y + 20*(item->y+1);
-                        if(low_header->pos == 0){
+                        unsigned int offsetx = WIDTH * (posx - item->x - 1)  + 20*(posx - item->x);
+                        unsigned int offsety = HEIGHT * item->y + 20*(item->y+1) + low_header->pos * (HEIGHT/DIVISION);
                         printf("%d %d %d offset: x: %d, y: %d %ld\n", item->x, item->y, low_header->pos, offsetx, offsety, low_header->mac);
                         //printf("setting rect %d %d to %d %d\n", offsetx, offsety, offsetx+400, offsety+30);
-                        }
                             glTexSubImage2D(GL_TEXTURE_2D,
                                     0,
                                     offsetx,
@@ -337,8 +335,8 @@ void updateBuffer() {
                                     HEIGHT/DIVISION,
                                     GL_RED, //GL_RGB
                                     GL_UNSIGNED_BYTE,
-                                    temp_buf);
-                            free(temp_buf);
+                                    image_part);
+                            //free(temp_buf);
                             
                     }
                 }
