@@ -179,7 +179,10 @@ void Image_Capture::run() {
                 //memcpy(&worker->low_patch, patches[0], sizeof(RASPITEX_PATCH));
                 //worker->new_low_buffer = 1;
                 //pthread_mutex_unlock(&worker->buffer_lock);
-                low_res_buffer->add(patches[0], 0);
+                
+                RASPITEX_PATCH *item = (RASPITEX_PATCH *)calloc(sizeof(RASPITEX_PATCH), 1)
+                memcpy(item, patches[0], sizeof(RASPITEX_PATCH));
+                low_res_buffer->add(item, 0);
             }
             
 

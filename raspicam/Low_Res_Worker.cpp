@@ -75,6 +75,7 @@ void Low_Res_Worker::run(){
         uint8_t group;
         if(images_in->get(&patch, &group) == 0){
             counter++;
+            printf("size of patch %d\n", patch->size);
             process_image(patch->buffer, patch->size);
             nr++;
             nr_img++;
