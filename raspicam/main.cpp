@@ -18,10 +18,10 @@ int main() {
 
     NetworkControl *nc = new NetworkControl();
     
-    Buffer *buffer = new Buffer(32);
+    Buffer *buf_ic_hr = new Buffer(10);
     Low_Res_Worker *low = new Low_Res_Worker(nc->unrel_in, nc);
-    Image_Capture *cap = new Image_Capture(buffer, low);
-    High_Res_Worker *high = new High_Res_Worker(buffer, nc->unrel_in, nc->image_out, nc);
+    Image_Capture *cap = new Image_Capture(buf_ic_hr, low);
+    High_Res_Worker *high = new High_Res_Worker(buf_ic_hr, nc->unrel_in, nc->image_out, nc);
     cap->capturing = 1;
     low->processing = 1;
     high->processing = 1;

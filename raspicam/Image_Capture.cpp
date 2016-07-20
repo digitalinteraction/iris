@@ -61,11 +61,12 @@ static void default_status(RASPISTILL_STATE *state);
 static void * begin_capturing(void *queue);*/
 
 
-Image_Capture::Image_Capture(Buffer *buffer, Low_Res_Worker * work)
+Image_Capture::Image_Capture(Buffer *buffer, Buffer *low_res_buffer, Buffer *low_res_requests)
 {
     
     buf = buffer;
-    worker = work;
+    this->low_res_buffer = low_res_buffer;
+    this->low_res_requests = low_res_requests;
 
     //RASPISTILL_STATE state;
     MMAL_STATUS_T status = MMAL_SUCCESS;
@@ -140,6 +141,20 @@ void Image_Capture::run() {
     while (capturing) {
         
         size_patches = 1;
+        RASPITEX_PATCH *patch;
+        uint8_t group;
+        uint8_t cnt = 1;
+        if (low_res_requests->getSize() > 0) {
+            while (low_res_requests->get(&patch, &group) == 0 && cnt < 11) {
+                patches[cnt] = patch;
+                patch->select = 1;
+                patch->active = 0;
+                size_patches++;
+            }
+            group++;
+        }
+        
+        /*
         if (worker->requests_pending > 0) {
             //printf("request for %d\n", worker->requests_pending);
             for(int i=0;i<worker->requests_pending;i++){
@@ -152,23 +167,24 @@ void Image_Capture::run() {
             group++;
             size_patches = worker->requests_pending+1;
             worker->requests_pending = 0;
-        }
+        }*/
 
             patches[0]->active = 0;
             patches[0]->buffer = 0;
             int8_t ret = raspitex_capture(&state.raspitex_state, patches, size_patches);
             
             if(state.raspitex_state.external_images_finished == 0){
-                pthread_mutex_lock(&worker->buffer_lock);
-                memcpy(&worker->low_patch, patches[0], sizeof(RASPITEX_PATCH));
-                worker->new_low_buffer = 1;
-                pthread_mutex_unlock(&worker->buffer_lock);
+                //pthread_mutex_lock(&worker->buffer_lock);
+                //memcpy(&worker->low_patch, patches[0], sizeof(RASPITEX_PATCH));
+                //worker->new_low_buffer = 1;
+                //pthread_mutex_unlock(&worker->buffer_lock);
+                low_res_buffer->add(patches[0], 0);
             }
             
 
-        for (int i = 0; i < (size_patches - 1); i++) {
-            if (patches[i + 1]->buffer) {
-                buf->add(patches[i+1], group);
+        for (int i = 1; i < (size_patches); i++) {
+            if (patches[i]->buffer) {
+                buf->add(patches[i], group);
             }
         }
         

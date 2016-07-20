@@ -31,7 +31,11 @@
 using namespace cv;
 
 
-
+struct objects{
+    vector<Points> *contour;
+    uint8_t id;
+    struct objects *next;
+};
 
 class Low_Res_Worker {
 public:
@@ -53,7 +57,7 @@ private:
     int interprete_params(double mean, double sum);
     //void send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos);
     void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
-
+    uint8_t match_contours(vector<Point> *contour);
     Mat mask;
     Ptr<BackgroundSubtractor> pMOG2;
     Mat previous;
@@ -65,6 +69,10 @@ private:
     uint8_t pos;
     uint8_t next_send;
 
+    
+    struct objects *first;
+    struct objects *last;
+    uint8_t id_cnt;
     
     uint8_t thresH_low;
     uint8_t thresH_high;

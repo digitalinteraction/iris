@@ -107,32 +107,15 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         RNG rng(12345);
         findContours(cleaned, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
+        for(int i = 0; i < contours.size();i++){
+            match_contours(contours[i]);
+        }
         
         //DRAW CONTOURS//////////////////////////////////////
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         for (int i = 0; i < contours.size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours, i, color, 2);
-        }
-
-
-        if (contours.size() > 0) {
-            erode(cleaned, cleaned, Mat(), Point(-1, -1), 5, 1, 0);
-            Scalar mean(0, 0, 0);
-            Scalar stddev(0, 0, 0);
-            meanStdDev(hsv, mean, stddev, cleaned);
-            for (int i = 0; i < 3; i++) {
-                //printf("Mean: %f Stddev %f\n", mean[i], stddev[i]);
-            }
-            double min, max;
-            minMaxLoc(channel[0], &min, &max, 0, 0, cleaned);
-            //printf("channel 0 min %f max %f\n", min, max);
-            minMaxLoc(channel[1], &min, &max, 0, 0, cleaned);
-            //printf("channel 1 min %f max %f\n", min, max);
-            minMaxLoc(channel[2], &min, &max, 0, 0, cleaned);
-            //printf("channel 3 min %f max %f\n", min, max);
-
-            //printf("Contours found %d \n", contours.size());
         }
         /////////////////////////////////////////////////////
         
@@ -295,3 +278,25 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
     }
 }
 
+uint8_t Low_Res_Worker::match_contours(vector<Point> *contour){
+    struct objects *item = first;
+    while(item != 0){
+        double res = matchShapes(item->contour, contour, CV_CONTOURS_MATCH_I1);
+        printf("result matching new shape with shape %d :: %f\n", item->id, res);
+        item = item->next;
+    }
+    
+    
+    if(first == 0){
+        first = (struct objects *) malloc(sizeof(struct objects));
+        first->contour = contour;
+        first->id = this->id++;
+        last = first;
+    }else{
+        last->next = (struct objects *) malloc(sizeof(struct objects));
+        last->next->contour = contour;
+        last->next->id = this->id++;
+        last = last->next;
+    }
+    return 0;
+}

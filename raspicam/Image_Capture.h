@@ -102,6 +102,6 @@ private:
     static void * begin_capturing(void *queue);
     RASPISTILL_STATE state;
     Buffer *buf;
-    Low_Res_Worker * worker;
+    Buffer * low_res_buffer;
     uint8_t group;
 };
