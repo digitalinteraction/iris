@@ -36,8 +36,6 @@
 using namespace cv;
 using namespace std;
 
-class Buffer;
-
 struct objects{
     vector<Point> *contour;
     uint8_t id;
