@@ -108,7 +108,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
         for(int i = 0; i < contours->size();i++){
-            match_contours(&(contours[i]));
+            match_contours(&contours->at(i));
         }
         
         //DRAW CONTOURS//////////////////////////////////////
