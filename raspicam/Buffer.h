@@ -16,10 +16,10 @@
 #include "RaspiTex.h"
 
 
-typedef struct{
+typedef struct buf_item{
     RASPITEX_PATCH *patch;
     uint8_t group;
-    Buffer_Item * next;
+    struct buf_item * next;
 } Buffer_Item;
 
 class Buffer {
