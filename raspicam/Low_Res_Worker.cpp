@@ -308,14 +308,15 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> contour){
     if(first == 0){
         printf("C\n");
         first = (struct objects *) malloc(sizeof(struct objects));
-        first->contour = new vector<Point>;
+        printf("1\n");
         first->contour = contour;
+        printf("2\n");
         first->id = this->id_cnt++;
+        printf("3\n");
         last = first;
     }else{
         printf("D\n");
         last->next = (struct objects *) malloc(sizeof(struct objects));
-        last->next->contour = new vector<Point>;
         last->next->contour = contour;
         last->next->id = this->id_cnt++;
         last = last->next;
