@@ -21,6 +21,7 @@
 
 using namespace cv;
 
+class Buffer;
 
 class High_Res_Worker {
 public:

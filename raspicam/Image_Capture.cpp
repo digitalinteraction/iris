@@ -48,6 +48,8 @@
 #include "tga.h"
 #include <unistd.h>
 
+#include "Buffer.h"
+
 
 
 
