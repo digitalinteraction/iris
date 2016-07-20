@@ -37,7 +37,7 @@ int main() {
         int begin = low->counter;
         std::this_thread::sleep_for(std::chrono::seconds(1));
         begin = low->counter - begin;
-        printf("%d Frames per Second: %d, Buffer Size: %d\n", i,begin, buffer->getSize());
+        printf("%d Frames per Second: %d, Buffer Size: %d\n", i,begin, buf_ic_hr->getSize());
         fflush(stdout);
     }
 

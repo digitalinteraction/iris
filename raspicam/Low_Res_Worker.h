@@ -27,6 +27,8 @@
 #include <pthread.h>
 #include "../network/Packetbuffer.h"
 #include "../network/NetworkControl.h"
+#include <stdio.h>
+#include <string.h>
 
 using namespace cv;
 
