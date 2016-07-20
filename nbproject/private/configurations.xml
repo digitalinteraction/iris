@@ -2025,6 +2025,7 @@
         <in>RaspiTexUtil.c</in>
         <in>RaspiTexUtil.h</in>
         <in>main.cpp</in>
+        <in>network_defines.h</in>
         <in>tga.c</in>
         <in>tga.h</in>
       </df>

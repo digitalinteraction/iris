@@ -279,6 +279,7 @@
         <in>RaspiStill.c</in>
         <in>RaspiTex.c</in>
         <in>RaspiTexUtil.c</in>
+        <in>network_defines.h</in>
         <in>tga.c</in>
       </df>
       <df name="serial_test">
@@ -1017,6 +1018,8 @@
       <item path="raspicam/imv_examples/imv2pgm.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="raspicam/imv_examples/imv2txt.c" ex="false" tool="0" flavor2="0">
+      </item>
+      <item path="raspicam/network_defines.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="raspicam/tga.c" ex="false" tool="0" flavor2="0">
       </item>

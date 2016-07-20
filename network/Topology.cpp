@@ -119,15 +119,31 @@ int Topology::sendlist() {
         
         map.mac = mac;
         /*
-        map.up = mapping[0]; //1
-        map.down = mapping[3]; //0
-        map.left = mapping[2]; //3
-        map.right = mapping[1]; //2
-         */
+    map.up = mapping[0]; //1
+    map.down = mapping[3]; //0
+    map.left = mapping[2]; //3
+    map.right = mapping[1]; //2
+     */
+    if (isalive(2) == 1) {
         map.up = mapping[2]; //1
+    } else {
+        map.up = 0;
+    }
+    if (isalive(1) == 1) {
         map.down = mapping[1]; //0
+    } else {
+        map.down = 0;
+    }
+    if (isalive(3) == 1) {
         map.left = mapping[3]; //3
+    } else {
+        map.left = 0;
+    }
+    if (isalive(0) == 1) {
         map.right = mapping[0]; //2
+    } else {
+        map.right = 0;
+    }
         
         //print_mapping(map);
         
