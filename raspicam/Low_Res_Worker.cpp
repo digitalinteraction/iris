@@ -88,6 +88,7 @@ void Low_Res_Worker::run(){
 void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     //Mat is in format BGRA
     Mat img = convert(image, image_size);
+    printf("image converted\n");
     if (img.empty() == 0) {
 
         //imwrite("test.png", img);
