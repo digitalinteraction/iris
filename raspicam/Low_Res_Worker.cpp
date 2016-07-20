@@ -105,7 +105,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //GET SHAPE//////////////////////////////////////////
         vector<vector<Point> > *contours = new vector<vector<Point>>;
         RNG rng(12345);
-        findContours(cleaned, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
         for(int i = 0; i < contours->size();i++){
             match_contours(contours[i]);
@@ -115,7 +115,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         for (int i = 0; i < contours->size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-            drawContours(drawing, contours, i, color, 2);
+            drawContours(drawing, *contours, i, color, 2);
         }
         /////////////////////////////////////////////////////
         
