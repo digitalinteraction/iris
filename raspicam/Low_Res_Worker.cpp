@@ -296,6 +296,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 }
 
 uint8_t Low_Res_Worker::match_contours(vector<Point> contour){
+    printf("size of contour %d\n", contour.size());
     struct objects *item = first;
     while(item != 0){
         printf("aA\n");
