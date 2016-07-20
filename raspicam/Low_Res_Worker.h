@@ -43,7 +43,7 @@ struct objects{
 
 class Low_Res_Worker {
 public:
-    Low_Res_Worker(Packetbuffer *out, NetworkControl *nc);
+    Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in);
     ~Low_Res_Worker();
     void run();
     int processing;
@@ -73,7 +73,7 @@ private:
     uint8_t pos;
     uint8_t next_send;
 
-    
+    Buffer *images_in;
     struct objects *first;
     struct objects *last;
     uint8_t id_cnt;

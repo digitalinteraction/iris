@@ -13,6 +13,7 @@
 
 #include "Low_Res_Worker.h"
 #include "tga.h"
+#include "Buffer.h"
 #include <limits>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -24,7 +25,7 @@
 
 using namespace std;
 
-Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc) {
+Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in) {
     processing = 0;
     pMOG2 = createBackgroundSubtractorMOG2(100, 16, false);
     cnt = 0;
@@ -34,6 +35,7 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc) {
     requests_pending = 0;
     nr_img = 0;
     id_cnt = 0;
+    this->images_in = images_in;
     if (pthread_mutex_init(&buffer_lock, NULL) != 0)
     {
         printf("mutex init failed\n");
@@ -58,7 +60,7 @@ void Low_Res_Worker::run(){
     int light;
     int nr = 0;
     while(processing){
-        if(new_low_buffer == 1){
+        /*if(new_low_buffer == 1){
             pthread_mutex_lock(&buffer_lock);
             counter++;
             
@@ -69,6 +71,15 @@ void Low_Res_Worker::run(){
             free(low_patch.buffer);
             new_low_buffer = 0;
             pthread_mutex_unlock(&buffer_lock);
+        }*/
+        RASPITEX_PATCH *patch;
+        uint8_t group;
+        if(images_in->get(&patch, &group) == 0){
+            counter++;
+            process_image(patch.buffer, patch.size);
+            nr++;
+            nr_img++;
+            free(patch.buffer);
         }
     }
 }
