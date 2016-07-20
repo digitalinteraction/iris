@@ -298,22 +298,26 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 uint8_t Low_Res_Worker::match_contours(vector<Point> contour){
     struct objects *item = first;
     while(item != 0){
+        printf("A\n");
         double res = matchShapes(item->contour, contour, CV_CONTOURS_MATCH_I1, 0);
         printf("result matching new shape with shape %d :: %f\n", item->id, res);
         item = item->next;
     }
     
-    
+    printf("B\n");
     if(first == 0){
+        printf("C\n");
         first = (struct objects *) malloc(sizeof(struct objects));
         first->contour = contour;
         first->id = this->id_cnt++;
         last = first;
     }else{
+        printf("D\n");
         last->next = (struct objects *) malloc(sizeof(struct objects));
         last->next->contour = contour;
         last->next->id = this->id_cnt++;
         last = last->next;
     }
+    printf("E\n");
     return 0;
 }
