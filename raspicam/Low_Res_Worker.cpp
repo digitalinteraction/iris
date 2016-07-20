@@ -125,7 +125,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         for(int i = 0; i < contours->size();i++){
             match_contours(&contours->at(i));
         }
-        
+        printf("F\n");
         //DRAW CONTOURS//////////////////////////////////////
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         for (int i = 0; i < contours->size(); i++) {
@@ -133,7 +133,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             drawContours(drawing, *contours, i, color, 2);
         }
         /////////////////////////////////////////////////////
-        
+        printf("G\n");
         //FIND MAX/MIN POINTS////////////////////////////////
         /*int cnt = 0;
         if(contours->size() > 0 && contours->size() < 10){
@@ -207,7 +207,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             pos = 0;
         }}
         next_send++;
-
+printf("H\n");
         //char filename[30];
 
         /*snprintf(filename, 30, "pics/%d_lowres_ch0.png", nr_img);
