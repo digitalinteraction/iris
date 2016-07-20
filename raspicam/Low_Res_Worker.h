@@ -29,6 +29,7 @@
 #include "../network/NetworkControl.h"
 #include <stdio.h>
 #include <string.h>
+#include <vector>
 
 using namespace cv;
 
