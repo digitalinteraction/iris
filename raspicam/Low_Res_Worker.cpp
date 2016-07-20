@@ -123,7 +123,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         printf("E\n");
         /////////////////////////////////////////////////////
         for(int i = 0; i < contours->size();i++){
-            match_contours(&contours->at(i));
+            match_contours(contours->at(i));
         }
         printf("F\n");
         //DRAW CONTOURS//////////////////////////////////////
@@ -293,10 +293,10 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
     }
 }
 
-uint8_t Low_Res_Worker::match_contours(vector<Point> *contour){
+uint8_t Low_Res_Worker::match_contours(vector<Point> contour){
     struct objects *item = first;
     while(item != 0){
-        double res = matchShapes(*item->contour, *contour, CV_CONTOURS_MATCH_I1, 0);
+        double res = matchShapes(item->contour, contour, CV_CONTOURS_MATCH_I1, 0);
         printf("result matching new shape with shape %d :: %f\n", item->id, res);
         item = item->next;
     }
