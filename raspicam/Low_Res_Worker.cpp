@@ -119,7 +119,9 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
+        printf("Contours size: %d\n", contours->size());
         for(int i = 0; i < contours->size();i++){
+            printf("match function with contour size %d\n", contours->at(i)->size());
             match_contours(&contours->at(i), pos);
         }
         //DRAW CONTOURS//////////////////////////////////////
