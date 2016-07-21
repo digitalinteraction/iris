@@ -313,8 +313,10 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour){
         first->contour = contour;
         printf("a2\n");
         first->id = this->id_cnt++;
+        printf("added item with id %d as first\n", first->id);
         printf("a3\n");
         last = first;
+        first->next = 0;
     }else{
         printf("aD\n");
         
@@ -323,6 +325,8 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour){
         item->contour = contour;
         printf("as\n");
         item->id = this->id_cnt++;
+        printf("added item with id %d as first\n", item->id);
+        item->next = 0;
         printf("at\n");
         last->next = item;
         printf("au\n");
