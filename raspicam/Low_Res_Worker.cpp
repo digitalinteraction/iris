@@ -123,7 +123,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             Mat d1;
             absdiff(prev, img, d1);
             Scalar means(0,0,0,0);
-            means = mean(d1);
+            means = sum(d1);
             printf("Image similarity %f %f %f %f\n", means[0], means[1], means[2], means[0]+means[1]+means[2]);
         }
 
