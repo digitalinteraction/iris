@@ -119,6 +119,14 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
+        if (prev.empty() == 0) {
+            Mat d1;
+            absdiff(prev, img, d1);
+            Scalar means = mean(d1);
+            printf("Image similarity %f %f %f\n", means[0], means[1], means[2]);
+        }
+
+        
         for(int i = 0; i < contours->size();i++){
             match_contours(&contours->at(i), pos);
         }
@@ -292,15 +300,17 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
         struct objects *item = first;
         double res = 1;
         while (item != 0) {
-            res = matchShapes(*(item->contour), *contour, CV_CONTOURS_MATCH_I1, 0);
-            printf("%d::matching shapes size %d %d and %d with similarity %f\n", run, item->contour->size(), item->id, contour->size(), res);
-            item = item->next;
-            if (res < 0.1) {
-                item = 0;
+            double similarity = matchShapes(*(item->contour), *contour, CV_CONTOURS_MATCH_I1, 0);
+            if(similarity < res){
+                res = similarity;
             }
+            printf("%d::matching shapes size %d %d and %d with similarity %f\n", run, item->contour->size(), item->id, contour->size(), similarity);
+            item = item->next;
+            
         }
 
-        if (res < 0.1) {
+        if (res < 0.5) {
+            printf("found match\n");
             return 1;
         }
 

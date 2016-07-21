@@ -81,6 +81,8 @@ private:
     struct objects *last;
     uint8_t id_cnt;
     
+    Mat prev;
+    
     uint8_t thresH_low;
     uint8_t thresH_high;
     uint8_t thresS_low;
