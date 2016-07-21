@@ -101,33 +101,27 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             learning = std::numeric_limits< double >::min();
         }*/
         /////////////////////////////////////////////////////
-        printf("A\n");
         Mat hsv;
         cvtColor(img, hsv, COLOR_BGR2HSV);
         Mat channel[3];
         split(hsv, channel);
         //channel[1];
-        printf("B\n");
         threshold(channel[1], mask, 40, 255, THRESH_BINARY);
-                printf("C\n");
         //CLEANING UP////////////////////////////////////////
         Mat kernel = Mat::ones(3, 3, CV_8U);
         Mat cleaned;
         morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
         
-        printf("D\n");
         /////////////////////////////////////////////////////
         
         //GET SHAPE//////////////////////////////////////////
         vector<vector<Point> > *contours = new vector<vector<Point>>;
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
-        printf("E\n");
         /////////////////////////////////////////////////////
         for(int i = 0; i < contours->size();i++){
             match_contours(&contours->at(i));
         }
-        printf("F\n");
         //DRAW CONTOURS//////////////////////////////////////
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         for (int i = 0; i < contours->size(); i++) {
@@ -135,7 +129,6 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             drawContours(drawing, *contours, i, color, 2);
         }
         /////////////////////////////////////////////////////
-        printf("G\n");
         //FIND MAX/MIN POINTS////////////////////////////////
         /*int cnt = 0;
         if(contours->size() > 0 && contours->size() < 10){
@@ -209,7 +202,6 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             pos = 0;
         }}
         next_send++;
-printf("H\n");
         //char filename[30];
 
         /*snprintf(filename, 30, "pics/%d_lowres_ch0.png", nr_img);
@@ -296,42 +288,33 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 }
 
 uint8_t Low_Res_Worker::match_contours(vector<Point> *contour){
-    printf("size of contour %d\n", contour->size());
     struct objects *item = first;
+    double res = 0;
     while(item != 0){
-        printf("aA\n");
-        double res = matchShapes(*(item->contour), *contour, CV_CONTOURS_MATCH_I1, 0);
-        printf("result matching new shape with shape %d :: %f\n", item->id, res);
+        res = matchShapes(*(item->contour), *contour, CV_CONTOURS_MATCH_I1, 0);
         item = item->next;
+        if(res < 0.02){
+            item = 0;
+        }
     }
     
-    printf("aB\n");
+    if(res < 0.02){
     if(first == 0){
-        printf("aC\n");
         first = (struct objects *) malloc(sizeof(struct objects));
-        printf("a1\n");
         first->contour = contour;
-        printf("a2\n");
         first->id = this->id_cnt++;
         printf("added item with id %d as first\n", first->id);
-        printf("a3\n");
         last = first;
         first->next = 0;
-    }else{
-        printf("aD\n");
-        
+    }else{        
         item = (struct objects *) malloc(sizeof(struct objects));
-        printf("aR\n");
         item->contour = contour;
-        printf("as\n");
         item->id = this->id_cnt++;
         printf("added item with id %d as first\n", item->id);
         item->next = 0;
-        printf("at\n");
         last->next = item;
-        printf("au\n");
         last = item;
     }
-    printf("aE\n");
+    }
     return 0;
 }
