@@ -287,37 +287,40 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
     }
 }
 
-uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run){
-    if(contour->size() > 20){
-    struct objects *item = first;
-    double res = 0;
-    while(item != 0){
-        res = matchShapes(*(item->contour), *contour, CV_CONTOURS_MATCH_I1, 0);
-        printf("%d::matching shapes size %d %d and %d with similarity %f\n", run, item->contour->size(), item->id, contour->size(), res);
-        item = item->next;
-        if(res < 0.02){
-            item = 0;
+uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
+    if (contour->size() > 20) {
+        struct objects *item = first;
+        double res = 0;
+        while (item != 0) {
+            res = matchShapes(*(item->contour), *contour, CV_CONTOURS_MATCH_I1, 0);
+            printf("%d::matching shapes size %d %d and %d with similarity %f\n", run, item->contour->size(), item->id, contour->size(), res);
+            item = item->next;
+            if (res < 0.1) {
+                item = 0;
+            }
         }
-    }
-    
-    if(res < 0.02){
-    if(first == 0){
-        first = (struct objects *) malloc(sizeof(struct objects));
-        first->contour = contour;
-        first->id = this->id_cnt++;
-        printf("added item with id %d as first\n", first->id);
-        last = first;
-        first->next = 0;
-    }else{        
-        item = (struct objects *) malloc(sizeof(struct objects));
-        item->contour = contour;
-        item->id = this->id_cnt++;
-        printf("added item with id %d\n", item->id);
-        item->next = 0;
-        last->next = item;
-        last = item;
-    }
-    }
+
+        if (res < 0.1) {
+            return 1;
+        }
+
+        if (first == 0) {
+            first = (struct objects *) malloc(sizeof (struct objects));
+            first->contour = contour;
+            first->id = this->id_cnt++;
+            printf("added item with id %d as first\n", first->id);
+            last = first;
+            first->next = 0;
+        } else {
+            item = (struct objects *) malloc(sizeof (struct objects));
+            item->contour = contour;
+            item->id = this->id_cnt++;
+            printf("added item with id %d\n", item->id);
+            item->next = 0;
+            last->next = item;
+            last = item;
+        }
+
     }
     return 0;
 }
