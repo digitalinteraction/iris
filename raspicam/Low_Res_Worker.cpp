@@ -149,17 +149,27 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, *contours, i, color, 2);
         }*/
+        
+        vector<vector<Point> > contours_list;
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         struct objects *item = first;
         int i = 0;
         while(item != 0){
             if(item->duration > 60){
-                Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-                drawContours(drawing, item->contour, i, color, 2);
+                //Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+                //drawContours(drawing, (item->contour), i, color, 2);
+                contours_list.push_back(*(item->contour));
                 i++;
             }
             item = item->next;
         }
+        
+        for (int i = 0; i < contours_list->size(); i++) {
+            Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+            drawContours(drawing, contours_list, i, color, 2);
+        }
+        
+        
         /////////////////////////////////////////////////////
         //FIND MAX/MIN POINTS////////////////////////////////
         /*int cnt = 0;
