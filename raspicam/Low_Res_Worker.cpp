@@ -133,12 +133,14 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             int sumsum1 = (int)(means1[0]+means1[1]+means1[2]);
             int sumsum2 = (int)(means2[0]+means2[1]+means2[2]);
             int sumsum3 = (int)(means3[0]+means3[1]+means3[2]);
-            printf("Image similarity %d\n", (sumsum1 + sumsum2 + sumsum3)/100000);
+            int movement = (sumsum1 + sumsum2 + sumsum3)/100000;
+            printf("Image similarity %d\n", movement);
         }
 
-        
+        if(movement < 10){
         for(int i = 0; i < contours->size();i++){
             match_contours(&contours->at(i), pos);
+        }
         }
         //DRAW CONTOURS//////////////////////////////////////
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
