@@ -119,9 +119,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
-        printf("Contours size: %d\n", contours->size());
         for(int i = 0; i < contours->size();i++){
-            printf("match function with contour size %d\n", contours->at(i).size());
             match_contours(&contours->at(i), pos);
         }
         //DRAW CONTOURS//////////////////////////////////////
@@ -292,7 +290,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
     if (contour->size() > 20) {
         struct objects *item = first;
-        double res = 0;
+        double res = 1;
         while (item != 0) {
             res = matchShapes(*(item->contour), *contour, CV_CONTOURS_MATCH_I1, 0);
             printf("%d::matching shapes size %d %d and %d with similarity %f\n", run, item->contour->size(), item->id, contour->size(), res);
