@@ -333,6 +333,7 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
         }
 
         if (res < SIMILARITY_OBJECT_THRESHOLD) {
+            found->contour = contour;
             printf("%d::found match with similarity %f and id %d\n", run, res, found->id);
             return 1;
         }
