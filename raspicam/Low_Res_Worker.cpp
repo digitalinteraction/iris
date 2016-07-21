@@ -334,7 +334,7 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
         }
 
         if (res < 0.1) {
-            printf("%d::found match with similarity %f\n", run, res);
+            printf("%d::found match with similarity %f and id %d\n", run, res, found->id);
             return 1;
         }
 
