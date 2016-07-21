@@ -43,6 +43,7 @@ struct objects{
     vector<Point> *contour;
     uint8_t id;
     uint8_t expiring;
+    uint8_t duration;
     struct objects *next;
     struct objects *prev;
 };

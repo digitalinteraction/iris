@@ -144,10 +144,21 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         }
         //}
         //DRAW CONTOURS//////////////////////////////////////
-        Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
+        /*Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         for (int i = 0; i < contours->size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, *contours, i, color, 2);
+        }*/
+        Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
+        struct objects *item = first;
+        int i = 0;
+        while(item != 0){
+            if(item->duration > 60){
+                Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
+                drawContours(drawing, item->contour, i, color, 2);
+                i++;
+            }
+            item = item->next;
         }
         /////////////////////////////////////////////////////
         //FIND MAX/MIN POINTS////////////////////////////////
@@ -214,8 +225,8 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         
         Mat gray, roi;
         //printf("size %d mask size %d", img.total(), cleaned.total());
-        img.copyTo(roi, cleaned);
-        cvtColor(img, gray, COLOR_BGR2GRAY);
+        //img.copyTo(roi, cleaned);
+        cvtColor(drawing, gray, COLOR_BGR2GRAY);
         if(next_send % 2 == 0){
         send_to_server(&gray, 1, pos);
         pos++;
@@ -342,6 +353,9 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
             printf("%d::found match with similarity %f and id %d with diff pos %f %f\n", run, res, found->id, abs(diff.x), abs(diff.y));
             found->contour = contour;
             found->expiring = 0;
+            if(found->duration != 255){
+                found->duration++;
+            }
             return 1;
         }
 
