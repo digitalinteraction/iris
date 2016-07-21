@@ -388,7 +388,7 @@ void Low_Res_Worker::cleanup_list() {
                 item->prev->next = item->next;
                 item->next->prev = item->prev;
             }
-            delete item->contour;
+            //delete item->contour;
             free(item);
         } else {
             item->expiring++;
