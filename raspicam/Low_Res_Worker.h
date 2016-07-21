@@ -37,7 +37,7 @@ using namespace cv;
 using namespace std;
 
 struct objects{
-    vector<Point> contour;
+    vector<Point> *contour;
     uint8_t id;
     struct objects *next;
 };
