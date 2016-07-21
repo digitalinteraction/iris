@@ -120,7 +120,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
         for(int i = 0; i < contours->size();i++){
-            match_contours(&contours->at(i));
+            match_contours(&contours->at(i), pos);
         }
         //DRAW CONTOURS//////////////////////////////////////
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
@@ -287,11 +287,12 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
     }
 }
 
-uint8_t Low_Res_Worker::match_contours(vector<Point> *contour){
+uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run){
     struct objects *item = first;
     double res = 0;
     while(item != 0){
         res = matchShapes(*(item->contour), *contour, CV_CONTOURS_MATCH_I1, 0);
+        printf("%d::matching shapes size %d and %d with similarity %f\n", run, item->contour->size(), contour->size(), res);
         item = item->next;
         if(res < 0.02){
             item = 0;
@@ -303,14 +304,14 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour){
         first = (struct objects *) malloc(sizeof(struct objects));
         first->contour = contour;
         first->id = this->id_cnt++;
-        printf("added item with id %d as first\n", first->id);
+        //printf("added item with id %d as first\n", first->id);
         last = first;
         first->next = 0;
     }else{        
         item = (struct objects *) malloc(sizeof(struct objects));
         item->contour = contour;
         item->id = this->id_cnt++;
-        printf("added item with id %d as first\n", item->id);
+        //printf("added item with id %d\n", item->id);
         item->next = 0;
         last->next = item;
         last = item;
