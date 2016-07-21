@@ -119,13 +119,21 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
-        if (prev.empty() == 0) {
-            Mat d1;
-            absdiff(prev, img, d1);
-            Scalar means(0,0,0,0);
-            means = sum(d1);
-            int sumsum = (int)(means[0]+means[1]+means[2]);
-            printf("Image similarity %d\n", sumsum);
+        if (prev1.empty() == 0 && prev2.empty() == 0 && prev3.empty() == 0) {
+            Mat d1,d2,d3;
+            absdiff(prev1, img, d1);
+            absdiff(prev2, img, d2);
+            absdiff(prev3, img, d3);
+            Scalar means1(0,0,0,0);
+            Scalar means2(0,0,0,0);
+            Scalar means3(0,0,0,0);
+            means1 = sum(d1);
+            means2 = sum(d2);
+            means3 = sum(d3);
+            int sumsum1 = (int)(means1[0]+means1[1]+means1[2]);
+            int sumsum2 = (int)(means2[0]+means2[1]+means2[2]);
+            int sumsum3 = (int)(means3[0]+means3[1]+means3[2]);
+            printf("Image similarity %d\n", (sumsum1 + sumsum2 + sumsum3)/100000);
         }
 
         
