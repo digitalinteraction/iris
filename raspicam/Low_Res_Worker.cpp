@@ -245,9 +245,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     } else {
         printf("Failed to convert camera image to Mat\n");
     }
-    prev.release();
-    prev = img.clone();
-    img.release();
+    prev = img;
     //img.release();
 }
 
