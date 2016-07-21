@@ -164,7 +164,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             item = item->next;
         }
         
-        for (int i = 0; i < contours_list->size(); i++) {
+        for (int i = 0; i < contours_list.size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours_list, i, color, 2);
         }
