@@ -42,7 +42,9 @@ using namespace std;
 struct objects{
     vector<Point> *contour;
     uint8_t id;
+    uint8_t expiring;
     struct objects *next;
+    struct objects *prev;
 };
 
 //class Buffer;
@@ -68,6 +70,7 @@ private:
     //void send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos);
     void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
     uint8_t match_contours(vector<Point> *contour, uint8_t run);
+    void cleanup_list();
     Mat mask;
     Ptr<BackgroundSubtractor> pMOG2;
     Mat previous;

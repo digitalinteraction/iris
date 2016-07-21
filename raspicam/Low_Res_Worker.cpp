@@ -341,7 +341,7 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
             Point2f diff = mc1 - mc2;
             printf("%d::found match with similarity %f and id %d with diff pos %f %f\n", run, res, found->id, abs(diff.x), abs(diff.y));
             found->contour = contour;
-
+            found->expiring = 0;
             return 1;
         }
 
@@ -349,19 +349,50 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
             first = (struct objects *) malloc(sizeof (struct objects));
             first->contour = contour;
             first->id = this->id_cnt++;
+            first->expiring = 0;
             //printf("added item with id %d as first\n", first->id);
             last = first;
             first->next = 0;
+            first->prev = 0;
         } else {
             item = (struct objects *) malloc(sizeof (struct objects));
             item->contour = contour;
             item->id = this->id_cnt++;
+            item->expiring = 0;
             //printf("added item with id %d\n", item->id);
             item->next = 0;
+            item->prev = last;
             last->next = item;
             last = item;
         }
 
     }
     return 0;
+}
+
+void Low_Res_Worker::cleanup_list() {
+    struct objects *item = first;
+    while (item != 0) {
+        if (item->expiring == 60) {
+            if (item->prev == 0 && item->next == 0) {
+                first = 0;
+                last = 0;
+            } else if (item->prev == 0) {
+                first = item->next;
+                first->prev = 0;
+            } else if (item->next == 0) {
+                item->prev->next = 0;
+                last = item->prev;
+            } else {
+                item->prev->next = item->next;
+                item->next->prev = item->prev;
+            }
+            free(item->contour);
+            free(item);
+        } else {
+            item->expiring++;
+        }
+        item = item->next;
+    }
+
 }
