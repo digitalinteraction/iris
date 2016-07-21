@@ -333,14 +333,15 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
         }
 
         if (res < SIMILARITY_OBJECT_THRESHOLD) {
-            found->contour = contour;
             Moments mu1 = moments(*contour, false);
             Moments mu2 = moments(*(found->contour), false);
             Point2f mc1 = Point2f( mu1.m10/mu1.m00 , mu1.m01/mu1.m00 );
             Point2f mc2 = Point2f( mu2.m10/mu2.m00 , mu2.m01/mu2.m00 );
-            printf("Pos1 %f %f, Pos2 %f %f\n", mc1.x, mc1.y, mc2.x, mc2.y);
+            //printf("Pos1 %f %f, Pos2 %f %f\n", mc1.x, mc1.y, mc2.x, mc2.y);
             Point2f diff = mc1 - mc2;
             printf("%d::found match with similarity %f and id %d with diff pos %f %f\n", run, res, found->id, diff.x, diff.y);
+            found->contour = contour;
+
             return 1;
         }
 
