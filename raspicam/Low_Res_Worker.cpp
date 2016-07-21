@@ -125,7 +125,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         printf("E\n");
         /////////////////////////////////////////////////////
         for(int i = 0; i < contours->size();i++){
-            match_contours(contours->at(i));
+            match_contours(&contours->at(i));
         }
         printf("F\n");
         //DRAW CONTOURS//////////////////////////////////////
