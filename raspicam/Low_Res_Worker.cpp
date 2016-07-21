@@ -240,10 +240,15 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         kernel.release();
         cleaned.release();
         drawing.release();
+        
+        
     } else {
         printf("Failed to convert camera image to Mat\n");
     }
-    img.release();
+    prev.release();
+    prev = img;
+    
+    //img.release();
 }
 
 Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
