@@ -288,6 +288,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 }
 
 uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run){
+    if(contour->size() > 20){
     struct objects *item = first;
     double res = 0;
     while(item != 0){
@@ -315,6 +316,7 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run){
         item->next = 0;
         last->next = item;
         last = item;
+    }
     }
     }
     return 0;
