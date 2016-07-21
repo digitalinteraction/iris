@@ -119,7 +119,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
-        int movement = 10;
+        /*int movement = 10;
         if (prev1.empty() == 0 && prev2.empty() == 0 && prev3.empty() == 0) {
             Mat d1,d2,d3;
             absdiff(prev1, img, d1);
@@ -136,13 +136,13 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             int sumsum3 = (int)(means3[0]+means3[1]+means3[2]);
             movement = (sumsum1 + sumsum2 + sumsum3)/100000;
             printf("Image similarity %d\n", movement);
-        }
+        }*/
 
-        if(movement < 10){
+        //if(movement < 10){
         for(int i = 0; i < contours->size();i++){
             match_contours(&contours->at(i), pos);
         }
-        }
+        //}
         //DRAW CONTOURS//////////////////////////////////////
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         for (int i = 0; i < contours->size(); i++) {
@@ -315,8 +315,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 }
 
 uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
-    if (contourArea(*contour) > 500.0) {
-        printf("%d Contour area: %f\n", run, contourArea(*contour));
+    if (contourArea(*contour) > CONTOUR_LOWER_THRESHOLD) {
 
         struct objects *item = first;
         struct objects *found = 0;
@@ -333,7 +332,7 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
             
         }
 
-        if (res < 0.1) {
+        if (res < SIMILARITY_OBJECT_THRESHOLD) {
             printf("%d::found match with similarity %f and id %d\n", run, res, found->id);
             return 1;
         }

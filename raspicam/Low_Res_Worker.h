@@ -33,6 +33,9 @@
 
 #include "Buffer.h"
 
+#define SIMILARITY_OBJECT_THRESHOLD 0.05
+#define CONTOUR_LOWER_THRESHOLD 500.0
+
 using namespace cv;
 using namespace std;
 
