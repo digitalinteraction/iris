@@ -801,6 +801,7 @@
               <in>Texture.h</in>
             </df>
             <in>main.cpp</in>
+            <in>network_defines.h</in>
           </df>
         </df>
         <df name="server_old">
