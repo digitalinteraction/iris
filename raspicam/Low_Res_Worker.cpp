@@ -81,8 +81,8 @@ void Low_Res_Worker::run(){
             process_image(patch->buffer, patch->size);
             nr++;
             nr_img++;
-            free(patch->buffer);
-            free(patch);
+            //free(patch->buffer);
+            //free(patch);
         }
     }
 }
