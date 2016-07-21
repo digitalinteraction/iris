@@ -119,6 +119,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
+        int movement = 10;
         if (prev1.empty() == 0 && prev2.empty() == 0 && prev3.empty() == 0) {
             Mat d1,d2,d3;
             absdiff(prev1, img, d1);
@@ -133,7 +134,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             int sumsum1 = (int)(means1[0]+means1[1]+means1[2]);
             int sumsum2 = (int)(means2[0]+means2[1]+means2[2]);
             int sumsum3 = (int)(means3[0]+means3[1]+means3[2]);
-            int movement = (sumsum1 + sumsum2 + sumsum3)/100000;
+            movement = (sumsum1 + sumsum2 + sumsum3)/100000;
             printf("Image similarity %d\n", movement);
         }
 
