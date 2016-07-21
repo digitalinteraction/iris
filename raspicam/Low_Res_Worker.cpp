@@ -339,7 +339,7 @@ uint8_t Low_Res_Worker::match_contours(vector<Point> *contour, uint8_t run) {
             Point2f mc2 = Point2f( mu2.m10/mu2.m00 , mu2.m01/mu2.m00 );
             //printf("Pos1 %f %f, Pos2 %f %f\n", mc1.x, mc1.y, mc2.x, mc2.y);
             Point2f diff = mc1 - mc2;
-            printf("%d::found match with similarity %f and id %d with diff pos %f %f\n", run, res, found->id, diff.x, diff.y);
+            printf("%d::found match with similarity %f and id %d with diff pos %f %f\n", run, res, found->id, abs(diff.x), abs(diff.y));
             found->contour = contour;
 
             return 1;
