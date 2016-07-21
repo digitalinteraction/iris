@@ -119,7 +119,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         /////////////////////////////////////////////////////
         
         //GET SHAPE//////////////////////////////////////////
-        vector<vector<Point> > *contours = new vector<vector<Point>;
+        vector<vector<Point> > *contours = new vector<vector<Point>>;
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         printf("E\n");
