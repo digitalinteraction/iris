@@ -349,7 +349,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
             int pos_elem = 0;
 
             for (int i = 0; i < contour->size(); i++) {
-                if (contour->at(i).size() > CONTOUR_LOWER_THRESHOLD) {
+                if (contourArea(contour->at(i)) > CONTOUR_LOWER_THRESHOLD) {
                     //calculate centroid
                     Moments mu = moments(contour->at(i), false);
                     Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
@@ -393,8 +393,8 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
 
     printf("size left %d\n", contour->size());
     for (int i = 0; i < contour->size(); i++) {
-        printf("contours found: %d\n", contour->at(i).size());
-        if (contour->at(i).size() > CONTOUR_LOWER_THRESHOLD) {
+        printf("contours found: %d\n", contourArea(contour->at(i)));
+        if (contourArea(contour->at(i)) > CONTOUR_LOWER_THRESHOLD) {
 
             Moments mu = moments(contour->at(i), false);
             Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
