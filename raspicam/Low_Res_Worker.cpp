@@ -393,6 +393,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
 
     printf("size left %d\n", contour->size());
     for (int i = 0; i < contour->size(); i++) {
+        printf("contours found: %d\n", contour->at(i).size());
         if (contour->at(i).size() > CONTOUR_LOWER_THRESHOLD) {
 
             Moments mu = moments(contour->at(i), false);
