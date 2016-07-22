@@ -474,7 +474,7 @@ void Low_Res_Worker::ask_neighbours() {
         if (item->asked == 0) {
             int loop = item->contour->size();
             int ret = 0;
-            Rect enclosing = boundingRect(item->contour);
+            Rect enclosing = boundingRect(*item->contour);
             if (enclosing.x == 0) {
                 //ask neighbour below 3
                 ret += send_to_neighbour(enclosing.y, enclosing.y + enclosing.width, 3, item->id);
