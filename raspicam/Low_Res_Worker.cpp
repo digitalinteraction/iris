@@ -348,31 +348,33 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
             int pos_elem = 0;
 
             for (int i = 0; i < contour->size(); i++) {
-                //calculate centroid
-                Moments mu = moments(contour->at(i), false);
-                Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
+                if (contour->at(i)->size() > CONTOUR_LOWER_THRESHOLD) {
+                    //calculate centroid
+                    Moments mu = moments(contour->at(i), false);
+                    Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
 
-                //calculate similarity of shape
-                double sim_shapes = matchShapes(*(item->contour), contour->at(i), CV_CONTOURS_MATCH_I1, 0);
+                    //calculate similarity of shape
+                    double sim_shapes = matchShapes(*(item->contour), contour->at(i), CV_CONTOURS_MATCH_I1, 0);
 
-                float area = mu.m00;
+                    float area = mu.m00;
 
-                float diff_area = (item->area - area) / (item->area);
-                Point2f diff_xy = item->centroid - mc;
-                float diff_dist = sqrt(diff_xy.x * diff_xy.x + diff_xy.y * diff_xy.y);
+                    float diff_area = (item->area - area) / (item->area);
+                    Point2f diff_xy = item->centroid - mc;
+                    float diff_dist = sqrt(diff_xy.x * diff_xy.x + diff_xy.y * diff_xy.y);
 
-                double total_sim = 0.003 * diff_dist + 0.01 * diff_area + sim_shapes;
+                    double total_sim = 0.003 * diff_dist + 0.01 * diff_area + sim_shapes;
 
-                if (total_sim < similarity) {
-                    similarity = total_sim;
-                    found = &contour->at(i);
-                    new_centroid = mc;
-                    new_area = area;
-                    pos_elem = i;
+                    if (total_sim < similarity) {
+                        similarity = total_sim;
+                        found = &contour->at(i);
+                        new_centroid = mc;
+                        new_area = area;
+                        pos_elem = i;
+                    }
                 }
             }
-            if (similarity <= 0.5  && similarity >= 0) {
-                printf("found match %d with similarity %d\n", item->id, similarity);
+            if (similarity <= 0.5 && similarity >= -0.5) {
+                printf("found match %d with similarity %f\n", item->id, similarity);
                 item->contour = new vector<Point>;
                 *item->contour = *found;
                 contour->erase(contour->begin() + pos_elem);
@@ -390,35 +392,38 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
 
     printf("size left %d\n", contour->size());
     for (int i = 0; i < contour->size(); i++) {
-        Moments mu = moments(contour->at(i), false);
-        Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
+        if (contour->at(i)->size() > CONTOUR_LOWER_THRESHOLD) {
 
-        //calculate similarity of shape
-        float area = mu.m00;
+            Moments mu = moments(contour->at(i), false);
+            Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
 
-        if (first == 0) {
-            first = (struct objects *) malloc(sizeof (struct objects));
-            first->contour = &contour->at(i);
-            first->id = this->id_cnt++;
-            first->expiring = 0;
-            first->area = area;
-            first->centroid = mc;
-            printf("added item with id %d as first\n", first->id);
-            last = first;
-            first->next = 0;
-            first->prev = 0;
-        } else {
-            item = (struct objects *) malloc(sizeof (struct objects));
-            item->contour = &contour->at(i);
-            item->id = this->id_cnt++;
-            item->expiring = 0;
-            item->area = area;
-            item->centroid = mc;
-            printf("added item with id %d\n", item->id);
-            item->next = 0;
-            item->prev = last;
-            last->next = item;
-            last = item;
+            //calculate similarity of shape
+            float area = mu.m00;
+
+            if (first == 0) {
+                first = (struct objects *) malloc(sizeof (struct objects));
+                first->contour = &contour->at(i);
+                first->id = this->id_cnt++;
+                first->expiring = 0;
+                first->area = area;
+                first->centroid = mc;
+                printf("added item with id %d as first\n", first->id);
+                last = first;
+                first->next = 0;
+                first->prev = 0;
+            } else {
+                item = (struct objects *) malloc(sizeof (struct objects));
+                item->contour = &contour->at(i);
+                item->id = this->id_cnt++;
+                item->expiring = 0;
+                item->area = area;
+                item->centroid = mc;
+                printf("added item with id %d\n", item->id);
+                item->next = 0;
+                item->prev = last;
+                last->next = item;
+                last = item;
+            }
         }
     }
 
