@@ -365,7 +365,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
 
                 if (total_sim < similarity) {
                     similarity = total_sim;
-                    found = contour->at(i);
+                    found = &contour->at(i);
                     new_centroid = mc;
                     new_area = area;
                     pos_elem = i;
@@ -375,7 +375,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
                 printf("found match %d with similarity %d\n", item->id, similarity);
                 item->contour = new vector<Point>;
                 *item->contour = *found;
-                contour->erase(pos_elem);
+                contour->erase(contour->begin() + pos_elem);
                 item->area = new_area;
                 item->centroid = new_centroid;
                 item->expiring = 0;
