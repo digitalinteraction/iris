@@ -441,7 +441,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
 void Low_Res_Worker::cleanup_list() {
     struct objects *item = first;
     while (item != 0) {
-        if (item->expiring == 60) {
+        if (item->expiring == 30) {
             //printf("freeing item %p with id %d\n", item, item->id);
             if (item->prev == 0 && item->next == 0) {
                 first = 0;
