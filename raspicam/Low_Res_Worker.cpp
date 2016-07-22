@@ -343,11 +343,11 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
         if (item->matched == 0) {
 
             double similarity = 1000.0;
-            Point2f new_centroid = 0;
+            Point2f new_centroid = {0.0f,0.0f};
             double new_area = 0;
             int pos_elem = 0;
 
-            for (int i = 0; i < contours->size(); i++) {
+            for (int i = 0; i < contour->size(); i++) {
                 //calculate centroid
                 Moments mu = moments(contour->at(i), false);
                 Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
@@ -365,7 +365,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
 
                 if (total_sim < similarity) {
                     similarity = total_sim;
-                    found = &(contour->at(i));
+                    found = contour->at(i);
                     new_centroid = mc;
                     new_area = area;
                     pos_elem = i;
