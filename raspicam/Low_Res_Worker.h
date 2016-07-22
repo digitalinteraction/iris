@@ -33,8 +33,8 @@
 
 #include "Buffer.h"
 
-#define SIMILARITY_OBJECT_THRESHOLD 0.15
-#define CONTOUR_LOWER_THRESHOLD 500.0
+#define SIMILARITY_OBJECT_THRESHOLD 0.2
+#define CONTOUR_LOWER_THRESHOLD 300.0
 
 using namespace cv;
 using namespace std;
@@ -44,6 +44,9 @@ struct objects{
     uint8_t id;
     uint8_t expiring;
     uint8_t duration;
+    uint8_t matched;
+    Point2f centroid;
+    float area;
     struct objects *next;
     struct objects *prev;
 };
@@ -70,7 +73,7 @@ private:
     int interprete_params(double mean, double sum);
     //void send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos);
     void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
-    uint8_t match_contours(vector<Point> *contour, uint8_t run);
+    uint8_t match_contours(vector<vector<Point>> *contour);
     void cleanup_list();
     Mat mask;
     Ptr<BackgroundSubtractor> pMOG2;
