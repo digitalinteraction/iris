@@ -41,17 +41,18 @@ using namespace std;
 
 struct objects{
     vector<Point> *contour;
-    uint8_t id;
+    uint16_t id;
     uint8_t expiring;
     uint8_t duration;
     uint8_t matched;
     Point2f centroid;
     float area;
+    uint8_t asked;
     struct objects *next;
     struct objects *prev;
 };
 
-//class Buffer;
+
 
 class Low_Res_Worker {
 public:
@@ -75,6 +76,8 @@ private:
     void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
     uint8_t match_contours(vector<vector<Point>> *contour);
     void cleanup_list();
+    void ask_neighbours();
+    int send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr);
     Mat mask;
     Ptr<BackgroundSubtractor> pMOG2;
     Mat previous;

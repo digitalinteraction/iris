@@ -342,7 +342,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
         if (item->matched == 0) {
 
             double similarity = 1000.0;
-            Point2f new_centroid = {0.0f,0.0f};
+            Point2f new_centroid = {0.0f, 0.0f};
             double new_area = 0;
             int pos_elem = 0;
 
@@ -407,6 +407,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
                 first->expiring = 0;
                 first->area = area;
                 first->centroid = mc;
+                first->asked = 0;
                 printf("added item with id %d as first\n", first->id);
                 last = first;
                 first->next = 0;
@@ -418,6 +419,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
                 item->expiring = 0;
                 item->area = area;
                 item->centroid = mc;
+                item->asked = 0;
                 printf("added item with id %d\n", item->id);
                 item->next = 0;
                 item->prev = last;
@@ -464,4 +466,45 @@ void Low_Res_Worker::cleanup_list() {
         item = item->next;
     }
 
+}
+
+void Low_Res_Worker::ask_neighbours() {
+    struct objects *item = first;
+    while (item != 0) {
+        if (item->asked == 0) {
+            int loop = item->contour->size();
+            int ret = 0;
+            Rect enclosing = boundingRect(item->contour);
+            if (enclosing.x == 0) {
+                //ask neighbour below 3
+                ret += send_to_neighbour(enclosing.y, enclosing.y + enclosing.width, 3, item->id);
+            }
+            if (enclosing.y == 0) {
+                //ask neighbour to the left 1
+                ret += send_to_neighbour(enclosing.x, enclosing.x + enclosing.height, 1, item->id);
+
+            }
+            if ((enclosing.x + enclosing.height) == LOW_OUTPUT_X) {
+                //ask neighbour up 0
+                ret += send_to_neighbour(enclosing.y, enclosing.y + enclosing.width, 0, item->id);
+            }
+            if ((enclosing.y + enclosing.width) == LOW_OUTPUT_Y) {
+                //ask neighbour right 2
+                ret += send_to_neighbour(enclosing.x, enclosing.x + enclosing.height, 2, item->id);
+            }
+            if (ret == 0) {
+                item->asked = 1;
+            }
+        }
+        item = item->next;
+    }
+}
+
+int Low_Res_Worker::send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr, uint16_t id){
+    struct low_res_request temp;
+    temp.pos1 = pos1;
+    temp.pos2 = pos2;
+    temp.id = id;
+    temp.request = 0;
+    return nc->image_in->add(sizeof(struct low_res_request), (uint32_t) addr, &temp);
 }

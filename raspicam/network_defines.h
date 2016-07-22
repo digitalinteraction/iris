@@ -28,6 +28,13 @@ struct low_res_header{
     double weight;
 };
 
+struct low_res_request{
+    uint16_t pos1;
+    uint16_t pos2;
+    uint16_t id;
+    uint8_t request;
+};
+
 struct topo_list{
     uint8_t x;
     uint8_t y;
