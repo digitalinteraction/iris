@@ -337,7 +337,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 
 uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
 
-    struct objects *found = 0;
+    vector<Point> *found = 0;
     struct objects *item = first;
     while (item != 0) {
         if (item->matched == 0) {
@@ -375,7 +375,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
                 printf("found match %d with similarity %d\n", item->id, similarity);
                 item->contour = new vector<Point>;
                 *item->contour = *found;
-                contour->erase(i);
+                contour->erase(pos_elem);
                 item->area = new_area;
                 item->centroid = new_centroid;
                 item->expiring = 0;
