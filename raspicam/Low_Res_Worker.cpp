@@ -139,9 +139,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         }*/
 
         //if(movement < 10){
-        for(int i = 0; i < contours->size();i++){
-            match_contours(contours);
-        }
+        match_contours(contours);
         //}
         //DRAW CONTOURS//////////////////////////////////////
         /*Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
@@ -337,7 +335,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 
 uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
 
-    printf("******************start matching contours\n");
+    //printf("******************start matching contours\n");
     vector<Point> *found = 0;
     struct objects *item = first;
     while (item != 0) {
@@ -391,9 +389,9 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
         item = item->next;
     }
 
-    printf("size left %d\n", contour->size());
+    //printf("size left %d\n", contour->size());
     for (int i = 0; i < contour->size(); i++) {
-        printf("contours found: %f\n", contourArea(contour->at(i)));
+        //printf("contours found: %f\n", contourArea(contour->at(i)));
         if (contourArea(contour->at(i)) > CONTOUR_LOWER_THRESHOLD) {
 
             Moments mu = moments(contour->at(i), false);
@@ -434,7 +432,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
         item->matched = 0;
         item = item->next;
     }
-    printf("******************finish matching contours\n");
+    //printf("******************finish matching contours\n");
 
     return 0;
 }
