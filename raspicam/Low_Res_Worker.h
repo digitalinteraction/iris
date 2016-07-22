@@ -77,7 +77,7 @@ private:
     uint8_t match_contours(vector<vector<Point>> *contour);
     void cleanup_list();
     void ask_neighbours();
-    int send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr);
+    int send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr, uint16_t id);
     Mat mask;
     Ptr<BackgroundSubtractor> pMOG2;
     Mat previous;
