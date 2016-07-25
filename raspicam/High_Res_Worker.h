@@ -39,7 +39,6 @@ private:
     Mat convert(RASPITEX_PATCH *patch);
     void find_features(RASPITEX_PATCH *patch, uint8_t group);
     void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
-    Ptr<FastFeatureDetector> detector;
     Packetbuffer *out;
     Packetbuffer *in;
     NetworkControl *nc;

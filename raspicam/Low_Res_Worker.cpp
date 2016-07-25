@@ -399,27 +399,22 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
 
             //calculate similarity of shape
             float area = mu.m00;
+            item = (struct objects *) malloc(sizeof (struct objects));
+            item->contour = &contour->at(i);
+            item->id = this->id_cnt++;
+            item->expiring = 0;
+            item->area = area;
+            item->centroid = mc;
+            item->asked_int = 0;
+            item->asked_ext = 0;
 
             if (first == 0) {
-                first = (struct objects *) malloc(sizeof (struct objects));
-                first->contour = &contour->at(i);
-                first->id = this->id_cnt++;
-                first->expiring = 0;
-                first->area = area;
-                first->centroid = mc;
-                first->asked = 0;
                 printf("added item with id %d as first\n", first->id);
+                first = item;
                 last = first;
                 first->next = 0;
                 first->prev = 0;
             } else {
-                item = (struct objects *) malloc(sizeof (struct objects));
-                item->contour = &contour->at(i);
-                item->id = this->id_cnt++;
-                item->expiring = 0;
-                item->area = area;
-                item->centroid = mc;
-                item->asked = 0;
                 printf("added item with id %d\n", item->id);
                 item->next = 0;
                 item->prev = last;
@@ -434,8 +429,6 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
         item->matched = 0;
         item = item->next;
     }
-    //printf("******************finish matching contours\n");
-
     return 0;
 }
 
@@ -471,7 +464,7 @@ void Low_Res_Worker::cleanup_list() {
 void Low_Res_Worker::ask_neighbours() {
     struct objects *item = first;
     while (item != 0) {
-        if (item->asked == 0) {
+        if (item->asked_ext == 0) {
             int loop = item->contour->size();
             int ret = 0;
             Rect enclosing = boundingRect(*item->contour);
@@ -493,7 +486,7 @@ void Low_Res_Worker::ask_neighbours() {
                 ret += send_to_neighbour(enclosing.x, enclosing.x + enclosing.height, 2, item->id);
             }
             if (ret == 0) {
-                item->asked = 1;
+                item->asked_ext = 1;
             }
         }
         item = item->next;
@@ -508,3 +501,4 @@ int Low_Res_Worker::send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr
     temp.request = 0;
     return nc->image_in->add(sizeof(struct low_res_request), (uint32_t) addr, &temp);
 }
+

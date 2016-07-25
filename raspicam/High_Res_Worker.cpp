@@ -32,20 +32,6 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     in = in_buf;
     this->nc = nc;
     pos = 0;
-    // Default parameters of ORB
-    
-int nfeatures=500;
-    float scaleFactor=1.2f;
-    int nlevels=8;
-    int edgeThreshold=15; // Changed default (31);
-    int firstLevel=0;
-    int WTA_K=2;
-    int scoreType=ORB::HARRIS_SCORE;
-    int patchSize=31;
-    int fastThreshold=20;
-
-    detector = FastFeatureDetector::create();
-    //detector = xfeatures2d::SURF::create();
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -86,10 +72,12 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Mat rgb;
         cvtColor(img, rgb, COLOR_RGBA2RGB);
         
+        
+        //marker richtig plazieren... auch am rand
         Mat marker = Mat::zeros(img.size(), CV_32SC1);
         Size img_size = img.size();
         printf("patch size: %d %d at %d %d\n", img_size.width, img_size.height, patch->x, patch->y);
-        circle(marker, Point(img_size.width/2, img_size.height/2), 100, CV_RGB(1,1,1),-1);
+        circle(marker, Point(img_size.width/2, img_size.height/2), 100, CV_RGB(0,0,0),-1);
         circle(marker, Point(0,0), 5, CV_RGB(255,255,255), -1);
         circle(marker, Point(0,img_size.height), 5, CV_RGB(255,255,255), -1);
         circle(marker, Point(img_size.width,0), 5, CV_RGB(255,255,255), -1);
@@ -97,14 +85,71 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         watershed(rgb, marker);
         
-        Mat gray;
-        cvtColor(rgb, gray, COLOR_BGR2GRAY);
+        vector<Mat> bgr_planes;
+        split(rgb, bgr_planes);
         
-        resize(gray, gray, Size(256,192));
         
-        for(int i = 0; i < 8; i++){
-        send_to_server(&gray, 1, i);
+        float range[] = {0,256};
+        const float *histRange = {range};
+        
+        Mat b_hist, g_hist, r_hist;
+        
+        //Histogram
+        calcHist(&bgr_planes[0], 1, 0, marker, b_hist, 1, 64, &histRange, true, true);
+        calcHist(&bgr_planes[1], 1, 0, marker, g_hist, 1, 64, &histRange, true, true);
+        calcHist(&bgr_planes[2], 1, 0, marker, r_hist, 1, 64, &histRange, true, true);
+        
+        //HuMoments
+        vector<vector<Point>> contours;
+        RNG rng(12345);
+        findContours(rgb, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        double largest = 0;
+        int largest_index = 0;
+        for(int i = 0; i < contours.size(); i++){
+            double a = contourArea(contours[i], false);
+            if(a > largest){
+                largest = a;
+                largest_index = i;
+            }
         }
+        Moments mu = moments(contours[i], false);
+        double hu[7];
+        HuMoments(mu, hu);
+        
+        //contourArea
+        double area = contourArea(contours[i]);
+        
+        //contour Perimeter
+        double perimeter = arcLength(contours[i]);
+        
+        Mat featureVector = Mat::zeros(1, 201, CV_64F);
+        double *pt = (double *) featureVector.data;
+        for(int i = 0; i < 201; i++){
+            if(i == 0){
+                pt[i] = area;
+            }else if(i == 1){
+                pt[i] = perimeter;
+            }else if(i >= 2 && i < 9){
+                pt[i] = hu[i-2];
+            }else if(i >= 9 && i < 73){
+                pt[i] = b_hist.at<double>(i-9);
+            }else if(i >= 73 && i < 137){
+                pt[i] = g_hist.at<double>(i-73);
+            }else if(i >= 137 && i < 201){
+                pt[i] = r_hist.at<double>(i-137);
+            }
+        }
+        
+        
+        
+        //Mat gray;
+        //cvtColor(rgb, gray, COLOR_BGR2GRAY);
+        
+        //resize(gray, gray, Size(256,192));
+        
+        //for(int i = 0; i < 8; i++){
+        //send_to_server(&gray, 1, i);
+        //}
         
         //channel[1];
         //threshold(channel[1], mask, 40, 255, THRESH_BINARY);

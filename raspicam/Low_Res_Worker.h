@@ -47,7 +47,8 @@ struct objects{
     uint8_t matched;
     Point2f centroid;
     float area;
-    uint8_t asked;
+    uint8_t asked_ext;
+    uint8_t asked_int;
     struct objects *next;
     struct objects *prev;
 };
