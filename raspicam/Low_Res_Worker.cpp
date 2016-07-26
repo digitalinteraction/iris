@@ -318,9 +318,9 @@ printf("3\n");
             item->area = area;
             item->centroid = mc;
             item->asked = 0;
-printf("4\n");
+printf("4 %p\n", item);
             if (first == 0) {
-                printf("added item with id %d as first\n", first->id);
+                printf("added item with id %d as first\n", item->id);
                 first = item;
                 last = first;
                 first->next = 0;
