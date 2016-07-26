@@ -63,6 +63,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
     Mat img = convert(patch);
     //printf("Image:: %p %d %d\n", patch->buffer, patch->size, img.empty());
     if (img.empty() == 0) {
+        
+        imwrite("patch.png", img);
+
         //////////////////////////////////////////////////////////
         //Mat hsv, mask;
         //cvtColor(img, hsv, COLOR_BGR2HSV);
