@@ -42,6 +42,8 @@ using namespace std;
 struct objects{
     vector<Point> *contour;
     uint16_t id;
+    uint8_t token;
+    uint8_t fb;
     uint8_t expiring;
     uint8_t duration;
     uint8_t matched;
@@ -73,7 +75,7 @@ private:
     int interprete_params(double mean, double sum);
     //void send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos);
     void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
-    uint8_t match_contours(vector<vector<Point> > *contour);
+    uint8_t match_contours(vector<vector<Point> > *contour, uint8_t token, uint8_t fb);
     void cleanup_list();
     void send_high_requests();
     //void ask_neighbours(struct objects *item);

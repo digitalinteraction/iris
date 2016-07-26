@@ -97,7 +97,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
-        match_contours(contours);
+        match_contours(contours, low_patch.token, low_patch.fb);
         
         vector<vector<Point> > contours_list;
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
@@ -236,7 +236,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
     }
 }
 
-uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour) {
+uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t token, uint8_t fb) {
 
     //printf("******************start matching contours\n");
     vector<Point> *found = 0;
@@ -307,6 +307,8 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour) {
             item->area = area;
             item->centroid = mc;
             item->asked = 0;
+            item->fb = fb;
+            item->token = token;
             if (first == 0) {
                 //printf("added item with id %d as first\n", item->id);
                 first = item;
@@ -441,6 +443,8 @@ void Low_Res_Worker::send_high_requests(){
 
             RASPITEX_PATCH* temp = (RASPITEX_PATCH *) malloc(sizeof (RASPITEX_PATCH));
             memset(temp, 0, sizeof (RASPITEX_PATCH));
+            temp->token = item->token;
+            temp->fb = item->fb;
             //add some buffer
             temp->x = (int32_t)(((float)enclosing.x)*RATIO_X - BORDER_HIGH_RES);
             if(temp->x < 0) temp->x = 0;
