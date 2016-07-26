@@ -79,6 +79,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //marker richtig plazieren... auch am rand
         Mat marker = Mat::zeros(img.size(), CV_32SC1);
         Size img_size = img.size();
+        printf("error code: %d %d\n", patch->active, patch->select);
         printf("patch size: %d %d at %d %d\n", img_size.width, img_size.height, patch->x, patch->y);
         circle(marker, Point(img_size.width/2, img_size.height/2), 20, CV_RGB(1,1,1),-1);
         circle(marker, Point(0,0), 5, CV_RGB(255,255,255), -1);
