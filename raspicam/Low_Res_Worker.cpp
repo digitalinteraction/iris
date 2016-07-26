@@ -70,7 +70,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     Mat img = convert(image, image_size);
     if (img.empty() == 0) {
         cleanup_list();
-        printf("image arrived image size %d\n", img.total());
+        //printf("image arrived image size %d\n", img.total());
         //imwrite("test.png", img);
         //BACKGROUND SUBSTRACTOR/////////////////////////////
         /*pMOG2->apply(img, mask, learning);
@@ -80,7 +80,6 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             learning = std::numeric_limits< double >::min();
         }*/
         /////////////////////////////////////////////////////
-        printf("a\n");
         Mat hsv;
         cvtColor(img, hsv, COLOR_BGR2HSV);
         Mat channel[3];
@@ -91,18 +90,15 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         Mat kernel = Mat::ones(3, 3, CV_8U);
         Mat cleaned;
         morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
-printf("b\n");
         /////////////////////////////////////////////////////
 
         //GET SHAPE//////////////////////////////////////////
         vector<vector<Point> > *contours = new vector<vector < Point>>;
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
-        printf("c\n");
         /////////////////////////////////////////////////////
         match_contours(contours);
         
-printf("d\n");
         vector<vector<Point> > contours_list;
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         struct objects *item = first;
@@ -116,14 +112,11 @@ printf("d\n");
             }
             item = item->next;
         }
-printf("e\n");
         for (int i = 0; i < contours_list.size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours_list, i, color, 2);
         }
-printf("f\n");
         send_high_requests();
-        printf("g\n");
         /////////////////////////////////////////////////////
         //FIND MAX/MIN POINTS////////////////////////////////
         /*int cnt = 0;
@@ -188,7 +181,6 @@ printf("f\n");
             }
         }
         next_send++;
-printf("h\n");
 
     } else {
         printf("Failed to convert camera image to Mat\n");
@@ -284,7 +276,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour) {
                 }
             }
             if (similarity <= 0.5 && similarity >= -0.5) {
-                printf("found match %d with similarity %f\n", item->id, similarity);
+                //printf("found match %d with similarity %f\n", item->id, similarity);
                 item->contour = new vector<Point>;
                 *item->contour = *found;
                 contour->erase(contour->begin() + pos_elem);
@@ -300,15 +292,12 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour) {
         item = item->next;
     }
 
-    printf("size left %d\n", contour->size());
+    //printf("size left %d\n", contour->size());
     for (int i = 0; i < contour->size(); i++) {
-        printf("contours found: %f\n", contourArea(contour->at(i)));
+        //printf("contours found: %f\n", contourArea(contour->at(i)));
         if (contourArea(contour->at(i)) > CONTOUR_LOWER_THRESHOLD) {
-            printf("1\n");
             Moments mu = moments(contour->at(i), false);
-            printf("2\n");
             Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
-printf("3\n");
             //calculate similarity of shape
             float area = mu.m00;
             item = (struct objects *) malloc(sizeof (struct objects));
@@ -318,21 +307,19 @@ printf("3\n");
             item->area = area;
             item->centroid = mc;
             item->asked = 0;
-printf("4 %p\n", item);
             if (first == 0) {
-                printf("added item with id %d as first\n", item->id);
+                //printf("added item with id %d as first\n", item->id);
                 first = item;
                 last = first;
                 first->next = 0;
                 first->prev = 0;
             } else {
-                printf("added item with id %d\n", item->id);
+                //printf("added item with id %d\n", item->id);
                 item->next = 0;
                 item->prev = last;
                 last->next = item;
                 last = item;
             }
-printf("5\n");
         }
     }
 
