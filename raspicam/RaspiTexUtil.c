@@ -512,7 +512,7 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
             int i;
             printf("Buffer: ");
             for(i = 0; i < 20; i++){
-                printf(" %c", patch->buffer[i]);
+                printf(" %x", patch->buffer[i]);
             }
             printf("\n");
         }else{
