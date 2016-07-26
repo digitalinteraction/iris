@@ -468,7 +468,7 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
     patch->size = patch->height * patch->width * 4;
     patch->buffer = calloc(patch->size, 1);
     //printf("BGRAallocate buffer %p\n", patch->buffer);
-    printf("Patch request: %d %d %d %d\n", patch->x, patch->y, patch->width, patch->height);
+    //printf("Patch request: %d %d %d %d\n", patch->x, patch->y, patch->width, patch->height);
 
     if (!patch->buffer)
         goto error;
@@ -502,7 +502,7 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
     }else if(patch->select == 1){
         if((patch->fb >= 0) && (patch->fb < FRAMEBUFFER_CNT) /*&&
                 (state->valid_token[patch->fb] == patch->token)*/){
-            //printf("request for %d %d %d %d\n", patch->x, patch->y, patch->height, patch->width);
+            printf("request for %d %d %d %d\n", patch->x, patch->y, patch->width, patch->height);
             //printf("Token:: %d %d\n", patch->token, state->valid_token[patch->fb]);
             printf("Token: %d %d, FB: %d\n", patch->token, state->valid_token[patch->fb], patch->fb);
 
