@@ -239,7 +239,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
 }
 
 Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {
-        Mat mat_image(patch->width, patch->height, CV_8UC4, (void*)patch->buffer);
+        Mat mat_image(patch->height, patch->width, CV_8UC4, (void*)patch->buffer);
         return mat_image;
 }
 
