@@ -135,8 +135,8 @@ void Image_Capture::run() {
     RASPITEX_PATCH ** patches;
     patches = (RASPITEX_PATCH **) calloc(sizeof(RASPITEX_PATCH *)*11, 1);
     patches[0] = (RASPITEX_PATCH *)calloc(sizeof(RASPITEX_PATCH), 1);
-    patches[0]->height = LOW_OUTPUT_X;
-    patches[0]->width = LOW_OUTPUT_Y;
+    patches[0]->width = LOW_OUTPUT_X;
+    patches[0]->height = LOW_OUTPUT_Y;
     uint8_t size_patches = 1;
     
     while (capturing) {
