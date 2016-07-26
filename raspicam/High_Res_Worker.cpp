@@ -110,14 +110,14 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Mat b_hist, g_hist, r_hist;
         
         //Histogram
-        calcHist(&bgr_planes[0], 1, 0, mark, b_hist, 1, &buck, &histRange, true, true);
-        calcHist(&bgr_planes[1], 1, 0, mark, g_hist, 1, &buck, &histRange, true, true);
-        calcHist(&bgr_planes[2], 1, 0, mark, r_hist, 1, &buck, &histRange, true, true);
+        calcHist(&bgr_planes[0], 1, 0, thres, b_hist, 1, &buck, &histRange, true, true);
+        calcHist(&bgr_planes[1], 1, 0, thres, g_hist, 1, &buck, &histRange, true, true);
+        calcHist(&bgr_planes[2], 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
         
         //HuMoments
         vector<vector<Point>> contours;
         RNG rng(12345);
-        findContours(mark, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        findContours(thres, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         double largest = 0;
         int largest_index = 0;
         for(int i = 0; i < contours.size(); i++){
@@ -232,8 +232,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //write_tga(fp, patch->height, patch->width, patch->buffer, patch->size);
         //fclose(fp);
         
-        rgb.release();
-        marker.release();
+        //rgb.release();
+        //marker.release();
         //drawing.release();
         //part_img.release();
         //inv_marker.release();
