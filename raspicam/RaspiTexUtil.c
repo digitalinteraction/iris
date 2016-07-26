@@ -468,7 +468,7 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
     patch->size = patch->height * patch->width * 4;
     patch->buffer = calloc(patch->size, 1);
     //printf("BGRAallocate buffer %p\n", patch->buffer);
-    //printf("Patch request: %d %d %d %d\n", patch->x, patch->y, patch->width, patch->height);
+    printf("Patch request: %d %d %d %d\n", patch->x, patch->y, patch->width, patch->height);
 
     if (!patch->buffer)
         goto error;
