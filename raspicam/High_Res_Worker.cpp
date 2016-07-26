@@ -77,7 +77,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Mat marker = Mat::zeros(img.size(), CV_32SC1);
         Size img_size = img.size();
         printf("patch size: %d %d at %d %d\n", img_size.width, img_size.height, patch->x, patch->y);
-        circle(marker, Point(img_size.width/2, img_size.height/2), 100, CV_RGB(1,1,1),-1);
+        circle(marker, Point(img_size.width/2, img_size.height/2), 20, CV_RGB(1,1,1),-1);
         circle(marker, Point(0,0), 5, CV_RGB(255,255,255), -1);
         circle(marker, Point(0,img_size.height), 5, CV_RGB(255,255,255), -1);
         circle(marker, Point(img_size.width,0), 5, CV_RGB(255,255,255), -1);
@@ -105,7 +105,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //HuMoments
         vector<vector<Point>> contours;
         RNG rng(12345);
-        findContours(rgb, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        findContours(mark, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         double largest = 0;
         int largest_index = 0;
         for(int i = 0; i < contours.size(); i++){
