@@ -508,13 +508,7 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
 
             GLCHK(glBindFramebuffer(GL_FRAMEBUFFER, state->fb_high_end[patch->fb]));
             GLCHK(glReadPixels(patch->x, patch->y, patch->width, patch->height, GL_RGBA, GL_UNSIGNED_BYTE, patch->buffer));
-            patch->active = 2;
-            int i;
-            printf("Buffer: ");
-            for(i = 0; i < 20; i++){
-                printf(" %x", patch->buffer[i]);
-            }
-            printf("\n");
+            patch->active = 2;            
         }else{
             printf("Token: %d %d, FB: %d\n", patch->token, state->valid_token[patch->fb], patch->fb);
             patch->active = -1;
