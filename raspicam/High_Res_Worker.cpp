@@ -96,68 +96,73 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //marker.convertTo(mark, CV_8UC1);
         //bitwise_not(mark, mark);
         Mat blur, thres;
-        GaussianBlur(img, blur, Size(5,5), 0,0);
-        threshold(blur, thres, 0, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
+        GaussianBlur(rgb, blur, Size(5,5), 0,0);
+        Scalar mean;
+        Scalar stddev;
+        meanStdDev(blur, mean, stddev);
+        cout << "Mean " << mean << " stddev " << stddev << endl;
+        inRange(blur, mean - stddev, mean + stddev, thres);
+        //threshold(blur, thres, 0, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
         imwrite("water.png", thres);
 
-        vector<Mat> bgr_planes;
-        split(rgb, bgr_planes);
-        
-        
-        float range[] = {0,256};
-        const float *histRange = {range};
-        int buck = 32;
-        Mat b_hist, g_hist, r_hist;
-        
-        //Histogram
-        calcHist(&bgr_planes[0], 1, 0, thres, b_hist, 1, &buck, &histRange, true, true);
-        calcHist(&bgr_planes[1], 1, 0, thres, g_hist, 1, &buck, &histRange, true, true);
-        calcHist(&bgr_planes[2], 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
-        
-        //HuMoments
-        vector<vector<Point>> contours;
-        RNG rng(12345);
-        findContours(thres, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
-        double largest = 0;
-        int largest_index = 0;
-        for(int i = 0; i < contours.size(); i++){
-            double a = contourArea(contours[i], false);
-            if(a > largest){
-                largest = a;
-                largest_index = i;
-            }
-        }
-        Moments mu = moments(contours[largest_index], false);
-        double hu[7];
-        HuMoments(mu, hu);
-        
-        //contourArea
-        double area = contourArea(contours[largest_index]);
-        
-        //contour Perimeter
-        double perimeter = arcLength(contours[largest_index], true);
-        
-        cout << "Area: " << area << endl;
-        cout << "Perimeter: " << perimeter << endl;
-        cout << "HuMoments: " << hu[0] << " " << hu[1] << " " << hu[2] << " " << hu[3] << " "
-                << hu[4] << " " << hu[5] << " " << hu[6] << " " << hu[7] << endl;
-        cout << "Histogram R: " << endl;
-        for(int i = 0; i < 32; i++){
-            cout << " " << r_hist.at<float>(i);
-        }
-        cout << endl;
-        cout << "Histogram G: " << endl;
-        for(int i = 0; i < 32; i++){
-            cout << " " << g_hist.at<float>(i);
-        }
-        cout << endl;
-        cout << "Histogram B: " << endl;
-        for(int i = 0; i < 32; i++){
-            cout << " " << b_hist.at<float>(i);
-        }
-        cout << endl;
-        
-        
+//        vector<Mat> bgr_planes;
+//        split(rgb, bgr_planes);
+//        
+//        
+//        float range[] = {0,256};
+//        const float *histRange = {range};
+//        int buck = 32;
+//        Mat b_hist, g_hist, r_hist;
+//        
+//        //Histogram
+//        calcHist(&bgr_planes[0], 1, 0, thres, b_hist, 1, &buck, &histRange, true, true);
+//        calcHist(&bgr_planes[1], 1, 0, thres, g_hist, 1, &buck, &histRange, true, true);
+//        calcHist(&bgr_planes[2], 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
+//        
+//        //HuMoments
+//        vector<vector<Point>> contours;
+//        RNG rng(12345);
+//        findContours(thres, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+//        double largest = 0;
+//        int largest_index = 0;
+//        for(int i = 0; i < contours.size(); i++){
+//            double a = contourArea(contours[i], false);
+//            if(a > largest){
+//                largest = a;
+//                largest_index = i;
+//            }
+//        }
+//        Moments mu = moments(contours[largest_index], false);
+//        double hu[7];
+//        HuMoments(mu, hu);
+//        
+//        //contourArea
+//        double area = contourArea(contours[largest_index]);
+//        
+//        //contour Perimeter
+//        double perimeter = arcLength(contours[largest_index], true);
+//        
+//        cout << "Area: " << area << endl;
+//        cout << "Perimeter: " << perimeter << endl;
+//        cout << "HuMoments: " << hu[0] << " " << hu[1] << " " << hu[2] << " " << hu[3] << " "
+//                << hu[4] << " " << hu[5] << " " << hu[6] << " " << hu[7] << endl;
+//        cout << "Histogram R: " << endl;
+//        for(int i = 0; i < 32; i++){
+//            cout << " " << r_hist.at<float>(i);
+//        }
+//        cout << endl;
+//        cout << "Histogram G: " << endl;
+//        for(int i = 0; i < 32; i++){
+//            cout << " " << g_hist.at<float>(i);
+//        }
+//        cout << endl;
+//        cout << "Histogram B: " << endl;
+//        for(int i = 0; i < 32; i++){
+//            cout << " " << b_hist.at<float>(i);
+//        }
+//        cout << endl;
+//        
+//        
         //Mat gray;
         //cvtColor(rgb, gray, COLOR_BGR2GRAY);
         
