@@ -172,6 +172,7 @@ void Image_Capture::run() {
 
             patches[0]->active = 0;
             patches[0]->buffer = 0;
+            printf("getting image out\n");
             int8_t ret = raspitex_capture(&state.raspitex_state, patches, size_patches);
             
             if(state.raspitex_state.external_images_finished == 0){

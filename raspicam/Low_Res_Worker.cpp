@@ -70,6 +70,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     Mat img = convert(image, image_size);
     if (img.empty() == 0) {
         cleanup_list();
+        printf("image arrived\n");
         //imwrite("test.png", img);
         //BACKGROUND SUBSTRACTOR/////////////////////////////
         /*pMOG2->apply(img, mask, learning);
