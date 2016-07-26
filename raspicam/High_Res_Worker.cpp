@@ -125,7 +125,10 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
     imgResult.convertTo(imgResult, CV_8UC3);
     imgLaplacian.convertTo(imgLaplacian, CV_8UC3);
     // imshow( "Laplace Filtered Image", imgLaplacian );
-    imwrite("water.png", imgResult);
+    Mat gray, thres;
+        cvtColor(imgLaplacian, gray, CV_RGB2GRAY);
+        threshold(gray, thres, 40, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
+        imwrite("water.png", thres);
 
 
 
