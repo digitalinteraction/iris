@@ -80,22 +80,26 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //fclose(fp);
         
         //marker richtig plazieren... auch am rand
-        Mat marker = Mat::zeros(img.size(), CV_32SC1);
+        //Mat marker = Mat::zeros(img.size(), CV_32SC1);
         Size img_size = img.size();
         printf("error code: %d %d\n", patch->active, patch->select);
         printf("patch size: %d %d at %d %d\n", img_size.width, img_size.height, patch->x, patch->y);
-        circle(marker, Point(img_size.width/2, img_size.height/2), 20, CV_RGB(1,1,1),-1);
-        circle(marker, Point(0,0), 5, CV_RGB(255,255,255), -1);
-        circle(marker, Point(0,img_size.height), 5, CV_RGB(255,255,255), -1);
-        circle(marker, Point(img_size.width,0), 5, CV_RGB(255,255,255), -1);
-        circle(marker, Point(img_size.width,img_size.height), 5, CV_RGB(255,255,255), -1);
+        //circle(marker, Point(img_size.width/2, img_size.height/2), 20, CV_RGB(1,1,1),-1);
+        //circle(marker, Point(0,0), 5, CV_RGB(255,255,255), -1);
+        //circle(marker, Point(0,img_size.height), 5, CV_RGB(255,255,255), -1);
+        //circle(marker, Point(img_size.width,0), 5, CV_RGB(255,255,255), -1);
+        //circle(marker, Point(img_size.width,img_size.height), 5, CV_RGB(255,255,255), -1);
         
-        watershed(rgb, marker);
-        imwrite("water.png", marker);
-        Mat mark = Mat::zeros(marker.size(), CV_8UC1);
-        marker.convertTo(mark, CV_8UC1);
-        bitwise_not(mark, mark);
-        
+        //watershed(rgb, marker);
+        //imwrite("water.png", marker);
+        //Mat mark = Mat::zeros(marker.size(), CV_8UC1);
+        //marker.convertTo(mark, CV_8UC1);
+        //bitwise_not(mark, mark);
+        Mat blur, thres;
+        GaussianBlur(img, blur, Size(5,5), 0,0);
+        threshold(blur, thres, 0, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
+        imwrite("water.png", thres);
+
         vector<Mat> bgr_planes;
         split(rgb, bgr_planes);
         
