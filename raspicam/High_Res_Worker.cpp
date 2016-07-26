@@ -77,13 +77,16 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Mat marker = Mat::zeros(img.size(), CV_32SC1);
         Size img_size = img.size();
         printf("patch size: %d %d at %d %d\n", img_size.width, img_size.height, patch->x, patch->y);
-        circle(marker, Point(img_size.width/2, img_size.height/2), 100, CV_RGB(0,0,0),-1);
+        circle(marker, Point(img_size.width/2, img_size.height/2), 100, CV_RGB(1,1,1),-1);
         circle(marker, Point(0,0), 5, CV_RGB(255,255,255), -1);
         circle(marker, Point(0,img_size.height), 5, CV_RGB(255,255,255), -1);
         circle(marker, Point(img_size.width,0), 5, CV_RGB(255,255,255), -1);
         circle(marker, Point(img_size.width,img_size.height), 5, CV_RGB(255,255,255), -1);
         
         watershed(rgb, marker);
+        Mat mark = Mat::zeros(marker.size(), CV_8UC1);
+        marker.convertTo(mark, CV_8UC1);
+        bitwise_not(mark, mark);
         
         vector<Mat> bgr_planes;
         split(rgb, bgr_planes);
@@ -91,13 +94,13 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         float range[] = {0,256};
         const float *histRange = {range};
-        
+        int buck = 32;
         Mat b_hist, g_hist, r_hist;
         
         //Histogram
-        calcHist(&bgr_planes[0], 1, 0, marker, b_hist, 1, 64, &histRange, true, true);
-        calcHist(&bgr_planes[1], 1, 0, marker, g_hist, 1, 64, &histRange, true, true);
-        calcHist(&bgr_planes[2], 1, 0, marker, r_hist, 1, 64, &histRange, true, true);
+        calcHist(&bgr_planes[0], 1, 0, mark, b_hist, 1, &back, &histRange, true, true);
+        calcHist(&bgr_planes[1], 1, 0, mark, g_hist, 1, &back, &histRange, true, true);
+        calcHist(&bgr_planes[2], 1, 0, mark, r_hist, 1, &back, &histRange, true, true);
         
         //HuMoments
         vector<vector<Point>> contours;
@@ -112,34 +115,35 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
                 largest_index = i;
             }
         }
-        Moments mu = moments(contours[i], false);
+        Moments mu = moments(contours[largest_index], false);
         double hu[7];
         HuMoments(mu, hu);
         
         //contourArea
-        double area = contourArea(contours[i]);
+        double area = contourArea(contours[largest_index]);
         
         //contour Perimeter
-        double perimeter = arcLength(contours[i]);
+        double perimeter = arcLength(contours[largest_index], true);
         
-        Mat featureVector = Mat::zeros(1, 201, CV_64F);
-        double *pt = (double *) featureVector.data;
-        for(int i = 0; i < 201; i++){
-            if(i == 0){
-                pt[i] = area;
-            }else if(i == 1){
-                pt[i] = perimeter;
-            }else if(i >= 2 && i < 9){
-                pt[i] = hu[i-2];
-            }else if(i >= 9 && i < 73){
-                pt[i] = b_hist.at<double>(i-9);
-            }else if(i >= 73 && i < 137){
-                pt[i] = g_hist.at<double>(i-73);
-            }else if(i >= 137 && i < 201){
-                pt[i] = r_hist.at<double>(i-137);
-            }
+        cout << "Area: " << area << endl;
+        cout << "Perimeter: " << perimeter << endl;
+        cout << "HuMoments: " << hu[0] << " " << hu[1] << " " << hu[2] << " " << hu[3] << " "
+                << hu[4] << " " << hu[5] << " " << hu[6] << " " << hu[7] << endl;
+        cout << "Histogram R: " << endl;
+        for(int i = 0; i < 32; i++){
+            cout << " " << r_hist.at<float>(i);
         }
-        
+        cout << endl;
+        cout << "Histogram G: " << endl;
+        for(int i = 0; i < 32; i++){
+            cout << " " << g_hist.at<float>(i);
+        }
+        cout << endl;
+        cout << "Histogram B: " << endl;
+        for(int i = 0; i < 32; i++){
+            cout << " " << b_hist.at<float>(i);
+        }
+        cout << endl;
         
         
         //Mat gray;
