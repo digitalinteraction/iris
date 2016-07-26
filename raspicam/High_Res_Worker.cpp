@@ -119,7 +119,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
     Mat imgLaplacian;
     Mat sharp = rgb; // copy source image to another temporary one
     filter2D(sharp, imgLaplacian, CV_32F, kernel);
-    src.convertTo(sharp, CV_32F);
+    rgb.convertTo(sharp, CV_32F);
     Mat imgResult = sharp - imgLaplacian;
     // convert back to 8bits gray scale
     imgResult.convertTo(imgResult, CV_8UC3);
