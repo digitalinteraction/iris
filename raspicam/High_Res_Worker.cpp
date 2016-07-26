@@ -64,7 +64,6 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
     //printf("Image:: %p %d %d\n", patch->buffer, patch->size, img.empty());
     if (img.empty() == 0) {
         
-        imwrite("patch.png", img);
 
         //////////////////////////////////////////////////////////
         //Mat hsv, mask;
@@ -74,7 +73,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         Mat rgb;
         cvtColor(img, rgb, COLOR_RGBA2RGB);
-        
+        imwrite("patch.png", rgb);
+
         
         //marker richtig plazieren... auch am rand
         Mat marker = Mat::zeros(img.size(), CV_32SC1);

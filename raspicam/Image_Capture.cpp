@@ -190,6 +190,7 @@ void Image_Capture::run() {
         for (int i = 1; i < size_patches; i++) {
             if (patches[i]->buffer) {
                 buf->add(patches[i], group);
+                patches[i] = 0;
             }
         }
         
