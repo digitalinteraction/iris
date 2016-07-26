@@ -116,7 +116,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Mat gray, thres;
         cvtColor(rgb, gray, CV_RGB2GRAY);
         //threshold(gray, thres, 40, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
-        Canny(gray, gray, 100, 200);
+        Canny(gray, gray, 40, 120);
         imwrite("water.png", gray);
 
 
