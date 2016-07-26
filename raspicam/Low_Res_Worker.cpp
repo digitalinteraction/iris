@@ -304,10 +304,11 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour) {
     for (int i = 0; i < contour->size(); i++) {
         printf("contours found: %f\n", contourArea(contour->at(i)));
         if (contourArea(contour->at(i)) > CONTOUR_LOWER_THRESHOLD) {
-
+            printf("1\n");
             Moments mu = moments(contour->at(i), false);
+            printf("2\n");
             Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
-
+printf("3\n");
             //calculate similarity of shape
             float area = mu.m00;
             item = (struct objects *) malloc(sizeof (struct objects));
@@ -317,7 +318,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour) {
             item->area = area;
             item->centroid = mc;
             item->asked = 0;
-
+printf("4\n");
             if (first == 0) {
                 printf("added item with id %d as first\n", first->id);
                 first = item;
@@ -331,6 +332,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour) {
                 last->next = item;
                 last = item;
             }
+printf("5\n");
         }
     }
 
