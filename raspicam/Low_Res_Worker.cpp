@@ -58,7 +58,6 @@ void Low_Res_Worker::run() {
         if (images_in->get(&patch, &group) == 0) {
             counter++;
             process_image(patch->buffer, patch->size);
-            nr++;
             nr_img++;
             //free(patch->buffer);
             //free(patch);
@@ -100,8 +99,6 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         /////////////////////////////////////////////////////
         match_contours(contours);
         
-        check_list();
-
 
         vector<vector<Point> > contours_list;
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
@@ -122,7 +119,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             drawContours(drawing, contours_list, i, color, 2);
         }
 
-
+        send_high_requests();
         /////////////////////////////////////////////////////
         //FIND MAX/MIN POINTS////////////////////////////////
         /*int cnt = 0;
@@ -315,8 +312,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour) {
             item->expiring = 0;
             item->area = area;
             item->centroid = mc;
-            item->asked_int = 0;
-            item->asked_ext = 0;
+            item->asked = 0;
 
             if (first == 0) {
                 printf("added item with id %d as first\n", first->id);
