@@ -65,7 +65,7 @@ static void * begin_capturing(void *queue);*/
 Image_Capture::Image_Capture(Buffer *buffer, Buffer *low_res_buffer, Buffer *low_res_requests)
 {
     
-    buf = buffer;
+    this->buf = buffer;
     this->low_res_buffer = low_res_buffer;
     this->low_res_requests = low_res_requests;
 
@@ -186,7 +186,7 @@ void Image_Capture::run() {
             }
             
 
-        for (int i = 1; i < (size_patches); i++) {
+        for (int i = 1; i < size_patches; i++) {
             if (patches[i]->buffer) {
                 buf->add(patches[i], group);
             }

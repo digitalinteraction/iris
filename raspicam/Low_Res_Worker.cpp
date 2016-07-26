@@ -13,71 +13,50 @@
 
 #include "Low_Res_Worker.h"
 #include "tga.h"
+#include "network_defines.h"
 #include <limits>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 //#include "Buffer.h"
 
+#define RATIO_X ((float)HIGH_OUTPUT_X/LOW_OUTPUT_X)
+#define RATIO_Y ((float)HIGH_OUTPUT_Y/LOW_OUTPUT_Y)
 
 
-
-using namespace std;
-
-Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in) {
+Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in, Buffer *requests_out) {
     processing = 0;
-    pMOG2 = createBackgroundSubtractorMOG2(100, 16, false);
     cnt = 0;
     learning = 0.05;
-    previous = Mat::zeros(LOW_OUTPUT_Y, LOW_OUTPUT_X, CV_8UC4);
     new_low_buffer = 0;
     requests_pending = 0;
     nr_img = 0;
     id_cnt = 0;
     this->images_in = images_in;
-    if (pthread_mutex_init(&buffer_lock, NULL) != 0)
-    {
+    this->requests_out = requests_out;
+    if (pthread_mutex_init(&buffer_lock, NULL) != 0) {
         printf("mutex init failed\n");
     }
-    
+
     this->out = out;
     this->nc = nc;
     pos = 0;
     next_send = 0;
     this->first = 0;
     this->last = 0;
-    
-    //pMOG2 = bgsegm::createBackgroundSubtractorGMG();
-}
 
+}
 
 Low_Res_Worker::~Low_Res_Worker() {
+
 }
 
-
-void Low_Res_Worker::run(){
-    uint8_t *image;
-    size_t image_size;
-    int light;
-    int nr = 0;
-    while(processing){
-        /*if(new_low_buffer == 1){
-            pthread_mutex_lock(&buffer_lock);
-            counter++;
-            
-            process_image(low_patch.buffer, low_patch.size);
-
-            nr++;
-            nr_img++;
-            free(low_patch.buffer);
-            new_low_buffer = 0;
-            pthread_mutex_unlock(&buffer_lock);
-        }*/
+void Low_Res_Worker::run() {
+    while (processing) {
         RASPITEX_PATCH *patch;
         uint8_t group;
-        if(images_in->get(&patch, &group) == 0){
+        if (images_in->get(&patch, &group) == 0) {
             counter++;
-            //printf("size of patch %d pointer %p %d %d\n", patch->size, patch->buffer, patch->height, patch->width);
             process_image(patch->buffer, patch->size);
             nr++;
             nr_img++;
@@ -111,49 +90,25 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         Mat kernel = Mat::ones(3, 3, CV_8U);
         Mat cleaned;
         morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
-        
+
         /////////////////////////////////////////////////////
-        
+
         //GET SHAPE//////////////////////////////////////////
-        vector<vector<Point> > *contours = new vector<vector<Point>>;
+        vector<vector<Point> > *contours = new vector<vector < Point>>;
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
-        /*int movement = 10;
-        if (prev1.empty() == 0 && prev2.empty() == 0 && prev3.empty() == 0) {
-            Mat d1,d2,d3;
-            absdiff(prev1, img, d1);
-            absdiff(prev2, img, d2);
-            absdiff(prev3, img, d3);
-            Scalar means1(0,0,0,0);
-            Scalar means2(0,0,0,0);
-            Scalar means3(0,0,0,0);
-            means1 = sum(d1);
-            means2 = sum(d2);
-            means3 = sum(d3);
-            int sumsum1 = (int)(means1[0]+means1[1]+means1[2]);
-            int sumsum2 = (int)(means2[0]+means2[1]+means2[2]);
-            int sumsum3 = (int)(means3[0]+means3[1]+means3[2]);
-            movement = (sumsum1 + sumsum2 + sumsum3)/100000;
-            printf("Image similarity %d\n", movement);
-        }*/
-
-        //if(movement < 10){
         match_contours(contours);
-        //}
-        //DRAW CONTOURS//////////////////////////////////////
-        /*Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
-        for (int i = 0; i < contours->size(); i++) {
-            Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-            drawContours(drawing, *contours, i, color, 2);
-        }*/
         
+        check_list();
+
+
         vector<vector<Point> > contours_list;
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         struct objects *item = first;
         int i = 0;
-        while(item != 0){
-            if(item->duration > 60){
+        while (item != 0) {
+            if (item->duration > 60) {
                 //Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
                 //drawContours(drawing, (item->contour), i, color, 2);
                 contours_list.push_back(*(item->contour));
@@ -161,13 +116,13 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             }
             item = item->next;
         }
-        
+
         for (int i = 0; i < contours_list.size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours_list, i, color, 2);
         }
-        
-        
+
+
         /////////////////////////////////////////////////////
         //FIND MAX/MIN POINTS////////////////////////////////
         /*int cnt = 0;
@@ -219,76 +174,31 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         if(cnt > 0){
             //requests_pending = cnt;
         }*/
-        
+
         ///////////////////////////////////////////////////////////////
-        //imshow("H", channel[0]);
-        //imshow("S", channel[1]);
-        //imshow("V", channel[2]);
-        //imshow("cleaned", cleaned);
-        //imshow("Mask", drawing);
-        //printf("Mat size: %d, channels: %d total_size: %d\n", cleaned.total(), cleaned.channels(), cleaned.total()*cleaned.elemSize());
-        //send_to_server(low_patch.buffer, low_patch.size, 1, pos);
-        //send_to_server(cleaned.data, cleaned.total()*cleaned.elemSize(), 1, pos);
-        //Mat send_img(channel[1]);
-        
-        Mat gray, roi;
-        //printf("size %d mask size %d", img.total(), cleaned.total());
-        //img.copyTo(roi, cleaned);
+
+        Mat gray;
         cvtColor(drawing, gray, COLOR_BGR2GRAY);
-        if(next_send % 2 == 0){
-        send_to_server(&gray, 1, pos);
-        pos++;
-        if (pos == 8) {
-            pos = 0;
-        }}
+        if (next_send % 2 == 0) {
+            send_to_server(&gray, 1, pos);
+            pos++;
+            if (pos == 8) {
+                pos = 0;
+            }
+        }
         next_send++;
-        //char filename[30];
 
-        /*snprintf(filename, 30, "pics/%d_lowres_ch0.png", nr_img);
-        imwrite(filename, channel[0]);
-        memset(filename, 0, 30);
-        
-        snprintf(filename, 30, "pics/%d_lowres_ch1.png", nr_img);
-        imwrite(filename, channel[1]);
-        memset(filename, 0, 30);
-        
-        snprintf(filename, 30, "pics/%d_lowres_ch2.png", nr_img);
-        imwrite(filename, channel[2]);
-        memset(filename, 0, 30);*/
-        
-        /*snprintf(filename, 30, "pics/%d_lowres_cleaned.png", nr_img);
-        imwrite(filename, cleaned);
-        memset(filename, 0, 30);
-        
-        snprintf(filename, 30, "pics/%d_lowres_mask.png", nr_img);
-        imwrite(filename, mask);
-        memset(filename, 0, 30);
 
-        waitKey(30);*/
-        hsv.release();
-        channel[0].release();
-        channel[1].release();
-        channel[2].release();
-        kernel.release();
-        cleaned.release();
-        drawing.release();
-        
-        
     } else {
         printf("Failed to convert camera image to Mat\n");
     }
-    free(prev3.data);
-    prev3 = prev2;
-    prev2 = prev1;
-    prev1 = img;
-    //img.release();
 }
 
 Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
     if (image_size == (LOW_OUTPUT_X * LOW_OUTPUT_Y * 4)) {
-        Mat mat_image(LOW_OUTPUT_Y, LOW_OUTPUT_X, CV_8UC4, (void*)image);
+        Mat mat_image(LOW_OUTPUT_Y, LOW_OUTPUT_X, CV_8UC4, (void*) image);
         return mat_image;
-    }else{
+    } else {
         Mat null;
         return null;
     }
@@ -297,43 +207,43 @@ Mat Low_Res_Worker::convert(uint8_t* image, size_t image_size) {
 void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
     //printf("sending image to server %ld with pos %d \n", image_size, pos);
     if (nc->unrel->send_buf->getCnt() < 70) {
-        
-        if((img->total()*img->elemSize()) != 0){
+
+        if ((img->total() * img->elemSize()) != 0) {
             uint32_t addr;
             if (inet_aton("172.16.0.1", (in_addr *) & addr) == 0) {
                 printf("inet_aton() failed\n");
             }
 
-            uint32_t new_size = img->total()*img->elemSize();
+            uint32_t new_size = img->total() * img->elemSize();
 
             size_t part_size = new_size / 8;
             //int ret = 0;
             //for (int i = 0; i < 10; i++) {
-                //ret = 0;
+            //ret = 0;
 
-                uint32_t size = part_size + sizeof (struct low_res_header);
-                struct low_res_header * header = (struct low_res_header *) malloc(size);
-                memcpy((((unsigned char *) header) + sizeof (struct low_res_header)), (void*) (img->data + pos * part_size), part_size);
-                header->mac = nc->topo->mac;
-                header->port = IMAGE_PACKET;
-                header->pos = pos;
-                header->mac = nc->topo->mac;
-                header->size = part_size;
-                header->weight = nc->debug->get_weight();
-                //ret = out->add(size, addr, (void*) header);
-                out->add(size, addr, (void*) header);
-                //if (ret != 0)
-                //    i--;
-                free(header);
+            uint32_t size = part_size + sizeof (struct low_res_header);
+            struct low_res_header * header = (struct low_res_header *) malloc(size);
+            memcpy((((unsigned char *) header) + sizeof (struct low_res_header)), (void*) (img->data + pos * part_size), part_size);
+            header->mac = nc->topo->mac;
+            header->port = IMAGE_PACKET;
+            header->pos = pos;
+            header->mac = nc->topo->mac;
+            header->size = part_size;
+            header->weight = nc->debug->get_weight();
+            //ret = out->add(size, addr, (void*) header);
+            out->add(size, addr, (void*) header);
+            //if (ret != 0)
+            //    i--;
+            free(header);
 
             //}
             //printf("Send 10 packets: buffer length: %d\n", out->getCnt());
         }
-        
+
     }
 }
 
-uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
+uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour) {
 
     //printf("******************start matching contours\n");
     vector<Point> *found = 0;
@@ -432,7 +342,6 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point>> *contour) {
     return 0;
 }
 
-
 void Low_Res_Worker::cleanup_list() {
     struct objects *item = first;
     while (item != 0) {
@@ -461,44 +370,114 @@ void Low_Res_Worker::cleanup_list() {
 
 }
 
-void Low_Res_Worker::ask_neighbours() {
-    struct objects *item = first;
-    while (item != 0) {
-        if (item->asked_ext == 0) {
-            int loop = item->contour->size();
-            int ret = 0;
-            Rect enclosing = boundingRect(*item->contour);
-            if (enclosing.x == 0) {
-                //ask neighbour below 3
-                ret += send_to_neighbour(enclosing.y, enclosing.y + enclosing.width, 3, item->id);
-            }
-            if (enclosing.y == 0) {
-                //ask neighbour to the left 1
-                ret += send_to_neighbour(enclosing.x, enclosing.x + enclosing.height, 1, item->id);
-
-            }
-            if ((enclosing.x + enclosing.height) == LOW_OUTPUT_X) {
-                //ask neighbour up 0
-                ret += send_to_neighbour(enclosing.y, enclosing.y + enclosing.width, 0, item->id);
-            }
-            if ((enclosing.y + enclosing.width) == LOW_OUTPUT_Y) {
-                //ask neighbour right 2
-                ret += send_to_neighbour(enclosing.x, enclosing.x + enclosing.height, 2, item->id);
-            }
-            if (ret == 0) {
-                item->asked_ext = 1;
-            }
+/*
+void Low_Res_Worker::ask_neighbours(struct objects *item) {
+    if (item->asked_ext < 2) {
+        int ret = 0;
+        Rect enclosing = boundingRect(*item->contour);
+        if (enclosing.x == 0) {
+            //ask neighbour below 3
+            ret += send_to_neighbour(enclosing.y, enclosing.y + enclosing.width, 3, item->id);
         }
-        item = item->next;
+        if (enclosing.y == 0) {
+            //ask neighbour to the left 1
+            ret += send_to_neighbour(enclosing.x, enclosing.x + enclosing.height, 1, item->id);
+
+        }
+        if ((enclosing.x + enclosing.height) == LOW_OUTPUT_X) {
+            //ask neighbour up 0
+            ret += send_to_neighbour(enclosing.y, enclosing.y + enclosing.width, 0, item->id);
+        }
+        if ((enclosing.y + enclosing.width) == LOW_OUTPUT_Y) {
+            //ask neighbour right 2
+            ret += send_to_neighbour(enclosing.x, enclosing.x + enclosing.height, 2, item->id);
+        }
+        if (ret == 0) {
+            item->asked_ext = 2;
+        } else {
+            item->asked_ext = 1;
+        }
     }
 }
 
-int Low_Res_Worker::send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr, uint16_t id){
+int Low_Res_Worker::send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr, uint16_t id) {
     struct low_res_request temp;
     temp.pos1 = pos1;
     temp.pos2 = pos2;
     temp.id = id;
     temp.request = 0;
-    return nc->image_in->add(sizeof(struct low_res_request), (uint32_t) addr, &temp);
+    return nc->image_in->add(sizeof (struct low_res_request), (uint32_t) addr, &temp);
 }
 
+void Low_Res_Worker::check_list() {
+    struct objects *item = first;
+    while (item != 0) {
+        if (item->duration > 60) {
+            if (item->asked_int == 0) {
+                item->asked_int = 1;
+                //send request to high res thread
+                ask_neighbours(item);
+            }
+            if (item->asked_ext == 1) {
+                ask_neighbours(item);
+            }
+        }
+    }
+}
+
+void recv_packet(struct packet * pack){
+    struct low_res_request *header = (struct low_res_request*) pack->buffer;
+    switch(header->request){
+        case LOW_RES_REQUEST_PACK:
+            //search contours for match
+            //request feature vector from high res thread
+            //send feature vector back
+            //no need to ask neighbour, mark contour as externally asked
+            break;
+        case LOW_RES_REPLY_PACK:
+            
+            break;
+        default:
+            break;
+    }
+}
+    */
+
+void Low_Res_Worker::send_high_requests(){
+    struct objects *item = first;
+    while (item != 0) {
+        if (item->duration >= 60 && item->asked == 0) {
+            //send request to high res worker
+            Rect enclosing = boundingRect(*item->contour);
+
+            RASPITEX_PATCH* temp = (RASPITEX_PATCH *) malloc(sizeof (RASPITEX_PATCH));
+            memset(temp, 0, sizeof (RASPITEX_PATCH));
+            //add some buffer
+            temp->x = (int32_t)(((float)enclosing.x)*RATIO_X - BORDER_HIGH_RES);
+            if(temp->x < 0) temp->x = 0;
+            temp->y = (int32_t)(((float)enclosing.y)*RATIO_Y - BORDER_HIGH_RES);
+            if(temp->y < 0) temp->y = 0;
+            temp->height = (int32_t)(((float)enclosing.height)*RATIO_Y + BORDER_HIGH_RES);
+            if(temp->height > HIGH_OUTPUT_Y) temp->height = HIGH_OUTPUT_Y;
+            temp->width = (int32_t)(((float)enclosing.width)*RATIO_X + BORDER_HIGH_RES);
+            if(temp->width > HIGH_OUTPUT_X) temp->width = HIGH_OUTPUT_X;
+
+            if (enclosing.x == 0) {
+                temp->down = 1;
+            }
+            if (enclosing.y == 0) {
+                temp->left = 1;
+            }
+            if ((enclosing.x + enclosing.height) == LOW_OUTPUT_X) {
+                temp->up = 1;
+            }
+            if ((enclosing.y + enclosing.width) == LOW_OUTPUT_Y) {
+                temp->right = 1;
+            }
+            requests_out->add(temp, 0);
+            item->asked = 1;
+        }
+        item = item->next;
+    }
+
+}

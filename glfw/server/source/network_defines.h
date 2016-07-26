@@ -20,6 +20,11 @@
 #define CONTROL_PACKET 3
 #define MAX_PACKET_SIZE 60000
 
+#define HISTOGRAM_SIZE 32
+
+#define LOW_RES_REQUEST_PACK 0
+#define LOW_RES_REPLY_PACK 1
+
 struct low_res_header{
     uint8_t port;
     uint8_t pos;
@@ -27,6 +32,27 @@ struct low_res_header{
     uint32_t size;
     double weight;
 };
+
+struct low_res_request{
+    uint8_t request;
+    uint64_t mac;
+    uint16_t pos1;
+    uint16_t pos2;
+    uint16_t id;
+};
+
+struct low_res_packet{
+    double contourArea;
+    double contourPerimeter;
+    double Hu[7];
+    uint32_t hist_r[HISTOGRAM_SIZE];
+    uint32_t hist_g[HISTOGRAM_SIZE];
+    uint32_t hist_b[HISTOGRAM_SIZE];
+    uint16_t rect_x;
+    uint16_t rect_y;
+    uint16_t rect_width;
+    uint16_t rect_height;
+}
 
 struct topo_list{
     uint8_t x;

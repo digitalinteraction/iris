@@ -83,6 +83,10 @@ typedef struct RASPITEX_PATCH
      uint8_t fb;
      uint8_t token;
      uint8_t select;
+     uint8_t up;
+     uint8_t down;
+     uint8_t left;
+     uint8_t right;
 } RASPITEX_PATCH;
 
 typedef struct RASPITEX_CAPTURE

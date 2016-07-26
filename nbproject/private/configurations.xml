@@ -2049,6 +2049,9 @@
       </df>
       <df name="setup">
       </df>
+      <df name="training">
+        <in>main.cpp</in>
+      </df>
       <df name="vcinclude">
         <in>common.h</in>
         <in>vc_image_types.h</in>

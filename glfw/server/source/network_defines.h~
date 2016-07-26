@@ -14,15 +14,16 @@
 #ifndef NETWORK_DEFINES_H
 #define NETWORK_DEFINES_H
 
-#define CLIENT_SIDE
+
 #define IMAGE_PACKET 1
 #define TOPO_PACKET 2
 #define CONTROL_PACKET 3
 #define MAX_PACKET_SIZE 60000
-#define BORDER_HIGH_RES 10
 
 #define HISTOGRAM_SIZE 32
 
+#define LOW_RES_REQUEST 0
+#define LOW_RES_REPLY 1
 
 struct low_res_header{
     uint8_t port;
@@ -32,7 +33,15 @@ struct low_res_header{
     double weight;
 };
 
-struct high_res_packet{
+struct low_res_request{
+    uint8_t request;
+    uint64_t mac;
+    uint16_t pos1;
+    uint16_t pos2;
+    uint16_t id;
+};
+
+struct low_res_packet{
     double contourArea;
     double contourPerimeter;
     double Hu[7];
@@ -43,8 +52,6 @@ struct high_res_packet{
     uint16_t rect_y;
     uint16_t rect_width;
     uint16_t rect_height;
-    uint16_t center_x;
-    uint16_t center_y;
 }
 
 struct topo_list{

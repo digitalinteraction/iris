@@ -47,17 +47,15 @@ struct objects{
     uint8_t matched;
     Point2f centroid;
     float area;
-    uint8_t asked_ext;
-    uint8_t asked_int;
+    uint8_t asked;
     struct objects *next;
     struct objects *prev;
 };
 
 
-
 class Low_Res_Worker {
 public:
-    Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in);
+    Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in, Buffer *requests_out);
     ~Low_Res_Worker();
     void run();
     int processing;
@@ -75,13 +73,13 @@ private:
     int interprete_params(double mean, double sum);
     //void send_to_server(uint8_t* image, size_t image_size, uint8_t mode, uint8_t pos);
     void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
-    uint8_t match_contours(vector<vector<Point>> *contour);
+    uint8_t match_contours(vector<vector<Point> > *contour);
     void cleanup_list();
-    void ask_neighbours();
-    int send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr, uint16_t id);
+    void send_high_requests();
+    //void ask_neighbours(struct objects *item);
+    //int send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr, uint16_t id);
+    //void check_list();
     Mat mask;
-    Ptr<BackgroundSubtractor> pMOG2;
-    Mat previous;
     int cnt;
     int nr_img;
     float learning;
@@ -91,14 +89,11 @@ private:
     uint8_t next_send;
 
     Buffer *images_in;
+    Buffer *requests_out;
     struct objects *first;
     struct objects *last;
     uint8_t id_cnt;
-    
-    Mat prev1;
-    Mat prev2;
-    Mat prev3;
-    
+
     uint8_t thresH_low;
     uint8_t thresH_high;
     uint8_t thresS_low;
