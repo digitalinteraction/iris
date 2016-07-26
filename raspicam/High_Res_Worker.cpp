@@ -95,6 +95,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //Mat mark = Mat::zeros(marker.size(), CV_8UC1);
         //marker.convertTo(mark, CV_8UC1);
         //bitwise_not(mark, mark);
+        
+        /*
         Mat blur, thres;
         GaussianBlur(rgb, blur, Size(5,5), 0,0);
         Scalar mean;
@@ -104,6 +106,14 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         inRange(blur, mean - stddev, mean + stddev, thres);
         //threshold(blur, thres, 0, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
         imwrite("water.png", thres);
+         */
+        Mat grey, thres;
+        cvtColor(rgb, grey, COLOR_RGB2GREY);
+        threshold(grey, thres, 0, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
+        imwrite("water.png", thres);
+
+
+
 
 //        vector<Mat> bgr_planes;
 //        split(rgb, bgr_planes);
