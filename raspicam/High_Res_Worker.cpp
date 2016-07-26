@@ -72,7 +72,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //split(hsv, channel);
         
         Mat rgb;
-        cvtColor(img, rgb, COLOR_RGBA2RGB);
+        cvtColor(img, rgb, COLOR_BGRA2RGB);
         imwrite("patch.png", rgb);
 
         //FILE *fp = fopen("patch.tga", "wb");
