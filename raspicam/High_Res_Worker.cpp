@@ -98,9 +98,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Mat b_hist, g_hist, r_hist;
         
         //Histogram
-        calcHist(&bgr_planes[0], 1, 0, mark, b_hist, 1, &back, &histRange, true, true);
-        calcHist(&bgr_planes[1], 1, 0, mark, g_hist, 1, &back, &histRange, true, true);
-        calcHist(&bgr_planes[2], 1, 0, mark, r_hist, 1, &back, &histRange, true, true);
+        calcHist(&bgr_planes[0], 1, 0, mark, b_hist, 1, &buck, &histRange, true, true);
+        calcHist(&bgr_planes[1], 1, 0, mark, g_hist, 1, &buck, &histRange, true, true);
+        calcHist(&bgr_planes[2], 1, 0, mark, r_hist, 1, &buck, &histRange, true, true);
         
         //HuMoments
         vector<vector<Point>> contours;
