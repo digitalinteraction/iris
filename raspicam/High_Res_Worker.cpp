@@ -112,23 +112,12 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         threshold(gray, thres, 0, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
         imwrite("water.png", thres);*/
         
-    Mat kernel = (Mat_<float>(3,3) <<
-            1,  1, 1,
-            1, -8, 1,
-            1,  1, 1); 
-    Mat imgLaplacian;
-    Mat sharp = rgb; // copy source image to another temporary one
-    filter2D(sharp, imgLaplacian, CV_32F, kernel);
-    rgb.convertTo(sharp, CV_32F);
-    Mat imgResult = sharp - imgLaplacian;
-    // convert back to 8bits gray scale
-    imgResult.convertTo(imgResult, CV_8UC3);
-    imgLaplacian.convertTo(imgLaplacian, CV_8UC3);
-    // imshow( "Laplace Filtered Image", imgLaplacian );
-    Mat gray, thres;
-        cvtColor(imgLaplacian, gray, CV_RGB2GRAY);
-        threshold(gray, thres, 40, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
-        imwrite("water.png", thres);
+    
+        Mat gray, thres;
+        cvtColor(rgb, gray, CV_RGB2GRAY);
+        //threshold(gray, thres, 40, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
+        Canny(gray, gray, 100, 200);
+        imwrite("water.png", gray);
 
 
 
