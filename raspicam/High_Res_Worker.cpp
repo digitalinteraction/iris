@@ -91,6 +91,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         circle(marker, Point(img_size.width,img_size.height), 5, CV_RGB(255,255,255), -1);
         
         watershed(rgb, marker);
+        imwrite("water.png", marker);
         Mat mark = Mat::zeros(marker.size(), CV_8UC1);
         marker.convertTo(mark, CV_8UC1);
         bitwise_not(mark, mark);
