@@ -45,7 +45,7 @@ struct high_res_packet{
     uint16_t rect_height;
     uint16_t center_x;
     uint16_t center_y;
-}
+};
 
 struct topo_list{
     uint8_t x;
