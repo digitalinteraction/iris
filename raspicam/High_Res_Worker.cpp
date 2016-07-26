@@ -73,11 +73,11 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         Mat rgb;
         cvtColor(img, rgb, COLOR_RGBA2RGB);
-        //imwrite("patch.png", rgb);
+        imwrite("patch.png", rgb);
 
-        FILE *fp = fopen("patch.tga", "wb");
-        write_tga(fp, patch->width, patch->height, patch->buffer, patch->size);
-        fclose(fp);
+        //FILE *fp = fopen("patch.tga", "wb");
+        //write_tga(fp, patch->width, patch->height, patch->buffer, patch->size);
+        //fclose(fp);
         
         //marker richtig plazieren... auch am rand
         Mat marker = Mat::zeros(img.size(), CV_32SC1);
