@@ -96,12 +96,9 @@ private:
     struct objects *last;
     uint8_t id_cnt;
 
-    uint8_t thresH_low;
-    uint8_t thresH_high;
-    uint8_t thresS_low;
-    uint8_t thresS_high;
-    uint8_t thresV_low;
-    uint8_t thresV_high;
+    Ptr<BackgroundSubtractor> pMOG2;
+    Mat back_mask;
+    
 };
 
 #endif /* LOW_RES_WORKER_H */

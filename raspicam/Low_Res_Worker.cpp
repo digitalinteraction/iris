@@ -44,6 +44,8 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *im
     next_send = 0;
     this->first = 0;
     this->last = 0;
+    
+    pMOG2 = createBackgroundSubtractorMOG2();
 
 }
 
@@ -70,22 +72,14 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     Mat img = convert(image, image_size);
     if (img.empty() == 0) {
         cleanup_list();
-        //printf("image arrived image size %d\n", img.total());
-        //imwrite("test.png", img);
-        //BACKGROUND SUBSTRACTOR/////////////////////////////
-        /*pMOG2->apply(img, mask, learning);
-        cnt++;
-        if (cnt == 60) {
-            printf("Learning Phase done\n");
-            learning = std::numeric_limits< double >::min();
-        }*/
-        /////////////////////////////////////////////////////
+       
         Mat hsv;
         cvtColor(img, hsv, COLOR_BGR2HSV);
         Mat channel[3];
         split(hsv, channel);
-        //channel[1];
-        threshold(channel[1], mask, 40, 255, THRESH_BINARY);
+        //threshold(channel[1], mask, 40, 255, THRESH_BINARY);
+        
+        pMOG2->apply(img, mask);
         //CLEANING UP////////////////////////////////////////
         Mat kernel = Mat::ones(3, 3, CV_8U);
         Mat cleaned;
@@ -117,59 +111,6 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             drawContours(drawing, contours_list, i, color, 2);
         }
         send_high_requests();
-        /////////////////////////////////////////////////////
-        //FIND MAX/MIN POINTS////////////////////////////////
-        /*int cnt = 0;
-        if(contours->size() > 0 && contours->size() < 10){
-            for(int i = 0;i< contours.size();i++){
-                int xmin = contours[i][0].x;
-                int ymin = contours[i][0].y;
-                int xmax = contours[i][0].x;
-                int ymax = contours[i][0].y;
-                for(int j=0;j<contours[i].size();j++){
-                    if(contours[i][j].x < xmin){
-                        xmin = contours[i][j].x;
-                    }
-                    if(contours[i][j].x > xmax){
-                        xmax = contours[i][j].x;
-                    }
-                    if(contours[i][j].y < ymin){
-                        ymin = contours[i][j].y;
-                    }
-                    if (contours[i][j].y > ymax) {
-                        ymax = contours[i][j].y;
-                    }
-                }
-                if ((xmax - xmin) > 10 && (ymax - ymin) > 10) {
-                    requests[cnt].fb = low_patch.fb;
-                    requests[cnt].token = low_patch.token;
-                    //printf("Low Res: %d %d %d %d\n", xmin, ymin, xmax, ymax);
-                    float factorx = (float) HIGH_OUTPUT_X / LOW_OUTPUT_X;
-                    float factory = (float) HIGH_OUTPUT_Y / LOW_OUTPUT_Y;
-                    float x = (xmin - 5) * factorx - factorx;
-                    float y = (ymin - 5) * factory - factory;
-                    if (x < 0) x = 0;
-                    if (y < 0) y = 0;
-                    float height = (ymax + 5) * factory + factory - y;
-                    float width = (xmax + 5) * factorx + factorx - x;
-                    if ((y + height) > HIGH_OUTPUT_Y) height = HIGH_OUTPUT_Y - y;
-                    if ((x + width) > HIGH_OUTPUT_X) width = HIGH_OUTPUT_X - x;
-                    requests[cnt].x = (int) x;
-                    requests[cnt].y = (int) y;
-                    requests[cnt].height = (int) (width + 1.5);
-                    requests[cnt].width = (int) (height + 1.5);
-                    //add limits for request in ImageCapture
-                    cnt++;
-                }
-            }
-        }
-        /////////////////////////////////////////////////////
-        
-        if(cnt > 0){
-            //requests_pending = cnt;
-        }*/
-
-        ///////////////////////////////////////////////////////////////
 
         Mat gray;
         cvtColor(drawing, gray, COLOR_BGR2GRAY);

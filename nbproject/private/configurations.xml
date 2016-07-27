@@ -2050,6 +2050,20 @@
       <df name="setup">
       </df>
       <df name="training">
+        <df name="CMakeFiles">
+          <df name="2.8.12.2">
+            <df name="CompilerIdC">
+              <in>CMakeCCompilerId.c</in>
+            </df>
+            <df name="CompilerIdCXX">
+              <in>CMakeCXXCompilerId.cpp</in>
+            </df>
+          </df>
+          <df name="CMakeTmp">
+          </df>
+          <df name="main.dir">
+          </df>
+        </df>
         <in>main.cpp</in>
       </df>
       <df name="vcinclude">
