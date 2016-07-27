@@ -113,9 +113,9 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         //send_high_requests();
 
         Mat gray;
-        cvtColor(drawing, gray, COLOR_BGR2GRAY);
+        cvtColor(img, gray, COLOR_BGR2GRAY);
         if (next_send % 2 == 0) {
-            send_to_server(&mask, 1, pos);
+            send_to_server(&gray, 1, pos);
             pos++;
             if (pos == 8) {
                 pos = 0;
