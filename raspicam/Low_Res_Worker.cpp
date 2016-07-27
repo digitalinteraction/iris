@@ -98,7 +98,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         struct objects *item = first;
         int i = 0;
         while (item != 0) {
-            if (item->duration > 60) {
+            if (item->duration > 30) {
                 //Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
                 //drawContours(drawing, (item->contour), i, color, 2);
                 contours_list.push_back(*(item->contour));
