@@ -110,7 +110,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours_list, i, color, 2);
         }
-        send_high_requests();
+        //send_high_requests();
 
         Mat gray;
         cvtColor(drawing, gray, COLOR_BGR2GRAY);
