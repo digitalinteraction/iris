@@ -44,7 +44,7 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *im
     next_send = 0;
     this->first = 0;
     this->last = 0;
-    
+    cnt_size = 0;
     //pMOG2 = cv::bgsegm::createBackgroundSubtractorGMG();
 
 }
@@ -92,7 +92,6 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
         match_contours(contours, low_patch.token, low_patch.fb);
-        
         vector<vector<Point> > contours_list;
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
         struct objects *item = first;
@@ -263,6 +262,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
                 last->next = item;
                 last = item;
             }
+            cnt_size++;
         }
     }
 
@@ -293,6 +293,7 @@ void Low_Res_Worker::cleanup_list() {
                 item->next->prev = item->prev;
             }
             //delete item->contour;
+            cnt_size--;
             free(item);
         } else {
             item->expiring++;

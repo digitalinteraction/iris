@@ -69,6 +69,7 @@ public:
     
     int requests_pending;
     RASPITEX_PATCH requests[10];
+    int cnt_size;
 private:
     void process_image(uint8_t *image, size_t image_size);
     Mat convert(uint8_t *image, size_t image_size);
