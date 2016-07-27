@@ -97,9 +97,10 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         struct objects *item = first;
         int i = 0;
         while (item != 0) {
-            if (item->duration > 90) {
+            if (item->duration > 50) {
                 //Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
                 //drawContours(drawing, (item->contour), i, color, 2);
+                printf("item duration %d\n", item->duration);
                 contours_list.push_back(*(item->contour));
                 i++;
             }
@@ -244,6 +245,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
             item->contour = &contour->at(i);
             item->id = this->id_cnt++;
             item->expiring = 0;
+            item->duration = 0;
             item->area = area;
             item->centroid = mc;
             item->asked = 0;
