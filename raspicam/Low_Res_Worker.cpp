@@ -77,7 +77,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         cvtColor(img, hsv, COLOR_BGR2HSV);
         Mat channel[3];
         split(hsv, channel);
-        threshold(channel[1], mask, 40, 255, THRESH_BINARY);
+        threshold(channel[1], mask, 35, 255, THRESH_BINARY);
         
         //pMOG2->apply(img, mask);
         //CLEANING UP////////////////////////////////////////
@@ -100,7 +100,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             if (item->duration > 50) {
                 //Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
                 //drawContours(drawing, (item->contour), i, color, 2);
-                printf("item duration %d\n", item->duration);
+                //printf("item duration %d\n", item->duration);
                 contours_list.push_back(*(item->contour));
                 i++;
             }
@@ -115,7 +115,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         Mat gray;
         cvtColor(drawing, gray, COLOR_BGR2GRAY);
         if (next_send % 2 == 0) {
-            send_to_server(&gray, 1, pos);
+            send_to_server(&mask, 1, pos);
             pos++;
             if (pos == 8) {
                 pos = 0;
