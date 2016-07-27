@@ -45,7 +45,7 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *im
     this->first = 0;
     this->last = 0;
     
-    pMOG2 = cv::bgsegm::createBackgroundSubtractorGMG();
+    //pMOG2 = cv::bgsegm::createBackgroundSubtractorGMG();
 
 }
 
@@ -77,9 +77,9 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         cvtColor(img, hsv, COLOR_BGR2HSV);
         Mat channel[3];
         split(hsv, channel);
-        //threshold(channel[1], mask, 40, 255, THRESH_BINARY);
+        threshold(channel[1], mask, 40, 255, THRESH_BINARY);
         
-        pMOG2->apply(img, mask);
+        //pMOG2->apply(img, mask);
         //CLEANING UP////////////////////////////////////////
         Mat kernel = Mat::ones(3, 3, CV_8U);
         Mat cleaned;

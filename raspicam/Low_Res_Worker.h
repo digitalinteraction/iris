@@ -96,8 +96,7 @@ private:
     struct objects *last;
     uint8_t id_cnt;
 
-    Ptr<BackgroundSubtractor> pMOG2;
-    Mat back_mask;
+    //Ptr<BackgroundSubtractor> pMOG2;
     
 };
 
