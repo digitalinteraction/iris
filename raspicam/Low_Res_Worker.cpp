@@ -45,7 +45,7 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *im
     this->first = 0;
     this->last = 0;
     
-    pMOG2 = createBackgroundSubtractorMOG();
+    pMOG2 = cv::bgsegm::createBackgroundSubtractorMOG();
 
 }
 
