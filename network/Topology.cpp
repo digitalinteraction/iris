@@ -124,23 +124,24 @@ int Topology::sendlist() {
     map.left = mapping[2]; //3
     map.right = mapping[1]; //2
      */
-    if (isalive(2) == 1) {
-        map.up = mapping[2]; //1
+
+    if (isalive(UP_SIDE) == 1) {
+        map.up = mapping[UP_SIDE]; //1
     } else {
         map.up = 0;
     }
-    if (isalive(1) == 1) {
-        map.down = mapping[1]; //0
+    if (isalive(DOWN_SIDE) == 1) {
+        map.down = mapping[DOWN_SIDE]; //0
     } else {
         map.down = 0;
     }
-    if (isalive(3) == 1) {
-        map.left = mapping[3]; //3
+    if (isalive(LEFT_SIDE) == 1) {
+        map.left = mapping[LEFT_SIDE]; //3
     } else {
         map.left = 0;
     }
-    if (isalive(0) == 1) {
-        map.right = mapping[0]; //2
+    if (isalive(RIGHT_SIDE) == 1) {
+        map.right = mapping[RIGHT_SIDE]; //2
     } else {
         map.right = 0;
     }

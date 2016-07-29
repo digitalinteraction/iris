@@ -19,6 +19,7 @@
 #include "../network/Packetbuffer.h"
 #include "../network/NetworkControl.h"
 #include "RaspiTex.h"
+#include "CommImage.h"
 
 
 using namespace cv;
@@ -38,11 +39,21 @@ private:
     uint8_t prev_group;
     Mat convert(RASPITEX_PATCH *patch);
     void find_features(RASPITEX_PATCH *patch, uint8_t group);
-    void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
+    void identify_object(patch_packet *item);
+    void combine_objects(patch_packet *dest, patch_packet *src);
     Packetbuffer *out;
     Packetbuffer *in;
     NetworkControl *nc;
     uint8_t pos;
+    uint16_t id;
+    
+    patch_packet *first;
+    patch_packet *last;
+    
+    CommImage *comm;
+    
+        
+    Ptr<RTrees> classifier;
 
 
 };

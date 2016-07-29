@@ -189,6 +189,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
             Point2f new_centroid = {0.0f, 0.0f};
             double new_area = 0;
             int pos_elem = 0;
+            float movement = 0;
 
             for (int i = 0; i < contour->size(); i++) {
                 if (contourArea(contour->at(i)) > CONTOUR_LOWER_THRESHOLD) {
@@ -205,7 +206,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
                     Point2f diff_xy = item->centroid - mc;
                     float diff_dist = sqrt(diff_xy.x * diff_xy.x + diff_xy.y * diff_xy.y);
 
-                    double total_sim = 0.003 * diff_dist + 0.01 * diff_area + sim_shapes;
+                    double total_sim = /*0.003 * diff_dist + */0.01 * diff_area + sim_shapes;
 
                     if (total_sim < similarity) {
                         similarity = total_sim;
@@ -213,6 +214,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
                         new_centroid = mc;
                         new_area = area;
                         pos_elem = i;
+                        movement = diff_dist;
                     }
                 }
             }
@@ -227,6 +229,15 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
                 item->matched = 1;
                 if (item->duration != 255) {
                     item->duration++;
+                }
+                item->movement = movement;
+
+                if (movement <= MOVEMENT_ALLOWED) {
+                    if (item->move_cnt != 255){
+                        item->move_cnt++;
+                    }
+                }else{
+                    item->move_cnt = 0;
                 }
             }
         }
@@ -381,7 +392,7 @@ void recv_packet(struct packet * pack){
 void Low_Res_Worker::send_high_requests(){
     struct objects *item = first;
     while (item != 0) {
-        if (item->duration >= 60 && item->asked == 0) {
+        if (item->duration >= 30 && item->asked == 0 && item->move_cnt > 15) {
             //send request to high res worker
             Rect enclosing = boundingRect(*item->contour);
 
@@ -411,6 +422,7 @@ void Low_Res_Worker::send_high_requests(){
             if ((enclosing.y + enclosing.width) == LOW_OUTPUT_Y) {
                 temp->right = 1;
             }
+            printf("sending request for %d %d %d %d or %d %d %d %d\n", enclosing.x, enclosing.y, enclosing.height, enclosing.width, temp->x, temp->y, temp->height, temp->width);
             requests_out->add(temp, 0);
             item->asked = 1;
         }

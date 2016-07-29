@@ -35,6 +35,7 @@
 
 #define SIMILARITY_OBJECT_THRESHOLD 0.1
 #define CONTOUR_LOWER_THRESHOLD 300.0
+#define MOVEMENT_ALLOWED 5.0
 
 using namespace cv;
 using namespace std;
@@ -48,6 +49,8 @@ struct objects{
     uint8_t duration;
     uint8_t matched;
     Point2f centroid;
+    float movement;
+    uint8_t move_cnt;
     float area;
     uint8_t asked;
     struct objects *next;

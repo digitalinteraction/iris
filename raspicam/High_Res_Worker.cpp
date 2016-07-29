@@ -32,6 +32,14 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     in = in_buf;
     this->nc = nc;
     pos = 0;
+    id = 0;
+    
+    first = 0;
+    last = 0;
+    comm = new CommImage(nc);
+    
+    classifier = RTrees::create();
+    classifier->load("classifier.xml");
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -56,6 +64,8 @@ void High_Res_Worker::run(){
             prev_group = group;
             
         }
+        comm->check_recv_buffer(first);
+        identify_object();
     }
 }
 
@@ -116,8 +126,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Mat gray, thres;
         cvtColor(rgb, gray, CV_RGB2GRAY);
         //threshold(gray, thres, 40, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
-        Canny(gray, gray, 40, 120);
-        imwrite("water.png", gray);
+        //Canny(gray, gray, 40, 120);
+        //imwrite("water.png", gray);
 
 
 
@@ -226,7 +236,38 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Mat out, rgb2;
         cvtColor(img, rgb2, COLOR_RGBA2RGB);
         drawKeypoints(rgb2, kp, out, Scalar::all(255));
-        */
+         */
+        comm->save_to_file_image(img);
+        
+        
+        patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
+        item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
+        item->feature->contour = new vector<Point>;
+        for(int i = 0; i < 1000; i++){
+            item->feature->contour->push_back(Point<int>(2,5));
+        }
+        item->left = 1;
+        item->right = 1;
+        item->up = 1;
+        item->mac = nc->topo->mac;
+        item->id = comm->file_cnt;
+        
+        //fill item with data from RASPIPATCH
+        if (first == 0) {
+            first = item;
+            last = first;
+            first->next = 0;
+            first->prev = 0;
+        } else {
+            item->next = 0;
+            item->prev = last;
+            last->next = item;
+            last = item;
+        }
+
+        comm->ask_neighbours(item);
+        
+        
         
         
         
@@ -261,8 +302,11 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //inv_marker.release();
         //out.release();
         //rgb2.release();
+        comm->file_cnt++;
+
     }
     img.release();
+    
 }
 
 Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {
@@ -270,42 +314,48 @@ Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {
         return mat_image;
 }
 
+void High_Res_Worker::identify_object(patch_packet *item){
+    if(((int)item->left) != 1 && ((int)item->right) != 1 && ((int)item->up) != 1 && ((int)item->down) != 1){
+        //get all feature vector and classify
+       
+       combine_objects(item, item->left); 
+       combine_objects(item, item->right); 
+       combine_objects(item, item->up); 
+       combine_objects(item, item->down); 
 
-void High_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
-    //printf("sending image to server %ld with pos %d \n", image_size, pos);
-    if (nc->unrel->send_buf->getCnt() < 70) {
         
-        if((img->total()*img->elemSize()) != 0){
-            uint32_t addr;
-            if (inet_aton("172.16.0.1", (in_addr *) & addr) == 0) {
-                printf("inet_aton() failed\n");
-            }
-
-            uint32_t new_size = img->total()*img->elemSize();
-
-            size_t part_size = new_size / 8;
-            //int ret = 0;
-            //for (int i = 0; i < 10; i++) {
-                //ret = 0;
-
-                uint32_t size = part_size + sizeof (struct low_res_header);
-                struct low_res_header * header = (struct low_res_header *) malloc(size);
-                memcpy((((unsigned char *) header) + sizeof (struct low_res_header)), (void*) (img->data + pos * part_size), part_size);
-                header->mac = nc->topo->mac;
-                header->port = IMAGE_PACKET;
-                header->pos = pos;
-                header->mac = nc->topo->mac;
-                header->size = part_size;
-                header->weight = nc->debug->get_weight();
-                //ret = out->add(size, addr, (void*) header);
-                out->add(size, addr, (void*) header);
-                //if (ret != 0)
-                //    i--;
-                free(header);
-
-            //}
-            //printf("Send 10 packets: buffer length: %d\n", out->getCnt());
+       classifier->predict(item->feature);
+        
+        item->prev->next = item->next;
+        item->next->prev = item->prev;
+        if(item->left != 0){
+            free(item->left);
         }
+        if(item->right != 0){
+            free(item->right);
+        }
+        if(item->up != 0){
+            free(item->up);
+        }
+        if(item->down != 0){
+            free(item->down);
+        }
+        free(item);
+    }
+}
+
+void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir) {
+    
+    if (src != 0 && src->feature != 0) {
+        for (int i = 0; i < HISTOGRAM_SIZE; i++) {
+            dest->feature->hist_r[i] += src->feature->hist_r[i];
+            dest->feature->hist_g[i] += src->feature->hist_g[i];
+            dest->feature->hist_b[i] += src->feature->hist_b[i];
+        }
+        dest->feature->contourArea += src->feature->contourArea;
+        //double epsilon = 0.1*(dest->feature->contourPerimeter + src->feature->contourPerimeter);
         
     }
 }
+
+

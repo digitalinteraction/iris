@@ -268,6 +268,8 @@
         </df>
         <in>Buffer.cpp</in>
         <in>Buffer.h</in>
+        <in>CommImage.cpp</in>
+        <in>CommImage.h</in>
         <in>High_Res_Worker.cpp</in>
         <in>High_Res_Worker.h</in>
         <in>Image_Capture.h</in>
@@ -970,6 +972,10 @@
             ex="false"
             tool="1"
             flavor2="0">
+      </item>
+      <item path="raspicam/CommImage.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="raspicam/CommImage.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="raspicam/High_Res_Worker.cpp" ex="false" tool="1" flavor2="0">
       </item>

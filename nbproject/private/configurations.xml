@@ -1935,6 +1935,10 @@
               </df>
             </df>
           </df>
+          <df name="features">
+          </df>
+          <df name="patches">
+          </df>
           <df name="pics">
             <df name="0">
             </df>
@@ -2000,6 +2004,8 @@
         </df>
         <in>Buffer.cpp</in>
         <in>Buffer.h</in>
+        <in>CommImage.cpp</in>
+        <in>CommImage.h</in>
         <in>High_Res_Worker.cpp</in>
         <in>High_Res_Worker.h</in>
         <in>Image_Capture.cpp</in>
@@ -2063,6 +2069,23 @@
           </df>
           <df name="main.dir">
           </df>
+        </df>
+        <df name="random_forest">
+          <df name="CMakeFiles">
+            <df name="2.8.12.2">
+              <df name="CompilerIdC">
+                <in>CMakeCCompilerId.c</in>
+              </df>
+              <df name="CompilerIdCXX">
+                <in>CMakeCXXCompilerId.cpp</in>
+              </df>
+            </df>
+            <df name="CMakeTmp">
+            </df>
+            <df name="main.dir">
+            </df>
+          </df>
+          <in>main.cpp</in>
         </df>
         <in>main.cpp</in>
       </df>

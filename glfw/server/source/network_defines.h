@@ -25,6 +25,16 @@
 #define LOW_RES_REQUEST_PACK 0
 #define LOW_RES_REPLY_PACK 1
 
+#define LEFT_SIDE 3
+#define DOWN_SIDE 1
+#define RIGHT_SIDE 0
+#define UP_SIDE 2
+
+//debug variables
+#define DEBUG_COMM_IMAGE
+
+
+
 struct low_res_header{
     uint8_t port;
     uint8_t pos;
@@ -33,26 +43,36 @@ struct low_res_header{
     double weight;
 };
 
-struct low_res_request{
-    uint8_t request;
-    uint64_t mac;
-    uint16_t pos1;
-    uint16_t pos2;
-    uint16_t id;
-};
-
-struct low_res_packet{
-    double contourArea;
-    double contourPerimeter;
-    double Hu[7];
+typedef struct feat_vect{
     uint32_t hist_r[HISTOGRAM_SIZE];
     uint32_t hist_g[HISTOGRAM_SIZE];
     uint32_t hist_b[HISTOGRAM_SIZE];
+    uint32_t contour_size;
+    vector<Point> *contour;
+}feature_vector;
+
+
+
+typedef struct high_res_packet{
+    uint32_t file_cnt;
+    uint16_t id;
+    uint64_t mac;
+    uint8_t addr;
     uint16_t rect_x;
     uint16_t rect_y;
     uint16_t rect_width;
     uint16_t rect_height;
-}
+    uint16_t center_x;
+    uint16_t center_y;
+    struct feature_vector *feature;
+    struct high_res_packet *up;
+    struct high_res_packet *down;
+    struct high_res_packet *left;
+    struct high_res_packet *right;
+    uint8_t state;
+    struct high_res_packet *next;
+    struct high_res_packet *prev;
+} patch_packet;
 
 struct topo_list{
     uint8_t x;
