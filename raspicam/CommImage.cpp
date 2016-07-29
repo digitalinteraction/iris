@@ -20,6 +20,13 @@
 
 #include "Buffer.h"
 
+#ifdef DEBUG_COMM_IMAGE
+#define deb_printf(format, ...) printf("ComImage::" format)
+#else
+#define deb_printf(format, ...) {}
+#endif
+
+
 CommImage::CommImage(NetworkControl *nc) {
     this->image_in = nc->image_out;
     this->image_out = nc->image_in;
@@ -98,10 +105,11 @@ void CommImage::ask_neighbours(patch_packet* item){
         size += sizeof(feature_vector);
         size += sizeof(Point)*(item->feature->contour->size());
     }
-    
+    deb_printf("A\n");
     patch_packet *send_packet = (patch_packet *)malloc(size);
     memcpy(send_packet, item, sizeof(patch_packet));
     send_packet->feature->contour_size = item->feature->contour->size();
+    deb_printf("B\n");
     if(item->feature != 0){
         memcpy(send_packet+sizeof(patch_packet), item->feature, sizeof(feature_vector));
         Point2i *p = item->feature->contour->data();
@@ -111,7 +119,7 @@ void CommImage::ask_neighbours(patch_packet* item){
             dest[i] = p[i];
         }
     }
-        
+    deb_printf("C\n");
     if(((int)item->down) == 1){
         image_out->add(size, DOWN_SIDE, (void *) send_packet);
     }
@@ -124,6 +132,7 @@ void CommImage::ask_neighbours(patch_packet* item){
     if(((int)item->right) == 1){
         image_out->add(size, RIGHT_SIDE, (void *) send_packet);
     }
+    deb_printf("D\n");
     item->state = 1;
 }
 
