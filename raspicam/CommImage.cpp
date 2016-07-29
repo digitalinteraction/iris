@@ -100,13 +100,13 @@ void CommImage::ask_neighbours(patch_packet* item){
 #ifdef DEBUG_COMM_IMAGE
     printf("ask_neighbours: %d\n", item->id);
 #endif
-    size_t size = sizeof(patch_packet);
+    size_t size = sizeof(::patch_packet);
     deb_printf("Size first %d\n", size);
     if(item->feature != 0){
-        size += sizeof(feature_vector);
-        size += sizeof(Point2i)*(item->feature->contour->size());
+        size += sizeof(::feature_vector);
+        size += sizeof(cv::Point2i)*(item->feature->contour->size());
     }
-    deb_printf("Size of Buffer %d\n", size);
+    deb_printf("Size of Buffer %d and Contour %d\n", size, item->feature->contour->size());
     patch_packet *send_packet = (patch_packet *)malloc(size);
     memcpy(send_packet, item, sizeof(patch_packet));
     send_packet->feature->contour_size = item->feature->contour->size();
