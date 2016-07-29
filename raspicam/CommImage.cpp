@@ -96,53 +96,55 @@ void CommImage::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
     }
 }
 
-void CommImage::ask_neighbours(patch_packet* item){
-    deb_printf("patch %p\n", item);
-    size_t size = sizeof(patch_packet);
-    deb_printf("Size first %d\n", size);
-    if(item->feature != 0){
-        size += sizeof(feature_vector);
-        size += sizeof(cv::Point2i)*(item->feature->contour->size());
-    }
-    deb_printf("Size of Buffer %d and Contour %d\n", size, item->feature->contour->size());
-    patch_packet *send_packet = (patch_packet *)malloc(size);
-    deb_printf("patch packet %p\n", send_packet);
-    memcpy(send_packet, item, sizeof (patch_packet));
-
-    if (item->feature != 0) {
-        send_packet->feature = (feature_vector*) (((char*) send_packet) + sizeof (patch_packet));
-        deb_printf("feature vector %p\n", send_packet->feature);
-        send_packet->feature->contour_size = item->feature->contour->size();
-        deb_printf("Contour Size %d\n", send_packet->feature->contour_size);
-        memcpy(send_packet + sizeof (patch_packet), item->feature, sizeof (feature_vector));
-        Point2i *p = (Point2i*) item->feature->contour->data();
-        Point2i *dest = (Point2i*) (send_packet + sizeof (patch_packet) + sizeof (feature_vector));
-        for (int i = 0; i < item->feature->contour->size(); i++) {
-            Point2i temp = item->feature->contour->at(i);
-            deb_printf("adding point %d %d\n", temp.x, temp.y);
-            dest[i].x = temp.x;
-            dest[i].y = temp.y;
+void CommImage::ask_neighbours(patch_packet* item) {
+    if (item->state == 0) {
+        deb_printf("patch %p\n", item);
+        size_t size = sizeof (patch_packet);
+        deb_printf("Size first %d\n", size);
+        if (item->feature != 0) {
+            size += sizeof (feature_vector);
+            size += sizeof (cv::Point2i)*(item->feature->contour->size());
         }
-    }
-    if (((int) item->down) == 1) {
-        image_out->add(size, DOWN_SIDE, (void *) send_packet);
-        deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, DOWN_SIDE);
-    }
-    if (((int) item->up) == 1) {
-        image_out->add(size, UP_SIDE, (void *) send_packet);
-        deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, UP_SIDE);
-    }
+        deb_printf("Size of Buffer %d and Contour %d\n", size, item->feature->contour->size());
+        patch_packet *send_packet = (patch_packet *) malloc(size);
+        deb_printf("patch packet %p\n", send_packet);
+        memcpy(send_packet, item, sizeof (patch_packet));
 
-    if(((int)item->left) == 1){
-        image_out->add(size, LEFT_SIDE, (void *) send_packet);
-        deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, LEFT_SIDE);
-    }
+        if (item->feature != 0) {
+            send_packet->feature = (feature_vector*) (((char*) send_packet) + sizeof (patch_packet));
+            deb_printf("feature vector %p\n", send_packet->feature);
+            send_packet->feature->contour_size = item->feature->contour->size();
+            deb_printf("Contour Size %d\n", send_packet->feature->contour_size);
+            memcpy(send_packet + sizeof (patch_packet), item->feature, sizeof (feature_vector));
+            Point2i *p = (Point2i*) item->feature->contour->data();
+            Point2i *dest = (Point2i*) (send_packet + sizeof (patch_packet) + sizeof (feature_vector));
+            for (int i = 0; i < item->feature->contour->size(); i++) {
+                Point2i temp = item->feature->contour->at(i);
+                deb_printf("adding point %d %d\n", temp.x, temp.y);
+                dest[i].x = temp.x;
+                dest[i].y = temp.y;
+            }
+        }
+        if (((int) item->down) == 1) {
+            image_out->add(size, DOWN_SIDE, (void *) send_packet);
+            deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, DOWN_SIDE);
+        }
+        if (((int) item->up) == 1) {
+            image_out->add(size, UP_SIDE, (void *) send_packet);
+            deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, UP_SIDE);
+        }
 
-    if(((int)item->right) == 1){
-        image_out->add(size, RIGHT_SIDE, (void *) send_packet);
-        deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, RIGHT_SIDE);
+        if (((int) item->left) == 1) {
+            image_out->add(size, LEFT_SIDE, (void *) send_packet);
+            deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, LEFT_SIDE);
+        }
+
+        if (((int) item->right) == 1) {
+            image_out->add(size, RIGHT_SIDE, (void *) send_packet);
+            deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, RIGHT_SIDE);
+        }
+        item->state = 1;
     }
-    item->state = 1;
 }
 
 
@@ -166,6 +168,7 @@ patch_packet * CommImage::search_list(patch_packet* start, patch_packet *search)
 void CommImage::check_recv_buffer(patch_packet *start) {
     struct packet *pack;
     while (image_in->get(&pack) == 0) {
+        
         deb_printf("got packet with size %d from addr %d pointer %p\n", pack->size, pack->addr, pack->buffer);
         patch_packet *item = (patch_packet*)pack->buffer;
         if (item->feature != 0) {
@@ -178,8 +181,8 @@ void CommImage::check_recv_buffer(patch_packet *start) {
             Point2i *pt = (Point2i*) ((((char *) pack->buffer) + sizeof (patch_packet)) + sizeof (feature_vector));
             for (int i = 0; i < item->feature->contour_size; i++) {
                 Point2i *temp = pt+i;
-                //deb_printf("Point reading out at address %p\n", temp);
-                //deb_printf("Point values %d %d\n", temp->x, temp->y);
+                deb_printf("Point reading out at address %p\n", temp);
+                deb_printf("Point values %d %d\n", temp->x, temp->y);
                 item->feature->contour->push_back(*temp);
             }
         }
