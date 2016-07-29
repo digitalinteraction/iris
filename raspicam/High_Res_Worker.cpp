@@ -38,7 +38,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     last = 0;
     comm = new CommImage(nc);
     
-    classifier = RTrees::create();
+    classifier = cv::ml::RTrees::create();
     classifier->load("classifier.xml");
 }
 

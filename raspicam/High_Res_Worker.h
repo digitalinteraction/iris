@@ -53,7 +53,7 @@ private:
     CommImage *comm;
     
         
-    Ptr<RTrees> classifier;
+    Ptr<cv::ml::RTrees> classifier;
 
 
 };
