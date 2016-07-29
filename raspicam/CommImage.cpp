@@ -174,8 +174,8 @@ void CommImage::check_recv_buffer(patch_packet *start) {
             Point2i *pt = (Point2i*) ((((char *) pack->buffer) + sizeof (patch_packet)) + sizeof (feature_vector));
             for (int i = 0; i < item->feature->contour_size; i++) {
                 Point2i *temp = pt+i;
-                deb_printf("Point reading out at address %p\n", temp);
-                deb_printf("Point values %d %d\n", temp->x, temp->y);
+                //deb_printf("Point reading out at address %p\n", temp);
+                //deb_printf("Point values %d %d\n", temp->x, temp->y);
                 item->feature->contour->push_back(*temp);
             }
         }
