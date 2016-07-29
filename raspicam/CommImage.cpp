@@ -121,7 +121,6 @@ void CommImage::ask_neighbours(patch_packet* item){
             dest[i].y = temp.y;
         }
     }
-    deb_printf
     if(((int)item->down) == 1){
         image_out->add(size, DOWN_SIDE, (void *) send_packet);
         deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, DOWN_SIDE);
