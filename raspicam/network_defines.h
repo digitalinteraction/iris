@@ -15,6 +15,7 @@
 #define NETWORK_DEFINES_H
 
 #include <vector>
+#include <opencv2/opencv.hpp>
 
 
 #define CLIENT_SIDE
@@ -49,7 +50,7 @@ typedef struct feat_vect{
     uint32_t hist_g[HISTOGRAM_SIZE];
     uint32_t hist_b[HISTOGRAM_SIZE];
     uint32_t contour_size;
-    std::vector<Point> *contour;
+    std::vector<cv::Point> *contour;
 }feature_vector;
 
 
