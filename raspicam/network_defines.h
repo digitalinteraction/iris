@@ -14,6 +14,9 @@
 #ifndef NETWORK_DEFINES_H
 #define NETWORK_DEFINES_H
 
+#include <vector>
+
+
 #define CLIENT_SIDE
 #define IMAGE_PACKET 1
 #define TOPO_PACKET 2
@@ -62,7 +65,7 @@ typedef struct high_res_packet{
     uint16_t rect_height;
     uint16_t center_x;
     uint16_t center_y;
-    struct feature_vector *feature;
+    feature_vector *feature;
     struct high_res_packet *up;
     struct high_res_packet *down;
     struct high_res_packet *left;
