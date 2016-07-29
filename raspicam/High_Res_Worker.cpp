@@ -21,6 +21,12 @@
 
 #include "Buffer.h"
 
+#ifdef DEBUG_HIGH_RES
+#define deb_printf(format, ...) printf("High_Res_Worker::" format)
+#else
+#define deb_printf(format, ...) {}
+#endif
+
 using namespace std;
 
 
@@ -40,6 +46,8 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     
     classifier = cv::ml::RTrees::create();
     classifier->load<cv::ml::RTrees>("classifier.xml", String());
+    printf("AAAAA\n\n");
+    deb_printf("Test\n\n");
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -243,8 +251,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
         item->feature->contour = new vector<Point>;
-        for(int i = 0; i < 1000; i++){
-            Point pt = Point(2,5);
+        for(int i = 0; i < 50; i++){
+            Point pt = Point(i,i);
             item->feature->contour->push_back(pt);
         }
         item->left = (patch_packet*)1;
@@ -252,7 +260,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         item->up = (patch_packet*)1;
         item->mac = nc->topo->mac;
         item->id = comm->file_cnt;
-        
+        printf("item %p\n", item);
+        comm->ask_neighbours(item);
+
         //fill item with data from RASPIPATCH
         if (first == 0) {
             first = item;
@@ -266,7 +276,6 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
             last = item;
         }
 
-        comm->ask_neighbours(item);
         
         
         

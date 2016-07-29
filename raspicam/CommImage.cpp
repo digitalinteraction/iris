@@ -97,9 +97,6 @@ void CommImage::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 }
 
 void CommImage::ask_neighbours(patch_packet* item){
-#ifdef DEBUG_COMM_IMAGE
-    printf("ask_neighbours: %d\n", item->id);
-#endif
     size_t size = sizeof(::patch_packet);
     deb_printf("Size first %d\n", size);
     if(item->feature != 0){
@@ -110,14 +107,14 @@ void CommImage::ask_neighbours(patch_packet* item){
     patch_packet *send_packet = (patch_packet *)malloc(size);
     memcpy(send_packet, item, sizeof(patch_packet));
     send_packet->feature->contour_size = item->feature->contour->size();
-    deb_printf("Contour Size\n", send_packet->feature->contour_size);
+    deb_printf("Contour Size %d\n", send_packet->feature->contour_size);
     if(item->feature != 0){
         memcpy(send_packet+sizeof(patch_packet), item->feature, sizeof(feature_vector));
         Point2i *p = (Point2i*)item->feature->contour->data();
         Point2i *dest = (Point2i*) (send_packet+sizeof(patch_packet) + sizeof(feature_vector));
         for(int i = 0; i < item->feature->contour->size(); i++){
             Point2i temp = item->feature->contour->at(i);
-            deb_printf("adding point %d %d\n", temp.x, temp.y);
+            //deb_printf("adding point %d %d\n", temp.x, temp.y);
             //memcpy(dest[i], p[i], sizeof(Point2i));
             dest[i].x = (int)p[i].x;
             dest[i].y = (int)p[i].y;
