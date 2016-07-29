@@ -165,11 +165,12 @@ void CommImage::check_recv_buffer(patch_packet *start) {
         deb_printf("got packet with size %d from addr %d\n", pack->size, pack->addr);
         patch_packet *item = (patch_packet*)pack->buffer;
         if (item->feature != 0) {
+            deb_printf("item attributes: MAC %llx ID %d\n", item->mac, item->id);
             deb_printf("features found, old address %p\n", item->feature);
             item->feature = (feature_vector*) (((char *) pack->buffer) + sizeof (patch_packet));
             deb_printf("new address %p\n", item->feature);
             item->feature->contour = new vector<Point>;
-            deb_printf("new contour vector initialized\n");
+            deb_printf("new contour vector initialized, contour size %d\n", item->feature->contour_size);
             Point2i *pt = (Point2i*) ((((char *) pack->buffer) + sizeof (patch_packet)) + sizeof (feature_vector));
             for (int i = 0; i < item->feature->contour_size; i++) {
                 Point2i *temp = pt+i;
