@@ -51,7 +51,7 @@ typedef struct feat_vect{
     uint32_t hist_g[HISTOGRAM_SIZE];
     uint32_t hist_b[HISTOGRAM_SIZE];
     uint32_t contour_size;
-    vector<Point> *contour;
+    std::vector<Point> *contour;
 }feature_vector;
 
 
