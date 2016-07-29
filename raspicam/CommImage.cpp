@@ -103,7 +103,7 @@ void CommImage::ask_neighbours(patch_packet* item) {
         deb_printf("Size first %d\n", size);
         if (item->feature != 0) {
             size += sizeof (feature_vector);
-            size += sizeof ((uint32_t)*(item->feature->contour->size())*2);
+            size += sizeof(uint32_t)*(item->feature->contour->size())*2;
         }
         deb_printf("Size of Buffer %d and Contour %d\n", size, item->feature->contour->size());
         patch_packet *send_packet = (patch_packet *) malloc(size);
