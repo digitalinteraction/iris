@@ -112,12 +112,13 @@ void CommImage::ask_neighbours(patch_packet* item){
     deb_printf("Contour Size\n", send_packet->feature->contour_size);
     if(item->feature != 0){
         memcpy(send_packet+sizeof(patch_packet), item->feature, sizeof(feature_vector));
-        Point2i *p = item->feature->contour->data();
-        Point2i *dest = (Point2i*) (send_packet+sizeof(patch_packet) + sizeof(feature_vector));
+        Point2d *p = item->feature->contour->data();
+        Point2i *dest = (Point2d*) (send_packet+sizeof(patch_packet) + sizeof(feature_vector));
         for(int i = 0; i < item->feature->contour->size(); i++){
-            deb_printf("adding point %d %d\n", p[i].x, p[i].y);
+            deb_printf("adding point %d %d\n", (int)p[i].x, (int)p[i].y);
             //memcpy(dest[i], p[i], sizeof(Point2i));
-            dest[i] = p[i];
+            dest[i].x = (int)p[i].x;
+            dest[i].y = (int)p[i].y;
         }
     }
     deb_printf("Memcopied points\n");
