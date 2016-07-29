@@ -35,7 +35,7 @@ public:
     void check_recv_buffer(patch_packet *start);
     void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
     void ask_neighbours(patch_packet* item);
-    patch_packet *search_list(const patch_packet* start, patch_packet *search);
+    patch_packet *search_list(patch_packet* start, patch_packet *search);
     void match_recv_list(patch_packet *start);
 
     uint16_t file_cnt;
