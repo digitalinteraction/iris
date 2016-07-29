@@ -22,9 +22,9 @@
 #include "Buffer.h"
 
 #ifdef DEBUG_HIGH_RES
-#define deb_printf(format, ...) printf("High_Res_Worker::" format)
+#define deb_printf(fmt, args...) fprintf(stderr, "HIGH_RES_WORKER: %s:%d:%s(): " fmt, __FILE__, __LINE__, __func__, ##args)
 #else
-#define deb_printf(format, ...) {}
+#define deb_printf(fmt, args...)
 #endif
 
 using namespace std;
