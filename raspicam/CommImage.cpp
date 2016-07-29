@@ -107,7 +107,8 @@ void CommImage::ask_neighbours(patch_packet* item){
         Point2i *p = item->feature->contour->data();
         Point2i *dest = (Point2i*) send_packet+sizeof(patch_packet);
         for(int i = 0; i < item->feature->contour->size(); i++){
-            memcpy(dest[i], p[i], sizeof(Point2i));
+            //memcpy(dest[i], p[i], sizeof(Point2i));
+            dest[i] = p[i];
         }
     }
         
