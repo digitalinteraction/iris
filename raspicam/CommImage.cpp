@@ -38,13 +38,13 @@ CommImage::CommImage(const CommImage& orig) {
 CommImage::~CommImage() {
 }
 
-void CommImage::save_to_file_image(Mat pic){
+void CommImage::save_to_file_image(Mat *pic){
 #ifdef DEBUG_COMM_IMAGE
-    printf("save_to_file_image: pic %d\n", pic.total());
+    printf("save_to_file_image: pic %d\n", pic->total());
 #endif
     char buf_pic[100];
     snprintf(buf_pic, 100, "patches/%ld%d.png", nc->topo->mac, file_cnt);
-    imwrite(pic, buf_pic);
+    imwrite(*pic, buf_pic);
 }
 
 void CommImage::save_to_file_features(feature_vector* item, uint16_t file_id){

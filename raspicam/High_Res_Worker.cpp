@@ -39,7 +39,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     comm = new CommImage(nc);
     
     classifier = cv::ml::RTrees::create();
-    classifier->load("classifier.xml");
+    classifier->load<RTrees>("classifier.xml");
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -65,7 +65,7 @@ void High_Res_Worker::run(){
             
         }
         comm->check_recv_buffer(first);
-        identify_object();
+        //identify_object();
     }
 }
 
@@ -237,18 +237,19 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         cvtColor(img, rgb2, COLOR_RGBA2RGB);
         drawKeypoints(rgb2, kp, out, Scalar::all(255));
          */
-        comm->save_to_file_image(img);
+        comm->save_to_file_image(&img);
         
         
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
         item->feature->contour = new vector<Point>;
         for(int i = 0; i < 1000; i++){
-            item->feature->contour->push_back(Point<int>(2,5));
+            Point<int> pt= new Point(2,5);
+            item->feature->contour->push_back(pt);
         }
-        item->left = 1;
-        item->right = 1;
-        item->up = 1;
+        item->left = (patch_packet*)1;
+        item->right = (patch_packet*)1;
+        item->up = (patch_packet*)1;
         item->mac = nc->topo->mac;
         item->id = comm->file_cnt;
         
@@ -324,7 +325,7 @@ void High_Res_Worker::identify_object(patch_packet *item){
        combine_objects(item, item->down); 
 
         
-       classifier->predict(item->feature);
+       //classifier->predict(item->feature);
         
         item->prev->next = item->next;
         item->next->prev = item->prev;

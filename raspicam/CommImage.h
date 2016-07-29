@@ -21,15 +21,17 @@
 #include "../network/NetworkControl.h"
 #include "RaspiTex.h"
 
+using namespace cv;
+
 
 class CommImage {
 public:
     CommImage(NetworkControl *nc);
     CommImage(const CommImage& orig);
     virtual ~CommImage();
-    void save_to_file_image(Mat pic);
+    void save_to_file_image(Mat *pic);
     void save_to_file_features(feature_vector* item, uint16_t file_id);
-    void check_recv_buffer();
+    void check_recv_buffer(patch_packet *start);
     void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
     void ask_neighbours(patch_packet* item);
     patch_packet *search_list(const patch_packet* start, patch_packet *search);
