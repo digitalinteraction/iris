@@ -169,7 +169,7 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     if (buf <= 0 || cpy_buffer <= 0) {
         printf("Error Reliable Transfer:: allocating buffer failed\n");
         if(callback != 0){
-                callback(addr, size);
+                callback(addr, size, REL_ERROR_BUF_ALLOC);
         }
         return -1;
     }
@@ -272,6 +272,6 @@ int ReliableTransfer::check_timeouts(){
     return 0;
 }
 
-void ReliableTransfer::setCallback(void(*callback)(uint32_t,size_t)){
+void ReliableTransfer::setCallback(void(*callback)(uint32_t,size_t, uint8_t)){
     this->callback = callback;
 }

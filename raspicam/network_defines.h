@@ -41,6 +41,7 @@
 #define REL_ERROR_LIST 1
 #define REL_ERROR_DEAD 2
 #define REL_ERROR_TIMEOUT 3
+#define REL_ERROR_BUF_ALLOC 4
 
 
 struct low_res_header{
