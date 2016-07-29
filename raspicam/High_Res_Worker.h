@@ -40,7 +40,7 @@ private:
     Mat convert(RASPITEX_PATCH *patch);
     void find_features(RASPITEX_PATCH *patch, uint8_t group);
     void identify_object(patch_packet *item);
-    void combine_objects(patch_packet *dest, patch_packet *src);
+    void combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir);
     Packetbuffer *out;
     Packetbuffer *in;
     NetworkControl *nc;

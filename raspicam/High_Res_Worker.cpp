@@ -39,7 +39,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     comm = new CommImage(nc);
     
     classifier = cv::ml::RTrees::create();
-    classifier->load<RTrees>("classifier.xml");
+    classifier->load<cv::ml::RTrees>("classifier.xml", String());
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -244,7 +244,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
         item->feature->contour = new vector<Point>;
         for(int i = 0; i < 1000; i++){
-            Point<int> pt= new Point(2,5);
+            Point pt = Point(2,5);
             item->feature->contour->push_back(pt);
         }
         item->left = (patch_packet*)1;
