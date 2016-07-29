@@ -24,7 +24,7 @@ CommImage::CommImage(NetworkControl *nc) {
     this->image_in = nc->image_out;
     this->image_out = nc->image_in;
     this->unrel_in = nc->unrel_out;
-    this->unrel_out = nc->unrel_in
+    this->unrel_out = nc->unrel_in;
     this->nc = nc;
     
     recv_first = 0;
