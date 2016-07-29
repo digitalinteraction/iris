@@ -38,7 +38,7 @@ CommImage::CommImage(NetworkControl *nc) {
     recv_last = 0;
     file_cnt = 0;
     
-    nc->rel->setCallback(&callback_rel());
+    nc->rel->setCallback(&callback_rel);
 }
 
 CommImage::CommImage(const CommImage& orig) {
