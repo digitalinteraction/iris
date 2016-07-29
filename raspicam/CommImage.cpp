@@ -110,7 +110,7 @@ void CommImage::ask_neighbours(patch_packet* item){
     memcpy(send_packet, item, sizeof (patch_packet));
 
     if (item->feature != 0) {
-        send_packet->feature = (feature_vector*) ((char*) send_packet) + sizeof (patch_packet);
+        send_packet->feature = (feature_vector*) (((char*) send_packet) + sizeof (patch_packet));
         deb_printf("feature vector %p\n", send_packet->feature);
         send_packet->feature->contour_size = item->feature->contour->size();
         deb_printf("Contour Size %d\n", send_packet->feature->contour_size);
