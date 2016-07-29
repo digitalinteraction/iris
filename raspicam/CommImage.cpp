@@ -162,7 +162,7 @@ patch_packet * CommImage::search_list(patch_packet* start, patch_packet *search)
 void CommImage::check_recv_buffer(patch_packet *start) {
     struct packet *pack;
     while (image_in->get(&pack) == 0) {
-        deb_printf("got packet with size %d from addr %d\n", pack->size, pack->addr);
+        deb_printf("got packet with size %d from addr %d pointer %p\n", pack->size, pack->addr, pack->buffer);
         patch_packet *item = (patch_packet*)pack->buffer;
         if (item->feature != 0) {
             deb_printf("item attributes: MAC %llx ID %d\n", item->mac, item->id);
