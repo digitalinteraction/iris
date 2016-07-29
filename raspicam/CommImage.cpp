@@ -309,6 +309,6 @@ void CommImage::match_answers(patch_packet *start) {
     }
 }
 
-static void CommImage::callback_rel(uint32_t addr, size_t size, uint8_t reason){
+void CommImage::callback_rel(uint32_t addr, size_t size, uint8_t reason){
     deb_printf("callback worked, %d %d %d!!\n", addr, size, reason);
 }
