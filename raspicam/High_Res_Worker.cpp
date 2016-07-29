@@ -46,8 +46,6 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     
     classifier = cv::ml::RTrees::create();
     classifier->load<cv::ml::RTrees>("classifier.xml", String());
-    printf("AAAAA\n\n");
-    deb_printf("Test\n\n");
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -252,15 +250,16 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
         item->feature->contour = new vector<Point>;
         for(int i = 0; i < 50; i++){
-            Point pt = Point(i,i);
-            item->feature->contour->push_back(pt);
+            Point *pt = new Point(i,i);
+            item->feature->contour->push_back(*pt);
         }
         item->left = (patch_packet*)1;
         item->right = (patch_packet*)1;
         item->up = (patch_packet*)1;
         item->mac = nc->topo->mac;
         item->id = comm->file_cnt;
-        printf("item %p\n", item);
+        deb_printf("size of item: %d %d\n", sizeof(patch_packet), sizeof(feature_vector));
+        deb_printf("item %p\n", item);
         comm->ask_neighbours(item);
 
         //fill item with data from RASPIPATCH

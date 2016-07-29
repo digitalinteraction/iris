@@ -34,7 +34,7 @@
 
 //debug variables
 #define DEBUG_COMM_IMAGE
-
+#define DEBUG_HIGH_RES
 
 
 
