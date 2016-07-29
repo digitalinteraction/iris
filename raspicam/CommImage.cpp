@@ -48,7 +48,7 @@ CommImage::~CommImage() {
 void CommImage::save_to_file_image(Mat *pic){
     deb_printf("save_to_file_image: pic %d\n", pic->total());
     char buf_pic[100];
-    snprintf(buf_pic, 100, "patches/%lx%d.png", nc->topo->mac, file_cnt);
+    snprintf(buf_pic, 100, "patches/%llx_%d.png", nc->topo->mac, file_cnt);
     deb_printf("Filename: %s\n", buf_pic);
     imwrite(buf_pic, *pic);
 }
