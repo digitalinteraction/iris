@@ -22,7 +22,7 @@
 #include "Buffer.h"
 
 #ifdef DEBUG_HIGH_RES
-#define deb_printf(fmt, args...) fprintf(stderr, "HIGH_RES_WORKER: %s:%d:%s(): " fmt, __FILE__, __LINE__, __func__, ##args)
+#define deb_printf(fmt, args...) fprintf(stderr, "HIGH_RES_WORKER: %d:%s(): " fmt, __LINE__, __func__, ##args)
 #else
 #define deb_printf(fmt, args...)
 #endif
