@@ -98,18 +98,18 @@ void CommImage::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 
 void CommImage::ask_neighbours(patch_packet* item){
 #ifdef DEBUG_COMM_IMAGE
-    printf("ask_neighbours: %d", item->id);
+    printf("ask_neighbours: %d\n", item->id);
 #endif
     size_t size = sizeof(patch_packet);
     if(item->feature != 0){
         size += sizeof(feature_vector);
         size += sizeof(Point)*(item->feature->contour->size());
     }
-    deb_printf("A\n");
+    deb_printf("Size of Buffer %d\n", size);
     patch_packet *send_packet = (patch_packet *)malloc(size);
     memcpy(send_packet, item, sizeof(patch_packet));
     send_packet->feature->contour_size = item->feature->contour->size();
-    deb_printf("B\n");
+    deb_printf("Contour Size\n", send_packet->feature->contour_size);
     if(item->feature != 0){
         memcpy(send_packet+sizeof(patch_packet), item->feature, sizeof(feature_vector));
         Point2i *p = item->feature->contour->data();
@@ -119,20 +119,26 @@ void CommImage::ask_neighbours(patch_packet* item){
             dest[i] = p[i];
         }
     }
-    deb_printf("C\n");
+    deb_printf("Memcopied points\n");
     if(((int)item->down) == 1){
         image_out->add(size, DOWN_SIDE, (void *) send_packet);
     }
+    deb_printf(" %p added buffer with %d %p to %d address", image_out, size, send_packet, DOWN_SIDE);
     if(((int)item->up) == 1){
         image_out->add(size, UP_SIDE, (void *) send_packet);
     }
+    deb_printf(" %p added buffer with %d %p to %d address", image_out, size, send_packet, UP_SIDE);
+
     if(((int)item->left) == 1){
         image_out->add(size, LEFT_SIDE, (void *) send_packet);
     }
+    deb_printf(" %p added buffer with %d %p to %d address", image_out, size, send_packet, LEFT_SIDE);
+
     if(((int)item->right) == 1){
         image_out->add(size, RIGHT_SIDE, (void *) send_packet);
     }
-    deb_printf("D\n");
+    deb_printf(" %p added buffer with %d %p to %d address", image_out, size, send_packet, RIGHT_SIDE);
+
     item->state = 1;
 }
 
