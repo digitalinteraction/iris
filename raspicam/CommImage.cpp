@@ -101,6 +101,7 @@ void CommImage::ask_neighbours(patch_packet* item){
     printf("ask_neighbours: %d\n", item->id);
 #endif
     size_t size = sizeof(patch_packet);
+    deb_printf("Size first %d\n", size);
     if(item->feature != 0){
         size += sizeof(feature_vector);
         size += sizeof(Point2i)*(item->feature->contour->size());
@@ -115,7 +116,8 @@ void CommImage::ask_neighbours(patch_packet* item){
         Point2i *p = (Point2i*)item->feature->contour->data();
         Point2i *dest = (Point2i*) (send_packet+sizeof(patch_packet) + sizeof(feature_vector));
         for(int i = 0; i < item->feature->contour->size(); i++){
-            deb_printf("adding point %d %d\n", (int)p[i].x, (int)p[i].y);
+            Point2i temp = item->feature->contour->at<int>(i);
+            deb_printf("adding point %d %d\n", temp.x, temp.y);
             //memcpy(dest[i], p[i], sizeof(Point2i));
             dest[i].x = (int)p[i].x;
             dest[i].y = (int)p[i].y;
@@ -125,21 +127,21 @@ void CommImage::ask_neighbours(patch_packet* item){
     if(((int)item->down) == 1){
         image_out->add(size, DOWN_SIDE, (void *) send_packet);
     }
-    deb_printf(" %p added buffer with %d %p to %d address", image_out, size, send_packet, DOWN_SIDE);
+    deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, DOWN_SIDE);
     if(((int)item->up) == 1){
         image_out->add(size, UP_SIDE, (void *) send_packet);
     }
-    deb_printf(" %p added buffer with %d %p to %d address", image_out, size, send_packet, UP_SIDE);
+    deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, UP_SIDE);
 
     if(((int)item->left) == 1){
         image_out->add(size, LEFT_SIDE, (void *) send_packet);
     }
-    deb_printf(" %p added buffer with %d %p to %d address", image_out, size, send_packet, LEFT_SIDE);
+    deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, LEFT_SIDE);
 
     if(((int)item->right) == 1){
         image_out->add(size, RIGHT_SIDE, (void *) send_packet);
     }
-    deb_printf(" %p added buffer with %d %p to %d address", image_out, size, send_packet, RIGHT_SIDE);
+    deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, RIGHT_SIDE);
 
     item->state = 1;
 }
