@@ -103,7 +103,7 @@ void CommImage::ask_neighbours(patch_packet* item) {
         deb_printf("Size first %d\n", size);
         if (item->feature != 0) {
             size += sizeof (feature_vector);
-            size += sizeof (cv::Point2i)*(item->feature->contour->size());
+            size += sizeof ((uint32_t)*(item->feature->contour->size())*2);
         }
         deb_printf("Size of Buffer %d and Contour %d\n", size, item->feature->contour->size());
         patch_packet *send_packet = (patch_packet *) malloc(size);
@@ -120,10 +120,10 @@ void CommImage::ask_neighbours(patch_packet* item) {
             uint32_t *dest = (uint32_t*) (send_packet + sizeof (patch_packet) + sizeof (feature_vector));
             for (int i = 0; i < item->feature->contour->size(); i++) {
                 Point2i temp = item->feature->contour->at(i);
-                uint32_t *array = dest+i;
-                deb_printf("adding point %d %d\n", temp.x, temp.y);
-                dest[0] = temp.x;
-                dest[1] = temp.y;
+                uint32_t *array = dest+2*i;
+                deb_printf("adding point %d %d at pos %p\n", temp.x, temp.y, array);
+                array[0] = temp.x;
+                array[1] = temp.y;
             }
         }
         if (((int) item->down) == 1) {
@@ -181,7 +181,7 @@ void CommImage::check_recv_buffer(patch_packet *start) {
             deb_printf("new contour vector initialized, contour size %d\n", item->feature->contour_size);
             uint32_t *pt = (uint32_t*) ((((char *) pack->buffer) + sizeof (patch_packet)) + sizeof (feature_vector));
             for (int i = 0; i < item->feature->contour_size; i++) {
-                uint32_t *temp = pt+i;
+                uint32_t *temp = pt+2*i;
                 deb_printf("Point reading out at address %p\n", temp);
                 deb_printf("Point values %d %d\n", temp[0], temp[1]);
                 Point2i point(temp[0], temp[1]);
