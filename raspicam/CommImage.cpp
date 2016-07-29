@@ -117,12 +117,13 @@ void CommImage::ask_neighbours(patch_packet* item) {
             deb_printf("Contour Size %d\n", send_packet->feature->contour_size);
             memcpy(send_packet + sizeof (patch_packet), item->feature, sizeof (feature_vector));
             Point2i *p = (Point2i*) item->feature->contour->data();
-            Point2i *dest = (Point2i*) (send_packet + sizeof (patch_packet) + sizeof (feature_vector));
+            uint32_t *dest = (uint32_t*) (send_packet + sizeof (patch_packet) + sizeof (feature_vector));
             for (int i = 0; i < item->feature->contour->size(); i++) {
                 Point2i temp = item->feature->contour->at(i);
+                uint32_t *array = dest+i;
                 deb_printf("adding point %d %d\n", temp.x, temp.y);
-                dest[i].x = temp.x;
-                dest[i].y = temp.y;
+                dest[0] = temp.x;
+                dest[1] = temp.y;
             }
         }
         if (((int) item->down) == 1) {
@@ -178,12 +179,13 @@ void CommImage::check_recv_buffer(patch_packet *start) {
             deb_printf("new address %p\n", item->feature);
             item->feature->contour = new vector<Point>;
             deb_printf("new contour vector initialized, contour size %d\n", item->feature->contour_size);
-            Point2i *pt = (Point2i*) ((((char *) pack->buffer) + sizeof (patch_packet)) + sizeof (feature_vector));
+            uint32_t *pt = (uint32_t*) ((((char *) pack->buffer) + sizeof (patch_packet)) + sizeof (feature_vector));
             for (int i = 0; i < item->feature->contour_size; i++) {
-                Point2i *temp = pt+i;
+                uint32_t *temp = pt+i;
                 deb_printf("Point reading out at address %p\n", temp);
-                deb_printf("Point values %d %d\n", temp->x, temp->y);
-                item->feature->contour->push_back(*temp);
+                deb_printf("Point values %d %d\n", temp[0], temp[1]);
+                Point2i point(temp[0], temp[1]);
+                item->feature->contour->push_back(point);
             }
         }
         item->addr = pack->addr;
