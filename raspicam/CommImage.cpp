@@ -103,7 +103,7 @@ void CommImage::ask_neighbours(patch_packet* item){
     size_t size = sizeof(patch_packet);
     if(item->feature != 0){
         size += sizeof(feature_vector);
-        size += sizeof(Point)*(item->feature->contour->size());
+        size += sizeof(Point2i)*(item->feature->contour->size());
     }
     deb_printf("Size of Buffer %d\n", size);
     patch_packet *send_packet = (patch_packet *)malloc(size);
@@ -113,7 +113,7 @@ void CommImage::ask_neighbours(patch_packet* item){
     if(item->feature != 0){
         memcpy(send_packet+sizeof(patch_packet), item->feature, sizeof(feature_vector));
         Point2d *p = item->feature->contour->data();
-        Point2i *dest = (Point2d*) (send_packet+sizeof(patch_packet) + sizeof(feature_vector));
+        Point2i *dest = (Point2i*) (send_packet+sizeof(patch_packet) + sizeof(feature_vector));
         for(int i = 0; i < item->feature->contour->size(); i++){
             deb_printf("adding point %d %d\n", (int)p[i].x, (int)p[i].y);
             //memcpy(dest[i], p[i], sizeof(Point2i));
