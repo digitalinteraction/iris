@@ -37,6 +37,11 @@
 #define DEBUG_HIGH_RES
 
 
+#define REL_ERROR_BUF_SIZE 0
+#define REL_ERROR_LIST 1
+#define REL_ERROR_DEAD 2
+#define REL_ERROR_TIMEOUT 3
+
 
 
 struct low_res_header{

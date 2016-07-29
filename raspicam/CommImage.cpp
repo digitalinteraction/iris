@@ -37,6 +37,8 @@ CommImage::CommImage(NetworkControl *nc) {
     recv_first = 0;
     recv_last = 0;
     file_cnt = 0;
+    
+    nc->rel->setCallback(&callback_rel());
 }
 
 CommImage::CommImage(const CommImage& orig) {
@@ -305,4 +307,8 @@ void CommImage::match_answers(patch_packet *start) {
         }
         item = item->next;
     }
+}
+
+void CommImage::callback_rel(uint32_t addr, size_t size, uint8_t reason){
+    deb_printf("callback worked, %d %d %d!!\n", addr, size, reason);
 }

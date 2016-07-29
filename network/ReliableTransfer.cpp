@@ -140,16 +140,25 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     //printf("%p %ld %d %d %d %d\n", buffer, size, addr, broadcast, list_cnt, topo->isalive(addr));
     if(buffer == 0 || size <= 0){
         printf("Error Reliable Transfer: buffer or size is wrong\n");
+        if(callback != 0){
+                callback(addr, size, REL_ERROR_BUF_SIZE);
+        }
         return -1;
     }
     
     
     if(list_cnt > 20){
         //printf("Error ReliableTransfer: list too long right now\n");
+        if(callback != 0){
+                callback(addr, size, REL_ERROR_LIST);
+        }
         return -1;
     }
     if(topo->isalive(addr) == 0){
         //printf("Error Reliable Transfer: destination is not alive\n");
+        if(callback != 0){
+                callback(addr, size, REL_ERROR_DEAD);
+        }
         return -1;
     }
     
@@ -159,6 +168,9 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     void *cpy_buffer = malloc(total_size);
     if (buf <= 0 || cpy_buffer <= 0) {
         printf("Error Reliable Transfer:: allocating buffer failed\n");
+        if(callback != 0){
+                callback(addr, size);
+        }
         return -1;
     }
     
@@ -241,16 +253,25 @@ int ReliableTransfer::check_timeouts(){
         } else {
             printf("ERROR::Reliable Transfer::Packet could not be transmitted\n");
             struct linked_header *temp = first;
+            if(callback != 0){
+                callback(temp->addr, temp->size, REL_ERROR_TIMEOUT);
+            }
             first = first->next;
             free(temp->packet);
             free(temp);
             if (first != 0)
                 first->prev = 0;
             list_cnt--;
+            
+            
             //call app to signal packet could not be transmitted
         }
     }
         
     list_lock.unlock();
     return 0;
+}
+
+void ReliableTransfer::setCallback(void(*callback)(uint32_t,size_t)){
+    this->callback = callback;
 }

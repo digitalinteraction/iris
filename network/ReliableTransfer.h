@@ -49,6 +49,7 @@ public:
     int check_timeouts();
     int send_acks();
     volatile uint32_t list_cnt;
+    void setCallback(void (*callback)(uint32_t, size_t, uint8_t));
 private:
     Packetbuffer *out;
     Topology *topo;
@@ -60,6 +61,7 @@ private:
     struct reliable_packet ack;
     int timer;
     std::mutex list_lock;
+    void (*callback)(uint32_t, size_t, uint8_t);
 };
 
 #endif /* RELIABLETRANSFER_H */
