@@ -48,7 +48,7 @@ private:
     void match_answers(patch_packet *start);
     patch_packet *recv_first;
     patch_packet *recv_last;
-    void callback_rel(uint32_t addr, size_t size, uint8_t reason);
+    static void callback_rel(uint32_t addr, size_t size, uint8_t reason);
     NetworkControl *nc;
 };
 
