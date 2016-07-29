@@ -44,7 +44,7 @@ void CommImage::save_to_file_image(Mat *pic){
 #endif
     char buf_pic[100];
     snprintf(buf_pic, 100, "patches/%ld%d.png", nc->topo->mac, file_cnt);
-    imwrite(*pic, buf_pic);
+    imwrite(buf_pic, *pic);
 }
 
 void CommImage::save_to_file_features(feature_vector* item, uint16_t file_id){
@@ -104,9 +104,9 @@ void CommImage::ask_neighbours(patch_packet* item){
     send_packet->feature->contour_size = item->feature->contour->size();
     if(item->feature != 0){
         memcpy(send_packet+sizeof(patch_packet), item->feature, sizeof(feature_vector));
-        Point *p = item->feature->contour->data();
+        Point2i *p = item->feature->contour->data();
         for(int i = 0; i < item->feature->contour->size(); i++){
-            memcpy(send_packet+sizeof(patch_packet)+i*sizeof(Point), p[i], sizeof(Point));
+            memcpy(send_packet+sizeof(patch_packet)+i*sizeof(Point2i), (void*)p[i], sizeof(Point2i));
         }
     }
         

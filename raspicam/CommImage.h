@@ -22,6 +22,7 @@
 #include "RaspiTex.h"
 
 using namespace cv;
+using namespace std;
 
 
 class CommImage {
