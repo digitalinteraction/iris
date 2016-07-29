@@ -43,7 +43,7 @@ ReliableTransfer::~ReliableTransfer() {
 }
 
 int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
-    //printf("recv ");
+    printf("recv ");
     if(buffer == 0 || size <= 0){
         printf("Error ReliableTransfer: buffer or size is wrong\n");
         return -1;
@@ -53,7 +53,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
     struct reliable_packet *header = (struct reliable_packet*) buffer;
 
     if (header->ack == 1) {
-        //printf(" ack "); fflush(stdout);
+        printf(" ack ");
         list_lock.lock();
         struct linked_header *list_item = first;
         uint8_t success = 0;
@@ -132,7 +132,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
             out->add(new_size, addr, buf);
         }
     }
-    //printf("recv ends\n");
+    printf("recv ends\n");
     return 0;
 }
 
@@ -200,6 +200,7 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
  
     (*unrel)->send(buf, total_size, 2, addr);
     free(buf);
+    printf("end reliable trasnfer\n");
     return 0;
 }
 

@@ -18,12 +18,13 @@ NetworkControl::NetworkControl() {
     image_out = new Packetbuffer(1);
     unrel_out = new Packetbuffer(2);
     unrel_in = new Packetbuffer(3);
+    image_in = new Packetbuffer(4);
+
     topo = new Topology(&unrel, unrel_out);
     rel = new ReliableTransfer(&unrel, image_out, topo);
     debug = new DebugTransfer(unrel_out, &unrel);
     unrel = new UnreliableTransfer(rel, topo, debug);
     
-    image_in = new Packetbuffer(4);
 
 
     Timeout.tv_usec = 1000;
