@@ -272,6 +272,6 @@ int ReliableTransfer::check_timeouts(){
     return 0;
 }
 
-void ReliableTransfer::setCallback(void(*callback)(uint32_t,size_t)){
+void ReliableTransfer::setCallback(void(CommImage::*callback)(uint32_t,size_t)){
     this->callback = callback;
 }
