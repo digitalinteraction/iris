@@ -162,9 +162,6 @@ patch_packet * CommImage::search_list(patch_packet* start, patch_packet *search)
 }
 
 void CommImage::check_recv_buffer(patch_packet *start) {
-#ifdef DEBUG_COMM_IMAGE
-    printf("check_recv_buffer\n");
-#endif
     struct packet *pack;
     while (image_in->get(&pack) == 0) {
         patch_packet *item = (patch_packet*)pack->buffer;
