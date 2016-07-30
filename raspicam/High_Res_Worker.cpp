@@ -243,7 +243,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         cvtColor(img, rgb2, COLOR_RGBA2RGB);
         drawKeypoints(rgb2, kp, out, Scalar::all(255));
          */
-        comm->save_to_file_image(&img);
+        comm->save_to_file_image(&rgb);
         
         
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
