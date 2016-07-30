@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/tobias/gitcode/cutting_board/training/training/main.cpp
+stdio.h
+-
+dirent.h
+-
+sys/types.h
+-
+vector
+-
+cstring
+-
+fstream
+-
+stdint.h
+-
+stdlib.h
+-
+

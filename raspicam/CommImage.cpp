@@ -60,7 +60,7 @@ void CommImage::save_to_file_features(feature_vector* item, uint16_t file_id){
     printf("save_to_file_features: id %d\n", file_id);
 #endif
     char buf_fea[100];
-    snprintf(buf_fea, 100, "features/%ld%d.feature", nc->topo->mac, file_id);
+    snprintf(buf_fea, 100, "features/%lx_%d.feature", nc->topo->mac, file_id);
     FILE * fp = fopen(buf_fea, "w");
     fwrite(item, sizeof(patch_packet), 1, fp);
     fwrite("\n", sizeof(char), 1, fp);
