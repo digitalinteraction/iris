@@ -73,7 +73,7 @@ void High_Res_Worker::run(){
         
         comm->check_recv_buffer(first);
         
-        struct patch_packet *item = first;
+        patch_packet *item = first;
         while(item != 0){
             if(item->state != 1){
                 identify_object(item);
