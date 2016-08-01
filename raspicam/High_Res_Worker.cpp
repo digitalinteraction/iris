@@ -112,7 +112,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         cvtColor(hsv, gray, CV_RGB2GRAY);
         
         threshold(channel[1], thres, 50, 255, THRESH_BINARY);
-
+        
+        vector<Vec4i> hierarchy;
         vector<vector<Point> > contours;
         findContours(thres, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
         int winner = 0;
