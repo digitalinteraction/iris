@@ -98,7 +98,8 @@ void CommImage::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 }
 
 void CommImage::ask_neighbours(patch_packet* item) {
-    if (item->state == 0) {
+    if (item->state == 0 && (((int)item->left) == 1 || ((int)item->right) == 1 ||
+            ((int)item->up) == 1 || ((int)item->down) == 1)) {
         deb_printf("patch %p\n", item);
         size_t size = sizeof (patch_packet);
         deb_printf("Size first %d\n", size);

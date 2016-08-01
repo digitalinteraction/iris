@@ -70,7 +70,16 @@ void High_Res_Worker::run(){
             prev_group = group;
             
         }
+        
         comm->check_recv_buffer(first);
+        
+        struct patch_packet *item = first;
+        while(item != 0){
+            if(item->state != 1){
+                identify_object(item);
+            }
+            item = item->next;
+        }
         //identify_object();
     }
 }
@@ -103,10 +112,22 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         cvtColor(hsv, gray, CV_RGB2GRAY);
         
         threshold(channel[1], thres, 50, 255, THRESH_BINARY);
-        //findContours
-        
+
+        vector<vector<Point> > contours;
+        findContours(thres, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+        int winner = 0;
+        int largest = 0;
+        for (int i = 0; i < contours.size(); i++) {
+            if (largest < contours[i].size()) {
+                largest = contours[i].size();
+                winner = i;
+            }
+        }
+        double epsilon = 0.0035 * arcLength(contours[winner], true);
+        vector<Point> *contour = new vector<Point>;
+        approxPolyDP(contours[winner], *contour, epsilon, true);
         //Histogram
-        float range[] = {0,256};
+        float range[] = {0, 256};
         const float *histRange = {range};
         int buck = 32;
         Mat b_hist, g_hist, r_hist;
@@ -116,27 +137,26 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
                   
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
-        item->feature->contour = new vector<Point>;
-        for(int i = 0; i < 50; i++){
+        item->feature->contour = contour;
+        /*for(int i = 0; i < 50; i++){
             Point *pt = new Point(i,i);
             item->feature->contour->push_back(*pt);
-        }
+        }*/
         for(int i = 0; i < HISTOGRAM_SIZE; i++){
             item->feature->hist_r[i] = (uint32_t)r_hist.at<float>(i);
             item->feature->hist_g[i] = (uint32_t)g_hist.at<float>(i);
             item->feature->hist_b[i] = (uint32_t)b_hist.at<float>(i);
         }
-        item->left = (patch_packet*)1;
-        item->right = (patch_packet*)1;
-        item->up = (patch_packet*)1;
+        item->left = (patch_packet*)patch->left;
+        item->right = (patch_packet*)patch->right;
+        item->up = (patch_packet*)patch->up;
+        item->down = (patch_packet*)patch->down;
         item->mac = nc->topo->mac;
         item->id = comm->file_cnt;
         deb_printf("size of item: %d %d\n", sizeof(patch_packet), sizeof(feature_vector));
         deb_printf("item %p\n", item);
         comm->ask_neighbours(item);
 
-        
-        
         //fill item with data from RASPIPATCH
         if (first == 0) {
             first = item;
@@ -149,10 +169,6 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
             last->next = item;
             last = item;
         }
-        
-        
-        
-
         comm->file_cnt++;
 
     }
