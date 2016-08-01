@@ -9,10 +9,10 @@
   <cat_var_count>0</cat_var_count>
   <training_params>
     <use_surrogates>0</use_surrogates>
-    <max_categories>15</max_categories>
+    <max_categories>6</max_categories>
     <regression_accuracy>0.</regression_accuracy>
-    <max_depth>25</max_depth>
-    <min_sample_count>5</min_sample_count>
+    <max_depth>10</max_depth>
+    <min_sample_count>7</min_sample_count>
     <cross_validation_folds>0</cross_validation_folds>
     <nactive_vars>4</nactive_vars></training_params>
   <global_var_idx>1</global_var_idx>
@@ -42,7 +42,7 @@
     0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
     0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.</missing_subst>
   <oob_error>0.</oob_error>
-  <ntrees>5</ntrees>
+  <ntrees>10</ntrees>
   <trees>
     <_>
       <nodes>
@@ -62,27 +62,17 @@
               <le>15550.</le></_></splits></_>
         <_>
           <depth>2</depth>
-          <value>1.</value>
+          <value>1.</value></_>
+        <_>
+          <depth>2</depth>
+          <value>0.</value></_>
+        <_>
+          <depth>1</depth>
+          <value>2.</value>
           <splits>
             <_><var>98</var>
-              <quality>6.</quality>
-              <le>1.6755000000000000e+03</le></_></splits></_>
-        <_>
-          <depth>3</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>3</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>2</depth>
-          <value>0.</value></_>
-        <_>
-          <depth>1</depth>
-          <value>2.</value>
-          <splits>
-            <_><var>72</var>
               <quality>36.</quality>
-              <le>37306.</le></_></splits></_>
+              <le>8239.</le></_></splits></_>
         <_>
           <depth>2</depth>
           <value>2.</value></_>
@@ -93,168 +83,133 @@
       <nodes>
         <_>
           <depth>0</depth>
-          <value>1.2380952380952381e+00</value>
+          <value>6.1904761904761907e-01</value>
           <splits>
-            <_><var>72</var>
-              <quality>4.3272727966308594e+01</quality>
-              <le>4581.</le></_></splits></_>
+            <_><var>98</var>
+              <quality>13.</quality>
+              <le>19142.</le></_></splits></_>
         <_>
           <depth>1</depth>
-          <value>5.4545454545454541e-01</value>
-          <splits>
-            <_><var>40</var>
-              <quality>3.7777776718139648e+00</quality>
-              <le>5.0000000000000000e-01</le></_></splits></_>
-        <_>
-          <depth>2</depth>
-          <value>4.4444444444444442e-01</value>
-          <splits>
-            <_><var>9</var>
-              <quality>4.</quality>
-              <le>6.3968243408203125e+02</le></_></splits></_>
-        <_>
-          <depth>3</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>3</depth>
-          <value>0.</value></_>
-        <_>
-          <depth>2</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>1</depth>
-          <value>2.</value>
-          <splits>
-            <_><var>61</var>
-              <quality>40.</quality>
-              <le>557.</le></_></splits></_>
-        <_>
-          <depth>2</depth>
-          <value>2.</value></_>
-        <_>
-          <depth>2</depth>
-          <value>2.</value>
-          <splits>
-            <_><var>92</var>
-              <quality>36.</quality>
-              <le>1.7343500000000000e+04</le></_></splits></_>
-        <_>
-          <depth>3</depth>
-          <value>2.</value></_>
-        <_>
-          <depth>3</depth>
-          <value>2.</value>
-          <splits>
-            <_><var>92</var>
-              <quality>24.</quality>
-              <le>29511.</le></_></splits></_>
-        <_>
-          <depth>4</depth>
-          <value>2.</value></_>
-        <_>
-          <depth>4</depth>
-          <value>2.</value></_></nodes></_>
-    <_>
-      <nodes>
-        <_>
-          <depth>0</depth>
-          <value>6.6666666666666663e-01</value>
-          <splits>
-            <_><var>43</var>
-              <quality>1.3263157844543457e+01</quality>
-              <le>120.</le></_></splits></_>
-        <_>
-          <depth>1</depth>
-          <value>5.2631578947368418e-01</value>
-          <splits>
-            <_><var>77</var>
-              <quality>8.3333330154418945e+00</quality>
-              <le>21748.</le></_></splits></_>
-        <_>
-          <depth>2</depth>
-          <value>8.3333333333333337e-01</value>
-          <splits>
-            <_><var>38</var>
-              <quality>8.8000001907348633e+00</quality>
-              <le>1.</le></_></splits></_>
-        <_>
-          <depth>3</depth>
-          <value>1.</value>
-          <splits>
-            <_><var>10</var>
-              <quality>7.</quality>
-              <le>6.2008074951171875e+02</le></_></splits></_>
-        <_>
-          <depth>4</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>4</depth>
-          <value>1.</value>
-          <splits>
-            <_><var>7</var>
-              <quality>6.</quality>
-              <le>7.7781628417968750e+02</le></_></splits></_>
-        <_>
-          <depth>5</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>5</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>3</depth>
-          <value>5.9999999999999998e-01</value></_>
-        <_>
-          <depth>2</depth>
-          <value>0.</value></_>
-        <_>
-          <depth>1</depth>
-          <value>2.</value></_></nodes></_>
-    <_>
-      <nodes>
-        <_>
-          <depth>0</depth>
-          <value>1.0476190476190477e+00</value>
-          <splits>
-            <_><var>0</var>
-              <quality>3.0666666030883789e+01</quality>
-              <le>1.6483328247070312e+02</le></_></splits></_>
-        <_>
-          <depth>1</depth>
-          <value>6.6666666666666663e-01</value>
-          <splits>
-            <_><var>26</var>
-              <quality>8.5714282989501953e+00</quality>
-              <le>8571.</le></_></splits></_>
-        <_>
-          <depth>2</depth>
-          <value>1.</value>
-          <splits>
-            <_><var>23</var>
-              <quality>8.</quality>
-              <le>12725.</le></_></splits></_>
-        <_>
-          <depth>3</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>3</depth>
           <value>1.</value>
           <splits>
             <_><var>53</var>
-              <quality>6.</quality>
-              <le>37342.</le></_></splits></_>
+              <quality>1.6899999618530273e+01</quality>
+              <le>2.5709500000000000e+04</le></_></splits></_>
         <_>
-          <depth>4</depth>
+          <depth>2</depth>
+          <value>0.</value></_>
+        <_>
+          <depth>2</depth>
+          <value>1.3000000000000000e+00</value>
+          <splits>
+            <_><var>72</var>
+              <quality>19.</quality>
+              <le>4581.</le></_></splits></_>
+        <_>
+          <depth>3</depth>
           <value>1.</value></_>
         <_>
-          <depth>4</depth>
+          <depth>3</depth>
+          <value>2.</value></_>
+        <_>
+          <depth>1</depth>
+          <value>0.</value></_></nodes></_>
+    <_>
+      <nodes>
+        <_>
+          <depth>0</depth>
+          <value>9.5238095238095233e-01</value>
+          <splits>
+            <_><var>22</var>
+              <quality>3.0571428298950195e+01</quality>
+              <le>19122.</le></_></splits></_>
+        <_>
+          <depth>1</depth>
+          <value>2.</value></_>
+        <_>
+          <depth>1</depth>
+          <value>4.2857142857142855e-01</value>
+          <splits>
+            <_><var>35</var>
+              <quality>6.</quality>
+              <le>5.0000000000000000e-01</le></_></splits></_>
+        <_>
+          <depth>2</depth>
           <value>1.</value></_>
         <_>
           <depth>2</depth>
-          <value>2.8571428571428570e-01</value>
+          <value>0.</value></_></nodes></_>
+    <_>
+      <nodes>
+        <_>
+          <depth>0</depth>
+          <value>1.1428571428571428e+00</value>
           <splits>
-            <_><var>35</var>
-              <quality>2.</quality>
-              <le>5.0000000000000000e-01</le></_></splits></_>
+            <_><var>43</var>
+              <quality>3.6923076629638672e+01</quality>
+              <le>17.</le></_></splits></_>
+        <_>
+          <depth>1</depth>
+          <value>6.1538461538461542e-01</value>
+          <splits>
+            <_><var>37</var>
+              <quality>5.2333331108093262e+00</quality>
+              <le>17.</le></_></splits></_>
+        <_>
+          <depth>2</depth>
+          <value>6.9999999999999996e-01</value>
+          <splits>
+            <_><var>30</var>
+              <quality>7.</quality>
+              <le>506.</le></_></splits></_>
+        <_>
+          <depth>3</depth>
+          <value>1.</value></_>
+        <_>
+          <depth>3</depth>
+          <value>0.</value></_>
+        <_>
+          <depth>2</depth>
+          <value>3.3333333333333331e-01</value></_>
+        <_>
+          <depth>1</depth>
+          <value>2.</value>
+          <splits>
+            <_><var>96</var>
+              <quality>32.</quality>
+              <le>3.3425000000000000e+03</le></_></splits></_>
+        <_>
+          <depth>2</depth>
+          <value>2.</value></_>
+        <_>
+          <depth>2</depth>
+          <value>2.</value></_></nodes></_>
+    <_>
+      <nodes>
+        <_>
+          <depth>0</depth>
+          <value>8.5714285714285710e-01</value>
+          <splits>
+            <_><var>43</var>
+              <quality>2.6399999618530273e+01</quality>
+              <le>107.</le></_></splits></_>
+        <_>
+          <depth>1</depth>
+          <value>4.0000000000000002e-01</value>
+          <splits>
+            <_><var>21</var>
+              <quality>4.5000000000000000e+00</quality>
+              <le>41379.</le></_></splits></_>
+        <_>
+          <depth>2</depth>
+          <value>0.</value></_>
+        <_>
+          <depth>2</depth>
+          <value>7.5000000000000000e-01</value>
+          <splits>
+            <_><var>84</var>
+              <quality>6.</quality>
+              <le>1.5000000000000000e+00</le></_></splits></_>
         <_>
           <depth>3</depth>
           <value>1.</value></_>
@@ -263,11 +218,56 @@
           <value>0.</value></_>
         <_>
           <depth>1</depth>
+          <value>2.</value></_></nodes></_>
+    <_>
+      <nodes>
+        <_>
+          <depth>0</depth>
+          <value>1.2857142857142858e+00</value>
+          <splits>
+            <_><var>84</var>
+              <quality>4.2750000000000000e+01</quality>
+              <le>4.1963500000000000e+04</le></_></splits></_>
+        <_>
+          <depth>1</depth>
+          <value>7.5000000000000000e-01</value>
+          <splits>
+            <_><var>56</var>
+              <quality>9.</quality>
+              <le>4.5175500000000000e+04</le></_></splits></_>
+        <_>
+          <depth>2</depth>
+          <value>1.</value>
+          <splits>
+            <_><var>26</var>
+              <quality>9.</quality>
+              <le>3111.</le></_></splits></_>
+        <_>
+          <depth>3</depth>
+          <value>1.</value></_>
+        <_>
+          <depth>3</depth>
+          <value>1.</value>
+          <splits>
+            <_><var>2</var>
+              <quality>8.</quality>
+              <le>1.4652999117970467e-02</le></_></splits></_>
+        <_>
+          <depth>4</depth>
+          <value>1.</value></_>
+        <_>
+          <depth>4</depth>
+          <value>1.</value></_>
+        <_>
+          <depth>2</depth>
+          <value>0.</value></_>
+        <_>
+          <depth>1</depth>
           <value>2.</value>
           <splits>
-            <_><var>34</var>
-              <quality>24.</quality>
-              <le>1.1092500000000000e+04</le></_></splits></_>
+            <_><var>52</var>
+              <quality>36.</quality>
+              <le>20974.</le></_></splits></_>
         <_>
           <depth>2</depth>
           <value>2.</value></_>
@@ -280,69 +280,144 @@
           <depth>0</depth>
           <value>1.0476190476190477e+00</value>
           <splits>
-            <_><var>34</var>
-              <quality>3.2571430206298828e+01</quality>
-              <le>3.2035000000000000e+03</le></_></splits></_>
+            <_><var>20</var>
+              <quality>3.0666666030883789e+01</quality>
+              <le>345.</le></_></splits></_>
         <_>
           <depth>1</depth>
-          <value>5.7142857142857140e-01</value>
+          <value>2.</value></_>
+        <_>
+          <depth>1</depth>
+          <value>6.6666666666666663e-01</value>
           <splits>
-            <_><var>51</var>
-              <quality>6.4000000953674316e+00</quality>
-              <le>1.7417500000000000e+04</le></_></splits></_>
+            <_><var>20</var>
+              <quality>9.1666669845581055e+00</quality>
+              <le>2.3856500000000000e+04</le></_></splits></_>
         <_>
           <depth>2</depth>
+          <value>1.6666666666666666e-01</value></_>
+        <_>
+          <depth>2</depth>
+          <value>1.</value>
+          <splits>
+            <_><var>96</var>
+              <quality>9.</quality>
+              <le>81833.</le></_></splits></_>
+        <_>
+          <depth>3</depth>
+          <value>1.</value></_>
+        <_>
+          <depth>3</depth>
+          <value>1.</value></_></nodes></_>
+    <_>
+      <nodes>
+        <_>
+          <depth>0</depth>
+          <value>9.5238095238095233e-01</value>
+          <splits>
+            <_><var>28</var>
+              <quality>2.6250000000000000e+01</quality>
+              <le>3.2559500000000000e+04</le></_></splits></_>
+        <_>
+          <depth>1</depth>
+          <value>6.2500000000000000e-01</value>
+          <splits>
+            <_><var>11</var>
+              <quality>7.6825394630432129e+00</quality>
+              <le>8.2969171142578125e+02</le></_></splits></_>
+        <_>
+          <depth>2</depth>
+          <value>8.8888888888888884e-01</value>
+          <splits>
+            <_><var>92</var>
+              <quality>8.</quality>
+              <le>4.</le></_></splits></_>
+        <_>
+          <depth>3</depth>
           <value>0.</value></_>
         <_>
+          <depth>3</depth>
+          <value>1.</value>
+          <splits>
+            <_><var>36</var>
+              <quality>8.</quality>
+              <le>15.</le></_></splits></_>
+        <_>
+          <depth>4</depth>
+          <value>1.</value></_>
+        <_>
+          <depth>4</depth>
+          <value>1.</value></_>
+        <_>
           <depth>2</depth>
-          <value>8.0000000000000004e-01</value>
+          <value>2.8571428571428570e-01</value></_>
+        <_>
+          <depth>1</depth>
+          <value>2.</value></_></nodes></_>
+    <_>
+      <nodes>
+        <_>
+          <depth>0</depth>
+          <value>7.6190476190476186e-01</value>
           <splits>
-            <_><var>32</var>
-              <quality>8.</quality>
-              <le>153.</le></_></splits></_>
+            <_><var>53</var>
+              <quality>1.7066667556762695e+01</quality>
+              <le>26035.</le></_></splits></_>
+        <_>
+          <depth>1</depth>
+          <value>0.</value></_>
+        <_>
+          <depth>1</depth>
+          <value>1.0666666666666667e+00</value>
+          <splits>
+            <_><var>79</var>
+              <quality>2.0277778625488281e+01</quality>
+              <le>1.5000000000000000e+00</le></_></splits></_>
+        <_>
+          <depth>2</depth>
+          <value>1.4444444444444444e+00</value>
+          <splits>
+            <_><var>71</var>
+              <quality>21.</quality>
+              <le>3.1115000000000000e+03</le></_></splits></_>
         <_>
           <depth>3</depth>
-          <value>1.</value>
-          <splits>
-            <_><var>78</var>
-              <quality>8.</quality>
-              <le>1.1650000000000000e+02</le></_></splits></_>
-        <_>
-          <depth>4</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>4</depth>
-          <value>1.</value>
-          <splits>
-            <_><var>1</var>
-              <quality>7.</quality>
-              <le>4.5505300164222717e-01</le></_></splits></_>
-        <_>
-          <depth>5</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>5</depth>
-          <value>1.</value>
-          <splits>
-            <_><var>76</var>
-              <quality>6.</quality>
-              <le>1233.</le></_></splits></_>
-        <_>
-          <depth>6</depth>
-          <value>1.</value></_>
-        <_>
-          <depth>6</depth>
           <value>1.</value></_>
         <_>
           <depth>3</depth>
+          <value>2.</value></_>
+        <_>
+          <depth>2</depth>
+          <value>5.0000000000000000e-01</value></_></nodes></_>
+    <_>
+      <nodes>
+        <_>
+          <depth>0</depth>
+          <value>1.0952380952380953e+00</value>
+          <splits>
+            <_><var>93</var>
+              <quality>3.8083332061767578e+01</quality>
+              <le>1.2790500000000000e+04</le></_></splits></_>
+        <_>
+          <depth>1</depth>
+          <value>4.1666666666666669e-01</value>
+          <splits>
+            <_><var>9</var>
+              <quality>5.</quality>
+              <le>6.3968243408203125e+02</le></_></splits></_>
+        <_>
+          <depth>2</depth>
+          <value>1.</value></_>
+        <_>
+          <depth>2</depth>
           <value>0.</value></_>
         <_>
           <depth>1</depth>
           <value>2.</value>
           <splits>
-            <_><var>26</var>
-              <quality>28.</quality>
-              <le>5913.</le></_></splits></_>
+            <_><var>74</var>
+              <quality>36.</quality>
+              <le>14262.</le></_></splits></_>
         <_>
           <depth>2</depth>
           <value>2.</value></_>

@@ -104,42 +104,26 @@ int main() {
     
     
     Ptr<RTrees> rtrees = RTrees::create();
-    rtrees->setMaxDepth(25);
-    rtrees->setMinSampleCount(5);
+    rtrees->setMaxDepth(10);
+    rtrees->setMinSampleCount(7);
     rtrees->setRegressionAccuracy(0);
     rtrees->setUseSurrogates(false);
-    rtrees->setMaxCategories(15);
+    rtrees->setMaxCategories(6);
     rtrees->setPriors(Mat());
     rtrees->setCalculateVarImportance(false);
     rtrees->setActiveVarCount(4);
-    rtrees->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, 5, 0));
+    rtrees->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, 10, 0));
     rtrees->train(features, ROW_SAMPLE, classification);
     for(int i = 0; i < features.rows; i++){
         cout << "ROW::" << features.row(i) << endl;
     }
     
-    Mat test_sample;
-    test_sample = features.row(0);
-    double result = rtrees->predict(test_sample);
-    printf("Result: %f\n", result);
-    test_sample = features.row(1);
-    result = rtrees->predict(test_sample);
-    printf("Result: %f\n", result);
-    test_sample = features.row(2);
-    result = rtrees->predict(test_sample);
-    printf("Result: %f\n", result);
-    test_sample = features.row(3);
-    result = rtrees->predict(test_sample);
-    printf("Result: %f\n", result);
-    result = rtrees->predict(features.row(4));
-    printf("Result: %f\n", result);
-    result = rtrees->predict(features.row(5));
-    printf("Result: %f\n", result);
-    result = rtrees->predict(features.row(6));
-    printf("Result: %f\n", result);
-    result = rtrees->predict(features.row(7));
-    printf("Result: %f\n", result);
+    cout << "Classification::" << classification << endl;
     
+    for(int i = 0; i < features.rows; i++){
+    float result = rtrees->predict(features.row(i));
+    printf("%d Result: %f in class %f\n", i, result, classification.at<float>(i));
+    }
     
     rtrees->save("classifier.xml");
 

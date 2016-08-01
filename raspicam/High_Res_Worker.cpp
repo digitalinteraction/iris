@@ -102,8 +102,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //Mat channel[3];
         //split(hsv, channel);
         
-        Mat hsv, rgb;
-        cvtColor(img, hsv, COLOR_BGR2HSV);
+        Mat hsv, RGB;
+        cvtColor(img, rgb, COLOR_BGRA2RGB);
+        cvtColor(rgb, hsv, COLOR_RGB2HSV);
         imwrite("patch.png", hsv);
         Mat channel[3];
         split(hsv, channel);
@@ -115,7 +116,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         deb_printf("patch size: %d %d at %d %d\n", img_size.width, img_size.height, patch->x, patch->y);
         
         Mat gray, thres;
-        cvtColor(hsv, gray, CV_RGB2GRAY);
+        cvtColor(hsv, gray, CV_HSV2GRAY);
         
         threshold(channel[1], thres, 50, 255, THRESH_BINARY);
         
