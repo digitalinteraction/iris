@@ -46,8 +46,10 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     
     classifier = cv::ml::RTrees::create();
     classifier->load<cv::ml::RTrees>("/home/pi/cutting_board/raspicam/build/classifier.xml");
-    if(classifier.empty()){
+    if(classifier->empty()){
         printf("error loading classifier\n");
+    }else{
+        printf("classifier loaded\n");
     }
 }
 
