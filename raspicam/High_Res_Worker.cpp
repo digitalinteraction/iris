@@ -234,6 +234,7 @@ void High_Res_Worker::identify_object(patch_packet *item) {
             features.at<float>(0, i) = final_vector[i];
             //printf("%f\n", item->final_vector[i]);
         }
+        cout << features << endl;
         double result = classifier->predict(features);
         printf("Result of classifier %f\n", result);
         //do something with result
