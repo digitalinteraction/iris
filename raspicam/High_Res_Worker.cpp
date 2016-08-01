@@ -87,8 +87,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //Mat channel[3];
         //split(hsv, channel);
         
-        Mat hsv;
-        cvtColor(img, hsv, COLOR_BGRA2HSV);
+        Mat hsv, rgb;
+        cvtColor(img, hsv, COLOR_BGR2HSV);
         imwrite("patch.png", hsv);
         Mat channel[3];
         split(hsv, channel);
@@ -110,9 +110,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         const float *histRange = {range};
         int buck = 32;
         Mat b_hist, g_hist, r_hist;
-        calcHist(channel[0], 1, 0, thres, b_hist, 1, &buck, &histRange, true, true);
-        calcHist(channel[1], 1, 0, thres, g_hist, 1, &buck, &histRange, true, true);
-        calcHist(channel[2], 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
+        calcHist(&channel[0], 1, 0, thres, b_hist, 1, &buck, &histRange, true, true);
+        calcHist(&channel[1], 1, 0, thres, g_hist, 1, &buck, &histRange, true, true);
+        calcHist(&channel[2], 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
                   
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
