@@ -35,10 +35,10 @@ FILE *save_features;
 #define PICTURE_DIR "../pictures/"
 
 struct feature{
-    uint32_t *final_vector;
+    float *final_vector;
     uint64_t mac;
     uint16_t id;
-    uint16_t result;
+    float result;
     struct feature* next;
 };
 
@@ -48,7 +48,7 @@ uint16_t count_list = 0;
 
 void extract_features(char *name);
 void load_features();
-void save_in_file(uint32_t *final_vector, int32_t res);
+void save_in_file(float *final_vector, float res);
 uint8_t search_list(uint64_t mac, uint16_t id);
 
 int main() {
@@ -87,15 +87,15 @@ int main() {
     }
     printf("Feature Count %d\n", cnt);
     
-    Mat features(cnt, 7+5+3*HISTOGRAM_SIZE, CV_32SC1);
-    Mat classification(cnt, 1, CV_32SC1);
+    Mat features(cnt, 7+5+3*HISTOGRAM_SIZE, CV_32FC1);
+    Mat classification(cnt, 1, CV_32FC1);
     item = first;
     cnt = 0;
     while(item != 0){
         for(int i = 0; i < 7+5+3*HISTOGRAM_SIZE; i++){
-            features.at<int>(i) = item->final_vector[i];
+            features.at<float>(i) = item->final_vector[i];
         }
-        classification.at<int>(cnt) = item->result;
+        classification.at<float>(cnt) = item->result;
         cnt++;
         item = item->next;
     }
@@ -202,28 +202,28 @@ void extract_features(char *name) {
             double hu[7];
             HuMoments(mu, hu);
 
-            uint32_t hist_r[HISTOGRAM_SIZE];
-            uint32_t hist_g[HISTOGRAM_SIZE];
-            uint32_t hist_b[HISTOGRAM_SIZE];
+            float hist_r[HISTOGRAM_SIZE];
+            float hist_g[HISTOGRAM_SIZE];
+            float hist_b[HISTOGRAM_SIZE];
 
             for (int i = 0; i < HISTOGRAM_SIZE; i++) {
-                hist_r[i] = (uint32_t) r_hist.at<float>(i);
-                hist_g[i] = (uint32_t) g_hist.at<float>(i);
-                hist_b[i] = (uint32_t) b_hist.at<float>(i);
+                hist_r[i] =  r_hist.at<float>(i);
+                hist_g[i] =  g_hist.at<float>(i);
+                hist_b[i] =  b_hist.at<float>(i);
             }
 
-            uint32_t *final_vector = (uint32_t*) malloc(sizeof (uint32_t)*(7 + 5 + 3 * HISTOGRAM_SIZE));
+            float *final_vector = (float*) malloc(sizeof (float)*(7 + 5 + 3 * HISTOGRAM_SIZE));
             for (int i = 0; i < 7; i++) {
-                final_vector[i] = (uint32_t) (1000 * hu[i]);
+                final_vector[i] = (1000 * hu[i]);
             }
-            final_vector[7] = (uint32_t) (1000 * extend);
-            final_vector[8] = (uint32_t) (1000 * solidity);
-            final_vector[9] = (uint32_t) (equiv_diameter);
-            final_vector[10] = (uint32_t) (1000 * trian_extend);
-            final_vector[11] = (uint32_t) (1000 * circle_extend);
-            memcpy(&final_vector[12], hist_r, sizeof (uint32_t) * HISTOGRAM_SIZE);
-            memcpy(&final_vector[12 + HISTOGRAM_SIZE], hist_g, sizeof (uint32_t) * HISTOGRAM_SIZE);
-            memcpy(&final_vector[12 + HISTOGRAM_SIZE * 2], hist_b, sizeof (uint32_t) * HISTOGRAM_SIZE);
+            final_vector[7] =  (1000 * extend);
+            final_vector[8] =  (1000 * solidity);
+            final_vector[9] = (equiv_diameter);
+            final_vector[10] = (1000 * trian_extend);
+            final_vector[11] =  (1000 * circle_extend);
+            memcpy(&final_vector[12], hist_r, sizeof (float) * HISTOGRAM_SIZE);
+            memcpy(&final_vector[12 + HISTOGRAM_SIZE], hist_g, sizeof (float) * HISTOGRAM_SIZE);
+            memcpy(&final_vector[12 + HISTOGRAM_SIZE * 2], hist_b, sizeof (float) * HISTOGRAM_SIZE);
 
             //Mat features(1, 7 + 5 + 3 * HISTOGRAM_SIZE, CV_32SC1, (void*) final_vector);
 
@@ -239,8 +239,8 @@ void extract_features(char *name) {
             imshow("Contours", drawing);
             resize(src, src, Size(640, 480));
             imshow(source_window, src);
-            int32_t res = waitKey(0);
-            res -= 1048624;
+            float res = (float)waitKey(0);
+            res -= 1048624.0;
             printf("key pressed: %d\n\n", res);
 
             struct feature *item = (struct feature *) calloc(1, sizeof (struct feature));
@@ -263,8 +263,8 @@ void extract_features(char *name) {
     }
 }
 
-void save_in_file(uint32_t *final_vector, int32_t res) {
-    char * str = " %d ";
+void save_in_file(float *final_vector, float res) {
+    char * str = " %f ";
     char buffer[20];
     snprintf(buffer, 20, str, res);
     fputs(buffer, save_features);
@@ -295,7 +295,7 @@ void load_features() {
         printf("Reading line %d\n", count_list);
         memset(buffer, 0, 1000);
         struct feature *item = (struct feature *) calloc(1, sizeof (struct feature));
-        item->final_vector = (uint32_t*) malloc(sizeof (uint32_t)*(7 + 5 + 3 * HISTOGRAM_SIZE));
+        item->final_vector = (float*) malloc(sizeof (float)*(7 + 5 + 3 * HISTOGRAM_SIZE));
         int i = 0;
 
         char *str = fgets(buffer, 1000, save_features);
@@ -303,18 +303,20 @@ void load_features() {
         char *token;
         token = strtok(buffer, " ");
         while (token != NULL) {
-            uint64_t temp = 0;
+            double temp = 0;
             if (i == 1) {
-                sscanf(token, "%lx", &temp);
+                uint64_t mac;
+                sscanf(token, "%lx", &mac);
+                temp = (double)mac;
             } else {
-                sscanf(token, "%d", &temp);
+                sscanf(token, "%f", &temp);
             }
             switch (i) {
                 case 0: item->result = temp;
                     break;
-                case 1: item->mac = temp;
+                case 1: item->mac = (uint64_t)temp;
                     break;
-                case 2: item->id = temp;
+                case 2: item->id = (uint16_t)temp;
                     break;
                 default:
                     item->final_vector[i - 3] = temp;
