@@ -141,7 +141,7 @@ void extract_features(char *name) {
     if (search_list(mac, id) == 0) {
         src = imread(name);
         if (src.empty() == 0) {
-            cvtColor(src, src_gray, CV_RGB2GRAY);
+            cvtColor(src, src_gray, CV_HSV2GRAY);
             blur(src_gray, src_gray, Size(3, 3));
             char *source_window = "Source";
             namedWindow(source_window, CV_WINDOW_AUTOSIZE);

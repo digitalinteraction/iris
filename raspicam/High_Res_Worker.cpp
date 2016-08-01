@@ -108,7 +108,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         imwrite("patch.png", hsv);
         Mat channel[3];
         split(hsv, channel);
-        comm->save_to_file_image(&hsv);
+        comm->save_to_file_image(&rgb);
 
         
         Size img_size = img.size();
