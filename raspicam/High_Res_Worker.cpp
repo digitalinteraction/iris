@@ -248,16 +248,16 @@ void High_Res_Worker::identify_object(patch_packet *item) {
         
         item->prev->next = item->next;
         item->next->prev = item->prev;
-        if (item->left != 0) {
+        if (((int)item->left) != 0) {
             free(item->left);
         }
-        if (item->right != 0) {
+        if (((int)item->right) != 0) {
             free(item->right);
         }
-        if (item->up != 0) {
+        if (((int)item->up) != 0) {
             free(item->up);
         }
-        if (item->down != 0) {
+        if (((int)item->down) != 0) {
             free(item->down);
         }
         free(item);
