@@ -144,9 +144,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
             item->feature->contour->push_back(*pt);
         }*/
         for(int i = 0; i < HISTOGRAM_SIZE; i++){
-            item->feature->hist_r[i] = (uint32_t)r_hist.at<float>(i);
-            item->feature->hist_g[i] = (uint32_t)g_hist.at<float>(i);
-            item->feature->hist_b[i] = (uint32_t)b_hist.at<float>(i);
+            item->feature->hist_r[i] = r_hist.at<float>(i);
+            item->feature->hist_g[i] = g_hist.at<float>(i);
+            item->feature->hist_b[i] = b_hist.at<float>(i);
         }
         item->left = (patch_packet*)patch->left;
         item->right = (patch_packet*)patch->right;
@@ -216,20 +216,24 @@ void High_Res_Worker::identify_object(patch_packet *item) {
         double hu[7];
         HuMoments(mu, hu);
         
-        uint32_t *final_vector = (uint32_t*)malloc(sizeof(uint32_t)*(7+5+3*HISTOGRAM_SIZE));
+        float *final_vector = (float*)malloc(sizeof(float)*(7+5+3*HISTOGRAM_SIZE));
         for(int i = 0; i < 7; i++){
-            final_vector[i] = (uint32_t)(1000*hu[i]);
+            final_vector[i] = (float)(1000*hu[i]);
         }
-        final_vector[7] = (uint32_t)(1000*extend);
-        final_vector[8] = (uint32_t)(1000*solidity);
-        final_vector[9] = (uint32_t)(equiv_diameter);
-        final_vector[10] = (uint32_t)(1000*trian_extend);
-        final_vector[11] = (uint32_t)(1000*circle_extend);
-        memcpy(&final_vector[12], item->feature->hist_r, sizeof(uint32_t)*HISTOGRAM_SIZE);
-        memcpy(&final_vector[12 + HISTOGRAM_SIZE], item->feature->hist_g, sizeof(uint32_t)*HISTOGRAM_SIZE);
-        memcpy(&final_vector[12 + HISTOGRAM_SIZE*2], item->feature->hist_b, sizeof(uint32_t)*HISTOGRAM_SIZE);
+        final_vector[7] = (float)(1000*extend);
+        final_vector[8] = (float)(1000*solidity);
+        final_vector[9] = (float)(equiv_diameter);
+        final_vector[10] = (float)(1000*trian_extend);
+        final_vector[11] = (float)(1000*circle_extend);
+        memcpy(&final_vector[12], item->feature->hist_r, sizeof(float)*HISTOGRAM_SIZE);
+        memcpy(&final_vector[12 + HISTOGRAM_SIZE], item->feature->hist_g, sizeof(float)*HISTOGRAM_SIZE);
+        memcpy(&final_vector[12 + HISTOGRAM_SIZE*2], item->feature->hist_b, sizeof(float)*HISTOGRAM_SIZE);
 
-        Mat features(1, 7+5+3*HISTOGRAM_SIZE, CV_32SC1, (void*)final_vector);
+        Mat features(1, 7+5+3*HISTOGRAM_SIZE, CV_32FC1);
+        for(int i = 0; i < 7+5+3*HISTOGRAM_SIZE; i++){
+            features.at<float>(0, i) = final_vector[i];
+            //printf("%f\n", item->final_vector[i]);
+        }
         double result = classifier->predict(features);
         printf("Result of classifier %f\n", result);
         //do something with result
