@@ -44,7 +44,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     last = 0;
     comm = new CommImage(nc);
     
-    classifier = cv::ml::RTrees::create();
+    classifier = cv::ml::RTrees::create("/home/pi/cutting_board/raspicam/build/classifier.xml");
     classifier->load<cv::ml::RTrees>("/home/pi/cutting_board/raspicam/build/classifier.xml");
     if(classifier->empty()){
         printf("error loading classifier\n");
