@@ -92,8 +92,10 @@ int main() {
     item = first;
     cnt = 0;
     while(item != 0){
+        //printf("START::");
         for(int i = 0; i < 7+5+3*HISTOGRAM_SIZE; i++){
-            features.at<float>(i) = item->final_vector[i];
+            features.at<float>(cnt, i) = item->final_vector[i];
+            //printf("%f\n", item->final_vector[i]);
         }
         classification.at<float>(cnt) = item->result;
         cnt++;
@@ -102,17 +104,43 @@ int main() {
     
     
     Ptr<RTrees> rtrees = RTrees::create();
-    rtrees->setMaxDepth(15);
-    rtrees->setMinSampleCount(2);
-    rtrees->setRegressionAccuracy(0.f);
+    rtrees->setMaxDepth(25);
+    rtrees->setMinSampleCount(5);
+    rtrees->setRegressionAccuracy(0);
     rtrees->setUseSurrogates(false);
-    rtrees->setMaxCategories(16);
+    rtrees->setMaxCategories(15);
     rtrees->setPriors(Mat());
     rtrees->setCalculateVarImportance(false);
-    rtrees->setActiveVarCount(1);
+    rtrees->setActiveVarCount(4);
     rtrees->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, 5, 0));
     rtrees->train(features, ROW_SAMPLE, classification);
-
+    for(int i = 0; i < features.rows; i++){
+        cout << "ROW::" << features.row(i) << endl;
+    }
+    
+    Mat test_sample;
+    test_sample = features.row(0);
+    double result = rtrees->predict(test_sample);
+    printf("Result: %f\n", result);
+    test_sample = features.row(1);
+    result = rtrees->predict(test_sample);
+    printf("Result: %f\n", result);
+    test_sample = features.row(2);
+    result = rtrees->predict(test_sample);
+    printf("Result: %f\n", result);
+    test_sample = features.row(3);
+    result = rtrees->predict(test_sample);
+    printf("Result: %f\n", result);
+    result = rtrees->predict(features.row(4));
+    printf("Result: %f\n", result);
+    result = rtrees->predict(features.row(5));
+    printf("Result: %f\n", result);
+    result = rtrees->predict(features.row(6));
+    printf("Result: %f\n", result);
+    result = rtrees->predict(features.row(7));
+    printf("Result: %f\n", result);
+    
+    
     rtrees->save("classifier.xml");
 
     //build mat file out of features
@@ -241,7 +269,7 @@ void extract_features(char *name) {
             imshow(source_window, src);
             float res = (float)waitKey(0);
             res -= 1048624.0;
-            printf("key pressed: %d\n\n", res);
+            printf("key pressed: %f\n\n", res);
 
             struct feature *item = (struct feature *) calloc(1, sizeof (struct feature));
             item->final_vector = final_vector;
@@ -264,7 +292,7 @@ void extract_features(char *name) {
 }
 
 void save_in_file(float *final_vector, float res) {
-    char * str = " %f ";
+    char * str = " %f";
     char buffer[20];
     snprintf(buffer, 20, str, res);
     fputs(buffer, save_features);
@@ -288,35 +316,36 @@ void save_in_file(float *final_vector, float res) {
 }
 
 void load_features() {
-    char buffer[1000];
+    char buffer[2000];
 
 
     while (feof(save_features) == 0) {
         printf("Reading line %d\n", count_list);
-        memset(buffer, 0, 1000);
+        memset(buffer, 0, 2000);
         struct feature *item = (struct feature *) calloc(1, sizeof (struct feature));
         item->final_vector = (float*) malloc(sizeof (float)*(7 + 5 + 3 * HISTOGRAM_SIZE));
         int i = 0;
 
-        char *str = fgets(buffer, 1000, save_features);
+        char *str = fgets(buffer, 2000, save_features);
         if(str != NULL){
         char *token;
         token = strtok(buffer, " ");
         while (token != NULL) {
-            double temp = 0;
+            float temp = 0;
+            uint64_t temp2 = 0;
             if (i == 1) {
-                uint64_t mac;
-                sscanf(token, "%lx", &mac);
-                temp = (double)mac;
-            } else {
+                sscanf(token, "%lx", &temp2);
+            } else if(i == 2){
+                sscanf(token, "%d", &temp2);
+            }else {
                 sscanf(token, "%f", &temp);
             }
             switch (i) {
                 case 0: item->result = temp;
                     break;
-                case 1: item->mac = (uint64_t)temp;
+                case 1: item->mac = temp2;
                     break;
-                case 2: item->id = (uint16_t)temp;
+                case 2: item->id = (uint16_t)temp2;
                     break;
                 default:
                     item->final_vector[i - 3] = temp;
