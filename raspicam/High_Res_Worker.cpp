@@ -45,7 +45,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     comm = new CommImage(nc);
     
     classifier = cv::ml::RTrees::create();
-    classifier->load<cv::ml::RTrees>("classifier.xml", String());
+    classifier->load<cv::ml::RTrees>("/home/pi/cutting_board/raspicam/build/classifier.xml", String());
 }
 
 High_Res_Worker::~High_Res_Worker() {
