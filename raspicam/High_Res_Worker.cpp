@@ -87,171 +87,44 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //Mat channel[3];
         //split(hsv, channel);
         
-        Mat rgb;
-        cvtColor(img, rgb, COLOR_BGRA2RGB);
-        imwrite("patch.png", rgb);
+        Mat hsv;
+        cvtColor(img, hsv, COLOR_BGRA2HSV);
+        imwrite("patch.png", hsv);
+        Mat channel[3];
+        split(hsv, channel);
+        comm->save_to_file_image(&hsv);
 
-        //FILE *fp = fopen("patch.tga", "wb");
-        //write_tga(fp, patch->width, patch->height, patch->buffer, patch->size);
-        //fclose(fp);
         
-        //marker richtig plazieren... auch am rand
-        //Mat marker = Mat::zeros(img.size(), CV_32SC1);
         Size img_size = img.size();
         deb_printf("error code: %d %d\n", patch->active, patch->select);
         deb_printf("patch size: %d %d at %d %d\n", img_size.width, img_size.height, patch->x, patch->y);
-        //circle(marker, Point(img_size.width/2, img_size.height/2), 20, CV_RGB(1,1,1),-1);
-        //circle(marker, Point(0,0), 5, CV_RGB(255,255,255), -1);
-        //circle(marker, Point(0,img_size.height), 5, CV_RGB(255,255,255), -1);
-        //circle(marker, Point(img_size.width,0), 5, CV_RGB(255,255,255), -1);
-        //circle(marker, Point(img_size.width,img_size.height), 5, CV_RGB(255,255,255), -1);
         
-        //watershed(rgb, marker);
-        //imwrite("water.png", marker);
-        //Mat mark = Mat::zeros(marker.size(), CV_8UC1);
-        //marker.convertTo(mark, CV_8UC1);
-        //bitwise_not(mark, mark);
-        
-        /*
-        Mat blur, thres;
-        GaussianBlur(rgb, blur, Size(5,5), 0,0);
-        Scalar mean;
-        Scalar stddev;
-        meanStdDev(blur, mean, stddev);
-        cout << "Mean " << mean << " stddev " << stddev << endl;
-        inRange(blur, mean - stddev, mean + stddev, thres);
-        //threshold(blur, thres, 0, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
-        imwrite("water.png", thres);
-         */
-        /*Mat gray, thres;
-        cvtColor(rgb, gray, CV_RGB2GRAY);
-        threshold(gray, thres, 0, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
-        imwrite("water.png", thres);*/
-        
-    
         Mat gray, thres;
-        cvtColor(rgb, gray, CV_RGB2GRAY);
-        //threshold(gray, thres, 40, 255,CV_THRESH_BINARY | CV_THRESH_OTSU);
-        //Canny(gray, gray, 40, 120);
-        //imwrite("water.png", gray);
-
-
-
-
-//        vector<Mat> bgr_planes;
-//        split(rgb, bgr_planes);
-//        
-//        
-//        float range[] = {0,256};
-//        const float *histRange = {range};
-//        int buck = 32;
-//        Mat b_hist, g_hist, r_hist;
-//        
-//        //Histogram
-//        calcHist(&bgr_planes[0], 1, 0, thres, b_hist, 1, &buck, &histRange, true, true);
-//        calcHist(&bgr_planes[1], 1, 0, thres, g_hist, 1, &buck, &histRange, true, true);
-//        calcHist(&bgr_planes[2], 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
-//        
-//        //HuMoments
-//        vector<vector<Point>> contours;
-//        RNG rng(12345);
-//        findContours(thres, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
-//        double largest = 0;
-//        int largest_index = 0;
-//        for(int i = 0; i < contours.size(); i++){
-//            double a = contourArea(contours[i], false);
-//            if(a > largest){
-//                largest = a;
-//                largest_index = i;
-//            }
-//        }
-//        Moments mu = moments(contours[largest_index], false);
-//        double hu[7];
-//        HuMoments(mu, hu);
-//        
-//        //contourArea
-//        double area = contourArea(contours[largest_index]);
-//        
-//        //contour Perimeter
-//        double perimeter = arcLength(contours[largest_index], true);
-//        
-//        cout << "Area: " << area << endl;
-//        cout << "Perimeter: " << perimeter << endl;
-//        cout << "HuMoments: " << hu[0] << " " << hu[1] << " " << hu[2] << " " << hu[3] << " "
-//                << hu[4] << " " << hu[5] << " " << hu[6] << " " << hu[7] << endl;
-//        cout << "Histogram R: " << endl;
-//        for(int i = 0; i < 32; i++){
-//            cout << " " << r_hist.at<float>(i);
-//        }
-//        cout << endl;
-//        cout << "Histogram G: " << endl;
-//        for(int i = 0; i < 32; i++){
-//            cout << " " << g_hist.at<float>(i);
-//        }
-//        cout << endl;
-//        cout << "Histogram B: " << endl;
-//        for(int i = 0; i < 32; i++){
-//            cout << " " << b_hist.at<float>(i);
-//        }
-//        cout << endl;
-//        
-//        
-        //Mat gray;
-        //cvtColor(rgb, gray, COLOR_BGR2GRAY);
+        cvtColor(hsv, gray, CV_RGB2GRAY);
         
-        //resize(gray, gray, Size(256,192));
+        threshold(channel[1], thres, 50, 255, THRESH_BINARY);
+        //findContours
         
-        //for(int i = 0; i < 8; i++){
-        //send_to_server(&gray, 1, i);
-        //}
-        
-        //channel[1];
-        //threshold(channel[1], mask, 40, 255, THRESH_BINARY);
-        //Mat kernel = Mat::ones(3, 3, CV_8U);
-        //Mat cleaned;
-        //morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
-        //////////////////////////////////////////////////////////
-        
-        /*//////////////////////////////////////////////////////////
-        std::vector<vector<Point> > contours;
-        RNG rng(12345);
-        findContours(marker, contours, CV_RETR_FLOODFILL, CV_CHAIN_APPROX_SIMPLE);
-        //////////////////////////////////////////////////////////
-        
-        printf("Contours size %d\n", contours.size());
-        //DRAW CONTOURS//////////////////////////////////////
-        Mat drawing = Mat::zeros(marker.size(), CV_8UC3);
-        for (int i = 0; i < contours.size(); i++) {
-            Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-            drawContours(drawing, contours, i, color, 2);
-            printf("CON:: %d\n", contours[i].size());
-        }
-        //////////////////////////////////////////////////////////
-        
-        Mat part_img, inv_marker;
-        bitwise_not(marker, inv_marker);
-        inv_marker.convertTo(inv_marker, CV_8UC1);
-        img.copyTo(part_img, inv_marker);
-        
-        //imshow("High res", mask);
-        //waitKey(30);
-        
-        std::vector<KeyPoint> kp;
-        detector->detect(part_img, kp);
-        std::cout << "Found " << kp.size() << " Keypoints " << std::endl;
-        Mat out, rgb2;
-        cvtColor(img, rgb2, COLOR_RGBA2RGB);
-        drawKeypoints(rgb2, kp, out, Scalar::all(255));
-         */
-        comm->save_to_file_image(&rgb);
-        
-        
+        //Histogram
+        float range[] = {0,256};
+        const float *histRange = {range};
+        int buck = 32;
+        Mat b_hist, g_hist, r_hist;
+        calcHist(channel[0], 1, 0, thres, b_hist, 1, &buck, &histRange, true, true);
+        calcHist(channel[1], 1, 0, thres, g_hist, 1, &buck, &histRange, true, true);
+        calcHist(channel[2], 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
+                  
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
         item->feature->contour = new vector<Point>;
         for(int i = 0; i < 50; i++){
             Point *pt = new Point(i,i);
             item->feature->contour->push_back(*pt);
+        }
+        for(int i = 0; i < HISTOGRAM_SIZE; i++){
+            item->feature->hist_r[i] = (uint32_t)r_hist.at<float>(i);
+            item->feature->hist_g[i] = (uint32_t)g_hist.at<float>(i);
+            item->feature->hist_b[i] = (uint32_t)b_hist.at<float>(i);
         }
         item->left = (patch_packet*)1;
         item->right = (patch_packet*)1;
@@ -262,6 +135,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         deb_printf("item %p\n", item);
         comm->ask_neighbours(item);
 
+        
+        
         //fill item with data from RASPIPATCH
         if (first == 0) {
             first = item;
@@ -274,43 +149,10 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
             last->next = item;
             last = item;
         }
+        
+        
+        
 
-        
-        
-        
-        
-        
-        //char tmp[] = "testing00a.png";
-        //char tmp2[] = "testing00b.png";
-        
-        /*char filename[30];
-        snprintf(filename, 30, "pics/%d_%d_highres_out.png", group, cnt);
-        imwrite(filename, out);
-        memset(filename, 0, 30);
-        
-        snprintf(filename, 30, "pics/%d_%d_highres_draw.png", group, cnt);
-        imwrite(filename, drawing);
-        memset(filename, 0, 30);*/
-        
-        /*tmp[7] = group + '0';
-        tmp[8] = cnt + '0';
-        tmp2[7] = group + '0';
-        tmp2[8] = cnt + '0';*/
-        
-        //imwrite(tmp2, out);
-        //imwrite(tmp, drawing);
-
-        //FILE *fp = fopen(tmp, "wb");
-        //write_tga(fp, patch->height, patch->width, patch->buffer, patch->size);
-        //fclose(fp);
-        
-        //rgb.release();
-        //marker.release();
-        //drawing.release();
-        //part_img.release();
-        //inv_marker.release();
-        //out.release();
-        //rgb2.release();
         comm->file_cnt++;
 
     }
@@ -323,30 +165,71 @@ Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {
         return mat_image;
 }
 
-void High_Res_Worker::identify_object(patch_packet *item){
-    if(((int)item->left) != 1 && ((int)item->right) != 1 && ((int)item->up) != 1 && ((int)item->down) != 1){
+void High_Res_Worker::identify_object(patch_packet *item) {
+    if (((int) item->left) != 1 && ((int) item->right) != 1 && ((int) item->up) != 1 && ((int) item->down) != 1) {
         //get all feature vector and classify
-       
-       combine_objects(item, item->left, LEFT_SIDE); 
-       combine_objects(item, item->right, RIGHT_SIDE); 
-       combine_objects(item, item->up, UP_SIDE); 
-       combine_objects(item, item->down, DOWN_SIDE); 
 
+        combine_objects(item, item->left, LEFT_SIDE);
+        combine_objects(item, item->right, RIGHT_SIDE);
+        combine_objects(item, item->up, UP_SIDE);
+        combine_objects(item, item->down, DOWN_SIDE);
+
+        //normalize histograms
+        vector<Point> *contour = item->feature->contour;
+        RotatedRect boundRect = minAreaRect(*contour);
+        Point2f vertices[4];
+        boundRect.points(vertices);
+        double area = contourArea(*contour);
+        double extend = area / (boundRect.size.width * boundRect.size.height); //good
+        vector<Point> hull;
+        convexHull(*contour, hull, false);
+        double hull_area = contourArea(hull);
+        double solidity = area / hull_area; //good
+        double equiv_diameter = sqrt(4 * area / 3.14159); //not bad
+        vector<Point> temp;
+        double trian_area = minEnclosingTriangle(*contour, temp);
+        double trian_extend = area / trian_area; //good
+        Point2f center;
+        float radius;
+        minEnclosingCircle(*contour, center, radius);
+        double circle_extend = area / (3.1415 * radius * radius); //good
+
+        //HuMoments
+        Moments mu = moments(*contour, false);
+        double hu[7];
+        HuMoments(mu, hu);
         
-       //classifier->predict(item->feature);
+        uint32_t *final_vector = (uint32_t*)malloc(sizeof(uint32_t)*(7+5+3*HISTOGRAM_SIZE));
+        for(int i = 0; i < 7; i++){
+            final_vector[i] = (uint32_t)(1000*hu[i]);
+        }
+        final_vector[7] = (uint32_t)(1000*extend);
+        final_vector[8] = (uint32_t)(1000*solidity);
+        final_vector[9] = (uint32_t)(equiv_diameter);
+        final_vector[10] = (uint32_t)(1000*trian_extend);
+        final_vector[11] = (uint32_t)(1000*circle_extend);
+        memcpy(&final_vector[12], item->feature->hist_r, sizeof(uint32_t)*HISTOGRAM_SIZE);
+        memcpy(&final_vector[12 + HISTOGRAM_SIZE], item->feature->hist_g, sizeof(uint32_t)*HISTOGRAM_SIZE);
+        memcpy(&final_vector[12 + HISTOGRAM_SIZE*2], item->feature->hist_b, sizeof(uint32_t)*HISTOGRAM_SIZE);
+
+        Mat features(1, 7+5+3*HISTOGRAM_SIZE, CV_32SC1, (void*)final_vector);
+        double result = classifier->predict(features);
+        printf("Result of classifier %f\n", result);
+        //do something with result
+        
         
         item->prev->next = item->next;
         item->next->prev = item->prev;
-        if(item->left != 0){
+        if (item->left != 0) {
             free(item->left);
         }
-        if(item->right != 0){
+        if (item->right != 0) {
             free(item->right);
         }
-        if(item->up != 0){
+        if (item->up != 0) {
             free(item->up);
         }
-        if(item->down != 0){
+        if (item->down != 0) {
             free(item->down);
         }
         free(item);
@@ -354,16 +237,32 @@ void High_Res_Worker::identify_object(patch_packet *item){
 }
 
 void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir) {
-    
+
     if (src != 0 && src->feature != 0) {
         for (int i = 0; i < HISTOGRAM_SIZE; i++) {
             dest->feature->hist_r[i] += src->feature->hist_r[i];
             dest->feature->hist_g[i] += src->feature->hist_g[i];
             dest->feature->hist_b[i] += src->feature->hist_b[i];
         }
-        //dest->feature->contourArea += src->feature->contourArea;
-        //double epsilon = 0.1*(dest->feature->contourPerimeter + src->feature->contourPerimeter);
-        
+
+        for (int i = 0; i < src->feature->contour->size(); i++) {
+            Point pt = src->feature->contour->at(i);
+            switch (dir) {
+                case LEFT_SIDE:
+                    pt.x = pt.x - HIGH_OUTPUT_X;
+                    break;
+                case RIGHT_SIDE:
+                    pt.x = pt.x + HIGH_OUTPUT_X;
+                    break;
+                case UP_SIDE:
+                    pt.y = pt.y + HIGH_OUTPUT_Y;
+                    break;
+                case DOWN_SIDE:
+                    pt.y = pt.y - HIGH_OUTPUT_Y;
+                    break;
+            }
+            dest->feature->contour->push_back(pt);
+        }
     }
 }
 

@@ -61,7 +61,6 @@ typedef struct feat_vect{
 }feature_vector;
 
 
-
 typedef struct high_res_packet{
     uint32_t file_cnt;
     uint16_t id;

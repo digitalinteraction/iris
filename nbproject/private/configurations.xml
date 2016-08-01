@@ -2056,19 +2056,22 @@
       <df name="setup">
       </df>
       <df name="training">
-        <df name="CMakeFiles">
-          <df name="2.8.12.2">
-            <df name="CompilerIdC">
-              <in>CMakeCCompilerId.c</in>
+        <df name="feature extraction">
+          <df name="CMakeFiles">
+            <df name="2.8.12.2">
+              <df name="CompilerIdC">
+                <in>CMakeCCompilerId.c</in>
+              </df>
+              <df name="CompilerIdCXX">
+                <in>CMakeCXXCompilerId.cpp</in>
+              </df>
             </df>
-            <df name="CompilerIdCXX">
-              <in>CMakeCXXCompilerId.cpp</in>
+            <df name="CMakeTmp">
+            </df>
+            <df name="main.dir">
             </df>
           </df>
-          <df name="CMakeTmp">
-          </df>
-          <df name="main.dir">
-          </df>
+          <in>main.cpp</in>
         </df>
         <df name="random_forest">
           <df name="CMakeFiles">
@@ -2087,7 +2090,30 @@
           </df>
           <in>main.cpp</in>
         </df>
-        <in>main.cpp</in>
+        <df name="training">
+          <df name="build">
+            <df name="CMakeFiles">
+              <df name="2.8.12.2">
+                <df name="CompilerIdC">
+                  <in>CMakeCCompilerId.c</in>
+                </df>
+                <df name="CompilerIdCXX">
+                  <in>CMakeCXXCompilerId.cpp</in>
+                </df>
+              </df>
+              <df name="CMakeTmp">
+              </df>
+              <df name="main.dir">
+              </df>
+            </df>
+          </df>
+          <df name="features">
+          </df>
+          <df name="pictures">
+          </df>
+          <in>main.cpp</in>
+          <in>main_old.cpp</in>
+        </df>
       </df>
       <df name="vcinclude">
         <in>common.h</in>

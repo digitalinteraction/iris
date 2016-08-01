@@ -62,7 +62,6 @@ typedef struct feat_vect{
 }feature_vector;
 
 
-
 typedef struct high_res_packet{
     uint32_t file_cnt;
     uint16_t id;
@@ -74,6 +73,7 @@ typedef struct high_res_packet{
     uint16_t rect_height;
     uint16_t center_x;
     uint16_t center_y;
+    combine_vector *store;
     feature_vector *feature;
     struct high_res_packet *up;
     struct high_res_packet *down;
