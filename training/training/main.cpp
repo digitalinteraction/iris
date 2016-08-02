@@ -145,10 +145,12 @@ void extract_features(char *name) {
     uint64_t mac;
     uint16_t id;
     sscanf(pic_name, "%lx_%d.png", &mac, &id);
+    printf("pic: %s", pic_name);
     if (search_list(mac, id) == 0) {
-        src = imread(name);
+        printf("name: %s\n", name);
+        src = imread(name, CV_LOAD_IMAGE_COLOR);
         if (src.empty() == 0) {
-            cvtColor(src, src_gray, CV_BGR2GRAY);
+            cvtColor(src, src_gray, CV_BGRA2GRAY);
             blur(src_gray, src_gray, Size(3, 3));
             char *source_window = "Source";
             namedWindow(source_window, CV_WINDOW_AUTOSIZE);
@@ -159,8 +161,9 @@ void extract_features(char *name) {
             vector<vector<Point> > contours;
             vector<Vec4i> hierarchy;
 
-            Mat hsv;
-            cvtColor(src, hsv, CV_BGR2HSV);
+            Mat hsv, rgb;
+            cvtColor(src, rgb, CV_BGR2RGB);
+            cvtColor(rgb, hsv, CV_RGB2HSV);
             Mat channel[3];
             split(hsv, channel);
             //imshow("H", channel[0]);
@@ -173,7 +176,7 @@ void extract_features(char *name) {
 
             float range[] = {0, 256};
             const float *histRange = {range};
-            int buck = 32;
+            int buck = HISTOGRAM_SIZE;
             Mat h_hist, l_hist, s_hist;
             Ptr<CLAHE> clahe = cv::createCLAHE();
             clahe->setClipLimit(4);
