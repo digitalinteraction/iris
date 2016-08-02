@@ -22,7 +22,7 @@ using namespace std;
 using namespace cv;
 using namespace cv::ml;
 
-#define HISTOGRAM_SIZE 32
+#define HISTOGRAM_SIZE 64
 
 Mat src; Mat src_gray;
 char *pic_name = 0;
