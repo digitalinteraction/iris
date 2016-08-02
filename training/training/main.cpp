@@ -160,7 +160,7 @@ void extract_features(char *name) {
             vector<Vec4i> hierarchy;
 
             Mat hsv;
-            cvtColor(src, hsv, COLOR_BGR2HSV);
+            cvtColor(src, hsv, CV_BGR2HSV);
             Mat channel[3];
             split(hsv, channel);
             //imshow("H", channel[0]);
