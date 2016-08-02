@@ -84,7 +84,7 @@ void High_Res_Worker::run(){
         patch_packet *item = first;
         while(item != 0){
             if(item->state != 1){
-                identify_object(item);
+                //identify_object(item);
             }
             item = item->next;
         }
