@@ -26,7 +26,7 @@ using namespace cv::ml;
 
 Mat src; Mat src_gray;
 char *pic_name = 0;
-int thresh = 50;
+int thresh = 45;
 int max_thresh = 255;
 RNG rng(12345);
 
@@ -52,6 +52,13 @@ void save_in_file(float *final_vector, float res);
 uint8_t search_list(uint64_t mac, uint16_t id);
 
 int main() {
+    
+    printf("Please classify the pictures by pressing following keys:\n");
+    printf("0: Nothing\n");
+    printf("1: Carrot\n");
+    printf("2: Cucumber\n");
+    printf("3: Peach\n");
+    printf("4: Apple\n");
     
     const char * dir_pictures = PICTURE_DIR;
     
@@ -141,14 +148,14 @@ void extract_features(char *name) {
     if (search_list(mac, id) == 0) {
         src = imread(name);
         if (src.empty() == 0) {
-            cvtColor(src, src_gray, CV_RGB2GRAY);
+            cvtColor(src, src_gray, CV_BGR2GRAY);
             blur(src_gray, src_gray, Size(3, 3));
             char *source_window = "Source";
             namedWindow(source_window, CV_WINDOW_AUTOSIZE);
 
 
             ///////////////////////////////////////
-            Mat canny_output;
+            Mat mask;
             vector<vector<Point> > contours;
             vector<Vec4i> hierarchy;
 
@@ -156,20 +163,28 @@ void extract_features(char *name) {
             cvtColor(src, hsv, COLOR_BGR2HSV);
             Mat channel[3];
             split(hsv, channel);
-            threshold(channel[1], canny_output, thresh, 255, THRESH_BINARY);
+            //imshow("H", channel[0]);
+            //imshow("L", channel[1]);
+            //imshow("S", channel[2]);
 
-            findContours(canny_output, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
+            threshold(channel[1], mask, thresh, 255, THRESH_BINARY);
+            //imshow("Mask", mask);
+            findContours(mask, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
             float range[] = {0, 256};
             const float *histRange = {range};
             int buck = 32;
-            Mat b_hist, g_hist, r_hist;
-            calcHist(&channel[0], 1, 0, canny_output, b_hist, 1, &buck, &histRange, true, true);
-            calcHist(&channel[1], 1, 0, canny_output, g_hist, 1, &buck, &histRange, true, true);
-            calcHist(&channel[2], 1, 0, canny_output, r_hist, 1, &buck, &histRange, true, true);
-            normalize(r_hist, r_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
-            normalize(g_hist, g_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
-            normalize(b_hist, b_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+            Mat h_hist, l_hist, s_hist;
+            Ptr<CLAHE> clahe = cv::createCLAHE();
+            clahe->setClipLimit(4);
+            Mat lum_channel;
+            clahe->apply(channel[2], lum_channel);
+            calcHist(&channel[0], 1, 0, mask, h_hist, 1, &buck, &histRange, true, true);
+            calcHist(&channel[1], 1, 0, mask, l_hist, 1, &buck, &histRange, true, true);
+            calcHist(&lum_channel, 1, 0, mask, s_hist, 1, &buck, &histRange, true, true);
+            //normalize(h_hist, h_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+            //normalize(l_hist, l_hist, 0, 1.0, NORM_MINMAX, -1, Mat());
+            //normalize(s_hist, s_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
 
             int winner = 0;
             int largest = 0;
@@ -210,7 +225,7 @@ void extract_features(char *name) {
             minEnclosingCircle(contour, center, radius);
             double circle_extend = area / (3.1415 * radius * radius); //good
 
-            printf("%s %f %f %f %f %f %f %f %f \n", pic_name, aspectRatio, area, extend, hull_area, solidity, equiv_diameter, trian_extend, circle_extend);
+            //printf("%s %f %f %f %f %f %f %f %f \n", pic_name, aspectRatio, area, extend, hull_area, solidity, equiv_diameter, trian_extend, circle_extend);
             //moments
             //color histogram in HSV
             Moments mu = moments(contour, false);
@@ -222,9 +237,9 @@ void extract_features(char *name) {
             float hist_b[HISTOGRAM_SIZE];
 
             for (int i = 0; i < HISTOGRAM_SIZE; i++) {
-                hist_r[i] =  r_hist.at<float>(i);
-                hist_g[i] =  g_hist.at<float>(i);
-                hist_b[i] =  b_hist.at<float>(i);
+                hist_r[i] =  h_hist.at<float>(i);
+                hist_g[i] =  l_hist.at<float>(i);
+                hist_b[i] =  s_hist.at<float>(i);
             }
 
             float *final_vector = (float*) malloc(sizeof (float)*(7 + 5 + 3 * HISTOGRAM_SIZE));
@@ -243,7 +258,7 @@ void extract_features(char *name) {
             //Mat features(1, 7 + 5 + 3 * HISTOGRAM_SIZE, CV_32SC1, (void*) final_vector);
 
             //printf("Contour Points: %ld\n", contours[winner].size());
-            Mat drawing = Mat::zeros(canny_output.size(), CV_8UC3);
+            Mat drawing = Mat::zeros(mask.size(), CV_8UC3);
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, new_cont, 0, color, 2, 8, hierarchy, 0, Point());
             for (int i = 0; i < 4; i++)
@@ -256,7 +271,7 @@ void extract_features(char *name) {
             imshow(source_window, src);
             float res = (float)waitKey(0);
             res -= 1048624.0;
-            printf("key pressed: %f\n\n", res);
+            //printf("key pressed: %f\n\n", res);
 
             struct feature *item = (struct feature *) calloc(1, sizeof (struct feature));
             item->final_vector = final_vector;

@@ -106,7 +106,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         Mat hsv, rgb;
         cvtColor(img, rgb, COLOR_BGRA2RGB);
-        cvtColor(rgb, hsv, COLOR_RGB2HSV);
+        cvtColor(rgb, hls, COLOR_RGB2HSV);
         imwrite("patch.png", hsv);
         Mat channel[3];
         split(hsv, channel);
@@ -141,13 +141,17 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         const float *histRange = {range};
         int buck = 32;
         Mat b_hist, g_hist, r_hist;
+        Ptr<CLAHE> clahe = cv::createCLAHE();
+        clahe->setClipLimit(4);
+        Mat lum_channel;
+        clahe->apply(channel[2], lum_channel);
         calcHist(&channel[0], 1, 0, thres, b_hist, 1, &buck, &histRange, true, true);
         calcHist(&channel[1], 1, 0, thres, g_hist, 1, &buck, &histRange, true, true);
-        calcHist(&channel[2], 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
-                  
-        normalize(r_hist, r_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
-        normalize(g_hist, g_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
-        normalize(b_hist, b_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+        calcHist(&lum_channel, 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
+
+        //normalize(r_hist, r_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+        //normalize(g_hist, g_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+        //normalize(b_hist, b_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
         
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
