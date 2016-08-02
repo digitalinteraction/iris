@@ -80,15 +80,35 @@ void High_Res_Worker::run(){
         }
         
         comm->check_recv_buffer(first);
-        
+
         patch_packet *item = first;
-        while(item != 0){
-            if(item->state != 1){
-                identify_object(item);
+        while (item != 0) {
+            int32_t res = -1;
+            if (item->state != 1) {
+                res = identify_object(item);
             }
-            item = item->next;
+            if (res != -1) {
+                item->prev->next = item->next;
+                item->next->prev = item->prev;
+                if (((int) item->left) != 0) {
+                    free(item->left);
+                }
+                if (((int) item->right) != 0) {
+                    free(item->right);
+                }
+                if (((int) item->up) != 0) {
+                    free(item->up);
+                }
+                if (((int) item->down) != 0) {
+                    free(item->down);
+                }
+                patch_packet *old_item = item;
+                item = item->next;
+                free(old_item);
+            } else {
+                item = item->next;
+            }
         }
-        //identify_object();
     }
 }
 
@@ -199,7 +219,7 @@ Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {
         return mat_image;
 }
 
-void High_Res_Worker::identify_object(patch_packet *item) {
+int32_t High_Res_Worker::identify_object(patch_packet *item) {
     if (((int) item->left) != 1 && ((int) item->right) != 1 && ((int) item->up) != 1 && ((int) item->down) != 1) {
         //get all feature vector and classify
 
@@ -256,25 +276,10 @@ void High_Res_Worker::identify_object(patch_packet *item) {
         int object = (int)floor(result+0.5);
         printf("Result of classifier: %s %f %d\n", object_names[object], result, object);
         
+        return object;
         //do something with result
-        
-        
-        item->prev->next = item->next;
-        item->next->prev = item->prev;
-        if (((int)item->left) != 0) {
-            free(item->left);
-        }
-        if (((int)item->right) != 0) {
-            free(item->right);
-        }
-        if (((int)item->up) != 0) {
-            free(item->up);
-        }
-        if (((int)item->down) != 0) {
-            free(item->down);
-        }
-        free(item);
     }
+    return -1;
 }
 
 void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir) {
