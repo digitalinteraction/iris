@@ -308,6 +308,7 @@ void Low_Res_Worker::cleanup_list() {
             }
             //delete item->contour;
             cnt_size--;
+            delete item->contour;
             free(item);
         } else {
             item->expiring++;

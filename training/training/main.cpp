@@ -22,7 +22,7 @@ using namespace std;
 using namespace cv;
 using namespace cv::ml;
 
-#define HISTOGRAM_SIZE 64
+#define HISTOGRAM_SIZE 32
 
 Mat src; Mat src_gray;
 char *pic_name = 0;
@@ -100,7 +100,7 @@ int main() {
     cnt = 0;
     while(item != 0){
         //printf("START::");
-        for(int i = 0; i < 7+5+3*HISTOGRAM_SIZE; i++){
+        for(int i = 0; i < 7+5+2*HISTOGRAM_SIZE; i++){
             features.at<float>(cnt, i) = item->final_vector[i];
             //printf("%f\n", item->final_vector[i]);
         }
@@ -145,7 +145,7 @@ void extract_features(char *name) {
     uint64_t mac;
     uint16_t id;
     sscanf(pic_name, "%lx_%d.png", &mac, &id);
-    printf("pic: %s", pic_name);
+    printf("pic: %s\n", pic_name);
     if (search_list(mac, id) == 0) {
         printf("name: %s\n", name);
         src = imread(name, CV_LOAD_IMAGE_COLOR);
@@ -174,7 +174,54 @@ void extract_features(char *name) {
             //imshow("Mask", mask);
             findContours(mask, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-            float range[] = {0, 256};
+            //http://answers.opencv.org/question/54727/convert-rgb-brg-to-rg-chromaticity/
+            
+            Mat rg(rgb.size(), rgb.type());
+
+            for (int i = 0; i < rgb.rows; i++) {
+                for (int j = 0; j < rgb.cols; j++) {
+                    Vec3f intensity = rgb.at<Vec3b>(i, j);
+                    float blue = intensity.val[0];
+                    float green = intensity.val[1];
+                    float red = intensity.val[2];
+                    double sum = red + blue + green;
+                    double r = red / sum;
+                    double g = green / sum;
+                    double b = blue / sum;
+                    //printf("%f %f %f %f\n", sum, r, g, b);
+                    rg.data[rg.step[0] * i + rg.step[1] * j + 0] = (b * 255);
+                    rg.data[rg.step[0] * i + rg.step[1] * j + 1] = (g * 255);
+                    rg.data[rg.step[0] * i + rg.step[1] * j + 2] = (r * 255);
+                }
+            }
+            //imshow("RG space", rg);
+            
+            
+            float range[] = {0, 255};
+            const float *histRange = {range};
+            int buck = HISTOGRAM_SIZE;
+            Mat r_hist, g_hist, b_hist;
+            Mat rg_hist_sp[3];
+            //cout << "Image" << rg << endl;
+            imshow("MASK", mask);
+            split(rg, rg_hist_sp);
+            calcHist(&rg_hist_sp[0], 1, 0, mask, r_hist, 1, &buck, &histRange, true, true);
+            calcHist(&rg_hist_sp[1], 1, 0, mask, g_hist, 1, &buck, &histRange, true, true);
+            calcHist(&rg_hist_sp[2], 1, 0, mask, b_hist, 1, &buck, &histRange, true, true);
+
+            
+            //imshow("RG chromatic", rg);
+            //cout << "R_Channel: " << rg_hist_sp[0] << endl;
+            //cout << "G_Channel: " << rg_hist_sp[1] << endl;
+            //cout << "B_Channel: " << rg_hist_sp[2] << endl;
+            //cout << "CHROMATIC " << rg_hist << endl;
+
+            //calcHist(&rg, 1, 0, mask, g_hist, 1, &buck, &histRange, true, true);
+            
+            cout << "hist r " << r_hist << endl;
+            cout << "hist g " << g_hist << endl;
+            cout << "hist b " << b_hist << endl;
+            /*float range[] = {0, 256};
             const float *histRange = {range};
             int buck = HISTOGRAM_SIZE;
             Mat h_hist, l_hist, s_hist;
@@ -187,8 +234,20 @@ void extract_features(char *name) {
             calcHist(&lum_channel, 1, 0, mask, s_hist, 1, &buck, &histRange, true, true);
             //normalize(h_hist, h_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
             //normalize(l_hist, l_hist, 0, 1.0, NORM_MINMAX, -1, Mat());
-            //normalize(s_hist, s_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+            //normalize(s_hist, s_hist, 0, 255.0, NORM_MINMAX, -1, Mat());*/
+            /*Mat rgb_chan[3];
+            split(rgb, rgb_chan);
+            float range[] = {0, 255};
+            const float *histRange = {range};
+            int buck = HISTOGRAM_SIZE;
+            Mat r_hist, g_hist, b_hist;
+            calcHist(&rgb_chan[0], 1, 0, mask, r_hist, 1, &buck, &histRange, true, true);
+            calcHist(&rgb_chan[1], 1, 0, mask, g_hist, 1, &buck, &histRange, true, true);
+            calcHist(&rgb_chan[2], 1, 0, mask, b_hist, 1, &buck, &histRange, true, true);*/
 
+            
+            
+            
             int winner = 0;
             int largest = 0;
             for (int i = 0; i < contours.size(); i++) {
@@ -240,9 +299,9 @@ void extract_features(char *name) {
             float hist_b[HISTOGRAM_SIZE];
 
             for (int i = 0; i < HISTOGRAM_SIZE; i++) {
-                hist_r[i] =  h_hist.at<float>(i);
-                hist_g[i] =  l_hist.at<float>(i);
-                hist_b[i] =  s_hist.at<float>(i);
+                hist_r[i] =  r_hist.at<float>(i);
+                hist_g[i] =  g_hist.at<float>(i);
+                hist_b[i] =  b_hist.at<float>(i);
             }
 
             float *final_vector = (float*) malloc(sizeof (float)*(7 + 5 + 3 * HISTOGRAM_SIZE));
