@@ -112,7 +112,7 @@ int main() {
     rtrees->setPriors(Mat());
     rtrees->setCalculateVarImportance(false);
     rtrees->setActiveVarCount(4);
-    rtrees->setTermCriteria(TermCriteria(CV_TERMCRIT_ITER+CV_TERMCRIT_EPS, 2000, 0.005));
+    rtrees->setTermCriteria(TermCriteria(CV_TERMCRIT_EPS, 2000, 0.001));
     rtrees->train(features, ROW_SAMPLE, classification);
     for(int i = 0; i < features.rows; i++){
         cout << "ROW::" << features.row(i) << endl;
