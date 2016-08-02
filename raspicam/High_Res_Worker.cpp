@@ -195,9 +195,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
             item->feature->contour->push_back(*pt);
         }*/
         for(int i = 0; i < HISTOGRAM_SIZE; i++){
-            item->feature->hist_r[i] = h_hist.at<float>(i);
-            item->feature->hist_g[i] = s_hist.at<float>(i);
-            item->feature->hist_b[i] = v_hist.at<float>(i);
+            item->feature->hist_h[i] = h_hist.at<float>(i);
+            item->feature->hist_s[i] = s_hist.at<float>(i);
+            item->feature->hist_v[i] = v_hist.at<float>(i);
         }
         item->left = (patch_packet*)patch->left;
         item->right = (patch_packet*)patch->right;
@@ -276,9 +276,9 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         final_vector[9] = (float)(equiv_diameter);
         final_vector[10] = (float)(1000*trian_extend);
         final_vector[11] = (float)(1000*circle_extend);
-        memcpy(&final_vector[12], item->feature->hist_r, sizeof(float)*HISTOGRAM_SIZE);
-        memcpy(&final_vector[12 + HISTOGRAM_SIZE], item->feature->hist_g, sizeof(float)*HISTOGRAM_SIZE);
-        memcpy(&final_vector[12 + HISTOGRAM_SIZE*2], item->feature->hist_b, sizeof(float)*HISTOGRAM_SIZE);
+        memcpy(&final_vector[12], item->feature->hist_h, sizeof(float)*HISTOGRAM_SIZE);
+        memcpy(&final_vector[12 + HISTOGRAM_SIZE], item->feature->hist_s, sizeof(float)*HISTOGRAM_SIZE);
+        memcpy(&final_vector[12 + HISTOGRAM_SIZE*2], item->feature->hist_v, sizeof(float)*HISTOGRAM_SIZE);
 
         Mat features(1, 7+5+3*HISTOGRAM_SIZE, CV_32FC1);
         for(int i = 0; i < 7+5+3*HISTOGRAM_SIZE; i++){
@@ -300,9 +300,9 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
 
     if (src != 0 && src->feature != 0) {
         for (int i = 0; i < HISTOGRAM_SIZE; i++) {
-            dest->feature->hist_r[i] += src->feature->hist_r[i];
-            dest->feature->hist_g[i] += src->feature->hist_g[i];
-            dest->feature->hist_b[i] += src->feature->hist_b[i];
+            dest->feature->hist_h[i] += src->feature->hist_h[i];
+            dest->feature->hist_s[i] += src->feature->hist_s[i];
+            dest->feature->hist_v[i] += src->feature->hist_v[i];
         }
 
         for (int i = 0; i < src->feature->contour->size(); i++) {

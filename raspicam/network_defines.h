@@ -54,9 +54,9 @@ struct low_res_header{
 };
 
 typedef struct feat_vect{
-    float hist_r[HISTOGRAM_SIZE];
-    float hist_g[HISTOGRAM_SIZE];
-    float hist_b[HISTOGRAM_SIZE];
+    float hist_h[HISTOGRAM_SIZE];
+    float hist_s[HISTOGRAM_SIZE];
+    float hist_v[HISTOGRAM_SIZE];
     uint32_t contour_size;
     std::vector<cv::Point> *contour;
 }feature_vector;
