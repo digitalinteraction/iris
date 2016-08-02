@@ -104,15 +104,15 @@ int main() {
     
     
     Ptr<RTrees> rtrees = RTrees::create();
-    rtrees->setMaxDepth(10);
-    rtrees->setMinSampleCount(7);
+    rtrees->setMaxDepth(25);
+    rtrees->setMinSampleCount(5);
     rtrees->setRegressionAccuracy(0);
     rtrees->setUseSurrogates(false);
-    rtrees->setMaxCategories(6);
+    rtrees->setMaxCategories(12);
     rtrees->setPriors(Mat());
     rtrees->setCalculateVarImportance(false);
     rtrees->setActiveVarCount(4);
-    rtrees->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, 10, 0));
+    rtrees->setTermCriteria(TermCriteria(TermCriteria::MAX_ITER, 50, 0));
     rtrees->train(features, ROW_SAMPLE, classification);
     for(int i = 0; i < features.rows; i++){
         cout << "ROW::" << features.row(i) << endl;
