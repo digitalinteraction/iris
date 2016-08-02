@@ -36,7 +36,7 @@ CommImage::CommImage(NetworkControl *nc) {
     
     recv_first = 0;
     recv_last = 0;
-    file_cnt = 0;
+    file_cnt = 20;
     
     nc->rel->setCallback(&callback_rel);
 }
