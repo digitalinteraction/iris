@@ -199,6 +199,11 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
             item->feature->hist_s[i] = s_hist.at<float>(i);
             item->feature->hist_v[i] = v_hist.at<float>(i);
         }
+        for(int i = 0; i<HISTOGRAM_SIZE; i++){
+            printf("HISTO: %f %f %f\n", item->feature->hist_h[i], item->feature->hist_s[i],item->feature->hist_v[i])
+        }
+        
+        
         item->left = (patch_packet*)patch->left;
         item->right = (patch_packet*)patch->right;
         item->up = (patch_packet*)patch->up;
