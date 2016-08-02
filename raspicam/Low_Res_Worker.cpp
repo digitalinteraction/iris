@@ -78,7 +78,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         cvtColor(rgb, hsv, COLOR_RGB2HSV);
         Mat channel[3];
         split(hsv, channel);
-        threshold(channel[1], mask, 40, 255, THRESH_BINARY);
+        threshold(channel[1], mask, 50, 255, THRESH_BINARY);
         
         //pMOG2->apply(img, mask);
         //CLEANING UP////////////////////////////////////////
