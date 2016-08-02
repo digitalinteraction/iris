@@ -168,7 +168,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         //Histogram
         float range[] = {0, 256};
         const float *histRange = {range};
-        int buck = 32;
+        int buck = HISTOGRAM_SIZE;
         Mat h_hist, s_hist, v_hist;
         Ptr<CLAHE> clahe = cv::createCLAHE();
         clahe->setClipLimit(4);
