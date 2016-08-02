@@ -73,8 +73,9 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     if (img.empty() == 0) {
         cleanup_list();
        
-        Mat hsv;
-        cvtColor(img, hsv, COLOR_BGR2HSV);
+        Mat hsv, rgb;
+        cvtColor(img, rgb, COLOR_BGRA2RGB);
+        cvtColor(rgb, hsv, COLOR_RGB2HSV);
         Mat channel[3];
         split(hsv, channel);
         threshold(channel[1], mask, 40, 255, THRESH_BINARY);
