@@ -127,7 +127,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         imwrite("patch2.png", img);
         
         Mat hsv, rgb;
-        cvtColor(img, rgb, CV_BGRA2RGB);
+        cvtColor(img, rgb, CV_RGBA2RGB);
         cvtColor(rgb, hsv, CV_RGB2HSV);
         Mat save_img;
         cvtColor(hsv, save_img, CV_HSV2BGR);
