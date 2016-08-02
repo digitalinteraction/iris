@@ -141,6 +141,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         cvtColor(rgb, gray, CV_RGB2GRAY);
         
         threshold(channel[1], thres, 50, 255, THRESH_BINARY);
+        imwrite("mask.png", thres);
         
         vector<Vec4i> hierarchy;
         vector<vector<Point> > contours;
