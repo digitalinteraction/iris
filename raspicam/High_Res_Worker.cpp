@@ -158,7 +158,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         vector<Point> *contour = new vector<Point>;
         approxPolyDP(contours[winner], *contour, epsilon, true);
         
-        
+        RNG rng(12345);
         Mat cont_img = thres;
         Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
         drawContours(cont_img, vector<vector<Point> >(1,*contour), -1, color, 1, 8);
