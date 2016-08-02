@@ -126,7 +126,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         Mat hsv, rgb;
         cvtColor(img, rgb, COLOR_RGBA2RGB);
-        cvtColor(rgb, hsv, COLOR_RGB2HSV);
+        cvtColor(img, hsv, COLOR_RGB2HSV);
         imwrite("patch.png", hsv);
         Mat channel[3];
         split(hsv, channel);
