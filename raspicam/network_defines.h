@@ -44,6 +44,7 @@
 #define REL_ERROR_BUF_ALLOC 4
 
 
+
 struct low_res_header{
     uint8_t port;
     uint8_t pos;
@@ -72,7 +73,6 @@ typedef struct high_res_packet{
     uint16_t rect_height;
     uint16_t center_x;
     uint16_t center_y;
-    combine_vector *store;
     feature_vector *feature;
     struct high_res_packet *up;
     struct high_res_packet *down;
