@@ -167,6 +167,9 @@ void extract_features(char *name) {
             calcHist(&channel[0], 1, 0, canny_output, b_hist, 1, &buck, &histRange, true, true);
             calcHist(&channel[1], 1, 0, canny_output, g_hist, 1, &buck, &histRange, true, true);
             calcHist(&channel[2], 1, 0, canny_output, r_hist, 1, &buck, &histRange, true, true);
+            normalize(r_hist, r_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+            normalize(g_hist, g_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+            normalize(b_hist, b_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
 
             int winner = 0;
             int largest = 0;

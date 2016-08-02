@@ -145,6 +145,10 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         calcHist(&channel[1], 1, 0, thres, g_hist, 1, &buck, &histRange, true, true);
         calcHist(&channel[2], 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
                   
+        normalize(r_hist, r_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+        normalize(g_hist, g_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+        normalize(b_hist, b_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
+        
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
         item->feature->contour = contour;
