@@ -179,9 +179,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         calcHist(&lum_channel, 1, 0, thres, v_hist, 1, &buck, &histRange, true, true);
 
         
-        cout << "Histogram H: " << b_hist<< endl;
-        cout << "Histogram S: " << g_hist<< endl;
-        cout << "Histogram V: " << r_hist<< endl;
+        cout << "Histogram H: " << h_hist<< endl;
+        cout << "Histogram S: " << s_hist<< endl;
+        cout << "Histogram V: " << v_hist<< endl;
 
         //normalize(r_hist, r_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
         //normalize(g_hist, g_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
