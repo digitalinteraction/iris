@@ -53,9 +53,9 @@ struct low_res_header{
 };
 
 typedef struct feat_vect{
-    uint32_t hist_r[HISTOGRAM_SIZE];
-    uint32_t hist_g[HISTOGRAM_SIZE];
-    uint32_t hist_b[HISTOGRAM_SIZE];
+    float hist_r[HISTOGRAM_SIZE];
+    float hist_g[HISTOGRAM_SIZE];
+    float hist_b[HISTOGRAM_SIZE];
     uint32_t contour_size;
     std::vector<cv::Point> *contour;
 }feature_vector;
@@ -72,6 +72,7 @@ typedef struct high_res_packet{
     uint16_t rect_height;
     uint16_t center_x;
     uint16_t center_y;
+    combine_vector *store;
     feature_vector *feature;
     struct high_res_packet *up;
     struct high_res_packet *down;
