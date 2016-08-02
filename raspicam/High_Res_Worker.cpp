@@ -157,9 +157,14 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         double epsilon = 0.0035 * arcLength(contours[winner], true);
         vector<Point> *contour = new vector<Point>;
         approxPolyDP(contours[winner], *contour, epsilon, true);
-        Mat cont_img = mask;
+        
+        
+        Mat cont_img = thres;
+        Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
         drawContours(cont_img, vector<vector<Point> >(1,*contour), -1, color, 1, 8);
         imwrite("cont_img.png", cont_img);
+        
+        
         //Histogram
         float range[] = {0, 256};
         const float *histRange = {range};
