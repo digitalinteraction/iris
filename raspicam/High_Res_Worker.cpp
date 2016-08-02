@@ -27,6 +27,8 @@
 #define deb_printf(fmt, args...)
 #endif
 
+const char * const object_names[] = {"NOTHING", "CARROT", "CUCUMBER", "PEACH", "APPLE"};
+
 using namespace std;
 
 
@@ -243,7 +245,9 @@ void High_Res_Worker::identify_object(patch_packet *item) {
         }
         cout << features << endl;
         double result = classifier->predict(features);
-        printf("Result of classifier %f\n", result);
+        int object = (int)floor(result+0.5);
+        printf("Result of classifier: %s\n", object_names[object]);
+        
         //do something with result
         
         
