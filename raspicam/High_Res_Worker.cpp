@@ -169,14 +169,19 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         float range[] = {0, 256};
         const float *histRange = {range};
         int buck = 32;
-        Mat b_hist, g_hist, r_hist;
+        Mat h_hist, s_hist, v_hist;
         Ptr<CLAHE> clahe = cv::createCLAHE();
         clahe->setClipLimit(4);
         Mat lum_channel;
         clahe->apply(channel[2], lum_channel);
-        calcHist(&channel[0], 1, 0, thres, b_hist, 1, &buck, &histRange, true, true);
-        calcHist(&channel[1], 1, 0, thres, g_hist, 1, &buck, &histRange, true, true);
-        calcHist(&lum_channel, 1, 0, thres, r_hist, 1, &buck, &histRange, true, true);
+        calcHist(&channel[0], 1, 0, thres, h_hist, 1, &buck, &histRange, true, true);
+        calcHist(&channel[1], 1, 0, thres, s_hist, 1, &buck, &histRange, true, true);
+        calcHist(&lum_channel, 1, 0, thres, v_hist, 1, &buck, &histRange, true, true);
+
+        
+        cout << "Histogram H: " << b_hist<< endl;
+        cout << "Histogram S: " << g_hist<< endl;
+        cout << "Histogram V: " << r_hist<< endl;
 
         //normalize(r_hist, r_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
         //normalize(g_hist, g_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
@@ -190,9 +195,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
             item->feature->contour->push_back(*pt);
         }*/
         for(int i = 0; i < HISTOGRAM_SIZE; i++){
-            item->feature->hist_r[i] = r_hist.at<float>(i);
-            item->feature->hist_g[i] = g_hist.at<float>(i);
-            item->feature->hist_b[i] = b_hist.at<float>(i);
+            item->feature->hist_r[i] = h_hist.at<float>(i);
+            item->feature->hist_g[i] = s_hist.at<float>(i);
+            item->feature->hist_b[i] = v_hist.at<float>(i);
         }
         item->left = (patch_packet*)patch->left;
         item->right = (patch_packet*)patch->right;
