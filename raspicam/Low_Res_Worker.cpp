@@ -302,6 +302,8 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
 void Low_Res_Worker::cleanup_list() {
     struct objects *item = first;
     while (item != 0) {
+        uint8_t success = 0;
+        struct objects *freeitem = 0;
         if (item->expiring == 30) {
             deb_printf("freeing item %p with id %d\n", item, item->id);
             //printf("freeing item %p with id %d\n", item, item->id);
@@ -320,12 +322,16 @@ void Low_Res_Worker::cleanup_list() {
             }
             //delete item->contour;
             cnt_size--;
-            delete item->contour;
-            free(item);
+            success = 1;
+            freeitem = item;
         } else {
             item->expiring++;
         }
         item = item->next;
+        if(success == 1){
+            delete item->contour;
+            free(item);
+        }
     }
 
 }
