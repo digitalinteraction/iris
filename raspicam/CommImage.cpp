@@ -222,66 +222,107 @@ void CommImage::check_recv_buffer(patch_packet *start) {
     }
 }
 
-void CommImage::match_recv_list(patch_packet *start){
+void CommImage::match_recv_list(patch_packet *start) {
 #ifdef DEBUG_COMM_IMAGE
     printf("match_recv_list\n");
 #endif
     //match_answers(start);
     patch_packet *item = recv_first;
-    while(item != 0){
+    while (item != 0) {
         patch_packet *comp = start;
-        while(comp != 0){
-            if(comp->state != 2){
-                if(((int)comp->down) == 1 && item->addr == DOWN_SIDE){
+        while (comp != 0) {
+            if (comp->state != 2) {
+                if (((int) comp->down) == 1 && item->addr == DOWN_SIDE) {
                     uint16_t ipos1 = comp->rect_x;
                     uint16_t ipos2 = comp->rect_x + comp->rect_width;
                     uint16_t epos1 = item->rect_x;
                     uint16_t epos2 = item->rect_x + item->rect_width;
-                    if((epos1 >= ipos1 && epos1 <= ipos2) ||
+                    if ((epos1 >= ipos1 && epos1 <= ipos2) ||
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
-                            (epos1 <= ipos1 && epos2 >= ipos2)){
+                            (epos1 <= ipos1 && epos2 >= ipos2)) {
                         comp->down = item;
-                        item->prev->next = item->next;
-                        item->next->prev = item->prev;
+                        if (item->prev == 0 && item->next == 0) {
+                            recv_first = 0;
+                            recv_last = 0;
+                        } else if (item->prev == 0) {
+                            recv_first = item->next;
+                            recv_first->prev = 0;
+                        } else if (item->next == 0) {
+                            item->prev->next = 0;
+                            recv_last = item->prev;
+                        } else {
+                            item->prev->next = item->next;
+                            item->next->prev = item->prev;
+                        }
                     }
-                }
-                else if(((int)comp->up) == 1 && item->addr == UP_SIDE){
+                } else if (((int) comp->up) == 1 && item->addr == UP_SIDE) {
                     uint16_t ipos1 = comp->rect_x;
                     uint16_t ipos2 = comp->rect_x + comp->rect_width;
                     uint16_t epos1 = item->rect_x;
                     uint16_t epos2 = item->rect_x + item->rect_width;
-                    if((epos1 >= ipos1 && epos1 <= ipos2) ||
+                    if ((epos1 >= ipos1 && epos1 <= ipos2) ||
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
-                            (epos1 <= ipos1 && epos2 >= ipos2)){
+                            (epos1 <= ipos1 && epos2 >= ipos2)) {
                         comp->up = item;
-                        item->prev->next = item->next;
-                        item->next->prev = item->prev;
+                        if (item->prev == 0 && item->next == 0) {
+                            recv_first = 0;
+                            recv_last = 0;
+                        } else if (item->prev == 0) {
+                            recv_first = item->next;
+                            recv_first->prev = 0;
+                        } else if (item->next == 0) {
+                            item->prev->next = 0;
+                            recv_last = item->prev;
+                        } else {
+                            item->prev->next = item->next;
+                            item->next->prev = item->prev;
+                        }
                     }
-                }
-                else if(((int)comp->left) == 1 && item->addr == LEFT_SIDE){
+                } else if (((int) comp->left) == 1 && item->addr == LEFT_SIDE) {
                     uint16_t ipos1 = comp->rect_y;
                     uint16_t ipos2 = comp->rect_y + comp->rect_height;
                     uint16_t epos1 = item->rect_y;
                     uint16_t epos2 = item->rect_y + item->rect_height;
-                    if((epos1 >= ipos1 && epos1 <= ipos2) ||
+                    if ((epos1 >= ipos1 && epos1 <= ipos2) ||
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
-                            (epos1 <= ipos1 && epos2 >= ipos2)){
+                            (epos1 <= ipos1 && epos2 >= ipos2)) {
                         comp->left = item;
-                        item->prev->next = item->next;
-                        item->next->prev = item->prev;
+                        if (item->prev == 0 && item->next == 0) {
+                            recv_first = 0;
+                            recv_last = 0;
+                        } else if (item->prev == 0) {
+                            recv_first = item->next;
+                            recv_first->prev = 0;
+                        } else if (item->next == 0) {
+                            item->prev->next = 0;
+                            recv_last = item->prev;
+                        } else {
+                            item->prev->next = item->next;
+                            item->next->prev = item->prev;
+                        }
                     }
-                }
-                else if(((int)comp->right) == 1 && item->addr == RIGHT_SIDE){
+                } else if (((int) comp->right) == 1 && item->addr == RIGHT_SIDE) {
                     uint16_t ipos1 = comp->rect_y;
                     uint16_t ipos2 = comp->rect_y + comp->rect_height;
                     uint16_t epos1 = item->rect_y;
                     uint16_t epos2 = item->rect_y + item->rect_height;
-                    if((epos1 >= ipos1 && epos1 <= ipos2) ||
+                    if ((epos1 >= ipos1 && epos1 <= ipos2) ||
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
-                            (epos1 <= ipos1 && epos2 >= ipos2)){
+                            (epos1 <= ipos1 && epos2 >= ipos2)) {
                         comp->right = item;
-                        item->prev->next = item->next;
-                        item->next->prev = item->prev;
+                        if (item->prev == 0 && item->next == 0) {
+                            recv_first = 0;
+                            recv_last = 0;
+                        } else if (item->prev == 0) {
+                            recv_first = item->next;
+                            recv_first->prev = 0;
+                        } else if (item->next == 0) {
+                            item->prev->next = 0;
+                            recv_last = item->prev;
+                        } else {
+                            item->prev->next = item->next;
+                            item->next->prev = item->prev;
+                        }
                     }
                 }
             }
@@ -371,8 +412,19 @@ void CommImage::remove_packet_send(uint32_t id){
             }
             success = 1;
             freeitem = item;
-            item->prev->next = item->next;
-            item->next->prev = item->prev;
+            if (item->prev == 0 && item->next == 0) {
+                first_res = 0;
+                last_res = 0;
+            } else if (item->prev == 0) {
+                first_res = item->next;
+                first_res->prev = 0;
+            } else if (item->next == 0) {
+                item->prev->next = 0;
+                last_res = item->prev;
+            } else {
+                item->prev->next = item->next;
+                item->next->prev = item->prev;
+            }
         }
         item = item->next;
     }
@@ -389,14 +441,25 @@ void CommImage::cleanup_packet_send(){
     while(item != 0){
         uint8_t success = 0;
         struct waiting_response *freeitem = 0;
-        if(item->timeout.tv_sec < current.tv_sec){
+        if (item->timeout.tv_sec < current.tv_sec) {
             freeitem = item;
-            item->prev->next = item->next;
-            item->next->prev = item->prev;
+            if (item->prev == 0 && item->next == 0) {
+                first_res = 0;
+                last_res = 0;
+            } else if (item->prev == 0) {
+                first_res = item->next;
+                first_res->prev = 0;
+            } else if (item->next == 0) {
+                item->prev->next = 0;
+                last_res = item->prev;
+            } else {
+                item->prev->next = item->next;
+                item->next->prev = item->prev;
+            }
             success = 1;
         }
         item = item->next;
-        if(success == 1){
+        if (success == 1) {
             deb_printf("cleaning up item %p with id %d", freeitem, freeitem->id);
             free(freeitem);
         }

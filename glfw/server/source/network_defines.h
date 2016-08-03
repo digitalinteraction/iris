@@ -35,7 +35,7 @@
 //debug variables
 #define DEBUG_COMM_IMAGE
 #define DEBUG_HIGH_RES
-
+#define DEBUG_LOW_RES
 
 #define REL_ERROR_BUF_SIZE 0
 #define REL_ERROR_LIST 1

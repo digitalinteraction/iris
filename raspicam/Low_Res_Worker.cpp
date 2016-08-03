@@ -20,6 +20,13 @@
 #include <arpa/inet.h>
 //#include "Buffer.h"
 
+ifdef DEBUG_LOW_RES
+#define deb_printf(fmt, args...) fprintf(stderr, "HIGH_RES_WORKER: %d:%s(): " fmt, __LINE__, __func__, ##args)
+#else
+#define deb_printf(fmt, args...)
+#endif
+
+
 #define RATIO_X ((float)HIGH_OUTPUT_X/LOW_OUTPUT_X)
 #define RATIO_Y ((float)HIGH_OUTPUT_Y/LOW_OUTPUT_Y)
 
@@ -292,6 +299,7 @@ void Low_Res_Worker::cleanup_list() {
     struct objects *item = first;
     while (item != 0) {
         if (item->expiring == 30) {
+            deb_printf("freeing item %p with id %d\n", item, item->id);
             //printf("freeing item %p with id %d\n", item, item->id);
             if (item->prev == 0 && item->next == 0) {
                 first = 0;

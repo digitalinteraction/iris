@@ -97,15 +97,18 @@ void High_Res_Worker::run(){
                 deb_printf("end identifying %d\n", res);
             }
             if (res != -1) {
-                if(item->prev != 0){
-                    item->prev->next = item->next;
-                }else{
+                if (item->prev == 0 && item->next == 0) {
+                    first = 0;
+                    last = 0;
+                } else if (item->prev == 0) {
                     first = item->next;
-                }
-                if(item->next != 0){
-                    item->next->prev = item->prev;
-                }else{
+                    first->prev = 0;
+                } else if (item->next == 0) {
+                    item->prev->next = 0;
                     last = item->prev;
+                } else {
+                    item->prev->next = item->next;
+                    item->next->prev = item->prev;
                 }
                 deb_printf("freeing items %p %p %p %p\n", item->left, item->right, item->up, item->down);
                 if (((int) item->left) != 0) {
