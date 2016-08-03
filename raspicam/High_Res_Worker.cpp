@@ -215,6 +215,12 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
+        for(int i = 0; i < contour->size(); i++){
+            Point2i pt = contour->at(i);
+            pt.x = pt.x + patch->x;
+            pt.y = pt.y + patch->y;
+            contour->at(i) = pt;
+        }
         item->feature->contour = contour;
         /*for(int i = 0; i < 50; i++){
             Point *pt = new Point(i,i);
