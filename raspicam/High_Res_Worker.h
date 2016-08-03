@@ -44,7 +44,7 @@ private:
     int32_t identify_object(patch_packet *item);
     void combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir);
     void check_objects(patch_packet *start);
-    void save_contour_in_file(vector<Point> contour);
+    void save_contour_in_file(vector<Point> *contour);
     Packetbuffer *out;
     Packetbuffer *in;
     NetworkControl *nc;
