@@ -225,10 +225,12 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         clock_gettime(CLOCK_REALTIME, &current);
         item->timeout = current;
         item->timeout.tv_sec += 7;
+        item->next = 0;
+        item->prev = 0;
         deb_printf("size of item: %d %d\n", sizeof(patch_packet), sizeof(feature_vector));
         deb_printf("item %p\n", item);
         comm->ask_neighbours(item);
-
+        
         //fill item with data from RASPIPATCH
         deb_printf("saving it in list\n");
         if (first == 0) {
