@@ -273,7 +273,12 @@ int ReliableTransfer::check_timeouts(){
     return 0;
 }
 
+/*
 void ReliableTransfer::setCallback(void(*callback)(uint32_t,size_t, uint8_t)){
     //take action for failed packet, add id
     this->callback = callback;
+}*/
+void ReliableTransfer::setCallback(CommImage *comm){
+    this->comm = comm;
+    callback = &comm->callback_rel;
 }

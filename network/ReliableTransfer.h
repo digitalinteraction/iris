@@ -50,7 +50,7 @@ public:
     int check_timeouts();
     int send_acks();
     volatile uint32_t list_cnt;
-    void setCallback(void (*callback)(uint32_t, size_t, uint8_t));
+    void setCallback(CommImage *comm);
 private:
     Packetbuffer *out;
     Topology *topo;
@@ -62,6 +62,8 @@ private:
     struct reliable_packet ack;
     int timer;
     std::mutex list_lock;
+    CommImage *comm;
+    
     void (*callback)(uint32_t, size_t, uint8_t);
 };
 
