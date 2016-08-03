@@ -49,6 +49,7 @@ public:
     static void callback_rel(uint32_t id, size_t size, uint8_t reason);
 
     uint16_t file_cnt;
+    static CommImage* static_call;
 
 private:
     Packetbuffer *image_out;
@@ -64,7 +65,6 @@ private:
     NetworkControl *nc;
     struct waiting_response *first_res;
     struct waiting_response *last_res;
-    static CommImage* static_call;
 };
 
 #endif /* COMMIMAGE_H */
