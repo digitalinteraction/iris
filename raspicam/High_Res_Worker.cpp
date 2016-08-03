@@ -230,6 +230,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         comm->ask_neighbours(item);
 
         //fill item with data from RASPIPATCH
+        deb_printf("saving it in list\n");
         if (first == 0) {
             first = item;
             last = first;
