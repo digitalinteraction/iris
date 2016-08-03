@@ -18,6 +18,7 @@
 #include "UnreliableTransfer.h"
 #include <mutex>
 #include "Topology.h"
+#include "../raspicam/CommImage.h"
 
 //class UnreliableTransfer;
 
