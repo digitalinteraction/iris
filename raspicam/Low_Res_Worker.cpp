@@ -274,6 +274,8 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
             item->asked = 0;
             item->fb = fb;
             item->token = token;
+            item->next = 0;
+            item->prev = 0;
             if (first == 0) {
                 printf("added item with id %d as first\n", item->id);
                 first = item;
@@ -308,15 +310,19 @@ void Low_Res_Worker::cleanup_list() {
             deb_printf("freeing item %p with id %d\n", item, item->id);
             //printf("freeing item %p with id %d\n", item, item->id);
             if (item->prev == 0 && item->next == 0) {
+                deb_printf("setting first and last to 0\n");
                 first = 0;
                 last = 0;
             } else if (item->prev == 0) {
+                deb_printf("setting next to first\n");
                 first = item->next;
                 first->prev = 0;
             } else if (item->next == 0) {
+                deb_printf("setting next to last\n");
                 item->prev->next = 0;
                 last = item->prev;
             } else {
+                deb_printf("combining both\n");
                 item->prev->next = item->next;
                 item->next->prev = item->prev;
             }
