@@ -359,14 +359,14 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
             Point pt = src->feature->contour->at(i);
             switch (dir) {
                 case LEFT_SIDE:
-                    pt.x = pt.x - HIGH_OUTPUT_X;
-                    if (fabs(pt.x) > EPSILON) {
+                    pt.x = pt.x + HIGH_OUTPUT_X;
+                    if (fabs(pt.x - HIGH_OUTPUT_X) > EPSILON) {
                         dest->feature->contour->push_back(pt);
                     }
                     break;
                 case RIGHT_SIDE:
-                    pt.x = pt.x + HIGH_OUTPUT_X;
-                    if (fabs(pt.x - HIGH_OUTPUT_X) > EPSILON) {
+                    pt.x = pt.x - HIGH_OUTPUT_X;
+                    if (fabs(pt.x) > EPSILON) {
                         dest->feature->contour->push_back(pt);
                     }
                     break;
@@ -431,7 +431,7 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
         if(x_max < pt.x){
             x_max = pt.x;
         }
-        if(y_max > pt.y){
+        if(y_max < pt.y){
             y_max = pt.y;
         }
     }
