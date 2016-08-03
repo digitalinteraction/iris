@@ -24,8 +24,6 @@
 using namespace cv;
 using namespace std;
 
-static CommImage *static_call = 0;
-
 struct waiting_response{
     uint32_t id;
     uint32_t side;
