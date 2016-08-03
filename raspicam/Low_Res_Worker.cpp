@@ -439,16 +439,16 @@ void Low_Res_Worker::send_high_requests(){
             if(temp->width > HIGH_OUTPUT_X) temp->width = HIGH_OUTPUT_X;
 
             if (enclosing.x < 5) {
-                temp->down = 1;
+                temp->right = 1;
             }
             if (enclosing.y < 5) {
-                temp->left = 1;
+                temp->down = 1;
             }
             if ((enclosing.x + enclosing.width) > (LOW_OUTPUT_X-5)) {
-                temp->up = 1;
+                temp->left = 1;
             }
             if ((enclosing.y + enclosing.height) > (LOW_OUTPUT_Y-5)) {
-                temp->right = 1;
+                temp->up = 1;
             }
             printf("sending request for %d %d %d %d or %d %d %d %d\n", enclosing.x, enclosing.y, enclosing.height, enclosing.width, temp->x, temp->y, temp->height, temp->width);
             printf("with sides %d %d %d %d\n", temp->down, temp->up, temp->left, temp->right);

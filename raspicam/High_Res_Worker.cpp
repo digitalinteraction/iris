@@ -76,6 +76,7 @@ void High_Res_Worker::run(){
 
             
             find_features(patch, group);
+            deb_printf("finished finding features\n");
             free(patch->buffer);
             free(patch);
             deb_printf("found features and freed patch\n");
@@ -262,7 +263,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         comm->file_cnt++;
 
     }
-    img.release();
+    //img.release();
     
 }
 
