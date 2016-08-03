@@ -92,7 +92,9 @@ void High_Res_Worker::run(){
         while (item != 0) {
             int32_t res = -1;
             if (item->state != 1) {
+                deb_printf("identifying object %p\n", item);
                 res = identify_object(item);
+                deb_printf("end identifying\n");
             }
             if (res != -1) {
                 item->prev->next = item->next;
