@@ -330,9 +330,10 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
 
 void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir) {
 
-    deb_printf("Combining Objects %lx %lx from side %d\n", dest->mac, src->mac, src->addr);
     
     if (src != 0 && src->feature != 0) {
+        deb_printf("Combining Objects %lx %lx from side %d\n", dest->mac, src->mac, src->addr);
+
         for (int i = 0; i < HISTOGRAM_SIZE; i++) {
             dest->feature->hist_h[i] += src->feature->hist_h[i];
             dest->feature->hist_s[i] += src->feature->hist_s[i];
