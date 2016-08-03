@@ -393,4 +393,5 @@ void High_Res_Worker::check_objects(patch_packet *start){
         }
         item = item->next;
     }
+    deb_printf("end checking objects\n");
 }
