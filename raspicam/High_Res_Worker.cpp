@@ -432,7 +432,7 @@ void High_Res_Worker::check_objects(patch_packet *start){
 }
 
 struct sort_point {
-    bool operator() (Point2i pt1, Point2i pt2) { return (pt1.y < pt2.y);}
+    bool operator() (Point2i pt1, Point2i pt2) { return (sqrt(pt1.y*pt1.y + pt1.x*pt1.x) < sqrt(pt2.y*pt2.y + pt2.x*pt2.x));}
 } sorter;
 
 
