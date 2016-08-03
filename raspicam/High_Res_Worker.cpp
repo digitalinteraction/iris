@@ -442,6 +442,7 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
         pt.y = pt.y + abs(y_min);
         contour->at(i) = pt;
     }
+    RNG rng(12345);
     Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
     Mat img(abs(x_min) + x_max, abs(y_min) + y_max, CV_8UC3);
     drawContours(img, vector<vector<Point> >(1,*contour), -1, color, 1, 8);
