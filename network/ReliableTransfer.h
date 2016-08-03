@@ -36,6 +36,7 @@ struct linked_header{
     struct linked_header* prev;
     size_t size;
     uint8_t resent_time;
+    uint32_t id;
     
 };
 
@@ -45,7 +46,7 @@ public:
     ReliableTransfer(const ReliableTransfer& orig);
     virtual ~ReliableTransfer();
     int recv(void *buffer, size_t size, uint32_t addr);
-    uint32_t send(void *buffer, size_t size, uint32_t addr, uint8_t broadcast);
+    uint32_t send(void *buffer, size_t size, uint32_t addr, uint8_t broadcast, uint32_t id);
     int check_timeouts();
     int send_acks();
     volatile uint32_t list_cnt;

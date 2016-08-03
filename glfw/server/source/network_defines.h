@@ -64,6 +64,7 @@ typedef struct feat_vect{
 
 typedef struct high_res_packet{
     uint32_t file_cnt;
+    struct timespec timeout;
     uint16_t id;
     uint64_t mac;
     uint8_t addr;
@@ -98,6 +99,7 @@ struct topo_header{
 struct packet{
     size_t size;
     uint32_t addr;
+    uint32_t id;
     uint8_t broadcast;
     void *buffer;
     struct packet *next;

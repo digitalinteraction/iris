@@ -24,7 +24,7 @@ class Packetbuffer {
 public:
     Packetbuffer(uint8_t id);
     virtual ~Packetbuffer();
-    int add(uint32_t size, uint32_t addr, void *buffer);
+    int32_t add(uint32_t size, uint32_t addr, void *buffer);
     int get(struct packet ** pack);
     int signalfd;
     uint16_t getCnt();
@@ -34,6 +34,7 @@ private:
     uint16_t cnt;
     std::mutex lock;
     uint8_t id;
+    int32_t packet_id;
 };
 
 #endif /* PACKETBUFFER_H */

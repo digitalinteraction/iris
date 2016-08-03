@@ -87,7 +87,7 @@ void NetworkControl::run(){
                 //printf("recieved something fro image_in\n");
                 while(image_in->get(&pack) == 0){
                     //printf("sending out image packets\n");
-                    if(rel->send(pack->buffer, pack->size, pack->addr, pack->broadcast) != 0){
+                    if(rel->send(pack->buffer, pack->size, pack->addr, pack->broadcast, pack->id) != 0){
                         printf("Error NetworkControl: sending reliable packet not working\n");
                     }
                     free(pack->buffer);

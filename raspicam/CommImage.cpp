@@ -38,6 +38,9 @@ CommImage::CommImage(NetworkControl *nc) {
     recv_last = 0;
     file_cnt = 53;
     
+    first = 0;
+    last = 0;
+    
     nc->rel->setCallback(&callback_rel);
 }
 
@@ -127,29 +130,42 @@ void CommImage::ask_neighbours(patch_packet* item) {
                 array[1] = temp.y;
             }
         }
-        if (((int) item->down) == 1) {
-            image_out->add(size, DOWN_SIDE, (void *) send_packet);
+        if (((int) item->down) == 1 && nc->topo->isalive(DOWN_SIDE) == 1) {
+            int32_t res = image_out->add(size, DOWN_SIDE, (void *) send_packet);
+            add_packet_send((uint32_t)res, DOWN_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, DOWN_SIDE);
+        }else{
+            item->down == (patch_packet *)0;
         }
-        if (((int) item->up) == 1) {
-            image_out->add(size, UP_SIDE, (void *) send_packet);
+        if (((int) item->up) == 1 && nc->topo->isalive(UP_SIDE) == 1) {
+            int32_t res = image_out->add(size, UP_SIDE, (void *) send_packet);
+            add_packet_send((uint32_t)res, UP_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, UP_SIDE);
+        }else{
+            item->up == (patch_packet *)0;
         }
 
-        if (((int) item->left) == 1) {
-            image_out->add(size, LEFT_SIDE, (void *) send_packet);
+        if (((int) item->left) == 1 && nc->topo->isalive(LEFT_SIDE) == 1) {
+            int32_t res = image_out->add(size, LEFT_SIDE, (void *) send_packet);
+            add_packet_send((uint32_t)res, LEFT_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, LEFT_SIDE);
+        }else{
+            item->left == (patch_packet *)0;
         }
 
-        if (((int) item->right) == 1) {
-            image_out->add(size, RIGHT_SIDE, (void *) send_packet);
+        if (((int) item->right) == 1 && nc->topo->isalive(RIGHT_SIDE) == 1) {
+            int32_t res = image_out->add(size, RIGHT_SIDE, (void *) send_packet);
+            add_packet_send((uint32_t)res, RIGHT_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, RIGHT_SIDE);
+        }else{
+            item->right == (patch_packet *)0;
         }
+        free(send_packet);
         item->state = 1;
     }
 }
 
-
+/*
 patch_packet * CommImage::search_list(patch_packet* start, patch_packet *search){
 #ifdef DEBUG_COMM_IMAGE
     printf("search_list: %d %d\n", search->mac, search->id);
@@ -166,6 +182,7 @@ patch_packet * CommImage::search_list(patch_packet* start, patch_packet *search)
     }
     return ret;
 }
+ * */
 
 void CommImage::check_recv_buffer(patch_packet *start) {
     struct packet *pack;
@@ -208,12 +225,12 @@ void CommImage::match_recv_list(patch_packet *start){
 #ifdef DEBUG_COMM_IMAGE
     printf("match_recv_list\n");
 #endif
-    match_answers(start);
+    //match_answers(start);
     patch_packet *item = recv_first;
     while(item != 0){
         patch_packet *comp = start;
         while(comp != 0){
-            if(comp->state == 0){
+            if(comp->state != 2){
                 if(((int)comp->down) == 1 && item->addr == DOWN_SIDE){
                     uint16_t ipos1 = comp->rect_x;
                     uint16_t ipos2 = comp->rect_x + comp->rect_width;
@@ -227,7 +244,7 @@ void CommImage::match_recv_list(patch_packet *start){
                         item->next->prev = item->prev;
                     }
                 }
-                if(((int)comp->up) == 1 && item->addr == UP_SIDE){
+                else if(((int)comp->up) == 1 && item->addr == UP_SIDE){
                     uint16_t ipos1 = comp->rect_x;
                     uint16_t ipos2 = comp->rect_x + comp->rect_width;
                     uint16_t epos1 = item->rect_x;
@@ -240,7 +257,7 @@ void CommImage::match_recv_list(patch_packet *start){
                         item->next->prev = item->prev;
                     }
                 }
-                if(((int)comp->left) == 1 && item->addr == LEFT_SIDE){
+                else if(((int)comp->left) == 1 && item->addr == LEFT_SIDE){
                     uint16_t ipos1 = comp->rect_y;
                     uint16_t ipos2 = comp->rect_y + comp->rect_height;
                     uint16_t epos1 = item->rect_y;
@@ -253,7 +270,7 @@ void CommImage::match_recv_list(patch_packet *start){
                         item->next->prev = item->prev;
                     }
                 }
-                if(((int)comp->right) == 1 && item->addr == RIGHT_SIDE){
+                else if(((int)comp->right) == 1 && item->addr == RIGHT_SIDE){
                     uint16_t ipos1 = comp->rect_y;
                     uint16_t ipos2 = comp->rect_y + comp->rect_height;
                     uint16_t epos1 = item->rect_y;
@@ -272,7 +289,7 @@ void CommImage::match_recv_list(patch_packet *start){
         item = item->next;
     }
 }
-
+/*
 void CommImage::match_answers(patch_packet *start) {
 #ifdef DEBUG_COMM_IMAGE
     printf("match_answers\n");
@@ -309,7 +326,77 @@ void CommImage::match_answers(patch_packet *start) {
         item = item->next;
     }
 }
+*/
+void CommImage::callback_rel(uint32_t id, size_t size, uint8_t reason){
+    deb_printf("id: %d size: %d reason: %d\n", addr, size, reason);
+    remove_packet_send(id);
+}
 
-void CommImage::callback_rel(uint32_t addr, size_t size, uint8_t reason){
-    deb_printf("callback worked, %d %d %d!!\n", addr, size, reason);
+
+//maybe use lock for access to list because of callback
+void CommImage::add_packet_send(uint32_t id, uint32_t side, patch_packet* item){
+    deb_printf("id: %d side: %d patch %p\n", id, side, item);
+    struct waiting_response* response = (struct waiting_response*) malloc(sizeof(struct waiting_response));
+    response->id = id;
+    response->item = item;
+    response->side = side;
+    struct timespec current;
+    clock_gettime(CLOCK_REALTIME, &current);
+    response->timeout.tv_sec = current.tv_sec+5;
+    
+    if(first == 0){
+        first = response;
+        last = response;
+    }else{
+        last->next = response;
+        response->prev = last;
+        last = response;
+    }
+}
+
+void CommImage::remove_packet_send(uint32_t id){
+    deb_printf("id: %d\n", id);
+    struct waiting_response *item = first;
+    uint8_t success = 0;
+    struct waiting_response *freeitem = 0;
+    while(item != 0 && success == 0){
+        if(item->id == id){
+            switch(item->side){
+                case DOWN_SIDE: item->item->down = (patch_packet *)0; break;
+                case UP_SIDE: item->item->up = (patch_packet *)0; break;
+                case LEFT_SIDE: item->item->left = (patch_packet *)0; break;
+                case RIGHT_SIDE: item->item->right = (patch_packet *)0; break;
+            }
+            success = 1;
+            freeitem = item;
+            item->prev->next = item->next;
+            item->next->prev = item->prev;
+        }
+        item = item->next;
+    }
+    if(success == 1 && freeitem != 0){
+        deb_printf("free item %p\n", freeitem);
+        free(freeitem);
+    }
+}
+
+void CommImage::cleanup_packet_send(){
+    struct waiting_response *item = first;
+    struct timespec current;
+    clock_gettime(CLOCK_REALTIME, &current);
+    while(item != 0){
+        uint8_t success = 0;
+        struct waiting_response *freeitem = 0;
+        if(item->timeout->tv_sec < current->tv_sec){
+            freeitem = item;
+            item->prev->next = item->next;
+            item->next->prev = item->prev;
+            success = 1;
+        }
+        item = item->next;
+        if(success == 1){
+            deb_printf("cleaning up item %p with id %d", freeitem, freeitem->id);
+            free(freeitem);
+        }
+    }
 }

@@ -27,6 +27,8 @@
 #define deb_printf(fmt, args...)
 #endif
 
+#define EPSILON 1.0
+
 const char * const object_names[] = {"NOTHING", "CARROT", "CUCUMBER", "PEACH", "APPLE"};
 
 using namespace std;
@@ -81,6 +83,8 @@ void High_Res_Worker::run(){
         
         comm->check_recv_buffer(first);
 
+        check_objects(first);
+        
         patch_packet *item = first;
         while (item != 0) {
             int32_t res = -1;
@@ -214,6 +218,10 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         item->down = (patch_packet*)patch->down;
         item->mac = nc->topo->mac;
         item->id = comm->file_cnt;
+        struct timespec current;
+        clock_gettime(CLOCK_REALTIME, &current);
+        item->timeout = current;
+        item->timeout.tv_sec += 7;
         deb_printf("size of item: %d %d\n", sizeof(patch_packet), sizeof(feature_vector));
         deb_printf("item %p\n", item);
         comm->ask_neighbours(item);
@@ -250,8 +258,12 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         combine_objects(item, item->right, RIGHT_SIDE);
         combine_objects(item, item->up, UP_SIDE);
         combine_objects(item, item->down, DOWN_SIDE);
-
+        
         //normalize histograms
+        /*for(int i = 0; i < HISTOGRAM_SIZE, i++){
+            item->feature->hist_h
+        }*/
+        
         vector<Point> *contour = item->feature->contour;
         RotatedRect boundRect = minAreaRect(*contour);
         Point2f vertices[4];
@@ -300,13 +312,14 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         printf("Result of classifier: %s %f %d\n", object_names[object], result, object);
         
         return object;
-        //do something with result
     }
     return -1;
 }
 
 void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir) {
 
+    deb_printf("Combining Objects %lx %lx from side %d\n", dest->mac, src->mac, src->addr);
+    
     if (src != 0 && src->feature != 0) {
         for (int i = 0; i < HISTOGRAM_SIZE; i++) {
             dest->feature->hist_h[i] += src->feature->hist_h[i];
@@ -318,21 +331,58 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
             Point pt = src->feature->contour->at(i);
             switch (dir) {
                 case LEFT_SIDE:
-                    pt.x = pt.x - HIGH_OUTPUT_X;
+                    pt.x = pt.x - HIGH_OUTPUT_X.0;
+                    if (fabs(pt.x) > EPSILON) {
+                        dest->feature->contour->push_back(pt);
+                    }
                     break;
                 case RIGHT_SIDE:
-                    pt.x = pt.x + HIGH_OUTPUT_X;
+                    pt.x = pt.x + HIGH_OUTPUT_X.0;
+                    if (fabs(pt.x - HIGH_OUTPUT_X.0) > EPSILON) {
+                        dest->feature->contour->push_back(pt);
+                    }
                     break;
                 case UP_SIDE:
-                    pt.y = pt.y + HIGH_OUTPUT_Y;
+                    pt.y = pt.y + HIGH_OUTPUT_Y.0;
+                    if (fabs(pt.y - HIGH_OUTPUT_Y) > EPSILON) {
+                        dest->feature->contour->push_back(pt);
+                    }
                     break;
                 case DOWN_SIDE:
-                    pt.y = pt.y - HIGH_OUTPUT_Y;
+                    pt.y = pt.y - HIGH_OUTPUT_Y.0;
+                    if (fabs(pt.y) > EPSILON) {
+                        dest->feature->contour->push_back(pt);
+                    }
                     break;
             }
-            dest->feature->contour->push_back(pt);
         }
     }
 }
 
 
+void High_Res_Worker::check_objects(patch_packet *start){
+    struct timespec current;
+    clock_gettime(CLOCK_REALTIME, &current);
+    //packet->timeout.tv_sec = current.tv_sec + TIMEOUT;
+    patch_packet *item = start;
+    while(item != 0){
+        if(item->timeout.tv_sec < current.tv_sec){
+            if(((int) item->left) == 1){
+                item->left = (patch_packet *)0; 
+            }
+            if(((int) item->right) == 1){
+                item->right = (patch_packet *)0; 
+            }
+            if(((int) item->up) == 1){
+                item->up = (patch_packet *)0; 
+            }
+            if(((int) item->down) == 1){
+                item->down = (patch_packet *)0; 
+            }
+            if(item->state == 1){
+                item->state = 0;
+            }
+        }
+        item = item->next;
+    }
+}

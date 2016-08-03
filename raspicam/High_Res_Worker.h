@@ -24,6 +24,7 @@
 
 using namespace cv;
 
+
 class Buffer;
 
 class High_Res_Worker {
@@ -41,6 +42,7 @@ private:
     void find_features(RASPITEX_PATCH *patch, uint8_t group);
     int32_t identify_object(patch_packet *item);
     void combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir);
+    void check_objects(patch_packet *start);
     Packetbuffer *out;
     Packetbuffer *in;
     NetworkControl *nc;

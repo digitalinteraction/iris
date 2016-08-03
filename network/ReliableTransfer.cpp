@@ -18,7 +18,7 @@
 #include <string.h>
 
 
-#define TIMEOUT   2;
+#define TIMEOUT   1;
 
 ReliableTransfer::ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out, Topology *topo) {
     this->unrel = unrel;
@@ -136,12 +136,12 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
     return 0;
 }
 
-uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_t broadcast){
+uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_t broadcast, uint32_t id){
     //printf("%p %ld %d %d %d %d\n", buffer, size, addr, broadcast, list_cnt, topo->isalive(addr));
     if(buffer == 0 || size <= 0){
         printf("Error Reliable Transfer: buffer or size is wrong\n");
         if(callback != 0){
-                callback(addr, size, REL_ERROR_BUF_SIZE);
+                callback(id, size, REL_ERROR_BUF_SIZE);
         }
         return -1;
     }
@@ -150,14 +150,14 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     if(list_cnt > 20){
         //printf("Error ReliableTransfer: list too long right now\n");
         if(callback != 0){
-                callback(addr, size, REL_ERROR_LIST);
+                callback(id, size, REL_ERROR_LIST);
         }
         return -1;
     }
     if(topo->isalive(addr) == 0){
         //printf("Error Reliable Transfer: destination is not alive\n");
         if(callback != 0){
-                callback(addr, size, REL_ERROR_DEAD);
+                callback(id, size, REL_ERROR_DEAD);
         }
         return -1;
     }
@@ -169,7 +169,7 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     if (buf <= 0 || cpy_buffer <= 0) {
         printf("Error Reliable Transfer:: allocating buffer failed\n");
         if(callback != 0){
-                callback(addr, size, REL_ERROR_BUF_ALLOC);
+                callback(id, size, REL_ERROR_BUF_ALLOC);
         }
         return -1;
     }
@@ -182,6 +182,7 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     header->filler = 0;
     header->id = seq++;
     header->broadcast = broadcast;
+    header->id = id;
     
     memcpy((unsigned char*)cpy_buffer, (unsigned char*)buf, total_size);
 
@@ -254,7 +255,7 @@ int ReliableTransfer::check_timeouts(){
             printf("ERROR::Reliable Transfer::Packet could not be transmitted\n");
             struct linked_header *temp = first;
             if(callback != 0){
-                callback(temp->addr, temp->size, REL_ERROR_TIMEOUT);
+                callback(temp->id, temp->size, REL_ERROR_TIMEOUT);
             }
             first = first->next;
             free(temp->packet);

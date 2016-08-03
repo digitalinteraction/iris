@@ -24,6 +24,15 @@
 using namespace cv;
 using namespace std;
 
+struct waiting_response{
+    uint32_t id;
+    uint32_t side;
+    patch_packet *item;
+    patch_packet *next;
+    patch_packet *prev;
+    struct timeval timeout;
+};
+
 
 class CommImage {
 public:
@@ -35,7 +44,7 @@ public:
     void check_recv_buffer(patch_packet *start);
     void send_to_server(Mat *img, uint8_t mode, uint8_t pos);
     void ask_neighbours(patch_packet* item);
-    patch_packet *search_list(patch_packet* start, patch_packet *search);
+    //patch_packet *search_list(patch_packet* start, patch_packet *search);
     void match_recv_list(patch_packet *start);
 
     uint16_t file_cnt;
@@ -45,11 +54,16 @@ private:
     Packetbuffer *image_in;
     Packetbuffer *unrel_out;
     Packetbuffer *unrel_in;
-    void match_answers(patch_packet *start);
+    //void match_answers(patch_packet *start);
     patch_packet *recv_first;
     patch_packet *recv_last;
-    static void callback_rel(uint32_t addr, size_t size, uint8_t reason);
+    static void callback_rel(uint32_t id, size_t size, uint8_t reason);
+    void add_packet_send(uint32_t id, uint32_t side, patch_packet *item);
+    void remove_packet_send(uint32_t id);
+    void cleanup_packet_send();
     NetworkControl *nc;
+    struct waiting_response *first;
+    struct waiting_response *last;
 };
 
 #endif /* COMMIMAGE_H */

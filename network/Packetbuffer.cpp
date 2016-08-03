@@ -27,6 +27,7 @@ Packetbuffer::Packetbuffer(uint8_t id) {
     cnt = 0;
     lock.unlock();
     this->id = id;
+    packet_id = 0;
 #ifdef DEBUG
     printf("Packetbuffer:: startup completed\n");
 #endif
@@ -35,7 +36,7 @@ Packetbuffer::Packetbuffer(uint8_t id) {
 Packetbuffer::~Packetbuffer() {
 }
 
-int Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer) {
+int32_t Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer) {
     lock.lock();
     if(size <= 0 || buffer == 0 || cnt > 100){
         //printf("Error Packetbuffer add: size %d, addr %d, buffer %p, cnt %d, id %d\n", size, addr, buffer, cnt, id);
@@ -48,6 +49,7 @@ int Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer) {
     pack->size = size;
     pack->buffer = (void*) malloc(pack->size);
     pack->next = 0;
+    pack->id = packet_id;
     memcpy(pack->buffer, buffer, pack->size);
 
     if (first == 0) {
@@ -58,12 +60,17 @@ int Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer) {
         last = pack;
     }
     cnt++;
+    packet_id++;
+    if(packet_id < 0){
+        packet_id = 0;
+    }
+    
     uint64_t u = 1;
 
     write(signalfd, &u, sizeof (uint64_t));
     lock.unlock();
 
-    return 0;
+    return packet_id;
 }
 
 int Packetbuffer::get(struct packet** pack) {
