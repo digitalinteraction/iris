@@ -20,7 +20,7 @@
 
 #define TIMEOUT   1;
 
-ReliableTransfer::ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out, Topology *topo, CommImage **comm) {
+ReliableTransfer::ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out, Topology *topo) {
     this->unrel = unrel;
     first = 0;
     last = 0;
@@ -34,7 +34,6 @@ ReliableTransfer::ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out
     this->topo = topo;
     list_lock.unlock();
     this->out = out;
-    this->comm = comm;
 }
 
 ReliableTransfer::ReliableTransfer(const ReliableTransfer& orig) {
