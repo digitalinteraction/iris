@@ -10,6 +10,7 @@
 #include "Low_Res_Worker.h"
 //#include "Buffer.h"
 #include "High_Res_Worker.h"
+#include "CommImage.h"
 
 using namespace std;
 
