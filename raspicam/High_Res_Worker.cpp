@@ -432,7 +432,7 @@ void High_Res_Worker::check_objects(patch_packet *start){
 }
 
 void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
-    int x_min=0, y_min=0;
+    int x_min=10000, y_min=10000;
     int x_max=0, y_max=0;
     for(int i = 0; i < contour->size(); i++){
         Point2i pt = contour->at(i);
