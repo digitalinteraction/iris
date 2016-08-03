@@ -251,6 +251,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
                 }else{
                     item->move_cnt = 0;
                 }
+                deb_printf("end of similarity matching\n");
             }
         }
         item = item->next;
