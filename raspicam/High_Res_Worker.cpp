@@ -275,6 +275,13 @@ Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {
 int32_t High_Res_Worker::identify_object(patch_packet *item) {
     if (((int) item->left) != 1 && ((int) item->right) != 1 && ((int) item->up) != 1 && ((int) item->down) != 1) {
         //get all feature vector and classify
+        for (int i = 0; i < item->feature->contour->size(); i++) {
+            Point2i pt = item->feature->contour->at(i);
+            deb_printf("original Contour Point: %d %d\n", pt.x, pt.y);
+        }
+        
+       
+        
         deb_printf("start combining objects\n");
         combine_objects(item, item->left, LEFT_SIDE);
         combine_objects(item, item->right, RIGHT_SIDE);
@@ -357,6 +364,7 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
 
         for (int i = 0; i < src->feature->contour->size(); i++) {
             Point pt = src->feature->contour->at(i);
+            deb_printf("new Contour Point: %d %d\n", pt.x, pt.y);
             switch (dir) {
                 case LEFT_SIDE:
                     pt.x = pt.x + HIGH_OUTPUT_X;
