@@ -38,8 +38,8 @@ CommImage::CommImage(NetworkControl *nc) {
     recv_last = 0;
     file_cnt = 53;
     
-    first = 0;
-    last = 0;
+    first_res = 0;
+    last_res = 0;
     
     nc->rel->setCallback(&callback_rel);
 }
@@ -344,19 +344,19 @@ void CommImage::add_packet_send(uint32_t id, uint32_t side, patch_packet* item){
     clock_gettime(CLOCK_REALTIME, &current);
     response->timeout.tv_sec = current.tv_sec+5;
     
-    if(first == 0){
-        first = response;
-        last = response;
+    if(first_res == 0){
+        first_res = response;
+        last_res = response;
     }else{
-        last->next = response;
-        response->prev = last;
-        last = response;
+        last_res->next = response;
+        response->prev = last_res;
+        last_res = response;
     }
 }
 
 void CommImage::remove_packet_send(uint32_t id){
     deb_printf("id: %d\n", id);
-    struct waiting_response *item = first;
+    struct waiting_response *item = first_res;
     uint8_t success = 0;
     struct waiting_response *freeitem = 0;
     while(item != 0 && success == 0){
@@ -381,13 +381,13 @@ void CommImage::remove_packet_send(uint32_t id){
 }
 
 void CommImage::cleanup_packet_send(){
-    struct waiting_response *item = first;
+    struct waiting_response *item = first_res;
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     while(item != 0){
         uint8_t success = 0;
         struct waiting_response *freeitem = 0;
-        if(item->timeout->tv_sec < current->tv_sec){
+        if(item->timeout.tv_sec < current.tv_sec){
             freeitem = item;
             item->prev->next = item->next;
             item->next->prev = item->prev;

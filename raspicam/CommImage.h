@@ -62,8 +62,8 @@ private:
     void remove_packet_send(uint32_t id);
     void cleanup_packet_send();
     NetworkControl *nc;
-    struct waiting_response *first;
-    struct waiting_response *last;
+    struct waiting_response *first_res;
+    struct waiting_response *last_res;
 };
 
 #endif /* COMMIMAGE_H */
