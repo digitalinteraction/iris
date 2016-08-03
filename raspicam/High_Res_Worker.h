@@ -24,7 +24,6 @@
 
 using namespace cv;
 
-CommImage *CommImage::static_call = 0;
 
 
 class Buffer;

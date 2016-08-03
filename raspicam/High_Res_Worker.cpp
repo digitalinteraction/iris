@@ -21,6 +21,9 @@
 
 #include "Buffer.h"
 
+CommImage *CommImage::static_call = 0;
+
+
 #ifdef DEBUG_HIGH_RES
 #define deb_printf(fmt, args...) fprintf(stderr, "HIGH_RES_WORKER: %d:%s(): " fmt, __LINE__, __func__, ##args)
 #else
