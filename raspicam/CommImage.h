@@ -46,7 +46,7 @@ public:
     void ask_neighbours(patch_packet* item);
     //patch_packet *search_list(patch_packet* start, patch_packet *search);
     void match_recv_list(patch_packet *start);
-    void callback_rel(uint32_t id, size_t size, uint8_t reason);
+    static void callback_rel(uint32_t id, size_t size, uint8_t reason);
 
     uint16_t file_cnt;
 
