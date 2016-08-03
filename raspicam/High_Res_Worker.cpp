@@ -421,25 +421,26 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
     int x_min=0, y_min=0;
     int x_max=0, y_max=0;
     for(int i = 0; i < contour->size(); i++){
-        Point2i *pt = contour->at(i);
-        if(x_min > pt->x){
-            x_min = pt->x;
+        Point2i pt = contour->at(i);
+        if(x_min > pt.x){
+            x_min = pt.x;
         }
-        if(y_min > pt->y){
-            y_min = pt->y;
+        if(y_min > pt.y){
+            y_min = pt.y;
         }
-        if(x_max < pt->x){
-            x_max = pt->x;
+        if(x_max < pt.x){
+            x_max = pt.x;
         }
-        if(y_max > pt->y){
-            y_max = pt->y;
+        if(y_max > pt.y){
+            y_max = pt.y;
         }
     }
     
     for(int i = 0; i < contour->size(); i++){
-        Point2i *pt = contour->at(i);
-        pt->x = pt->x + abs(x_min);
-        pt->y = pt->y + abs(y_min);
+        Point2i pt = contour->at(i);
+        pt.x = pt.x + abs(x_min);
+        pt.y = pt.y + abs(y_min);
+        contour->at(i) = pt;
     }
     
     Mat img(abs(x_min) + x_max, abs(y_min) + y_max, CV_8UC3);
