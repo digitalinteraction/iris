@@ -204,9 +204,9 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         calcHist(&lum_channel, 1, 0, thres, v_hist, 1, &buck, &histRange, true, true);
 
         
-        cout << "Histogram H: " << h_hist<< endl;
-        cout << "Histogram S: " << s_hist<< endl;
-        cout << "Histogram V: " << v_hist<< endl;
+        //cout << "Histogram H: " << h_hist<< endl;
+        //cout << "Histogram S: " << s_hist<< endl;
+        //cout << "Histogram V: " << v_hist<< endl;
 
         //normalize(r_hist, r_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
         //normalize(g_hist, g_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
@@ -329,7 +329,7 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
             features.at<float>(0, i) = final_vector[i];
             //printf("%f\n", item->final_vector[i]);
         }
-        cout << features << endl;
+        //cout << features << endl;
         float result = classifier->predict(features);
         int object = (int)floor(result+0.5);
         printf("Result of classifier: %s %f %d\n", object_names[object], result, object);

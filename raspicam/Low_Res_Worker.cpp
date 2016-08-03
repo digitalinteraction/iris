@@ -450,7 +450,7 @@ void Low_Res_Worker::send_high_requests(){
             if ((enclosing.y + enclosing.width) == LOW_OUTPUT_Y) {
                 temp->right = 1;
             }
-            deb_printf("sending request for %d %d %d %d or %d %d %d %d\n", enclosing.x, enclosing.y, enclosing.height, enclosing.width, temp->x, temp->y, temp->height, temp->width);
+            printf("sending request for %d %d %d %d or %d %d %d %d\n", enclosing.x, enclosing.y, enclosing.height, enclosing.width, temp->x, temp->y, temp->height, temp->width);
             requests_out->add(temp, 0);
             item->asked = 1;
         }
