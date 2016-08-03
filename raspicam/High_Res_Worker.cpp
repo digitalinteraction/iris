@@ -78,7 +78,7 @@ void High_Res_Worker::run(){
             find_features(patch, group);
             free(patch->buffer);
             free(patch);
-            
+            deb_printf("found features and freed patch\n");
             cnt++;
             prev_group = group;
             
@@ -366,6 +366,7 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
 
 
 void High_Res_Worker::check_objects(patch_packet *start){
+    deb_printf("checking objects for timeout\n");
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     //packet->timeout.tv_sec = current.tv_sec + TIMEOUT;
