@@ -126,19 +126,19 @@ void CommImage::ask_neighbours(patch_packet* item) {
             for (int i = 0; i < item->feature->contour->size(); i++) {
                 Point2i temp = item->feature->contour->at(i);
                 uint32_t *array = dest+2*i;
-                deb_printf("adding point %d %d %f %f at pos %p\n", temp.x, temp.y, temp.x, temp.y, array);
+                deb_printf("adding point %d %d %f %f at pos %p\n", temp.x, temp.y, array);
                 array[0] = temp.x;
                 array[1] = temp.y;
             }
         }
-        if (((int) item->down) == 1 && nc->topo->isalive(DOWN_SIDE) == 1) {
+        if (((int) item->down) == 1 /*&& nc->topo->isalive(DOWN_SIDE) == 1*/) {
             int32_t res = image_out->add(size, DOWN_SIDE, (void *) send_packet);
             add_packet_send((uint32_t)res, DOWN_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, DOWN_SIDE);
         }else{
             item->down == (patch_packet *)0;
         }
-        if (((int) item->up) == 1 && nc->topo->isalive(UP_SIDE) == 1) {
+        if (((int) item->up) == 1 /*&& nc->topo->isalive(UP_SIDE) == 1*/) {
             int32_t res = image_out->add(size, UP_SIDE, (void *) send_packet);
             add_packet_send((uint32_t)res, UP_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, UP_SIDE);
@@ -146,7 +146,7 @@ void CommImage::ask_neighbours(patch_packet* item) {
             item->up == (patch_packet *)0;
         }
 
-        if (((int) item->left) == 1 && nc->topo->isalive(LEFT_SIDE) == 1) {
+        if (((int) item->left) == 1 /*&& nc->topo->isalive(LEFT_SIDE) == 1*/) {
             int32_t res = image_out->add(size, LEFT_SIDE, (void *) send_packet);
             add_packet_send((uint32_t)res, LEFT_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, LEFT_SIDE);
@@ -154,7 +154,7 @@ void CommImage::ask_neighbours(patch_packet* item) {
             item->left == (patch_packet *)0;
         }
 
-        if (((int) item->right) == 1 && nc->topo->isalive(RIGHT_SIDE) == 1) {
+        if (((int) item->right) == 1 /*&& nc->topo->isalive(RIGHT_SIDE) == 1*/) {
             int32_t res = image_out->add(size, RIGHT_SIDE, (void *) send_packet);
             add_packet_send((uint32_t)res, RIGHT_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, RIGHT_SIDE);
