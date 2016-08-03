@@ -40,7 +40,7 @@ CommImage::CommImage(NetworkControl *nc) {
     
     first_res = 0;
     last_res = 0;
-    CommImage::static_call = &this;
+    CommImage::static_call = this;
     
     nc->rel->setCallback(&callback_rel);
 }
