@@ -191,7 +191,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 
 uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t token, uint8_t fb) {
 
-    //printf("******************start matching contours\n");
+    printf("******************start matching contours\n");
     vector<Point> *found = 0;
     struct objects *item = first;
     while (item != 0) {
@@ -231,7 +231,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
                 }
             }
             if (similarity <= 0.5 && similarity >= -0.5) {
-                //printf("found match %d with similarity %f\n", item->id, similarity);
+                printf("found match %d with similarity %f\n", item->id, similarity);
                 item->contour = new vector<Point>;
                 *item->contour = *found;
                 contour->erase(contour->begin() + pos_elem);
@@ -256,9 +256,9 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
         item = item->next;
     }
 
-    //printf("size left %d\n", contour->size());
+    printf("size left %d\n", contour->size());
     for (int i = 0; i < contour->size(); i++) {
-        //printf("contours found: %f\n", contourArea(contour->at(i)));
+        printf("contours found: %f\n", contourArea(contour->at(i)));
         if (contourArea(contour->at(i)) > CONTOUR_LOWER_THRESHOLD) {
             Moments mu = moments(contour->at(i), false);
             Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
@@ -275,13 +275,13 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
             item->fb = fb;
             item->token = token;
             if (first == 0) {
-                //printf("added item with id %d as first\n", item->id);
+                printf("added item with id %d as first\n", item->id);
                 first = item;
                 last = first;
                 first->next = 0;
                 first->prev = 0;
             } else {
-                //printf("added item with id %d\n", item->id);
+                printf("added item with id %d\n", item->id);
                 item->next = 0;
                 item->prev = last;
                 last->next = item;
