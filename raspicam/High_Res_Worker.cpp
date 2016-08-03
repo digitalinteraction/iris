@@ -97,6 +97,7 @@ void High_Res_Worker::run(){
             if (res != -1) {
                 item->prev->next = item->next;
                 item->next->prev = item->prev;
+                deb_printf("freeing items %p %p %p %p\n", item->left, item->right, item->up, item->down);
                 if (((int) item->left) != 0) {
                     free(item->left);
                 }
@@ -368,7 +369,7 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
 
 
 void High_Res_Worker::check_objects(patch_packet *start){
-    deb_printf("checking objects for timeout\n");
+    //deb_printf("checking objects for timeout\n");
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     //packet->timeout.tv_sec = current.tv_sec + TIMEOUT;
@@ -393,5 +394,5 @@ void High_Res_Worker::check_objects(patch_packet *start){
         }
         item = item->next;
     }
-    deb_printf("end checking objects\n");
+    //deb_printf("end checking objects\n");
 }
