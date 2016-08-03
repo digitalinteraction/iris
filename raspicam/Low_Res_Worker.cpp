@@ -118,7 +118,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         }
         for (int i = 0; i < contours_list.size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-            drawContours(drawing, contours_list, i, color, 2);
+            drawContours(img, contours_list, i, color, 2);
         }
         deb_printf("sending request for high res image\n");
         send_high_requests();
