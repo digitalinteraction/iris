@@ -13,7 +13,7 @@
 
 #include "NetworkControl.h"
 
-NetworkControl::NetworkControl(CommImage **comm) {
+NetworkControl::NetworkControl() {
     
     image_out = new Packetbuffer(1);
     unrel_out = new Packetbuffer(2);
@@ -21,7 +21,7 @@ NetworkControl::NetworkControl(CommImage **comm) {
     image_in = new Packetbuffer(4);
 
     topo = new Topology(&unrel, unrel_out);
-    rel = new ReliableTransfer(&unrel, image_out, topo, comm);
+    rel = new ReliableTransfer(&unrel, image_out, topo);
     debug = new DebugTransfer(unrel_out, &unrel);
     unrel = new UnreliableTransfer(rel, topo, debug);
     

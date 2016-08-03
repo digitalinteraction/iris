@@ -18,7 +18,6 @@
 #include "UnreliableTransfer.h"
 #include <mutex>
 #include "Topology.h"
-#include "../raspicam/CommImage.h"
 
 //class UnreliableTransfer;
 
@@ -43,13 +42,14 @@ struct linked_header{
 
 class ReliableTransfer {
 public:
-    ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out, Topology *topo, CommImage **comm);
+    ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out, Topology *topo);
     ReliableTransfer(const ReliableTransfer& orig);
     virtual ~ReliableTransfer();
     int recv(void *buffer, size_t size, uint32_t addr);
     uint32_t send(void *buffer, size_t size, uint32_t addr, uint8_t broadcast, uint32_t id);
     int check_timeouts();
     int send_acks();
+    void setCallback(void (*callback)(uint32_t, size_t, uint8_t));
     volatile uint32_t list_cnt;
 private:
     Packetbuffer *out;
@@ -62,7 +62,8 @@ private:
     struct reliable_packet ack;
     int timer;
     std::mutex list_lock;
-    CommImage **comm;
+    void (*callback)(uint32_t, size_t, uint8_t);
+    
 };
 
 #endif /* RELIABLETRANSFER_H */

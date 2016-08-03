@@ -34,7 +34,7 @@ const char * const object_names[] = {"NOTHING", "CARROT", "CUCUMBER", "PEACH", "
 using namespace std;
 
 
-High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf, NetworkControl *nc, CommImage *comm) {
+High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf, NetworkControl *nc) {
     buf = buffer;
     cnt = 0;
     prev_group = 0;
@@ -46,7 +46,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     
     first = 0;
     last = 0;
-    this->comm = comm;
+    this->comm = new CommImage(nc);
     
     //classifier = cv::ml::RTrees::create();
     //classifier->load<cv::ml::RTrees>("/home/pi/cutting_board/raspicam/build/classifier.xml");

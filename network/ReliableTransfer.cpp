@@ -141,8 +141,8 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     //printf("%p %ld %d %d %d %d\n", buffer, size, addr, broadcast, list_cnt, topo->isalive(addr));
     if(buffer == 0 || size <= 0){
         printf("Error Reliable Transfer: buffer or size is wrong\n");
-        if(*comm != 0){
-                *comm->callback_rel(id, size, REL_ERROR_BUF_SIZE);
+        if(callback != 0){
+                callback(id, size, REL_ERROR_BUF_SIZE);
         }
         return -1;
     }
@@ -150,15 +150,15 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     
     if(list_cnt > 20){
         //printf("Error ReliableTransfer: list too long right now\n");
-        if(*comm != 0){
-                *comm->callback_rel(id, size, REL_ERROR_LIST);
+        if(callback != 0){
+                callback(id, size, REL_ERROR_LIST);
         }
         return -1;
     }
     if(topo->isalive(addr) == 0){
         //printf("Error Reliable Transfer: destination is not alive\n");
-        if(*comm != 0){
-                *comm->callback_rel(id, size, REL_ERROR_DEAD);
+        if(callback != 0){
+                callback(id, size, REL_ERROR_DEAD);
         }
         return -1;
     }
@@ -169,8 +169,8 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     void *cpy_buffer = malloc(total_size);
     if (buf <= 0 || cpy_buffer <= 0) {
         printf("Error Reliable Transfer:: allocating buffer failed\n");
-        if(*comm != 0){
-                *comm->callback_rel(id, size, REL_ERROR_BUF_ALLOC);
+        if(callback != 0){
+                callback(id, size, REL_ERROR_BUF_ALLOC);
         }
         return -1;
     }
@@ -255,8 +255,8 @@ int ReliableTransfer::check_timeouts(){
         } else {
             printf("ERROR::Reliable Transfer::Packet could not be transmitted\n");
             struct linked_header *temp = first;
-            if(*comm != 0){
-                *comm->callback_rel(temp->id, temp->size, REL_ERROR_TIMEOUT);
+            if(callback != 0){
+                callback(temp->id, temp->size, REL_ERROR_TIMEOUT);
             }
             first = first->next;
             free(temp->packet);
@@ -274,4 +274,8 @@ int ReliableTransfer::check_timeouts(){
     return 0;
 }
 
+
+void ReliableTransfer::setCallback(void(*callback)(uint32_t,size_t,uint8_t)){
+    this->callback = callback;
+}
 
