@@ -214,7 +214,7 @@ void SerialCon::slip_run() {
                         if (size0 > 0) {
  
                             int ret = recv_buf->add(size0, 0, recv_buf0);
-                            if (ret != 0) {
+                            if (ret < 0) {
                                 printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
@@ -230,7 +230,7 @@ void SerialCon::slip_run() {
                         if (size1 > 0) {
  
                             int ret = recv_buf->add(size1, 1, recv_buf1);
-                            if (ret != 0) {
+                            if (ret < 0) {
                                 printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
@@ -246,7 +246,7 @@ void SerialCon::slip_run() {
                         if (size2 > 0) {
  
                             int ret = recv_buf->add(size2, 2, recv_buf2);
-                            if (ret != 0) {
+                            if (ret < 0) {
                                 printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
@@ -262,7 +262,7 @@ void SerialCon::slip_run() {
                         if (size3 > 0) {
  
                             int ret = recv_buf->add(size3, 3, recv_buf3);
-                            if (ret != 0) {
+                            if (ret < 0) {
                                 printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                             }
                         }
@@ -277,7 +277,7 @@ void SerialCon::slip_run() {
                 int n = recvfrom(fd_array[4], &recv_buf4, SIZE_LIMIT, 0, (struct sockaddr *) &client_addr, (socklen_t *)&clen);
                 if (n > 0) {
                     int ret = recv_buf->add(n, client_addr.sin_addr.s_addr, recv_buf4);
-                    if (ret != 0) {
+                    if (ret < 0) {
                         printf("Error SerialCon: inserting buffer in Packetbuffer not successful\n");
                     }
                 }
