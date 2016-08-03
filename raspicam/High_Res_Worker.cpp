@@ -263,17 +263,17 @@ Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {
 int32_t High_Res_Worker::identify_object(patch_packet *item) {
     if (((int) item->left) != 1 && ((int) item->right) != 1 && ((int) item->up) != 1 && ((int) item->down) != 1) {
         //get all feature vector and classify
-
+        deb_printf("start combining objects\n");
         combine_objects(item, item->left, LEFT_SIDE);
         combine_objects(item, item->right, RIGHT_SIDE);
         combine_objects(item, item->up, UP_SIDE);
         combine_objects(item, item->down, DOWN_SIDE);
-        
+        deb_printf("combined all objects\n");
         //normalize histograms
         /*for(int i = 0; i < HISTOGRAM_SIZE, i++){
             item->feature->hist_h
         }*/
-        
+        deb_printf("calculating contour data\n");
         vector<Point> *contour = item->feature->contour;
         RotatedRect boundRect = minAreaRect(*contour);
         Point2f vertices[4];
@@ -292,12 +292,13 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         float radius;
         minEnclosingCircle(*contour, center, radius);
         double circle_extend = area / (3.1415 * radius * radius); //good
-
+        deb_printf("calculate moments and hu moments\n");
         //HuMoments
         Moments mu = moments(*contour, false);
         double hu[7];
         HuMoments(mu, hu);
         
+        deb_printf("allocating final vector for classification\n");
         float *final_vector = (float*)malloc(sizeof(float)*(7+5+3*HISTOGRAM_SIZE));
         for(int i = 0; i < 7; i++){
             final_vector[i] = (float)(1000*hu[i]);
@@ -310,7 +311,8 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         memcpy(&final_vector[12], item->feature->hist_h, sizeof(float)*HISTOGRAM_SIZE);
         memcpy(&final_vector[12 + HISTOGRAM_SIZE], item->feature->hist_s, sizeof(float)*HISTOGRAM_SIZE);
         memcpy(&final_vector[12 + HISTOGRAM_SIZE*2], item->feature->hist_v, sizeof(float)*HISTOGRAM_SIZE);
-
+        
+        deb_printf("fill mat object with final vector\n");
         Mat features(1, 7+5+3*HISTOGRAM_SIZE, CV_32FC1);
         for(int i = 0; i < 7+5+3*HISTOGRAM_SIZE; i++){
             features.at<float>(0, i) = final_vector[i];
