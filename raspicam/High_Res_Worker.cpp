@@ -242,6 +242,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
             last->next = item;
             last = item;
         }
+        deb_printf("saved it in list\n");
         comm->file_cnt++;
 
     }
