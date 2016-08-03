@@ -28,8 +28,8 @@ struct waiting_response{
     uint32_t id;
     uint32_t side;
     patch_packet *item;
-    patch_packet *next;
-    patch_packet *prev;
+    struct waiting_response *next;
+    struct waiting_response *prev;
     struct timeval timeout;
 };
 
