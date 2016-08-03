@@ -191,7 +191,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 
 uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t token, uint8_t fb) {
 
-    printf("******************start matching contours\n");
+    deb_printf("******************start matching contours\n");
     vector<Point> *found = 0;
     struct objects *item = first;
     while (item != 0) {
