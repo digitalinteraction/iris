@@ -330,7 +330,7 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
             features.at<float>(0, i) = final_vector[i];
             //printf("%f\n", item->final_vector[i]);
         }
-        //cout << features << endl;
+        cout << features << endl;
         float result = classifier->predict(features);
         int object = (int)floor(result+0.5);
         printf("Result of classifier: %s %f %d\n", object_names[object], result, object);
@@ -344,7 +344,7 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
 
     
     if (src != 0 && src->feature != 0) {
-        deb_printf("Combining Objects %lx %lx from side %d\n", dest->mac, src->mac, src->addr);
+        deb_printf("Combining Objects %lx %lx from side %d\n", dest->mac, src->mac, dir);
 
         for (int i = 0; i < HISTOGRAM_SIZE; i++) {
             dest->feature->hist_h[i] += src->feature->hist_h[i];
