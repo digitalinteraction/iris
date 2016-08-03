@@ -21,7 +21,7 @@
 //#include "Buffer.h"
 
 #ifdef DEBUG_LOW_RES
-#define deb_printf(fmt, args...) fprintf(stderr, "HIGH_RES_WORKER: %d:%s(): " fmt, __LINE__, __func__, ##args)
+#define deb_printf(fmt, args...) fprintf(stderr, "LOW_RES_WORKER: %d:%s(): " fmt, __LINE__, __func__, ##args)
 #else
 #define deb_printf(fmt, args...)
 #endif
@@ -78,6 +78,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     //Mat is in format BGRA
     Mat img = convert(image, image_size);
     if (img.empty() == 0) {
+        deb_printf("cleaning up list\n");
         cleanup_list();
        
         Mat hsv, rgb;
@@ -86,7 +87,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         Mat channel[3];
         split(hsv, channel);
         threshold(channel[1], mask, 50, 255, THRESH_BINARY);
-        
+        deb_printf("thresholded image\n");
         //pMOG2->apply(img, mask);
         //CLEANING UP////////////////////////////////////////
         Mat kernel = Mat::ones(3, 3, CV_8U);
@@ -99,6 +100,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         RNG rng(12345);
         findContours(cleaned, *contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         /////////////////////////////////////////////////////
+        deb_printf("matching contours\n");
         match_contours(contours, low_patch.token, low_patch.fb);
         vector<vector<Point> > contours_list;
         Mat drawing = Mat::zeros(cleaned.size(), CV_8UC3);
@@ -118,8 +120,10 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, contours_list, i, color, 2);
         }
+        deb_printf("sending request for high res image\n");
         send_high_requests();
 
+        deb_printf("sending image data to server\n");
         Mat gray;
         cvtColor(img, gray, COLOR_BGR2GRAY);
         if (next_send % 2 == 0) {
