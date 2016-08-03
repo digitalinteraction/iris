@@ -311,19 +311,19 @@ void Low_Res_Worker::cleanup_list() {
             deb_printf("freeing item %p with id %d\n", item, item->id);
             //printf("freeing item %p with id %d\n", item, item->id);
             if (item->prev == 0 && item->next == 0) {
-                deb_printf("setting first and last to 0\n");
+                deb_printf("setting first and last to 0, removing %p\n", item);
                 first = 0;
                 last = 0;
             } else if (item->prev == 0) {
-                deb_printf("setting next to first\n");
+                deb_printf("setting %p to first, removing %p\n", item->next, item);
                 first = item->next;
                 first->prev = 0;
             } else if (item->next == 0) {
-                deb_printf("setting next to last\n");
+                deb_printf("setting %p to last, removing %p\n", item->prev, item);
                 item->prev->next = 0;
                 last = item->prev;
             } else {
-                deb_printf("combining both\n");
+                deb_printf("setting %p as prev and %p as next, removing %p\n", item->prev, item->next, item);
                 item->prev->next = item->next;
                 item->next->prev = item->prev;
             }
@@ -336,6 +336,7 @@ void Low_Res_Worker::cleanup_list() {
         }
         item = item->next;
         if(success == 1){
+            deb_printf("delete contour %p and %p\n", item->contour, item);
             delete item->contour;
             free(item);
         }
