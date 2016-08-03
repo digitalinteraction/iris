@@ -231,7 +231,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
                 }
             }
             if (similarity <= 0.5 && similarity >= -0.5) {
-                printf("found match %d with similarity %f\n", item->id, similarity);
+                deb_printf("found match %d with similarity %f\n", item->id, similarity);
                 item->contour = new vector<Point>;
                 *item->contour = *found;
                 contour->erase(contour->begin() + pos_elem);
@@ -257,9 +257,9 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
         item = item->next;
     }
 
-    printf("size left %d\n", contour->size());
+    deb_printf("size left %d\n", contour->size());
     for (int i = 0; i < contour->size(); i++) {
-        printf("contours found: %f\n", contourArea(contour->at(i)));
+        deb_printf("contours found: %f\n", contourArea(contour->at(i)));
         if (contourArea(contour->at(i)) > CONTOUR_LOWER_THRESHOLD) {
             Moments mu = moments(contour->at(i), false);
             Point2f mc = Point2f(mu.m10 / mu.m00, mu.m01 / mu.m00);
@@ -278,13 +278,13 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
             item->next = 0;
             item->prev = 0;
             if (first == 0) {
-                printf("added item with id %d as first\n", item->id);
+                deb_printf("added item with id %d as first\n", item->id);
                 first = item;
                 last = first;
                 first->next = 0;
                 first->prev = 0;
             } else {
-                printf("added item with id %d\n", item->id);
+                deb_printf("added item with id %d\n", item->id);
                 item->next = 0;
                 item->prev = last;
                 last->next = item;
@@ -450,7 +450,7 @@ void Low_Res_Worker::send_high_requests(){
             if ((enclosing.y + enclosing.width) == LOW_OUTPUT_Y) {
                 temp->right = 1;
             }
-            printf("sending request for %d %d %d %d or %d %d %d %d\n", enclosing.x, enclosing.y, enclosing.height, enclosing.width, temp->x, temp->y, temp->height, temp->width);
+            deb_printf("sending request for %d %d %d %d or %d %d %d %d\n", enclosing.x, enclosing.y, enclosing.height, enclosing.width, temp->x, temp->y, temp->height, temp->width);
             requests_out->add(temp, 0);
             item->asked = 1;
         }
