@@ -438,19 +438,20 @@ void Low_Res_Worker::send_high_requests(){
             temp->width = (int32_t)(((float)enclosing.width)*RATIO_X + BORDER_HIGH_RES);
             if(temp->width > HIGH_OUTPUT_X) temp->width = HIGH_OUTPUT_X;
 
-            if (enclosing.x == 0) {
+            if (enclosing.x < 5) {
                 temp->down = 1;
             }
-            if (enclosing.y == 0) {
+            if (enclosing.y < 5) {
                 temp->left = 1;
             }
-            if ((enclosing.x + enclosing.height) == LOW_OUTPUT_X) {
+            if ((enclosing.x + enclosing.height) > (LOW_OUTPUT_X-5)) {
                 temp->up = 1;
             }
-            if ((enclosing.y + enclosing.width) == LOW_OUTPUT_Y) {
+            if ((enclosing.y + enclosing.width) > (LOW_OUTPUT_Y-5)) {
                 temp->right = 1;
             }
             printf("sending request for %d %d %d %d or %d %d %d %d\n", enclosing.x, enclosing.y, enclosing.height, enclosing.width, temp->x, temp->y, temp->height, temp->width);
+            printf("with sides %d %d %d %d\n", temp->down, temp->up, temp->left, temp->right);
             requests_out->add(temp, 0);
             item->asked = 1;
         }
