@@ -59,7 +59,7 @@ private:
     patch_packet *recv_last;
     static void callback_rel(uint32_t id, size_t size, uint8_t reason);
     void add_packet_send(uint32_t id, uint32_t side, patch_packet *item);
-    void remove_packet_send(uint32_t id);
+    static void remove_packet_send(uint32_t id);
     void cleanup_packet_send();
     NetworkControl *nc;
     struct waiting_response *first_res;

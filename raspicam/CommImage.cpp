@@ -329,7 +329,7 @@ void CommImage::match_answers(patch_packet *start) {
 */
 void CommImage::callback_rel(uint32_t id, size_t size, uint8_t reason){
     deb_printf("id: %d size: %d reason: %d\n", id, size, reason);
-    this->remove_packet_send(id);
+    remove_packet_send(id);
 }
 
 
