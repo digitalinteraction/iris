@@ -10,13 +10,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/tobias/gitcode/cutting_board/network/Packetbuffer.h</file>
-            <file>file:/home/tobias/gitcode/cutting_board/raspicam/network_defines.h</file>
+            <file>file:/home/tobias/gitcode/cutting_board/raspicam/CommImage.h</file>
+            <file>file:/home/tobias/gitcode/cutting_board/raspicam/main.cpp</file>
             <file>file:/home/tobias/gitcode/cutting_board/raspicam/Low_Res_Worker.cpp</file>
-            <file>file:/home/tobias/gitcode/cutting_board/raspicam/Image_Capture.cpp</file>
             <file>file:/home/tobias/gitcode/cutting_board/raspicam/High_Res_Worker.cpp</file>
             <file>file:/home/tobias/gitcode/cutting_board/raspicam/CommImage.cpp</file>
             <file>file:/home/tobias/gitcode/cutting_board/training/training/main.cpp</file>
+            <file>file:/home/tobias/gitcode/cutting_board/raspicam/High_Res_Worker.h</file>
         </group>
     </open-files>
 </project-private>

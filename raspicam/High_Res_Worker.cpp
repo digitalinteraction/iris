@@ -444,6 +444,6 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
     }
     
     Mat img(abs(x_min) + x_max, abs(y_min) + y_max, CV_8UC3);
-    drawContours(img, vector<vector<Point> >(1,contour), -1, color, 1, 8);
+    drawContours(img, vector<vector<Point> >(1,*contour), -1, color, 1, 8);
     imwrite("combined_image.png", img);
 }
