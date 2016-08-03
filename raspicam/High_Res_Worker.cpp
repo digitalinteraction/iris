@@ -431,11 +431,6 @@ void High_Res_Worker::check_objects(patch_packet *start){
     //deb_printf("end checking objects\n");
 }
 
-struct sort_point {
-    bool operator() (Point2i pt1, Point2i pt2) { return (sqrt(pt1.y*pt1.y + pt1.x*pt1.x) < sqrt(pt2.y*pt2.y + pt2.x*pt2.x));}
-} sorter;
-
-
 void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
     int x_min=10000, y_min=10000;
     int x_max=0, y_max=0;
@@ -465,10 +460,11 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
         contour->at(i) = pt;
     }
     
-    std::sort(contour->begin(), contour->end(), sorter);
+    vector<Point> temp;
+    convexHull(*contour, temp, false);
     RNG rng(12345);
     Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
     Mat img(y_max - y_min, x_max - x_min, CV_8UC3);
-    drawContours(img, vector<vector<Point> >(1,*contour), -1, color, 1, 8);
+    drawContours(img, vector<vector<Point> >(1,temp), -1, color, 1, 8);
     imwrite("combined_image.png", img);
 }
