@@ -124,11 +124,11 @@ void CommImage::ask_neighbours(patch_packet* item) {
             memcpy(((char*)send_packet + sizeof (patch_packet)), item->feature, sizeof (feature_vector));
             uint32_t *dest = (uint32_t*) (((char*)send_packet) + sizeof (patch_packet) + sizeof (feature_vector));
             for (int i = 0; i < item->feature->contour->size(); i++) {
-                deb_printf("accessing elem %d from contour vector %p\n", i, item->feature->contour);
+                //deb_printf("accessing elem %d from contour vector %p\n", i, item->feature->contour);
                 Point2i temp = item->feature->contour->at(i);
-                deb_printf("writing at pos %p with add %d\n", dest,i);
+                //deb_printf("writing at pos %p with add %d\n", dest,i);
                 uint32_t *array = dest+2*i;
-                deb_printf("adding point %d %d %f %f at pos %p\n", temp.x, temp.y, array);
+                //deb_printf("adding point %d %d %f %f at pos %p\n", temp.x, temp.y, array);
                 array[0] = temp.x;
                 array[1] = temp.y;
             }
@@ -191,7 +191,7 @@ void CommImage::check_recv_buffer(patch_packet *start) {
     struct packet *pack;
     while (image_in->get(&pack) == 0) {
         
-        deb_printf("got packet with size %d from addr %d pointer %p\n", pack->size, pack->addr, pack->buffer);
+        deb_printf("GOT PACKET with size %d from addr %d pointer %p\n", pack->size, pack->addr, pack->buffer);
         patch_packet *item = (patch_packet*)pack->buffer;
         if (item->feature != 0) {
             deb_printf("item attributes: MAC %llx ID %d\n", item->mac, item->id);
