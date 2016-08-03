@@ -435,11 +435,14 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
             y_max = pt.y;
         }
     }
-    
+    deb_printf("%d %d %d %d\n", x_min, x_max, y_min, y_max);
     for(int i = 0; i < contour->size(); i++){
         Point2i pt = contour->at(i);
+        deb_printf("old Contour Point: %d %d\n", pt.x, pt.y);
         pt.x = pt.x + abs(x_min);
         pt.y = pt.y + abs(y_min);
+        deb_printf("new Contour Point: %d %d\n", pt.x, pt.y);
+
         contour->at(i) = pt;
     }
     RNG rng(12345);
