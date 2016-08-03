@@ -225,9 +225,7 @@ void CommImage::check_recv_buffer(patch_packet *start) {
 }
 
 void CommImage::match_recv_list(patch_packet *start) {
-#ifdef DEBUG_COMM_IMAGE
-    printf("match_recv_list\n");
-#endif
+
     //match_answers(start);
     patch_packet *item = recv_first;
     while (item != 0) {
