@@ -180,7 +180,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
                 winner = i;
             }
         }
-        double epsilon = 0.0035 * arcLength(contours[winner], true);
+        //0.0035
+        double epsilon = 0.0001 * arcLength(contours[winner], true);
         vector<Point> *contour = new vector<Point>;
         approxPolyDP(contours[winner], *contour, epsilon, true);
         
