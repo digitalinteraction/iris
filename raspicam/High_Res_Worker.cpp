@@ -453,15 +453,15 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
     for(int i = 0; i < contour->size(); i++){
         Point2i pt = contour->at(i);
         deb_printf("old Contour Point: %d %d\n", pt.x, pt.y);
-        pt.x = pt.x + abs(x_min);
-        pt.y = pt.y + abs(y_min);
+        pt.x = pt.x + -1*x_min;
+        pt.y = pt.y + -1*y_min;
         deb_printf("new Contour Point: %d %d\n", pt.x, pt.y);
 
         contour->at(i) = pt;
     }
     RNG rng(12345);
     Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-    Mat img(abs(y_min) + y_max, abs(x_min) + x_max, CV_8UC3);
+    Mat img(y_max - y_min, x_max - x_min, CV_8UC3);
     drawContours(img, vector<vector<Point> >(1,*contour), -1, color, 1, 8);
     imwrite("combined_image.png", img);
 }
