@@ -31,7 +31,7 @@
 
 class NetworkControl {
 public:
-    NetworkControl();
+    NetworkControl(CommImage **comm);
     NetworkControl(const NetworkControl& orig);
     virtual ~NetworkControl();
     void run();

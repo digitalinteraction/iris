@@ -43,7 +43,7 @@ struct linked_header{
 
 class ReliableTransfer {
 public:
-    ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out, Topology *topo);
+    ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out, Topology *topo, CommImage **comm);
     ReliableTransfer(const ReliableTransfer& orig);
     virtual ~ReliableTransfer();
     int recv(void *buffer, size_t size, uint32_t addr);
@@ -51,7 +51,6 @@ public:
     int check_timeouts();
     int send_acks();
     volatile uint32_t list_cnt;
-    void setCallback(CommImage *comm);
 private:
     Packetbuffer *out;
     Topology *topo;
@@ -63,9 +62,7 @@ private:
     struct reliable_packet ack;
     int timer;
     std::mutex list_lock;
-    CommImage *comm;
-    
-    void (*callback)(uint32_t, size_t, uint8_t);
+    CommImage **comm;
 };
 
 #endif /* RELIABLETRANSFER_H */
