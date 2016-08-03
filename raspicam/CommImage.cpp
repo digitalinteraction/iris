@@ -125,6 +125,7 @@ void CommImage::ask_neighbours(patch_packet* item) {
             uint32_t *dest = (uint32_t*) (((char*)send_packet) + sizeof (patch_packet) + sizeof (feature_vector));
             for (int i = 0; i < item->feature->contour->size(); i++) {
                 Point2i temp = item->feature->contour->at(i);
+                deb_printf("writing at pos %p with add %d\n", dest,i);
                 uint32_t *array = dest+2*i;
                 deb_printf("adding point %d %d %f %f at pos %p\n", temp.x, temp.y, array);
                 array[0] = temp.x;
