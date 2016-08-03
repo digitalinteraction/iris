@@ -41,7 +41,7 @@ CommImage::CommImage(NetworkControl *nc) {
     first_res = 0;
     last_res = 0;
     
-    nc->rel->setCallback(&this->callback_rel);
+    nc->rel->setCallback(&CommImage::callback_rel);
 }
 
 CommImage::CommImage(const CommImage& orig) {
