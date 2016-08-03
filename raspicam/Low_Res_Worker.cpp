@@ -336,9 +336,9 @@ void Low_Res_Worker::cleanup_list() {
         }
         item = item->next;
         if(success == 1){
-            deb_printf("delete contour %p and %p\n", item->contour, item);
-            delete item->contour;
-            free(item);
+            deb_printf("delete contour %p and %p\n", freeitem->contour, freeitem);
+            delete freeitem->contour;
+            free(freeitem);
         }
     }
 
