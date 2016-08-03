@@ -281,6 +281,9 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         combine_objects(item, item->up, UP_SIDE);
         combine_objects(item, item->down, DOWN_SIDE);
         deb_printf("combined all objects\n");
+        
+        
+        save_contour_in_file(item->feature->contour);
         //normalize histograms
         /*for(int i = 0; i < HISTOGRAM_SIZE, i++){
             item->feature->hist_h
@@ -412,4 +415,34 @@ void High_Res_Worker::check_objects(patch_packet *start){
         item = item->next;
     }
     //deb_printf("end checking objects\n");
+}
+
+void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
+    int x_min=0, y_min=0;
+    int x_max=0, y_max=0;
+    for(int i = 0; i < contour->size(); i++){
+        Point2i *pt = contour->at(i);
+        if(x_min > pt->x){
+            x_min = pt->x;
+        }
+        if(y_min > pt->y){
+            y_min = pt->y;
+        }
+        if(x_max < pt->x){
+            x_max = pt->x;
+        }
+        if(y_max > pt->y){
+            y_max = pt->y;
+        }
+    }
+    
+    for(int i = 0; i < contour->size(); i++){
+        Point2i *pt = contour->at(i);
+        pt->x = pt->x + abs(x_min);
+        pt->y = pt->y + abs(y_min);
+    }
+    
+    Mat img(abs(x_min) + x_max, abs(y_min) + y_max, CV_8UC3);
+    drawContours(img, vector<vector<Point> >(1,contour), -1, color, 1, 8);
+    imwrite("combined_image.png", img);
 }
