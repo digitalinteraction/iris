@@ -64,6 +64,7 @@ private:
     NetworkControl *nc;
     struct waiting_response *first_res;
     struct waiting_response *last_res;
+    static CommImage* static_call;
 };
 
 #endif /* COMMIMAGE_H */
