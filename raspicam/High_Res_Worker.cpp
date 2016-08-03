@@ -331,25 +331,25 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
             Point pt = src->feature->contour->at(i);
             switch (dir) {
                 case LEFT_SIDE:
-                    pt.x = pt.x - HIGH_OUTPUT_X.0;
+                    pt.x = pt.x - HIGH_OUTPUT_X;
                     if (fabs(pt.x) > EPSILON) {
                         dest->feature->contour->push_back(pt);
                     }
                     break;
                 case RIGHT_SIDE:
-                    pt.x = pt.x + HIGH_OUTPUT_X.0;
-                    if (fabs(pt.x - HIGH_OUTPUT_X.0) > EPSILON) {
+                    pt.x = pt.x + HIGH_OUTPUT_X;
+                    if (fabs(pt.x - HIGH_OUTPUT_X) > EPSILON) {
                         dest->feature->contour->push_back(pt);
                     }
                     break;
                 case UP_SIDE:
-                    pt.y = pt.y + HIGH_OUTPUT_Y.0;
+                    pt.y = pt.y + HIGH_OUTPUT_Y;
                     if (fabs(pt.y - HIGH_OUTPUT_Y) > EPSILON) {
                         dest->feature->contour->push_back(pt);
                     }
                     break;
                 case DOWN_SIDE:
-                    pt.y = pt.y - HIGH_OUTPUT_Y.0;
+                    pt.y = pt.y - HIGH_OUTPUT_Y;
                     if (fabs(pt.y) > EPSILON) {
                         dest->feature->contour->push_back(pt);
                     }
