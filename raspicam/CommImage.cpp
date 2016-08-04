@@ -385,6 +385,8 @@ void CommImage::add_packet_send(uint32_t id, uint32_t side, patch_packet* item){
     response->id = id;
     response->item = item;
     response->side = side;
+    response->next = 0;
+    response->prev = 0;
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
     response->timeout.tv_sec = current.tv_sec+5;
