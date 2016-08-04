@@ -25,7 +25,7 @@
 #define MAX_PACKET_SIZE 60000
 #define BORDER_HIGH_RES 30
 
-#define HISTOGRAM_SIZE 64
+#define HISTOGRAM_SIZE 32
 
 #define LEFT_SIDE 3
 #define DOWN_SIDE 1
