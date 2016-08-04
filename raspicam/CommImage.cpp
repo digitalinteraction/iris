@@ -407,6 +407,7 @@ void CommImage::remove_packet_send(uint32_t id){
     uint8_t success = 0;
     struct waiting_response *freeitem = 0;
     while(item != 0 && success == 0){
+        deb_printf("%d %d\n", id, item->id);
         if(item->id == id){
             switch(item->side){
                 case DOWN_SIDE: item->item->down = (patch_packet *)0; break;
