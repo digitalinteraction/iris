@@ -409,7 +409,7 @@ void CommImage::remove_packet_send(uint32_t id){
     while(item != 0 && success == 0){
         deb_printf("%d %d\n", id, item->id);
         if(item->id == id){
-            deb_printf("side: %d\n", item->side);
+            deb_printf("side: %d, item %p\n", item->side, item->item);
             switch(item->side){
                 case DOWN_SIDE: item->item->down = (patch_packet *)0; break;
                 case UP_SIDE: item->item->up = (patch_packet *)0; break;
