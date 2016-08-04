@@ -510,14 +510,18 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
     
 
     BFMatcher matcher(NORM_L2, true);
-
+    
+    
     for (int i = 0; i < surf_saved.size(); i++) {
         vector<DMatch> matches;
+        float dist = 0;
         matcher.match(desc, surf_saved[i], matches);
         if (!matches.empty()) {
             for (int i = 0; i < matches.size(); i++)
-                printf("matches %d dist %f\n", i, matches[i].distance);
+                dist += matches[i].distance;
+                //printf("matches %d dist %f\n", i, matches[i].distance);
         }
+        printf("total distance %f\n", dist);
     }
     
     surf_saved.push_back(desc);
