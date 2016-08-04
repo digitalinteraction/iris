@@ -516,6 +516,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
     for (int i = 0; i < surf_saved.size(); i++) {
         vector<DMatch> matches;
         float dist = 0;
+        float sel_dist = 0;
         int good_match = 0;
         matcher.match(desc, surf_saved[i], matches);
         if (!matches.empty()) {
@@ -523,12 +524,13 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
                 dist += matches[i].distance;
                 //printf("matches %d dist %f\n", i, matches[i].distance);
 
-                if (matches[i].distance < 0.1) {
+                if (matches[i].distance < 0.15) {
                     good_match++;
+                    sel_dist += matches[i].distance;
                 }
             }
         }
-        printf("total distance %f match %d\n", dist, good_match);
+        printf("total distance %f match %d sel_dist %f  total matched %d\n", dist, good_match, sel_dist, matches.size());
     }
 
     surf_saved.push_back(desc);
