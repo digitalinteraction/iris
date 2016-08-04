@@ -191,19 +191,39 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         drawContours(cont_img, vector<vector<Point> >(1,*contour), -1, color, 1, 8);
         imwrite("cont_img.png", cont_img);
         
-        
+        Mat rg(rgb.size(), rgb.type());
+
+        for (int i = 0; i < rgb.rows; i++) {
+            for (int j = 0; j < rgb.cols; j++) {
+                Vec3f intensity = rgb.at<Vec3b>(i, j);
+                float blue = intensity.val[0];
+                float green = intensity.val[1];
+                float red = intensity.val[2];
+                double sum = red + blue + green;
+                double r = red / sum;
+                double g = green / sum;
+                double b = blue / sum;
+                //printf("%f %f %f %f\n", sum, r, g, b);
+                rg.data[rg.step[0] * i + rg.step[1] * j + 0] = (b * 255);
+                rg.data[rg.step[0] * i + rg.step[1] * j + 1] = (g * 255);
+                rg.data[rg.step[0] * i + rg.step[1] * j + 2] = (r * 255);
+            }
+        }
+
         //Histogram
-        float range[] = {0, 256};
+        float range[] = {0, 255};
         const float *histRange = {range};
         int buck = HISTOGRAM_SIZE;
         Mat h_hist, s_hist, v_hist;
-        Ptr<CLAHE> clahe = cv::createCLAHE();
-        clahe->setClipLimit(4);
-        Mat lum_channel;
-        clahe->apply(channel[2], lum_channel);
-        calcHist(&channel[0], 1, 0, thres, h_hist, 1, &buck, &histRange, true, true);
-        calcHist(&channel[1], 1, 0, thres, s_hist, 1, &buck, &histRange, true, true);
-        calcHist(&lum_channel, 1, 0, thres, v_hist, 1, &buck, &histRange, true, true);
+        //Ptr<CLAHE> clahe = cv::createCLAHE();
+        //clahe->setClipLimit(4);
+        //Mat lum_channel;
+        //clahe->apply(channel[2], lum_channel);
+        Mat rg_hist_sp[3];
+        split(rg, rg_hist_sp);
+        calcHist(&rg_hist_sp[0], 1, 0, thres, h_hist, 1, &buck, &histRange, true, true);
+        calcHist(&rg_hist_sp[1], 1, 0, thres, s_hist, 1, &buck, &histRange, true, true);
+        calcHist(&rg_hist_sp[2], 1, 0, thres, v_hist, 1, &buck, &histRange, true, true);
 
         
         //cout << "Histogram H: " << h_hist<< endl;
