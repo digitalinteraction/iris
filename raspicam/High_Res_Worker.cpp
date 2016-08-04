@@ -59,6 +59,8 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     }else{
         printf("classifier loaded\n");
     }
+    
+    surf = xfeatures2d::SURF::create( 10 );
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -289,6 +291,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         deb_printf("saved it in list\n");
         comm->file_cnt++;
         deb_printf("increased file counter\n");
+        match_surf_features(mask, rgb);
     }
     //img.release();
     
@@ -488,4 +491,15 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
     Mat img(y_max - y_min, x_max - x_min, CV_8UC3);
     drawContours(img, vector<vector<Point> >(1,temp), -1, color, 1, 8);
     imwrite("combined_image.png", img);
+}
+
+void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
+    vector<KeyPoint> kp;
+    surf->detect(img, kp, mask);
+    Mat img_keypoints;
+    drawKeypoints( img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
+    imwrite("surf_match.png", img);
+    //BFMatcher matcher(NORM_L2, true);
+    //vector<DMatch> matches;
+    
 }

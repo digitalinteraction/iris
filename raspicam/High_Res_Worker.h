@@ -45,6 +45,7 @@ private:
     void combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir);
     void check_objects(patch_packet *start);
     void save_contour_in_file(vector<Point> *contour);
+    void match_surf_features(Mat *mask, Mat *img);
     Packetbuffer *out;
     Packetbuffer *in;
     NetworkControl *nc;
@@ -56,7 +57,7 @@ private:
     
     CommImage *comm;
     
-        
+    Ptr<cv::xfeatures2d::SURF> surf;
     Ptr<cv::ml::RTrees> classifier;
 
 
