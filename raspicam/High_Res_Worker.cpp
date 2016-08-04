@@ -524,7 +524,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
                 dist += matches[i].distance;
                 //printf("matches %d dist %f\n", i, matches[i].distance);
 
-                if (matches[i].distance < 0.15) {
+                if (matches[i].distance < 0.25) {
                     good_match++;
                     sel_dist += matches[i].distance;
                 }
