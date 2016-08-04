@@ -516,7 +516,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
     for (int i = 0; i < surf_saved.size(); i++) {
         vector<DMatch> matches;
         float dist = 0;
-        int good_match;
+        int good_match = 0;
         matcher.match(desc, surf_saved[i], matches);
         if (!matches.empty()) {
             for (int i = 0; i < matches.size(); i++)
