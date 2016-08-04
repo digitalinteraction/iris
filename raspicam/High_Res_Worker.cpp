@@ -515,10 +515,8 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
         vector<DMatch> matches;
         matcher.match(desc, surf_saved[i], matches);
         if (!matches.empty()) {
-            int DIST_LIMIT = 60;
-            List<DMatch> matchesList = matches.toList();
-            for (int i = 0; i < matchesList.size(); i++)
-                printf("matches %d dist %d\n", matchesList.get(i).distance);
+            for (int i = 0; i < matches.size(); i++)
+                printf("matches %d dist %f\n", i, matches[i].distance);
         }
     }
     
