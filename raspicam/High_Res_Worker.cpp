@@ -511,9 +511,9 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
 
     BFMatcher matcher(NORM_L2, true);
 
-    for (int i = 0; i < surf_save.size(); i++) {
+    for (int i = 0; i < surf_saved.size(); i++) {
         vector<DMatch> matches;
-        matcher.match(desc, surf_save[i], matches);
+        matcher.match(desc, surf_saved[i], matches);
         if (!matches.empty()) {
             int DIST_LIMIT = 60;
             List<DMatch> matchesList = matches.toList();
@@ -522,6 +522,6 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
         }
     }
     
-    surf_save.push_back(desc);
+    surf_saved.push_back(desc);
     
 }
