@@ -497,6 +497,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
     vector<KeyPoint> kp;
     surf->detect(*img, kp, *mask);
     Mat img_keypoints;
+    cout << "Keypoints: " << kp << endl; 
     drawKeypoints( *img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
     imwrite("surf_match.png", img_keypoints);
     //BFMatcher matcher(NORM_L2, true);
