@@ -291,7 +291,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         deb_printf("saved it in list\n");
         comm->file_cnt++;
         deb_printf("increased file counter\n");
-        match_surf_features(mask, rgb);
+        match_surf_features(thres, rgb);
     }
     //img.release();
     
