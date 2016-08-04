@@ -498,12 +498,12 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
     surf->detect(*img, kp, *mask);
     Mat desc;
     surf->compute(*img, kp, desc);
-    cout << "Descriptor" << desc << endl;
+    cout << "Descriptor" << desc.Size() << endl;
     
     Mat img_keypoints;
     cout << "Keypoints: ";
     for(int i = 0; i < kp.size(); i++){
-       cout << kp[i].pt.x << kp[i].pt.y << endl; 
+       cout << kp[i].pt.x << " " << kp[i].pt.y << endl; 
     }
     drawKeypoints( *img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
     imwrite("surf_match.png", img_keypoints);
