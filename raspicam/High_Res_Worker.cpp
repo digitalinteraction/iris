@@ -530,7 +530,8 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
                 }
             }
         }
-        printf("total distance %f match %d sel_dist %f  total matched %d\n", dist, good_match, sel_dist, matches.size());
+        printf(" rating: %f\n", sel_dist/good_match);
+        //printf("total distance %f match %d sel_dist %f  total matched %d\n", dist, good_match, sel_dist, matches.size());
     }
 
     surf_saved.push_back(desc);
