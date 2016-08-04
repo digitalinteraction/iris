@@ -291,7 +291,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         deb_printf("saved it in list\n");
         comm->file_cnt++;
         deb_printf("increased file counter\n");
-        match_surf_features(thres, rgb);
+        match_surf_features(&thres, &rgb);
     }
     //img.release();
     
@@ -495,10 +495,10 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
 
 void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
     vector<KeyPoint> kp;
-    surf->detect(img, kp, mask);
+    surf->detect(*img, kp, *mask);
     Mat img_keypoints;
-    drawKeypoints( img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
-    imwrite("surf_match.png", img);
+    drawKeypoints( *img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
+    imwrite("surf_match.png", *img);
     //BFMatcher matcher(NORM_L2, true);
     //vector<DMatch> matches;
     
