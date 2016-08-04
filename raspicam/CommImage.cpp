@@ -432,10 +432,13 @@ void CommImage::remove_packet_send(uint32_t id){
         }
         item = item->next;
     }
+    deb_printf("freeing item\n");
     if(success == 1 && freeitem != 0){
         deb_printf("free item %p\n", freeitem);
         free(freeitem);
     }
+    deb_printf("freeing item2\n");
+
     lock.unlock();
 }
 
