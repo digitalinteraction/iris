@@ -59,6 +59,8 @@ private:
     
     Ptr<cv::xfeatures2d::SURF> surf;
     Ptr<cv::ml::RTrees> classifier;
+    
+    vector<Mat> surf_saved;
 
 
 };

@@ -507,7 +507,21 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
     }
     drawKeypoints( *img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
     imwrite("surf_match.png", img_keypoints);
-    //BFMatcher matcher(NORM_L2, true);
-    //vector<DMatch> matches;
+    
+
+    BFMatcher matcher(NORM_L2, true);
+
+    for (int i = 0; i < surf_save.size(); i++) {
+        vector<DMatch> matches;
+        matcher.match(desc, surf_save[i], matches);
+        if (!matches.empty()) {
+            int DIST_LIMIT = 60;
+            List<DMatch> matchesList = matches.toList();
+            for (int i = 0; i < matchesList.size(); i++)
+                printf("matches %d dist %d\n", matchesList.get(i).distance);
+        }
+    }
+    
+    surf_save.push_back(desc);
     
 }
