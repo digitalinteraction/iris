@@ -498,7 +498,8 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
     surf->detect(*img, kp, *mask);
     Mat desc;
     surf->compute(*img, kp, desc);
-    //cout << "Descriptor" << desc.size() << endl;
+    cout << "Descriptor" << desc.size() << endl;
+    cout << "Keypoints" << kp.size() << endl;
     
     Mat img_keypoints;
     /*cout << "Keypoints: ";
