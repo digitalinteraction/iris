@@ -20,6 +20,8 @@
 #include "../network/Packetbuffer.h"
 #include "../network/NetworkControl.h"
 #include "RaspiTex.h"
+#include <mutex>          // std::mutex
+
 
 using namespace cv;
 using namespace std;
@@ -65,6 +67,8 @@ private:
     NetworkControl *nc;
     struct waiting_response *first_res;
     struct waiting_response *last_res;
+    std::mutex lock;
+
 };
 
 #endif /* COMMIMAGE_H */

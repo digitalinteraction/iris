@@ -41,6 +41,7 @@ CommImage::CommImage(NetworkControl *nc) {
     first_res = 0;
     last_res = 0;
     CommImage::static_call = this;
+    lock.unlock();
     
     nc->rel->setCallback(&callback_rel);
 }
@@ -378,6 +379,7 @@ void CommImage::callback_rel(uint32_t id, size_t size, uint8_t reason){
 
 //maybe use lock for access to list because of callback
 void CommImage::add_packet_send(uint32_t id, uint32_t side, patch_packet* item){
+    lock.lock();
     deb_printf("id: %d side: %d patch %p\n", id, side, item);
     struct waiting_response* response = (struct waiting_response*) malloc(sizeof(struct waiting_response));
     response->id = id;
@@ -395,9 +397,11 @@ void CommImage::add_packet_send(uint32_t id, uint32_t side, patch_packet* item){
         response->prev = last_res;
         last_res = response;
     }
+    lock.unlock();
 }
 
 void CommImage::remove_packet_send(uint32_t id){
+    lock.lock();
     deb_printf("id: %d\n", id);
     struct waiting_response *item = first_res;
     uint8_t success = 0;
@@ -432,9 +436,11 @@ void CommImage::remove_packet_send(uint32_t id){
         deb_printf("free item %p\n", freeitem);
         free(freeitem);
     }
+    lock.unlock();
 }
 
 void CommImage::cleanup_packet_send(){
+    lock.lock();
     struct waiting_response *item = first_res;
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
@@ -464,4 +470,5 @@ void CommImage::cleanup_packet_send(){
             free(freeitem);
         }
     }
+    lock.unlock();
 }
