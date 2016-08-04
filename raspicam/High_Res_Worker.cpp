@@ -496,9 +496,9 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
 void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
     vector<KeyPoint> kp;
     surf->detect(*img, kp, *mask);
-    cv::xfeatures2d::SurfDescriptorExtractor surfDesc;
+    Ptr<xfeatures2d::SurfDescriptorExtractor> surfDesc = new xfeatures2d::SurfDescriptorExtractor::create();
     Mat desc;
-    surfDesc.compute(*img, kp, desc);
+    surfDesc->compute(*img, kp, desc);
     cout << "Descriptor" << desc << endl;
     
     Mat img_keypoints;
