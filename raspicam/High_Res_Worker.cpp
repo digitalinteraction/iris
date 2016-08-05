@@ -60,7 +60,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
         printf("classifier loaded\n");
     }
     
-    surf = xfeatures2d::SURF::create( 15 );
+    surf = xfeatures2d::SURF::create( 25 );
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -526,8 +526,9 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
         matcher.match(surf_saved_desc[p],desc, matches);
         //matcher.knnMatch(desc, surf_saved_desc[p], matches, 50);
         if (!matches.empty()) {
-            for(int i = 0; i < 10; i++){
-                for(int j = i; j < 10; j++){
+            int ceil = min(10, matches.size());
+            for(int i = 0; i < ceil; i++){
+                for(int j = i; j < ceil; j++){
                     Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
                     Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
                     double dist1 = sqrt((orig1.x - orig2.x) * (orig1.x - orig2.x) + (orig1.y - orig2.y) * (orig1.y - orig2.y));
