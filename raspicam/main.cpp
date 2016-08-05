@@ -35,12 +35,11 @@ int main() {
     
     
     
-    for (int i = 0; i < 1000; i++) {
+    while(true) {
         int begin = low->counter;
         std::this_thread::sleep_for(std::chrono::seconds(1));
         begin = low->counter - begin;
-        printf("%d Frames per Second: %d, Buffer Size: %d Contours: %d\n", i,begin, buf_ic_hr->getSize(), low->cnt_size);
-        fflush(stdout);
+        printf("Frames per Second: %d, Buffer Size: %d Contours: %d\n",begin, buf_ic_hr->getSize(), low->cnt_size);
     }
 
     cap->capturing = 0;
