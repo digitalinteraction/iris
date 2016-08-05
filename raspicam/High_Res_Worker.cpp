@@ -574,7 +574,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
             }else{
                 rating = 100000;
             }
-                
+            printf("angle count: %d", matching_angles);
             printf("rating %f\n", rating);
             //printf("good matches %d, dist %f ratio %f\n", matches.size(), sel_dist, sel_dist/c);
             //printf("total distance %f match %d sel_dist %f  total matched %d\n", dist, good_match, sel_dist, matches.size());
