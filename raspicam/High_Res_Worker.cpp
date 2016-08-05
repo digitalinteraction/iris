@@ -524,6 +524,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
         double sel_dist = 0;
         int good_match = 0;
         matcher.match(surf_saved_desc[p],desc, matches);
+        matches = sorted(matches, key = lambda x:x.distance)
         //matcher.knnMatch(desc, surf_saved_desc[p], matches, 50);
         if (!matches.empty()) {
             int ceil = std::min(10, (int)matches.size());
