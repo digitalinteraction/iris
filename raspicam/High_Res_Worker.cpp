@@ -376,7 +376,8 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         cout << features << endl;
         float result = classifier->predict(features);
         int object = (int)floor(result+0.5);
-        printf("Result of classifier: %s %f %d\n", object_names[object], result, object);
+        printf("Nummeric Result: %f %d\n", result, object);
+        printf("Result of classifier: %s\n", object_names[object]);
         
         return object;
     }
