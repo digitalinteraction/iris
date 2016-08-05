@@ -523,11 +523,11 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
         float dist = 0;
         double sel_dist = 0;
         int good_match = 0;
-        matcher.match(desc, surf_saved_desc[p], matches);
+        matcher.match(surf_saved_desc[p],desc, matches);
         //matcher.knnMatch(desc, surf_saved_desc[p], matches, 50);
         if (!matches.empty()) {
-            for(int i = 0; i < 50; i++){
-                for(int j = 0; j < 50; j++){
+            for(int i = 0; i < 10; i++){
+                for(int j = i; j < 10; j++){
                     Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
                     Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
                     double dist1 = sqrt((orig1.x - orig2.x) * (orig1.x - orig2.x) + (orig1.y - orig2.y) * (orig1.y - orig2.y));
@@ -535,6 +535,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
                     Point2f new2 = kp[matches[j].trainIdx].pt;
                     double dist2 = sqrt((new1.x - new2.x) * (new1.x - new2.x) + (new1.y - new2.y) * (new1.y - new2.y));
                     if(isnormal(dist1) && isnormal(dist2)){
+                        printf("difference distance: %f\n",fabs(dist1 - dist2));
                         sel_dist += fabs(dist1 - dist2);
                     }
                 }
