@@ -537,7 +537,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
                     Point2f new2 = kp[matches[j].trainIdx].pt;
                     double dist2 = sqrt((new1.x - new2.x) * (new1.x - new2.x) + (new1.y - new2.y) * (new1.y - new2.y));
                     if(isnormal(dist1) && isnormal(dist2)){
-                        printf("difference distance: %f\n",fabs(dist1 - dist2));
+                        //printf("difference distance: %f\n",fabs(dist1 - dist2));
                         sel_dist += fabs(dist1 - dist2);
                     }
                 }
