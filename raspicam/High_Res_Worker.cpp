@@ -458,8 +458,7 @@ void High_Res_Worker::check_objects(patch_packet *start){
     //deb_printf("end checking objects\n");
 }
 
-void High_Res_Worker::save_contour_in_file(vector<Point> *contour, float angle){
-    printf("Angle of object: %f\n", angle);
+void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
     int x_min=10000, y_min=10000;
     int x_max=0, y_max=0;
     for(int i = 0; i < contour->size(); i++){
@@ -497,7 +496,9 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour, float angle){
     imwrite("combined_image.png", img);
 }
 
-void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
+void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
+        printf("Angle of object: %f\n", angle);
+
     vector<KeyPoint> kp;
     surf->detect(*img, kp, *mask);
     Mat desc;
