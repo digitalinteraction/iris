@@ -523,6 +523,8 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
         vector<DMatch> matches;
         float dist = 0;
         double sel_dist = 0;
+        int matching_angles = 0;
+        int matching_dist = 0;
         int good_match = 0;
         matcher.match(surf_saved_desc[p],desc, matches);
         std::sort(matches.begin(), matches.end(), comparator);
@@ -543,8 +545,14 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
                     Point2f new3 = kp[matches[q].trainIdx].pt;
                     double angle2 = 0, dist2 = 0;
                     calc_angle_dist(new1, new2, new3, &angle2, &dist2);
-                    printf("Distance %f\n", fabs(dist1 - dist2));
-                    printf("Angle old %f new %f\n", angle1, angle2);
+                    
+                    if(isnormal(angle1) && isnormal(angle2)){
+                        if(fabs(angle1-angle2) < 5.0){
+                            matching_angle++;
+                        }
+                    }
+                    //printf("Distance %f\n", fabs(dist1 - dist2));
+                    //printf("Angle old %f new %f\n", angle1, angle2);
                     
                     if(isnormal(dist1) && isnormal(dist2)){
                         //printf("difference distance: %f\n",fabs(dist1 - dist2));
