@@ -512,20 +512,20 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
 
     BFMatcher matcher(NORM_L2, false);
 
-    for (int i = 0; i < surf_saved_desc.size(); i++) {
+    for (int p = 0; p < surf_saved_desc.size(); p++) {
         vector<vector<DMatch> > matches;
         float dist = 0;
         float sel_dist = 0;
         int good_match = 0;
         vector< DMatch > good_matches2;
         //matcher.match(desc, surf_saved[i], matches);
-        matcher.knnMatch(desc, surf_saved_desc[i], matches, 50);
+        matcher.knnMatch(desc, surf_saved_desc[p], matches, 50);
         if (!matches.empty()) {
             for (size_t i = 0; i < matches.size(); ++i) {
                 for (int j = 0; j < matches[i].size(); j++) {
                     //calculate local distance for each possible match
                     Point2f from = kp[matches[i][j].queryIdx].pt;
-                    Point2f to = surf_saved_key[matches[i][j].trainIdx].pt;
+                    Point2f to = surf_saved_key[p][matches[i][j].trainIdx].pt;
                     double dist = sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
                     //save as best match if local distance is in specified area
                     if (dist < 10.0) {
