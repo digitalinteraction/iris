@@ -518,33 +518,32 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
     BFMatcher matcher(NORM_L2, false);
 
     for (int p = 0; p < surf_saved_desc.size(); p++) {
-        vector<vector<DMatch> > matches;
+        vector<DMatch> matches;
         float dist = 0;
-        float sel_dist = 0;
+        double sel_dist = 0;
         int good_match = 0;
-        vector< DMatch > good_matches2;
-        //matcher.match(desc, surf_saved[i], matches);
-        matcher.knnMatch(desc, surf_saved_desc[p], matches, 50);
+        matcher.match(desc, surf_saved[p], matches);
+        //matcher.knnMatch(desc, surf_saved_desc[p], matches, 50);
         if (!matches.empty()) {
-            for (size_t i = 0; i < matches.size(); ++i) {
-                for (int j = 0; j < matches[i].size(); j++) {
-                    //calculate local distance for each possible match
-                    Point2f from = kp[matches[i][j].queryIdx].pt;
-                    Point2f to = surf_saved_key[p][matches[i][j].trainIdx].pt;
-                    double dist = sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
-                    //save as best match if local distance is in specified area
-                    if (dist < 50.0) {
-                        good_matches2.push_back(matches[i][j]);
-                        j = matches[i].size();
-                    }
+            for(int i = 0; i < matches.size(); i++){
+                for(int j = 0; j < matches.size(); j++){
+                    Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
+                    Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
+                    double dist1 = sqrt((orig1.x - orig2.x) * (orig1.x - orig2.x) + (orig1.y - orig2.y) * (orig1.y - orig2.y));
+                    Point2f new1 = kp[matches[i].trainIdx].pt;
+                    Point2f new2 = kp[matches[j].trainIdx].pt;
+                    double dist2 = sqrt((new1.x - new2.x) * (new1.x - new2.x) + (new1.y - new2.y) * (new1.y - new2.y));
+                    sel_dist += fabs(dist1 - dist2);
                 }
             }
-            for (int i = 0; i < good_matches2.size(); i++) {
-                dist += good_matches2[i].distance;
+            
+            
+            /*for (int i = 0; i < matches.size(); i++) {
+                dist += matches[i].distance;
                 //printf("matches %d dist %f\n", i, matches[i].distance);
-            }
+            }*/
             //printf(" rating: %f\n", sel_dist/good_match);
-            printf("good matches %d, dist %f\n", good_matches2.size(), dist);
+            printf("good matches %d, dist %f ratio %f\n", matches.size(), sel_dist, sel_dist/matches.size());
             //printf("total distance %f match %d sel_dist %f  total matched %d\n", dist, good_match, sel_dist, matches.size());
         }
     }
