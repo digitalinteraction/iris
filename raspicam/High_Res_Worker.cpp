@@ -525,8 +525,8 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
         matcher.match(desc, surf_saved_desc[p], matches);
         //matcher.knnMatch(desc, surf_saved_desc[p], matches, 50);
         if (!matches.empty()) {
-            for(int i = 0; i < matches.size(); i++){
-                for(int j = 0; j < matches.size(); j++){
+            for(int i = 0; i < 50; i++){
+                for(int j = 0; j < 50; j++){
                     Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
                     Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
                     double dist1 = sqrt((orig1.x - orig2.x) * (orig1.x - orig2.x) + (orig1.y - orig2.y) * (orig1.y - orig2.y));
