@@ -46,7 +46,7 @@ private:
     void check_objects(patch_packet *start);
     void save_contour_in_file(vector<Point> *contour);
     void match_surf_features(Mat *mask, Mat *img, float angle);
-    bool comparator(DMatch a,DMatch b);
+    static bool comparator(DMatch a,DMatch b);
     Packetbuffer *out;
     Packetbuffer *in;
     NetworkControl *nc;
