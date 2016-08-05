@@ -61,7 +61,7 @@ private:
     Ptr<cv::ml::RTrees> classifier;
     
     vector<Mat> surf_saved_desc;
-    vector<vector<KeyPoints> > surf_saved_key;
+    vector<vector<KeyPoint> > surf_saved_key;
 
 
 };
