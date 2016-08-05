@@ -546,7 +546,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
                 //printf("matches %d dist %f\n", i, matches[i].distance);
             }*/
             //printf(" rating: %f\n", sel_dist/good_match);
-            printf("good matches %d, dist %f ratio %f\n", matches.size(), sel_dist, sel_dist/matches.size());
+            printf("good matches %d, dist %f ratio %f\n", matches.size(), sel_dist, sel_dist/50);
             //printf("total distance %f match %d sel_dist %f  total matched %d\n", dist, good_match, sel_dist, matches.size());
         }
     }
