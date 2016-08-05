@@ -506,34 +506,44 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
     for(int i = 0; i < kp.size(); i++){
        cout << kp[i].pt.x << " " << kp[i].pt.y << endl; 
     }*/
-    drawKeypoints( *img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT );
+    drawKeypoints(*img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT);
     imwrite("surf_match.png", img_keypoints);
-    
+
 
     BFMatcher matcher(NORM_L2, false);
-    
-    
-    for (int i = 0; i < surf_saved.size(); i++) {
-        vector<DMatch> matches;
+
+    for (int i = 0; i < surf_saved_desc.size(); i++) {
+        vector<vector<DMatch> > matches;
         float dist = 0;
         float sel_dist = 0;
         int good_match = 0;
-        matcher.match(desc, surf_saved[i], matches);
+        vector< DMatch > good_matches2;
+        //matcher.match(desc, surf_saved[i], matches);
+        matcher.knnMatch(desc, surf_saved_desc[i], matches, 50);
         if (!matches.empty()) {
-            for (int i = 0; i < matches.size(); i++) {
-                dist += matches[i].distance;
-                //printf("matches %d dist %f\n", i, matches[i].distance);
-
-                if (matches[i].distance < 0.25) {
-                    good_match++;
-                    sel_dist += matches[i].distance;
+            for (size_t i = 0; i < matches.size(); ++i) {
+                for (int j = 0; j < matches[i].size(); j++) {
+                    //calculate local distance for each possible match
+                    Point2f from = kp[matches[i][j].queryIdx].pt;
+                    Point2f to = surf_saved_key[matches[i][j].trainIdx].pt;
+                    double dist = sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
+                    //save as best match if local distance is in specified area
+                    if (dist < 10.0) {
+                        good_matches2.push_back(matches[i][j]);
+                        j = matches[i].size();
+                    }
                 }
             }
+            for (int i = 0; i < good_matches.size(); i++) {
+                dist += good_matches[i].distance;
+                //printf("matches %d dist %f\n", i, matches[i].distance);
+            }
+            //printf(" rating: %f\n", sel_dist/good_match);
+            printf("good matches %d, dist %f\n", good_matches.size(), dist);
+            //printf("total distance %f match %d sel_dist %f  total matched %d\n", dist, good_match, sel_dist, matches.size());
         }
-        //printf(" rating: %f\n", sel_dist/good_match);
-        printf("total distance %f match %d sel_dist %f  total matched %d\n", dist, good_match, sel_dist, matches.size());
     }
+    surf_saved_desc.push_back(desc);
+    surf_saved_key.push_back(kp);
 
-    surf_saved.push_back(desc);
-    
 }
