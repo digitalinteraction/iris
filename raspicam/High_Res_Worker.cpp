@@ -518,70 +518,56 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
 
 
     BFMatcher matcher(NORM_L2, false);
-
+    int min_angle_count = 0;
+    int min_angle_index = 0;
+    
     for (int p = 0; p < surf_saved_desc.size(); p++) {
         vector<DMatch> matches;
-        float dist = 0;
         double sel_dist = 0;
         int matching_angle = 0;
-        int matching_dist = 0;
-        int good_match = 0;
-        matcher.match(surf_saved_desc[p],desc, matches);
+        matcher.match(surf_saved_desc[p], desc, matches);
         std::sort(matches.begin(), matches.end(), comparator);
-        //matcher.knnMatch(desc, surf_saved_desc[p], matches, 50);
         if (!matches.empty()) {
-            int ceil = std::min(10, (int)matches.size());
-            for(int i = 0; i < ceil; i++){
-                for(int j = i; j < ceil; j++){
-                    for(int q = j; q < ceil; q++){
-                    Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
-                    Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
-                    Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
-                    double angle1 = 0, dist1 = 0;
-                    calc_angle_dist(orig1, orig2, orig3, &angle1, &dist1);
-                    
-                    Point2f new1 = kp[matches[i].trainIdx].pt;
-                    Point2f new2 = kp[matches[j].trainIdx].pt;
-                    Point2f new3 = kp[matches[q].trainIdx].pt;
-                    double angle2 = 0, dist2 = 0;
-                    calc_angle_dist(new1, new2, new3, &angle2, &dist2);
-                    
-                    if(isnormal(angle1) && isnormal(angle2)){
-                        if(fabs(angle1-angle2) < 5.0){
-                            matching_angle++;
+            int ceil = std::min(10, (int) matches.size());
+            for (int i = 0; i < ceil; i++) {
+                for (int j = i; j < ceil; j++) {
+                    for (int q = j; q < ceil; q++) {
+                        Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
+                        Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
+                        Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
+                        double angle1 = 0, dist1 = 0;
+                        calc_angle_dist(orig1, orig2, orig3, &angle1, &dist1);
+
+                        Point2f new1 = kp[matches[i].trainIdx].pt;
+                        Point2f new2 = kp[matches[j].trainIdx].pt;
+                        Point2f new3 = kp[matches[q].trainIdx].pt;
+                        double angle2 = 0, dist2 = 0;
+                        calc_angle_dist(new1, new2, new3, &angle2, &dist2);
+
+                        if (isnormal(angle1) && isnormal(angle2)) {
+                            if (fabs(angle1 - angle2) < 5.0) {
+                                matching_angle++;
+                            }
                         }
-                    }
-                    //printf("Distance %f\n", fabs(dist1 - dist2));
-                    //printf("Angle old %f new %f\n", angle1, angle2);
-                    
-                    if(isnormal(dist1) && isnormal(dist2)){
-                        //printf("difference distance: %f\n",fabs(dist1 - dist2));
-                        sel_dist += fabs(dist1 - dist2);
-                    }
+                        if (isnormal(dist1) && isnormal(dist2)) {
+                            sel_dist += fabs(dist1 - dist2);
+                        }
                     }
                 }
             }
-            
-            
-            /*for (int i = 0; i < matches.size(); i++) {
-                dist += matches[i].distance;
-                //printf("matches %d dist %f\n", i, matches[i].distance);
-            }*/
-            //printf(" rating: %f\n", sel_dist/good_match);
-            double rating = 0;
-            if(matches.size() > 0){
-                rating = (sel_dist)/matches.size();
-            }else{
-                rating = 100000;
+            if(matching_angle > min_angle_count){
+                min_angle_count = matching_angle;
+                min_angle_index = p;
             }
-            printf("angle count: %d", matching_angle);
-            printf("rating %f\n", rating);
-            //printf("good matches %d, dist %f ratio %f\n", matches.size(), sel_dist, sel_dist/c);
-            //printf("total distance %f match %d sel_dist %f  total matched %d\n", dist, good_match, sel_dist, matches.size());
         }
     }
-    surf_saved_desc.push_back(desc);
-    surf_saved_key.push_back(kp);
+    
+    printf("angle count: %d in cat %d\n", min_angle_count, min_angle_index);
+    
+    if(min_angle_count < 20){
+        surf_saved_desc.push_back(desc);
+        surf_saved_key.push_back(kp);
+    }
 
 }
 
