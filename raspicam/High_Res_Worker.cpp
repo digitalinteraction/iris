@@ -60,7 +60,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
         printf("classifier loaded\n");
     }
     
-    surf = xfeatures2d::SURF::create( 25 );
+    surf = xfeatures2d::SURF::create( 200 );
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -373,7 +373,8 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
             features.at<float>(0, i) = final_vector[i];
             //printf("%f\n", item->final_vector[i]);
         }
-        cout << features << endl;
+        //cout << features << endl;
+        cout << features.size() << endl;
         float result = classifier->predict(features);
         int object = (int)floor(result+0.5);
         printf("Nummeric Result: %f %d\n", result, object);
