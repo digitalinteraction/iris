@@ -518,13 +518,15 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
 
 
     BFMatcher matcher(NORM_L2, false);
-    int min_angle_count = 0;
+    float min_angle_count = 0;
     int min_angle_index = 0;
+    int min_total_count = 0;
     
     for (int p = 0; p < surf_saved_desc.size(); p++) {
         vector<DMatch> matches;
         double sel_dist = 0;
-        int matching_angle = 0;
+        float matching_angle = 0;
+        int total_count = 0;
         matcher.match(surf_saved_desc[p], desc, matches);
         std::sort(matches.begin(), matches.end(), comparator);
         if (!matches.empty()) {
@@ -532,6 +534,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
             for (int i = 0; i < ceil; i++) {
                 for (int j = i; j < ceil; j++) {
                     for (int q = j; q < ceil; q++) {
+                        total_count++;
                         Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
                         Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
                         Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
@@ -546,7 +549,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
 
                         if (isnormal(angle1) && isnormal(angle2)) {
                             if (fabs(angle1 - angle2) < 5.0) {
-                                matching_angle++;
+                                matching_angle += 1.0;
                             }
                         }
                         if (isnormal(dist1) && isnormal(dist2)) {
@@ -558,12 +561,13 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
             if(matching_angle > min_angle_count){
                 min_angle_count = matching_angle;
                 min_angle_index = p;
+                min_total_count = total_count;
             }
         }
     }
     
-    printf("angle count: %d in cat %d\n", min_angle_count, min_angle_index);
-    
+    printf("angle count: %d in cat %d\n", min_angle_count/min_total_count, min_angle_index);
+    //percent of angles right
     if(min_angle_count < 20){
         surf_saved_desc.push_back(desc);
         surf_saved_key.push_back(kp);
