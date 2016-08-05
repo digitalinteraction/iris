@@ -523,7 +523,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
         vector<DMatch> matches;
         float dist = 0;
         double sel_dist = 0;
-        int matching_angles = 0;
+        int matching_angle = 0;
         int matching_dist = 0;
         int good_match = 0;
         matcher.match(surf_saved_desc[p],desc, matches);
