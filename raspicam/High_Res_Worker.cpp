@@ -535,20 +535,15 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
                     Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
                     Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
                     Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
-                    double dist1 = sqrt((orig1.x - orig2.x) * (orig1.x - orig2.x) + (orig1.y - orig2.y) * (orig1.y - orig2.y));
-                    double dist2 = sqrt((orig1.x - orig3.x) * (orig1.x - orig3.x) + (orig1.y - orig3.y) * (orig1.y - orig3.y));
-                    double dist3 = sqrt((orig2.x - orig3.x) * (orig2.x - orig3.x) + (orig2.y - orig3.y) * (orig2.y - orig3.y));
-                    double angle1 = acos((dist1*dist1 + dist2*dist2 - dist3*dist3)/(2*dist1*dist2))*(180/3.14159);
-
+                    double angle1 = 0, dist1 = 0;
+                    calc_angle_dist(orig1, orig2, orig3, &angle1, &dist1);
                     
                     Point2f new1 = kp[matches[i].trainIdx].pt;
                     Point2f new2 = kp[matches[j].trainIdx].pt;
                     Point2f new3 = kp[matches[q].trainIdx].pt;
-                    double dist4 = sqrt((new1.x - new2.x) * (new1.x - new2.x) + (new1.y - new2.y) * (new1.y - new2.y));
-                    double dist5 = sqrt((new1.x - new3.x) * (new1.x - new3.x) + (new1.y - new3.y) * (new1.y - new3.y));
-                    double dist6 = sqrt((new2.x - new3.x) * (new2.x - new3.x) + (new2.y - new3.y) * (new2.y - new3.y));
-                    double angle2 = acos((dist4*dist4 + dist5*dist5 - dist6*dist6)/(2*dist4*dist5))*(180/3.14159);
-                    printf("Distance old %f %f %f new %f %f %f\n", dist1, dist2, dist3, dist4, dist5, dist6);
+                    double angle2 = 0, dist2 = 0;
+                    calc_angle_dist(new1, new2, new3, &angle2, &dist2);
+                    printf("Distance %f\n", fabs(dist1 - dist2));
                     printf("Angle old %f new %f\n", angle1, angle2);
                     
                     if(isnormal(dist1) && isnormal(dist2)){
@@ -585,4 +580,16 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
 bool High_Res_Worker::comparator(DMatch a,DMatch b)
 {
         return a.distance<b.distance;
+}
+void High_Res_Worker::calc_angle_dist(Point2f pt1, Point2f pt2, Point2f pt3, double *angle, double *dist) {
+    double dist1 = sqrt((pt1.x - pt2.x) * (pt1.x - pt2.x) + (pt1.y - pt2.y) * (pt1.y - pt2.y));
+    double dist2 = sqrt((pt1.x - pt3.x) * (pt1.x - pt3.x) + (pt1.y - pt3.y) * (pt1.y - pt3.y));
+    double dist3 = sqrt((pt2.x - pt3.x) * (pt2.x - pt3.x) + (pt2.y - pt3.y) * (pt2.y - pt3.y));
+    double angle1 = acos((dist1 * dist1 + dist2 * dist2 - dist3 * dist3) / (2 * dist1 * dist2))*(180 / 3.14159);
+    if(isnormal(angle1)){
+        *angle += angle1;
+    }
+    if(isnormal(dist1)){
+        *dist += dist1;
+    }
 }

@@ -47,6 +47,7 @@ private:
     void save_contour_in_file(vector<Point> *contour);
     void match_surf_features(Mat *mask, Mat *img, float angle);
     static bool comparator(DMatch a,DMatch b);
+    void calc_angle_dist(Point2f pt1, Point2f pt2, Point2f pt3, double *angle, double *dist);
     Packetbuffer *out;
     Packetbuffer *in;
     NetworkControl *nc;
