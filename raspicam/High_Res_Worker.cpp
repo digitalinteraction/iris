@@ -533,7 +533,9 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
                     Point2f new1 = kp[matches[i].trainIdx].pt;
                     Point2f new2 = kp[matches[j].trainIdx].pt;
                     double dist2 = sqrt((new1.x - new2.x) * (new1.x - new2.x) + (new1.y - new2.y) * (new1.y - new2.y));
-                    sel_dist += fabs(dist1 - dist2);
+                    if(isinf(dist1) == 0 && isinf(dist2) && dist1 != 0 && dist2 != 0){
+                        sel_dist += fabs(dist1 - dist2);
+                    }
                 }
             }
             
