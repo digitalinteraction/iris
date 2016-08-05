@@ -522,7 +522,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
         float dist = 0;
         double sel_dist = 0;
         int good_match = 0;
-        matcher.match(desc, surf_saved[p], matches);
+        matcher.match(desc, surf_saved_desc[p], matches);
         //matcher.knnMatch(desc, surf_saved_desc[p], matches, 50);
         if (!matches.empty()) {
             for(int i = 0; i < matches.size(); i++){
