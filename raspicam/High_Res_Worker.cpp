@@ -531,15 +531,30 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
             int ceil = std::min(10, (int)matches.size());
             for(int i = 0; i < ceil; i++){
                 for(int j = i; j < ceil; j++){
+                    for(int q = j; q < ceil; q++){
                     Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
                     Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
+                    Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
                     double dist1 = sqrt((orig1.x - orig2.x) * (orig1.x - orig2.x) + (orig1.y - orig2.y) * (orig1.y - orig2.y));
+                    double dist2 = sqrt((orig1.x - orig3.x) * (orig1.x - orig3.x) + (orig1.y - orig3.y) * (orig1.y - orig3.y));
+                    double dist3 = sqrt((orig2.x - orig3.x) * (orig2.x - orig3.x) + (orig2.y - orig3.y) * (orig2.y - orig3.y));
+                    double angle1 = arccos((dist1*dist1 + dist2*dist2 + dist3*dist3)/(2*dist1*dist2));
+
+                    
                     Point2f new1 = kp[matches[i].trainIdx].pt;
                     Point2f new2 = kp[matches[j].trainIdx].pt;
-                    double dist2 = sqrt((new1.x - new2.x) * (new1.x - new2.x) + (new1.y - new2.y) * (new1.y - new2.y));
+                    Point2f new3 = kp[matches[q].trainIdx].pt;
+                    double dist4 = sqrt((new1.x - new2.x) * (new1.x - new2.x) + (new1.y - new2.y) * (new1.y - new2.y));
+                    double dist5 = sqrt((new1.x - new3.x) * (new1.x - new3.x) + (new1.y - new3.y) * (new1.y - new3.y));
+                    double dist6 = sqrt((new2.x - new3.x) * (new2.x - new3.x) + (new2.y - new3.y) * (new2.y - new3.y));
+                    double angle2 = arccos((dist4*dist4 + dist5*dist5 + dist6*dist6)/(2*dist4*dist5));
+                    printf("Distance old %f %f %f new %f %f %f\n", dist1, dist2, dist3, dist4, dist5, dist6);
+                    printf("Angle old %f new %f\n", angle1, angle2);
+                    
                     if(isnormal(dist1) && isnormal(dist2)){
                         //printf("difference distance: %f\n",fabs(dist1 - dist2));
                         sel_dist += fabs(dist1 - dist2);
+                    }
                     }
                 }
             }
