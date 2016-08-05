@@ -566,7 +566,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
         }
     }
     
-    printf("angle count: %d in cat %d\n", min_angle_count/min_total_count, min_angle_index);
+    printf("angle count: %f in cat %d\n", (min_angle_count/min_total_count)*100, min_angle_index);
     //percent of angles right
     if(min_angle_count < 20){
         surf_saved_desc.push_back(desc);
