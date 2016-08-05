@@ -528,7 +528,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img){
                     Point2f to = surf_saved_key[p][matches[i][j].trainIdx].pt;
                     double dist = sqrt((from.x - to.x) * (from.x - to.x) + (from.y - to.y) * (from.y - to.y));
                     //save as best match if local distance is in specified area
-                    if (dist < 30.0) {
+                    if (dist < 50.0) {
                         good_matches2.push_back(matches[i][j]);
                         j = matches[i].size();
                     }
