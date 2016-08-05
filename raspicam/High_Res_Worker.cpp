@@ -526,7 +526,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
         matcher.match(surf_saved_desc[p],desc, matches);
         //matcher.knnMatch(desc, surf_saved_desc[p], matches, 50);
         if (!matches.empty()) {
-            int ceil = std::min(10, matches.size());
+            int ceil = std::min(10, (int)matches.size());
             for(int i = 0; i < ceil; i++){
                 for(int j = i; j < ceil; j++){
                     Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
