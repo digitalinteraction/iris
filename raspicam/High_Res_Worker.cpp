@@ -291,10 +291,13 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         deb_printf("saved it in list\n");
         comm->file_cnt++;
         deb_printf("increased file counter\n");
-        match_surf_features(&thres, &rgb);
+
+        RotatedRect boundRect = minAreaRect(*contour);
+        
+        match_surf_features(&thres, &rgb, boundRect.angle);
     }
     //img.release();
-    
+
 }
 
 Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {
@@ -455,7 +458,8 @@ void High_Res_Worker::check_objects(patch_packet *start){
     //deb_printf("end checking objects\n");
 }
 
-void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
+void High_Res_Worker::save_contour_in_file(vector<Point> *contour, float angle){
+    printf("Angle of object: %f\n", angle);
     int x_min=10000, y_min=10000;
     int x_max=0, y_max=0;
     for(int i = 0; i < contour->size(); i++){
