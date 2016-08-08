@@ -398,6 +398,11 @@ static void Render() {
     glfwSwapBuffers(gWindow);
 
 }
+
+void windowResizeCallback(GLFWwindow* window, int width, int height)
+{
+     glViewport(0, 0, width, height);
+}
 // the program starts here
 void AppMain() {
     // initialise GLFW
@@ -410,13 +415,15 @@ void AppMain() {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-    gWindow = glfwCreateWindow((int)SCREEN_SIZE.x, (int)SCREEN_SIZE.y, "OpenGL Tutorial", NULL, NULL);
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+    
+    gWindow = glfwCreateWindow((int)SCREEN_SIZE.x, (int)SCREEN_SIZE.y, "Carrot Detector", NULL, NULL);
     if(!gWindow)
         throw std::runtime_error("glfwCreateWindow failed. Can your hardware handle OpenGL 3.2?");
 
     // GLFW settings
     glfwMakeContextCurrent(gWindow);
+    glfwSetWindowSizeCallback(gWindow, &windowResizeCallback);
     
     // initialise GLEW
     glewExperimental = GL_TRUE; //stops glew crashing on OSX :-/

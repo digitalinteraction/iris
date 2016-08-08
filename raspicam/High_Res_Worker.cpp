@@ -316,7 +316,15 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
             deb_printf("original Contour Point: %d %d\n", pt.x, pt.y);
         }
         
-       
+        if(item->left != 0 && item->mac > item->left)
+            return 0;
+        if(item->right != 0 && item->mac > item->right)
+            return 0;
+        if(item->up != 0 && item->mac > item->up)
+            return 0;
+        if(item->down != 0 && item->mac > item->down)
+            return 0;
+        
         
         deb_printf("start combining objects\n");
         combine_objects(item, item->left, LEFT_SIDE);
