@@ -103,6 +103,7 @@ void CommImage::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
 }
 
 void CommImage::ask_neighbours(patch_packet* item) {
+    lock.lock();
     if (item->state == 0 && (((int)item->left) == 1 || ((int)item->right) == 1 ||
             ((int)item->up) == 1 || ((int)item->down) == 1)) {
         deb_printf("patch %p\n", item);
@@ -134,14 +135,14 @@ void CommImage::ask_neighbours(patch_packet* item) {
                 array[1] = temp.y;
             }
         }
-        if (((int) item->down) == 1 /*&& nc->topo->isalive(DOWN_SIDE) == 1*/) {
+        if (((int) item->down) == 1 && nc->topo->isalive(DOWN_SIDE) == 1) {
             int32_t res = image_out->add(size, DOWN_SIDE, (void *) send_packet);
             add_packet_send((uint32_t)res, DOWN_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, DOWN_SIDE);
         }else{
             item->down == (patch_packet *)0;
         }
-        if (((int) item->up) == 1 /*&& nc->topo->isalive(UP_SIDE) == 1*/) {
+        if (((int) item->up) == 1 && nc->topo->isalive(UP_SIDE) == 1) {
             int32_t res = image_out->add(size, UP_SIDE, (void *) send_packet);
             add_packet_send((uint32_t)res, UP_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, UP_SIDE);
@@ -149,7 +150,7 @@ void CommImage::ask_neighbours(patch_packet* item) {
             item->up == (patch_packet *)0;
         }
 
-        if (((int) item->left) == 1 /*&& nc->topo->isalive(LEFT_SIDE) == 1*/) {
+        if (((int) item->left) == 1 && nc->topo->isalive(LEFT_SIDE) == 1) {
             int32_t res = image_out->add(size, LEFT_SIDE, (void *) send_packet);
             add_packet_send((uint32_t)res, LEFT_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, LEFT_SIDE);
@@ -157,7 +158,7 @@ void CommImage::ask_neighbours(patch_packet* item) {
             item->left == (patch_packet *)0;
         }
 
-        if (((int) item->right) == 1 /*&& nc->topo->isalive(RIGHT_SIDE) == 1*/) {
+        if (((int) item->right) == 1 && nc->topo->isalive(RIGHT_SIDE) == 1) {
             int32_t res = image_out->add(size, RIGHT_SIDE, (void *) send_packet);
             add_packet_send((uint32_t)res, RIGHT_SIDE, item);
             deb_printf(" %p added buffer with %d %p to %d address\n", image_out, size, send_packet, RIGHT_SIDE);
@@ -167,6 +168,7 @@ void CommImage::ask_neighbours(patch_packet* item) {
         free(send_packet);
         item->state = 1;
     }
+    lock.unlock();
 }
 
 /*
@@ -189,6 +191,7 @@ patch_packet * CommImage::search_list(patch_packet* start, patch_packet *search)
  * */
 
 void CommImage::check_recv_buffer(patch_packet *start) {
+    lock.lock();
     struct packet *pack;
     while (image_in->get(&pack) == 0) {
         
@@ -223,10 +226,12 @@ void CommImage::check_recv_buffer(patch_packet *start) {
             recv_last = item;
         }
     }
+    lock.unlock();
 }
 
 void CommImage::match_recv_list(patch_packet *start) {
 
+    lock.lock();
     //match_answers(start);
     patch_packet *item = recv_first;
     while (item != 0) {
@@ -331,6 +336,7 @@ void CommImage::match_recv_list(patch_packet *start) {
         }
         item = item->next;
     }
+    lock.unlock();
 }
 /*
 void CommImage::match_answers(patch_packet *start) {
@@ -379,7 +385,6 @@ void CommImage::callback_rel(uint32_t id, size_t size, uint8_t reason){
 
 //maybe use lock for access to list because of callback
 void CommImage::add_packet_send(uint32_t id, uint32_t side, patch_packet* item){
-    lock.lock();
     deb_printf("id: %d side: %d patch %p\n", id, side, item);
     struct waiting_response* response = (struct waiting_response*) malloc(sizeof(struct waiting_response));
     response->id = id;
@@ -399,7 +404,6 @@ void CommImage::add_packet_send(uint32_t id, uint32_t side, patch_packet* item){
         response->prev = last_res;
         last_res = response;
     }
-    lock.unlock();
 }
 
 void CommImage::remove_packet_send(uint32_t id){
