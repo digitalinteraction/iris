@@ -32,7 +32,7 @@
 
 const char * const classifier_names[] = {"NOTHING", "CARROT", "CUCUMBER", "PEACH", "APPLE"};
 int fontFace = CV_FONT_HERSHEY_PLAIN;
-double fontScale = 0.5;
+double fontScale = 1;
 int fontThickness = 1;
 
 Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in, Buffer *requests_out, Buffer *class_in) {
