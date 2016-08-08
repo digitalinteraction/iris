@@ -589,7 +589,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     if(isnormal(confidence) == 1 && confidence >= 20.0){
         item->object = min_angle_index;
     }else{
-        item->object = -1;
+        item->object = -2;
     }
     item->id = id;
     item->classification = -1;
