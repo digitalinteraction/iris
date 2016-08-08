@@ -45,6 +45,12 @@
 
 
 
+struct classification_result{
+    uint32_t id;
+    int16_t classification;
+    int16_t object;
+};
+
 struct low_res_header{
     uint8_t port;
     uint8_t pos;

@@ -30,7 +30,7 @@ class Buffer;
 
 class High_Res_Worker {
 public:
-    High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf, NetworkControl *nc);
+    High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf, NetworkControl *nc, Buffer *class_out);
     virtual ~High_Res_Worker();
     int processing;
     void run();
@@ -45,7 +45,7 @@ private:
     void combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir);
     void check_objects(patch_packet *start);
     void save_contour_in_file(vector<Point> *contour);
-    void match_surf_features(Mat *mask, Mat *img, float angle);
+    void match_surf_features(Mat *mask, Mat *img, float angle, uint16_t id);
     static bool comparator(DMatch a,DMatch b);
     void calc_angle_dist(Point2f pt1, Point2f pt2, Point2f pt3, double *angle, double *dist);
     Packetbuffer *out;
@@ -58,6 +58,7 @@ private:
     patch_packet *last;
     
     CommImage *comm;
+    Buffer *class_out;
     
     Ptr<cv::xfeatures2d::SURF> surf;
     Ptr<cv::ml::RTrees> classifier;

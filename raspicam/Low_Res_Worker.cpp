@@ -30,8 +30,12 @@
 #define RATIO_X ((float)HIGH_OUTPUT_X/LOW_OUTPUT_X)
 #define RATIO_Y ((float)HIGH_OUTPUT_Y/LOW_OUTPUT_Y)
 
+const char * const classifier_names[] = {"NOTHING", "CARROT", "CUCUMBER", "PEACH", "APPLE"};
+int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
+double fontScale = 2;
+int fontThickness = 3
 
-Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in, Buffer *requests_out) {
+Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in, Buffer *requests_out, Buffer *class_in) {
     processing = 0;
     cnt = 0;
     learning = 0.05;
@@ -52,6 +56,7 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *im
     this->first = 0;
     this->last = 0;
     cnt_size = 0;
+    this->class_in = class_in;
     //pMOG2 = cv::bgsegm::createBackgroundSubtractorGMG();
 
 }
@@ -71,6 +76,7 @@ void Low_Res_Worker::run() {
             free(patch->buffer);
             free(patch);
         }
+        update_contours();
     }
 }
 
@@ -112,6 +118,24 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                 //drawContours(drawing, (item->contour), i, color, 2);
                 //printf("item duration %d\n", item->duration);
                 contours_list.push_back(*(item->contour));
+                if(item->classification != -1){
+                    char * text = classifier_names[item->classification];
+                    Point2f middle = item->centroid;
+                    int baseline = 0;
+                    Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
+                    middle.y = middle.y+textSize.height/2;
+                    putText(img, text, middle, fontFace, fontScale, Scalar::all(255), fontThickness, 8);
+                }
+                if(item->object != -1){
+                    char * text[20];
+                    snprintf(text, 20, "Object %d\n", item->object);
+                    Point2f middle = item->centroid;
+                    int baseline = 0;
+                    Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
+                    middle.y = middle.y-textSize.height/2;
+                    putText(img, text, middle, fontFace, fontScale, Scalar::all(255), fontThickness, 8);
+                }
+                
                 i++;
             }
             item = item->next;
@@ -277,6 +301,8 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
             item->token = token;
             item->next = 0;
             item->prev = 0;
+            item->classification = -1;
+            item->object = -1;
             if (first == 0) {
                 deb_printf("added item with id %d as first\n", item->id);
                 first = item;
@@ -426,6 +452,7 @@ void Low_Res_Worker::send_high_requests(){
 
             RASPITEX_PATCH* temp = (RASPITEX_PATCH *) malloc(sizeof (RASPITEX_PATCH));
             memset(temp, 0, sizeof (RASPITEX_PATCH));
+            temp->id = item->id;
             temp->token = item->token;
             temp->fb = item->fb;
             //add some buffer
@@ -456,6 +483,29 @@ void Low_Res_Worker::send_high_requests(){
             item->asked = 1;
         }
         item = item->next;
+    }
+
+}
+
+void Low_Res_Worker::update_contours() {
+    struct classification_result *class_item = 0;
+    uint8_t group = 0;
+    while (class_in->get((RASPITEX_PATCH**)&class_item, &group) == 0) {
+        if (class_item != 0) {
+            struct objects *item = first;
+            while (item != 0) {
+                if (class_item->id == item->id) {
+                    if(class_item->classification != -1){
+                        item->classification = class_item->classification;
+                    }
+                    if(class_item->object != -1){
+                        item->object = class_item->object;
+                    }
+                }
+                item = item->next;
+            }
+        }
+        free(class_item);
     }
 
 }

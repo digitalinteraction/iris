@@ -48,6 +48,8 @@ struct objects{
     uint8_t expiring;
     uint8_t duration;
     uint8_t matched;
+    int16_t classification;
+    int16_t object;
     Point2f centroid;
     float movement;
     uint8_t move_cnt;
@@ -60,7 +62,7 @@ struct objects{
 
 class Low_Res_Worker {
 public:
-    Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in, Buffer *requests_out);
+    Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in, Buffer *requests_out, Buffer *class_in);
     ~Low_Res_Worker();
     void run();
     int processing;
@@ -82,6 +84,7 @@ private:
     uint8_t match_contours(vector<vector<Point> > *contour, uint8_t token, uint8_t fb);
     void cleanup_list();
     void send_high_requests();
+    void update_contours();
     //void ask_neighbours(struct objects *item);
     //int send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr, uint16_t id);
     //void check_list();
@@ -96,6 +99,7 @@ private:
 
     Buffer *images_in;
     Buffer *requests_out;
+    Buffer *class_in;
     struct objects *first;
     struct objects *last;
     uint8_t id_cnt;

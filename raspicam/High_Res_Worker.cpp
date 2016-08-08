@@ -37,7 +37,7 @@ const char * const object_names[] = {"NOTHING", "CARROT", "CUCUMBER", "PEACH", "
 using namespace std;
 
 
-High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf, NetworkControl *nc) {
+High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbuffer *in_buf, NetworkControl *nc, Buffer *class_out) {
     buf = buffer;
     cnt = 0;
     prev_group = 0;
@@ -46,7 +46,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     this->nc = nc;
     pos = 0;
     id = 0;
-    
+    this->class_out = class_out;
     first = 0;
     last = 0;
     this->comm = new CommImage(nc);
@@ -294,7 +294,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
 
         RotatedRect boundRect = minAreaRect(*contour);
         
-        match_surf_features(&thres, &rgb, boundRect.angle);
+        match_surf_features(&thres, &rgb, boundRect.angle, patch->id);
     }
     //img.release();
 
@@ -379,6 +379,12 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         int object = (int)floor(result+0.5);
         printf("Nummeric Result: %f %d\n", result, object);
         printf("Result of classifier: %s\n", object_names[object]);
+        
+        struct classification_result *class_item = (struct classification_result*) malloc(sizeof(struct classification_result));
+        class_item->id = item->id;
+        class_item->classification = object;
+        class_item->object = -1;
+        class_out->add((RASPITEX_PATCH*) class_item, 0);
         
         return object;
     }
@@ -498,7 +504,7 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
     imwrite("combined_image.png", img);
 }
 
-void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
+void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint16_t id){
         printf("Angle of object: %f\n", angle);
 
     vector<KeyPoint> kp;
@@ -568,12 +574,22 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle){
     
     float confidence = (min_angle_count/min_total_count)*100;
     printf("confidence: %f in cat %d\n", confidence, min_angle_index);
+    
+    struct classification_result *item = (struct classification_result*) malloc(sizeof(struct classification_result));
+
     //percent of angles right
     if(confidence < 20.0){
         surf_saved_desc.push_back(desc);
         surf_saved_key.push_back(kp);
+        item->object = surf_saved_key.size()-1;
+    }else{
+        item->object = min_angle_index;
     }
-
+    
+    item->id = id;
+    item->classification = -1;
+    
+    class_out->add((RASPITEX_PATCH *)item, 0);
 }
 
 bool High_Res_Worker::comparator(DMatch a,DMatch b)

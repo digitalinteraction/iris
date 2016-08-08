@@ -87,6 +87,7 @@ typedef struct RASPITEX_PATCH
      uint8_t down;
      uint8_t left;
      uint8_t right;
+     uint16_t id;
 } RASPITEX_PATCH;
 
 typedef struct RASPITEX_CAPTURE

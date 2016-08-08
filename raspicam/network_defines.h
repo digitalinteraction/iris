@@ -44,7 +44,11 @@
 #define REL_ERROR_TIMEOUT 3
 #define REL_ERROR_BUF_ALLOC 4
 
-
+struct classification_result{
+    uint32_t id;
+    int16_t classification;
+    int16_t object;
+};
 
 struct low_res_header{
     uint8_t port;
