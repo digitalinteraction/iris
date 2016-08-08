@@ -532,7 +532,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     for (int p = 0; p < surf_saved_desc.size(); p++) {
         vector<DMatch> matches;
         double sel_dist = 0;
-        float matching_angle = 0;
+        float matching_angle = 0.0;
         int total_count = 0;
         if (surf_saved_desc[p].empty() == false && desc.empty() == false) {
             matcher.match(surf_saved_desc[p], desc, matches);
@@ -575,7 +575,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
             }
         }
     }
-    printf("min angle count %d min total count %d\n", min_angle_count, min_total_count);
+    printf("min angle count %f min total count %d\n", min_angle_count, min_total_count);
     float confidence = (min_angle_count/min_total_count)*100;
     printf("confidence: %f in cat %d\n", confidence, min_angle_index);
     
