@@ -582,12 +582,12 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     struct classification_result *item = (struct classification_result*) malloc(sizeof(struct classification_result));
 
     //percent of angles right
-    if(isnormal(confidence) == 0 || confidence < 20.0){
+    if(isnormal(confidence) == 0 || confidence < 15.0){
         surf_saved_desc.push_back(desc);
         surf_saved_key.push_back(kp);
     }
     
-    if(isnormal(confidence) == 1 && confidence >= 20.0){
+    if(isnormal(confidence) == 1 && confidence >= 15.0){
         item->object = min_angle_index;
     }else{
         item->object = -2;
