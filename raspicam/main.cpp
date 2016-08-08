@@ -21,9 +21,10 @@ int main() {
     Buffer *buf_ic_hr = new Buffer(10);
     Buffer *buf_low_req = new Buffer(10);
     Buffer *buf_low_img = new Buffer(10);
-    Low_Res_Worker *low = new Low_Res_Worker(nc->unrel_in, nc, buf_low_img, buf_low_req);
+    Buffer *class_share = new Buffer(10);
+    Low_Res_Worker *low = new Low_Res_Worker(nc->unrel_in, nc, buf_low_img, buf_low_req, class_share);
     Image_Capture *cap = new Image_Capture(buf_ic_hr, buf_low_img, buf_low_req);
-    High_Res_Worker *high = new High_Res_Worker(buf_ic_hr, nc->unrel_in, nc->image_out, nc);
+    High_Res_Worker *high = new High_Res_Worker(buf_ic_hr, nc->unrel_in, nc->image_out, nc, class_share);
     cap->capturing = 1;
     low->processing = 1;
     high->processing = 1;
