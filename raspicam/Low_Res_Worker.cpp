@@ -118,25 +118,6 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                 //drawContours(drawing, (item->contour), i, color, 2);
                 //printf("item duration %d\n", item->duration);
                 contours_list.push_back(*(item->contour));
-                if(item->classification != -1){
-                    const char * text = classifier_names[item->classification];
-                    //printf("image classification is %d %s\n", item->classification, text);
-                    Point2f middle = item->centroid;
-                    int baseline = 0;
-                    Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
-                    middle.y = middle.y+textSize.height/2 + 2;
-                    putText(img, text, middle, fontFace, fontScale, Scalar::all(255), fontThickness, 8, true);
-                }
-                if(item->object != -1){
-                    char text[20];
-                    snprintf(text, 20, "Object %d", item->object);
-                    Point2f middle = item->centroid;
-                    int baseline = 0;
-                    Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
-                    middle.y = middle.y-textSize.height/2 - 2;
-                    putText(img, text, middle, fontFace, fontScale, Scalar::all(255), fontThickness, 8, true);
-                }
-                
                 i++;
             }
             item = item->next;
@@ -145,6 +126,33 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(img, contours_list, i, color, 2);
         }
+        item = first;
+        while(item != 0){
+            if(item->duration > 50){
+                if(item->classification != -1){
+                    const char * text = classifier_names[item->classification];
+                    //printf("image classification is %d %s\n", item->classification, text);
+                    Point2f middle = item->centroid;
+                    int baseline = 0;
+                    Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
+                    middle.y = middle.y+textSize.height/2 + 2;
+                    middle.x = middle.x - textSize.width/2;
+                    putText(img, text, middle, fontFace, fontScale, Scalar::all(0), fontThickness, 8, true);
+                }
+                if(item->object != -1){
+                    char text[20];
+                    snprintf(text, 20, "Object %d", item->object);
+                    Point2f middle = item->centroid;
+                    int baseline = 0;
+                    Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
+                    middle.y = middle.y-textSize.height/2 - 2;
+                    middle.x = middle.x - textSize.width/2;
+                    putText(img, text, middle, fontFace, fontScale, Scalar::all(0), fontThickness, 8, true);
+                }
+            }
+            item = item->next;
+        }
+        
         deb_printf("sending request for high res image\n");
         send_high_requests();
 
