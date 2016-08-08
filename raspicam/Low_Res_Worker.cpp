@@ -30,7 +30,7 @@
 #define RATIO_X ((float)HIGH_OUTPUT_X/LOW_OUTPUT_X)
 #define RATIO_Y ((float)HIGH_OUTPUT_Y/LOW_OUTPUT_Y)
 
-const char * const classifier_names[] = {"NOTHING", "CARROT", "CUCUMBER", "PEACH", "APPLE"};
+const char * const classifier_names[] = {"NOTHING", "CARROT", "PEACH", "APPLE"};
 int fontFace = CV_FONT_HERSHEY_PLAIN;
 double fontScale = 1;
 int fontThickness = 1;

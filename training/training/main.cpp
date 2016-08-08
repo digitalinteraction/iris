@@ -56,9 +56,8 @@ int main() {
     printf("Please classify the pictures by pressing following keys:\n");
     printf("0: Nothing\n");
     printf("1: Carrot\n");
-    printf("2: Cucumber\n");
-    printf("3: Peach\n");
-    printf("4: Apple\n");
+    printf("2: Peach\n");
+    printf("3: Apple\n");
     
     const char * dir_pictures = PICTURE_DIR;
     
@@ -95,7 +94,7 @@ int main() {
     printf("Feature Count %d\n", cnt);
     
     Mat features(cnt, 7+5+3*HISTOGRAM_SIZE, CV_32FC1);
-    Mat classification(cnt, 1, CV_32FC1);
+    Mat classification(cnt, 1, CV_32S);
     item = first;
     cnt = 0;
     while(item != 0){
@@ -104,7 +103,8 @@ int main() {
             features.at<float>(cnt, i) = item->final_vector[i];
             //printf("%f\n", item->final_vector[i]);
         }
-        classification.at<float>(cnt) = item->result;
+        printf("class %d\n", (int)item->result);
+        classification.at<int>(cnt) = (int)item->result;
         cnt++;
         item = item->next;
     }
@@ -120,6 +120,7 @@ int main() {
     rtrees->setCalculateVarImportance(false);
     rtrees->setActiveVarCount(4);
     rtrees->setTermCriteria(TermCriteria(CV_TERMCRIT_EPS, 2000, 0.001));
+    printf("training classifier\n");
     rtrees->train(features, ROW_SAMPLE, classification);
     for(int i = 0; i < features.rows; i++){
         cout << "ROW::" << features.row(i) << endl;
@@ -128,8 +129,10 @@ int main() {
     cout << "Classification::" << classification << endl;
     
     for(int i = 0; i < features.rows; i++){
-    float result = rtrees->predict(features.row(i));
-    printf("%d Result: %f in class %f\n", i, result, classification.at<float>(i));
+        float result = rtrees->predict(features.row(i));
+        if(result != classification.at<int>(i)){
+            printf("%d Result: %f in class %d\n", i, result, classification.at<int>(i));
+        }
     }
     
     rtrees->save("classifier.xml");
@@ -218,9 +221,9 @@ void extract_features(char *name) {
 
             //calcHist(&rg, 1, 0, mask, g_hist, 1, &buck, &histRange, true, true);
             
-            cout << "hist r " << r_hist << endl;
-            cout << "hist g " << g_hist << endl;
-            cout << "hist b " << b_hist << endl;
+            //cout << "hist r " << r_hist << endl;
+            //cout << "hist g " << g_hist << endl;
+            //cout << "hist b " << b_hist << endl;
             /*float range[] = {0, 256};
             const float *histRange = {range};
             int buck = HISTOGRAM_SIZE;
@@ -333,7 +336,7 @@ void extract_features(char *name) {
             imshow(source_window, src);
             float res = (float)waitKey(0);
             res -= 1048624.0;
-            //printf("key pressed: %f\n\n", res);
+            printf("key pressed: %f\n\n", res);
 
             struct feature *item = (struct feature *) calloc(1, sizeof (struct feature));
             item->final_vector = final_vector;

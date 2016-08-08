@@ -32,7 +32,7 @@ CommImage *CommImage::static_call = 0;
 
 #define EPSILON 1.0
 
-const char * const object_names[] = {"NOTHING", "CARROT", "CUCUMBER", "PEACH", "APPLE"};
+const char * const object_names[] = {"NOTHING", "CARROT", "PEACH", "APPLE"};
 
 using namespace std;
 
