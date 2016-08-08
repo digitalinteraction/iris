@@ -374,7 +374,7 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         Mat features(1, 7+5+3*HISTOGRAM_SIZE, CV_32FC1);
         for(int i = 0; i < 7+5+3*HISTOGRAM_SIZE; i++){
             if(final_vector[i] < 0.01){
-                final_vector[i] = 0;
+                final_vector[i] = 0.0f;
             }
             features.at<float>(0, i) = final_vector[i];
             //printf("%f\n", item->final_vector[i]);

@@ -213,6 +213,7 @@ void CommImage::check_recv_buffer(patch_packet *start) {
                 item->feature->contour->push_back(point);
             }
         }
+        deb_printf("adding item to asked item\n");
         item->addr = pack->addr;
         if (recv_first == 0) {
             recv_first = item;
@@ -225,8 +226,10 @@ void CommImage::check_recv_buffer(patch_packet *start) {
             recv_last->next = item;
             recv_last = item;
         }
+        deb_printf("done adding item to asked item\n");
     }
     lock.unlock();
+    deb_printf("unlocked lock\n");
 }
 
 void CommImage::match_recv_list(patch_packet *start) {
