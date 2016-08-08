@@ -378,8 +378,9 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         }
         //cout << features << endl;
         cout << features.size() << endl;
+        float result = 0;
         if(classifier != 0){
-            float result = classifier->predict(features);
+            result = classifier->predict(features);
         }else{
             printf("classifier not initialized!!!!\n");
         }
