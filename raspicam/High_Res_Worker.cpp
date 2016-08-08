@@ -376,7 +376,7 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
             features.at<float>(0, i) = final_vector[i];
             //printf("%f\n", item->final_vector[i]);
         }
-        //cout << features << endl;
+        cout << features << endl;
         cout << features.size() << endl;
         float result = 0;
         if(classifier != 0){
