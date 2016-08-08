@@ -31,8 +31,8 @@
 #define RATIO_Y ((float)HIGH_OUTPUT_Y/LOW_OUTPUT_Y)
 
 const char * const classifier_names[] = {"NOTHING", "CARROT", "CUCUMBER", "PEACH", "APPLE"};
-int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
-double fontScale = 0.2;
+int fontFace = CV_FONT_HERSHEY_PLAIN;
+double fontScale = 0.5;
 int fontThickness = 1;
 
 Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in, Buffer *requests_out, Buffer *class_in) {
