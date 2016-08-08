@@ -515,6 +515,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     cout << "Descriptor" << desc.size() << endl;
     cout << "Keypoints" << kp.size() << endl;
     
+    if(kp.size() > 0){
     Mat img_keypoints;
     /*cout << "Keypoints: ";
     for(int i = 0; i < kp.size(); i++){
@@ -596,6 +597,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     item->classification = -1;
     
     class_out->add((RASPITEX_PATCH *)item, 0);
+    }
 }
 
 bool High_Res_Worker::comparator(DMatch a,DMatch b)
