@@ -33,7 +33,7 @@
 #define UP_SIDE 2
 
 //debug variables
-//#define DEBUG_COMM_IMAGE
+#define DEBUG_COMM_IMAGE
 #define DEBUG_HIGH_RES
 //#define DEBUG_LOW_RES
 
