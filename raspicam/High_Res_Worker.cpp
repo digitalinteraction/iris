@@ -574,7 +574,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
             }
         }
     }
-    
+    printf("min angle count %d min total count %d\n", min_angle_count, min_total_count);
     float confidence = (min_angle_count/min_total_count)*100;
     printf("confidence: %f in cat %d\n", confidence, min_angle_index);
     
