@@ -528,47 +528,49 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     float min_angle_count = 0;
     int min_angle_index = 0;
     int min_total_count = 0;
-    
+
     for (int p = 0; p < surf_saved_desc.size(); p++) {
         vector<DMatch> matches;
         double sel_dist = 0;
         float matching_angle = 0;
         int total_count = 0;
-        matcher.match(surf_saved_desc[p], desc, matches);
-        std::sort(matches.begin(), matches.end(), comparator);
-        if (!matches.empty()) {
-            int ceil = std::min(10, (int) matches.size());
-            for (int i = 0; i < ceil; i++) {
-                for (int j = i; j < ceil; j++) {
-                    for (int q = j; q < ceil; q++) {
-                        total_count++;
-                        Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
-                        Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
-                        Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
-                        double angle1 = 0, dist1 = 0;
-                        calc_angle_dist(orig1, orig2, orig3, &angle1, &dist1);
+        if (surf_saved_desc[p].size() > 0 && desc.size() > 0) {
+            matcher.match(surf_saved_desc[p], desc, matches);
+            std::sort(matches.begin(), matches.end(), comparator);
+            if (!matches.empty()) {
+                int ceil = std::min(10, (int) matches.size());
+                for (int i = 0; i < ceil; i++) {
+                    for (int j = i; j < ceil; j++) {
+                        for (int q = j; q < ceil; q++) {
+                            total_count++;
+                            Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
+                            Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
+                            Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
+                            double angle1 = 0, dist1 = 0;
+                            calc_angle_dist(orig1, orig2, orig3, &angle1, &dist1);
 
-                        Point2f new1 = kp[matches[i].trainIdx].pt;
-                        Point2f new2 = kp[matches[j].trainIdx].pt;
-                        Point2f new3 = kp[matches[q].trainIdx].pt;
-                        double angle2 = 0, dist2 = 0;
-                        calc_angle_dist(new1, new2, new3, &angle2, &dist2);
+                            Point2f new1 = kp[matches[i].trainIdx].pt;
+                            Point2f new2 = kp[matches[j].trainIdx].pt;
+                            Point2f new3 = kp[matches[q].trainIdx].pt;
+                            double angle2 = 0, dist2 = 0;
+                            calc_angle_dist(new1, new2, new3, &angle2, &dist2);
 
-                        if (isnormal(angle1) && isnormal(angle2)) {
-                            if (fabs(angle1 - angle2) < 5.0) {
-                                matching_angle += 1.0;
+                            if (isnormal(angle1) && isnormal(angle2)) {
+                                if (fabs(angle1 - angle2) < 5.0) {
+                                    matching_angle += 1.0;
+                                }
                             }
-                        }
-                        if (isnormal(dist1) && isnormal(dist2)) {
-                            sel_dist += fabs(dist1 - dist2);
+                            if (isnormal(dist1) && isnormal(dist2)) {
+                                sel_dist += fabs(dist1 - dist2);
+                            }
                         }
                     }
                 }
-            }
-            if(matching_angle > min_angle_count){
-                min_angle_count = matching_angle;
-                min_angle_index = p;
-                min_total_count = total_count;
+                if (matching_angle > min_angle_count) {
+                    min_angle_count = matching_angle;
+                    min_angle_index = p;
+                    min_total_count = total_count;
+                }
             }
         }
     }
