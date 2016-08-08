@@ -76,21 +76,21 @@ void High_Res_Worker::run(){
             }
             //printf("%d %d got patch %d %d %d\n", patch->width, patch->height, patch->size, group, cnt);
 
-            deb_printf("find features\n");
+            //deb_printf("find features\n");
             find_features(patch, group);
-            deb_printf("finished finding features\n");
+            //deb_printf("finished finding features\n");
             free(patch->buffer);
             free(patch);
-            deb_printf("found features and freed patch\n");
+            //deb_printf("found features and freed patch\n");
             cnt++;
             prev_group = group;
             
         }
-        deb_printf("check_recv_buffer\n");
+        //deb_printf("check_recv_buffer\n");
         comm->check_recv_buffer(first);
-        deb_printf("match_recv_list\n");
+        //deb_printf("match_recv_list\n");
         comm->match_recv_list(first);
-        deb_printf("check objects\n");
+        //deb_printf("check objects\n");
         check_objects(first);
         
         patch_packet *item = first;
@@ -378,7 +378,11 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         }
         //cout << features << endl;
         cout << features.size() << endl;
-        float result = classifier->predict(features);
+        if(classifier != 0){
+            float result = classifier->predict(features);
+        }else{
+            printf("classifier not initialized!!!!\n");
+        }
         int object = (int)floor(result+0.5);
         printf("Nummeric Result: %f %d\n", result, object);
         printf("Result of classifier: %s\n", object_names[object]);
