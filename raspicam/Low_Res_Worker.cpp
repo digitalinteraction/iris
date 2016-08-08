@@ -32,8 +32,8 @@
 
 const char * const classifier_names[] = {"NOTHING", "CARROT", "CUCUMBER", "PEACH", "APPLE"};
 int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
-double fontScale = 2;
-int fontThickness = 3;
+double fontScale = 0.2;
+int fontThickness = 1;
 
 Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *images_in, Buffer *requests_out, Buffer *class_in) {
     processing = 0;
