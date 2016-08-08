@@ -527,13 +527,13 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     BFMatcher matcher(NORM_L2, false);
     float min_angle_count = 0;
     int min_angle_index = 0;
-    int min_total_count = 0;
+    float min_total_count = 0;
 
     for (int p = 0; p < surf_saved_desc.size(); p++) {
         vector<DMatch> matches;
         double sel_dist = 0;
         float matching_angle = 0.0;
-        int total_count = 0;
+        float total_count = 0;
         if (surf_saved_desc[p].empty() == false && desc.empty() == false) {
             matcher.match(surf_saved_desc[p], desc, matches);
             std::sort(matches.begin(), matches.end(), comparator);
@@ -543,7 +543,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
                 for (int i = 0; i < ceil; i++) {
                     for (int j = i; j < ceil; j++) {
                         for (int q = j; q < ceil; q++) {
-                            total_count++;
+                            total_count += 1.0;
                             Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
                             Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
                             Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
