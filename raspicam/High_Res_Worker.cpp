@@ -264,7 +264,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         item->up = (patch_packet*)patch->up;
         item->down = (patch_packet*)patch->down;
         item->mac = nc->topo->mac;
-        item->id = comm->file_cnt;
+        //item->id = comm->file_cnt;
+        item->id = patch->id;
         struct timespec current;
         clock_gettime(CLOCK_REALTIME, &current);
         item->timeout = current;
