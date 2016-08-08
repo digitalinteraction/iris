@@ -119,7 +119,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                 //printf("item duration %d\n", item->duration);
                 contours_list.push_back(*(item->contour));
                 if(item->classification != -1){
-                    char * text = classifier_names[item->classification];
+                    const char * text = classifier_names[item->classification];
                     Point2f middle = item->centroid;
                     int baseline = 0;
                     Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
@@ -127,7 +127,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     putText(img, text, middle, fontFace, fontScale, Scalar::all(255), fontThickness, 8);
                 }
                 if(item->object != -1){
-                    char * text[20];
+                    char text[20];
                     snprintf(text, 20, "Object %d\n", item->object);
                     Point2f middle = item->centroid;
                     int baseline = 0;
