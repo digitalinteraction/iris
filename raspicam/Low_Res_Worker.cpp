@@ -124,16 +124,16 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     Point2f middle = item->centroid;
                     int baseline = 0;
                     Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
-                    middle.y = middle.y+textSize.height/2;
+                    middle.y = middle.y+textSize.height/2 + 2;
                     putText(img, text, middle, fontFace, fontScale, Scalar::all(255), fontThickness, 8);
                 }
                 if(item->object != -1){
                     char text[20];
-                    snprintf(text, 20, "Object %d\n", item->object);
+                    snprintf(text, 20, "Object %d", item->object);
                     Point2f middle = item->centroid;
                     int baseline = 0;
                     Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
-                    middle.y = middle.y-textSize.height/2;
+                    middle.y = middle.y-textSize.height/2 - 2;
                     putText(img, text, middle, fontFace, fontScale, Scalar::all(255), fontThickness, 8);
                 }
                 
