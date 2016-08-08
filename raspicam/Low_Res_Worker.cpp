@@ -129,7 +129,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         item = first;
         while(item != 0){
             if(item->duration > 50){
-                if(item->classification != -1){
+                if(item->classification >= 0){
                     const char * text = classifier_names[item->classification];
                     //printf("image classification is %d %s\n", item->classification, text);
                     Point2f middle = item->centroid;
@@ -139,9 +139,13 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     middle.x = middle.x - textSize.width/2;
                     putText(img, text, middle, fontFace, fontScale, Scalar::all(0), fontThickness, 8, true);
                 }
-                if(item->object != -1){
+                if(item->object >= 0 || item->object == -2){
                     char text[20];
-                    snprintf(text, 20, "Object %d", item->object);
+                    if(item->object == -2){
+                        snprintf(text, 20, "Item saved");
+                    }else{
+                        snprintf(text, 20, "Object %d", item->object);
+                    }
                     Point2f middle = item->centroid;
                     int baseline = 0;
                     Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
