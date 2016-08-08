@@ -229,7 +229,6 @@ void CommImage::check_recv_buffer(patch_packet *start) {
         deb_printf("done adding item to asked item\n");
     }
     lock.unlock();
-    deb_printf("unlocked lock\n");
 }
 
 void CommImage::match_recv_list(patch_packet *start) {
