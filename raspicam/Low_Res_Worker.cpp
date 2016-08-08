@@ -120,6 +120,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                 contours_list.push_back(*(item->contour));
                 if(item->classification != -1){
                     const char * text = classifier_names[item->classification];
+                    printf("image classification is %d %s\n", item->classification, text);
                     Point2f middle = item->centroid;
                     int baseline = 0;
                     Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
