@@ -92,7 +92,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         cvtColor(rgb, hsv, COLOR_RGB2HSV);
         Mat channel[3];
         split(hsv, channel);
-        threshold(channel[1], mask, 40, 255, THRESH_BINARY);
+        threshold(channel[1], mask, 50, 255, THRESH_BINARY);
         deb_printf("thresholded image\n");
         //pMOG2->apply(img, mask);
         //CLEANING UP////////////////////////////////////////
@@ -162,7 +162,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
 
         deb_printf("sending image data to server\n");
         Mat gray;
-        cvtColor(img, gray, COLOR_BGR2GRAY);
+        cvtColor(channel[1], gray, COLOR_BGR2GRAY);
         if (next_send % 2 == 0) {
             send_to_server(&gray, 1, pos);
             pos++;
