@@ -76,7 +76,7 @@ void High_Res_Worker::run(){
             }
             //printf("%d %d got patch %d %d %d\n", patch->width, patch->height, patch->size, group, cnt);
 
-            
+            deb_printf("find features\n");
             find_features(patch, group);
             deb_printf("finished finding features\n");
             free(patch->buffer);
@@ -86,9 +86,11 @@ void High_Res_Worker::run(){
             prev_group = group;
             
         }
-        
+        deb_printf("check_recv_buffer\n");
         comm->check_recv_buffer(first);
+        deb_printf("match_recv_list\n");
         comm->match_recv_list(first);
+        deb_printf("check objects\n");
         check_objects(first);
         
         patch_packet *item = first;
@@ -514,89 +516,89 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     surf->compute(*img, kp, desc);
     cout << "Descriptor" << desc.size() << endl;
     cout << "Keypoints" << kp.size() << endl;
-    
-    if(kp.size() > 0){
-    Mat img_keypoints;
-    /*cout << "Keypoints: ";
-    for(int i = 0; i < kp.size(); i++){
-       cout << kp[i].pt.x << " " << kp[i].pt.y << endl; 
-    }*/
-    drawKeypoints(*img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT);
-    imwrite("surf_match.png", img_keypoints);
+
+    if (kp.size() > 0) {
+        Mat img_keypoints;
+        /*cout << "Keypoints: ";
+        for(int i = 0; i < kp.size(); i++){
+           cout << kp[i].pt.x << " " << kp[i].pt.y << endl; 
+        }*/
+        drawKeypoints(*img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT);
+        imwrite("surf_match.png", img_keypoints);
 
 
-    BFMatcher matcher(NORM_L2, false);
-    float min_angle_count = 0;
-    int min_angle_index = 0;
-    float min_total_count = 0;
+        BFMatcher matcher(NORM_L2, false);
+        float min_angle_count = 0;
+        int min_angle_index = 0;
+        float min_total_count = 0;
 
-    for (int p = 0; p < surf_saved_desc.size(); p++) {
-        vector<DMatch> matches;
-        double sel_dist = 0;
-        float matching_angle = 0.0;
-        float total_count = 0;
-        if (surf_saved_desc[p].empty() == false && desc.empty() == false) {
-            matcher.match(surf_saved_desc[p], desc, matches);
-            std::sort(matches.begin(), matches.end(), comparator);
-            if (!matches.empty()) {
-                int ceil = std::min(10, (int) matches.size());
-                deb_printf("matching %d feature points\n", ceil);
-                for (int i = 0; i < ceil; i++) {
-                    for (int j = i; j < ceil; j++) {
-                        for (int q = j; q < ceil; q++) {
-                            total_count += 1.0;
-                            Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
-                            Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
-                            Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
-                            double angle1 = 0, dist1 = 0;
-                            calc_angle_dist(orig1, orig2, orig3, &angle1, &dist1);
+        for (int p = 0; p < surf_saved_desc.size(); p++) {
+            vector<DMatch> matches;
+            double sel_dist = 0;
+            float matching_angle = 0.0;
+            float total_count = 0;
+            if (surf_saved_desc[p].empty() == false && desc.empty() == false) {
+                matcher.match(surf_saved_desc[p], desc, matches);
+                std::sort(matches.begin(), matches.end(), comparator);
+                if (!matches.empty()) {
+                    int ceil = std::min(10, (int) matches.size());
+                    deb_printf("matching %d feature points\n", ceil);
+                    for (int i = 0; i < ceil; i++) {
+                        for (int j = i; j < ceil; j++) {
+                            for (int q = j; q < ceil; q++) {
+                                total_count += 1.0;
+                                Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
+                                Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
+                                Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
+                                double angle1 = 0, dist1 = 0;
+                                calc_angle_dist(orig1, orig2, orig3, &angle1, &dist1);
 
-                            Point2f new1 = kp[matches[i].trainIdx].pt;
-                            Point2f new2 = kp[matches[j].trainIdx].pt;
-                            Point2f new3 = kp[matches[q].trainIdx].pt;
-                            double angle2 = 0, dist2 = 0;
-                            calc_angle_dist(new1, new2, new3, &angle2, &dist2);
-                            printf("angles: %f %f\n", angle1, angle2);
-                            if (isnormal(angle1) && isnormal(angle2)) {
-                                if (fabs(angle1 - angle2) < 5.0) {
-                                    matching_angle += 1.0;
+                                Point2f new1 = kp[matches[i].trainIdx].pt;
+                                Point2f new2 = kp[matches[j].trainIdx].pt;
+                                Point2f new3 = kp[matches[q].trainIdx].pt;
+                                double angle2 = 0, dist2 = 0;
+                                calc_angle_dist(new1, new2, new3, &angle2, &dist2);
+                                printf("angles: %f %f\n", angle1, angle2);
+                                if (isnormal(angle1) && isnormal(angle2)) {
+                                    if (fabs(angle1 - angle2) < 5.0) {
+                                        matching_angle += 1.0;
+                                    }
                                 }
-                            }
-                            if (isnormal(dist1) && isnormal(dist2)) {
-                                sel_dist += fabs(dist1 - dist2);
+                                if (isnormal(dist1) && isnormal(dist2)) {
+                                    sel_dist += fabs(dist1 - dist2);
+                                }
                             }
                         }
                     }
-                }
-                if (matching_angle > min_angle_count) {
-                    min_angle_count = matching_angle;
-                    min_angle_index = p;
-                    min_total_count = total_count;
+                    if (matching_angle > min_angle_count) {
+                        min_angle_count = matching_angle;
+                        min_angle_index = p;
+                        min_total_count = total_count;
+                    }
                 }
             }
         }
-    }
-    printf("min angle count %f min total count %d\n", min_angle_count, min_total_count);
-    float confidence = (min_angle_count/min_total_count)*100;
-    printf("confidence: %f in cat %d\n", confidence, min_angle_index);
-    
-    struct classification_result *item = (struct classification_result*) malloc(sizeof(struct classification_result));
+        printf("min angle count %f min total count %f\n", min_angle_count, min_total_count);
+        float confidence = (min_angle_count / min_total_count)*100;
+        printf("confidence: %f in cat %d\n", confidence, min_angle_index);
 
-    //percent of angles right
-    if(isnormal(confidence) == 0 || confidence < 15.0){
-        surf_saved_desc.push_back(desc);
-        surf_saved_key.push_back(kp);
-    }
-    
-    if(isnormal(confidence) == 1 && confidence >= 15.0){
-        item->object = min_angle_index;
-    }else{
-        item->object = -2;
-    }
-    item->id = id;
-    item->classification = -1;
-    
-    class_out->add((RASPITEX_PATCH *)item, 0);
+        struct classification_result *item = (struct classification_result*) malloc(sizeof (struct classification_result));
+
+        //percent of angles right
+        if (isnormal(confidence) == 0 || confidence < 15.0) {
+            surf_saved_desc.push_back(desc);
+            surf_saved_key.push_back(kp);
+        }
+
+        if (isnormal(confidence) == 1 && confidence >= 15.0) {
+            item->object = min_angle_index;
+        } else {
+            item->object = -2;
+        }
+        item->id = id;
+        item->classification = -1;
+
+        class_out->add((RASPITEX_PATCH *) item, 0);
     }
 }
 
