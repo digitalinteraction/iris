@@ -549,10 +549,10 @@ int Image_Capture::get_high_res_image(){
    // Set up the camera_parameters to default
    raspicamcontrol_set_defaults(&state->camera_parameters);
    //TOBIAS
-   state->camera_parameters.shutter_speed = 20000;
-   state->camera_parameters.ISO = 100;
-   //state->camera_parameters.shutter_speed = 0;
-   //state->camera_parameters.ISO = 0;
+   //state->camera_parameters.shutter_speed = 20000;
+   //state->camera_parameters.ISO = 100;
+   state->camera_parameters.shutter_speed = 0;
+   state->camera_parameters.ISO = 0;
 
    // Set initial GL preview state
    raspitex_set_defaults(&state->raspitex_state);
