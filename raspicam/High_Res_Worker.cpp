@@ -60,7 +60,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
         printf("classifier loaded\n");
     }
     
-    surf = xfeatures2d::SURF::create( 50 );
+    surf = xfeatures2d::SURF::create( 200 );
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -581,19 +581,16 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     struct classification_result *item = (struct classification_result*) malloc(sizeof(struct classification_result));
 
     //percent of angles right
-
-    if (isnormal(confidence) == 1) {
-        if (confidence < 20.0) {
-            surf_saved_desc.push_back(desc);
-            surf_saved_key.push_back(kp);
-            item->object = surf_saved_key.size() - 1;
-        } else {
-            item->object = min_angle_index;
-        }
-    } else {
+    if(isnormal(confidence) == 0 || confidence < 20.0){
+        surf_saved_desc.push_back(desc);
+        surf_saved_key.push_back(kp);
+    }
+    
+    if(isnormal(confidence) == 1 && confidence >= 20.0){
+        item->object = min_angle_index;
+    }else{
         item->object = -1;
     }
-
     item->id = id;
     item->classification = -1;
     
