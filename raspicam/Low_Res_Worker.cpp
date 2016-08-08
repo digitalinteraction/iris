@@ -92,7 +92,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         cvtColor(rgb, hsv, COLOR_RGB2HSV);
         Mat channel[3];
         split(hsv, channel);
-        threshold(channel[1], mask, 65, 255, THRESH_BINARY);
+        threshold(channel[1], mask, 50, 255, THRESH_BINARY);
         deb_printf("thresholded image\n");
         //pMOG2->apply(img, mask);
         //CLEANING UP////////////////////////////////////////
@@ -267,7 +267,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
                     }
                 }
             }
-            if (similarity <= 0.5 && similarity >= -0.5) {
+            if (similarity <= 0.2 && similarity >= -0.2) {
                 deb_printf("found match %d with similarity %f\n", item->id, similarity);
                 item->contour = new vector<Point>;
                 *item->contour = *found;
