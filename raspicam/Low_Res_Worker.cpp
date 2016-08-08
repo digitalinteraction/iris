@@ -162,9 +162,9 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
 
         deb_printf("sending image data to server\n");
         Mat gray;
-        cvtColor(channel[1], gray, COLOR_BGR2GRAY);
+        cvtColor(img, gray, COLOR_BGR2GRAY);
         if (next_send % 2 == 0) {
-            send_to_server(&gray, 1, pos);
+            send_to_server(&channel[1], 1, pos);
             pos++;
             if (pos == 8) {
                 pos = 0;
