@@ -255,7 +255,7 @@ uint8_t Low_Res_Worker::match_contours(vector<vector<Point> > *contour, uint8_t 
                     Point2f diff_xy = item->centroid - mc;
                     float diff_dist = sqrt(diff_xy.x * diff_xy.x + diff_xy.y * diff_xy.y);
 
-                    double total_sim = /*0.003 * diff_dist + */0.01 * diff_area + sim_shapes;
+                    double total_sim = 0.003 * diff_dist + 0.01 * diff_area + sim_shapes;
 
                     if (total_sim < similarity) {
                         similarity = total_sim;
