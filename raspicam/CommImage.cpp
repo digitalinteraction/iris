@@ -57,6 +57,7 @@ void CommImage::save_to_file_image(Mat *pic){
     char buf_pic[100];
     snprintf(buf_pic, 100, "patches/%llx_%d.png", nc->topo->mac, file_cnt);
     deb_printf("Filename: %s\n", buf_pic);
+    cvtColor(*pic, *pic, CV_RGB2BGR);
     imwrite(buf_pic, *pic);
 }
 

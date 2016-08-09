@@ -413,8 +413,8 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
 void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir) {
 
     
-    if (src != 0 && src->feature != 0) {
-        deb_printf("Combining Objects %lx %lx from side %d\n", dest->mac, src->mac, dir);
+    if (src != 0 && src->feature != 0 && dir < 4) {
+        deb_printf("Combining Objects %llx %llx from side %d\n", dest->mac, src->mac, dir);
 
         for (int i = 0; i < HISTOGRAM_SIZE; i++) {
             dest->feature->hist_h[i] += src->feature->hist_h[i];
