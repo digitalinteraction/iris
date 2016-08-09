@@ -86,11 +86,11 @@ void High_Res_Worker::run(){
             prev_group = group;
             
         }
-        deb_printf("check_recv_buffer\n");
+        //deb_printf("check_recv_buffer\n");
         comm->check_recv_buffer(first);
-        deb_printf("match_recv_list\n");
+        //deb_printf("match_recv_list\n");
         comm->match_recv_list(first);
-        deb_printf("check objects\n");
+        //deb_printf("check objects\n");
         check_objects(first);
         
         patch_packet *item = first;
