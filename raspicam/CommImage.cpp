@@ -250,7 +250,7 @@ void CommImage::match_recv_list(patch_packet *start) {
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
                             (epos1 <= ipos1 && epos2 >= ipos2)) {
                         deb_printf("adding packet %p to down side of %p\n", item, comp);
-                        deb_printf("Down Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
+                        deb_printf("Down Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos2);
 
                         deb_printf("added\n");
                         comp->down = item;
@@ -278,7 +278,7 @@ void CommImage::match_recv_list(patch_packet *start) {
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
                             (epos1 <= ipos1 && epos2 >= ipos2)) {
                         deb_printf("adding packet %p to up side of %p\n", item, comp);
-                        deb_printf("UP Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
+                        deb_printf("UP Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos2);
 
                         deb_printf("added\n");
                         comp->up = item;
@@ -306,7 +306,7 @@ void CommImage::match_recv_list(patch_packet *start) {
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
                             (epos1 <= ipos1 && epos2 >= ipos2)) {
                         deb_printf("adding packet %p to left side of %p\n", item, comp);
-                        deb_printf("Left Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
+                        deb_printf("Left Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos2);
 
                         deb_printf("added\n");
                         comp->left = item;
@@ -334,7 +334,7 @@ void CommImage::match_recv_list(patch_packet *start) {
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
                             (epos1 <= ipos1 && epos2 >= ipos2)) {
                         deb_printf("adding packet %p to right side of %p\n", item, comp);
-                        deb_printf("Right Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
+                        deb_printf("Right Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos2);
 
                         deb_printf("added\n");
                         comp->right = item;
