@@ -429,7 +429,7 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
 
         for (int i = 0; i < src->feature->contour->size(); i++) {
             Point pt = src->feature->contour->at(i);
-            //deb_printf("new Contour Point: %d %d\n", pt.x, pt.y);
+            deb_printf("new Contour Point for side %d: %d %d\n", dir, pt.x, pt.y);
             switch (dir) {
                 case LEFT_SIDE:
                     pt.x = pt.x + HIGH_OUTPUT_X;
