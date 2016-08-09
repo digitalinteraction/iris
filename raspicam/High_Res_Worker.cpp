@@ -50,6 +50,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
     first = 0;
     last = 0;
     this->comm = new CommImage(nc);
+    running = 0;
     
     //classifier = cv::ml::RTrees::create();
     //classifier->load<cv::ml::RTrees>("/home/pi/cutting_board/raspicam/build/classifier.xml");
@@ -68,6 +69,7 @@ High_Res_Worker::~High_Res_Worker() {
 
 void High_Res_Worker::run(){
     while(processing){
+        running = 1;
         RASPITEX_PATCH *patch;
         uint8_t group;
         if(buf->get(&patch, &group) == 0){
@@ -86,12 +88,18 @@ void High_Res_Worker::run(){
             prev_group = group;
             
         }
+        running = 2;
+
         //deb_printf("check_recv_buffer\n");
         comm->check_recv_buffer(first);
+        running = 3;
+
         //deb_printf("match_recv_list\n");
         comm->match_recv_list(first);
+        running = 4;
         //deb_printf("check objects\n");
         check_objects(first);
+        running = 5;
         
         patch_packet *item = first;
         while (item != 0) {
@@ -99,6 +107,7 @@ void High_Res_Worker::run(){
             //if (item->state != 1) {
                 //deb_printf("identifying object %p\n", item);
                 res = identify_object(item);
+                running = 6;
                 //deb_printf("end identifying %d\n", res);
             //}
             if (res != -1) {
@@ -135,6 +144,7 @@ void High_Res_Worker::run(){
                 item = item->next;
             }
         }
+        running = 7;
     }
 }
 

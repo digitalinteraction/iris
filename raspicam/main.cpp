@@ -40,7 +40,7 @@ int main() {
         int begin = low->counter;
         std::this_thread::sleep_for(std::chrono::seconds(1));
         begin = low->counter - begin;
-        printf("Frames per Second: %d, Buffer Size: %d Contours: %d\n",begin, buf_ic_hr->getSize(), low->cnt_size);
+        printf("Frames per Second: %d, Buffer Size: %d Contours: %d High Res %d\n",begin, buf_ic_hr->getSize(), low->cnt_size, high->running);
     }
 
     cap->capturing = 0;

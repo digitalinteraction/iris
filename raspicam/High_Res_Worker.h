@@ -34,6 +34,7 @@ public:
     virtual ~High_Res_Worker();
     int processing;
     void run();
+    uint32_t running;
 
 private:
     Buffer * buf;
