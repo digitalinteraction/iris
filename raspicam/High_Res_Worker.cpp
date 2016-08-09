@@ -338,14 +338,15 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         combine_objects(item, item->down, DOWN_SIDE);
         deb_printf("combined all objects\n");
         
-        
-        save_contour_in_file(item->feature->contour);
+        vector<Point> temp;
+        convexHull(*item->feature->contour, temp, false);
+        save_contour_in_file(temp);
         //normalize histograms
         /*for(int i = 0; i < HISTOGRAM_SIZE, i++){
             item->feature->hist_h
         }*/
         deb_printf("calculating contour data\n");
-        vector<Point> *contour = item->feature->contour;
+        vector<Point> *contour = &temp;
         RotatedRect boundRect = minAreaRect(*contour);
         Point2f vertices[4];
         boundRect.points(vertices);
