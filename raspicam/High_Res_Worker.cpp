@@ -259,8 +259,13 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         /*for(int i = 0; i<HISTOGRAM_SIZE; i++){
             printf("HISTO: %f %f %f\n", item->feature->hist_h[i], item->feature->hist_s[i],item->feature->hist_v[i]);
         }*/
-        
-        
+
+        Rect enclosing = boundingRect(*item->feature->contour);
+        item->rect_x = (uint16_t)enclosing.x;
+        item->rect_y = (uint16_t)enclosing.y;
+        item->rect_height = (uint16_t)enclosing.height;
+        item->rect_width = (uint16_t)enclosing.width;
+                
         item->left = (patch_packet*)patch->left;
         item->right = (patch_packet*)patch->right;
         item->up = (patch_packet*)patch->up;
@@ -424,7 +429,7 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
 
         for (int i = 0; i < src->feature->contour->size(); i++) {
             Point pt = src->feature->contour->at(i);
-            deb_printf("new Contour Point: %d %d\n", pt.x, pt.y);
+            //deb_printf("new Contour Point: %d %d\n", pt.x, pt.y);
             switch (dir) {
                 case LEFT_SIDE:
                     pt.x = pt.x + HIGH_OUTPUT_X;
@@ -506,10 +511,10 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
     deb_printf("%d %d %d %d\n", x_min, x_max, y_min, y_max);
     for(int i = 0; i < contour->size(); i++){
         Point2i pt = contour->at(i);
-        deb_printf("old Contour Point: %d %d\n", pt.x, pt.y);
+        //deb_printf("old Contour Point: %d %d\n", pt.x, pt.y);
         pt.x = pt.x + -1*x_min;
         pt.y = pt.y + -1*y_min;
-        deb_printf("new Contour Point: %d %d\n", pt.x, pt.y);
+        //deb_printf("new Contour Point: %d %d\n", pt.x, pt.y);
 
         contour->at(i) = pt;
     }
