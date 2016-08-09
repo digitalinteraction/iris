@@ -497,9 +497,10 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
         patch->fb = state->curr_pos_fb;
         patch->token = state->valid_token[state->curr_pos_fb];
         patch->active = 2;
-        printf("LOW RES: %d %d\n", patch->token, patch->fb);
+        //printf("LOW RES: %d %d\n", patch->token, patch->fb);
 
     }else if(patch->select == 1){
+        printf("capturing frame buffer %d\n", patch->fb);
         if((patch->fb >= 0) && (patch->fb < FRAMEBUFFER_CNT) /*&&
                 (state->valid_token[patch->fb] == patch->token)*/){
             //printf("request for %d %d %d %d\n", patch->x, patch->y, patch->width, patch->height);
