@@ -577,7 +577,6 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
                     for (int i = 0; i < ceil; i++) {
                         for (int j = i; j < ceil; j++) {
                             for (int q = j; q < ceil; q++) {
-                                total_count += 1.0;
                                 Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
                                 Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
                                 Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
@@ -591,6 +590,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
                                 calc_angle_dist(new1, new2, new3, &angle2, &dist2);
                                 printf("angles: %f %f\n", angle1, angle2);
                                 if (isnormal(angle1) && isnormal(angle2)) {
+                                    total_count += 1.0;
                                     if (fabs(angle1 - angle2) < 5.0) {
                                         matching_angle += 1.0;
                                     }
