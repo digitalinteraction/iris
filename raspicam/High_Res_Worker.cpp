@@ -61,7 +61,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
         printf("classifier loaded\n");
     }
     
-    surf = xfeatures2d::SURF::create( 200 );
+    surf = xfeatures2d::SURF::create( 100 );
 }
 
 High_Res_Worker::~High_Res_Worker() {
@@ -540,7 +540,6 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
 }
 
 void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint16_t id){
-        printf("Angle of object: %f\n", angle);
 
     vector<KeyPoint> kp;
     surf->detect(*img, kp, *mask);
