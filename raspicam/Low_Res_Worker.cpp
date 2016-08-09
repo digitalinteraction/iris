@@ -80,6 +80,7 @@ void Low_Res_Worker::run() {
             free(patch->buffer);
             free(patch);
         }
+        running = 15;
         update_contours();
     }
 }
