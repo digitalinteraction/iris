@@ -239,7 +239,8 @@ void CommImage::match_recv_list(patch_packet *start) {
     patch_packet *item = recv_first;
     while (item != 0) {
         patch_packet *comp = start;
-        while (comp != 0) {
+        uint8_t success = 0;
+        while (comp != 0 && success == 0) {
             if (comp->state != 2) {
                 if (((int) comp->down) == 1 && item->addr == DOWN_SIDE) {
                     uint16_t ipos1 = comp->rect_x;
@@ -267,6 +268,7 @@ void CommImage::match_recv_list(patch_packet *start) {
                             item->prev->next = item->next;
                             item->next->prev = item->prev;
                         }
+                        success = 1;
                     }
                 } else if (((int) comp->up) == 1 && item->addr == UP_SIDE) {
                     uint16_t ipos1 = comp->rect_x;
@@ -295,6 +297,7 @@ void CommImage::match_recv_list(patch_packet *start) {
                             item->prev->next = item->next;
                             item->next->prev = item->prev;
                         }
+                        success = 1;
                     }
                 } else if (((int) comp->left) == 1 && item->addr == LEFT_SIDE) {
                     uint16_t ipos1 = comp->rect_y;
@@ -323,6 +326,7 @@ void CommImage::match_recv_list(patch_packet *start) {
                             item->prev->next = item->next;
                             item->next->prev = item->prev;
                         }
+                        success = 1;
                     }
                 } else if (((int) comp->right) == 1 && item->addr == RIGHT_SIDE) {
                     uint16_t ipos1 = comp->rect_y;
@@ -351,6 +355,7 @@ void CommImage::match_recv_list(patch_packet *start) {
                             item->prev->next = item->next;
                             item->next->prev = item->prev;
                         }
+                        success = 1;
                     }
                 }
             }
