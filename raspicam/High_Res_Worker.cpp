@@ -591,7 +591,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
                                 printf("angles: %f %f\n", angle1, angle2);
                                 if (isnormal(angle1) && isnormal(angle2)) {
                                     total_count += 1.0;
-                                    if (fabs(angle1 - angle2) < 5.0) {
+                                    if (fabs(angle1 - angle2) < 10.0) {
                                         matching_angle += 1.0;
                                     }
                                 }
