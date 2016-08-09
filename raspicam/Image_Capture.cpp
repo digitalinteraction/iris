@@ -152,6 +152,7 @@ void Image_Capture::run() {
                 patch->select = 1;
                 patch->active = 0;
                 size_patches++;
+                cnt++;
             }
             group++;
         }
