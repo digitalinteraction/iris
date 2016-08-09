@@ -151,6 +151,7 @@ void Image_Capture::run() {
                 patches[cnt] = patch;
                 patch->select = 1;
                 patch->active = 0;
+                printf("Image Cap capturing framebuffer %d\n", patches[cnt]->fb);
                 size_patches++;
                 cnt++;
             }
