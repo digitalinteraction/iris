@@ -137,7 +137,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
                     middle.y = middle.y+textSize.height/2 + 2;
                     middle.x = middle.x - textSize.width/2;
-                    putText(img, text, middle, fontFace, fontScale, Scalar::all(0), fontThickness, 8, true);
+                    putText(img, text, middle, fontFace, fontScale, Scalar::all(255), fontThickness, 8, true);
                 }
                 if(item->object >= 0 || item->object == -2){
                     char text[20];
@@ -151,7 +151,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
                     middle.y = middle.y-textSize.height/2 - 2;
                     middle.x = middle.x - textSize.width/2;
-                    putText(img, text, middle, fontFace, fontScale, Scalar::all(0), fontThickness, 8, true);
+                    putText(img, text, middle, fontFace, fontScale, Scalar::all(255), fontThickness, 8, true);
                 }
             }
             item = item->next;
