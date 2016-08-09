@@ -242,15 +242,16 @@ void CommImage::match_recv_list(patch_packet *start) {
         while (comp != 0) {
             if (comp->state != 2) {
                 if (((int) comp->down) == 1 && item->addr == DOWN_SIDE) {
-                    deb_printf("adding packet %p to down side of %p\n", item, comp);
                     uint16_t ipos1 = comp->rect_x;
                     uint16_t ipos2 = comp->rect_x + comp->rect_width;
                     uint16_t epos1 = item->rect_x;
                     uint16_t epos2 = item->rect_x + item->rect_width;
-                    deb_printf("Down Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
-                    if (    (epos1 >= ipos1 && epos1 <= ipos2) ||
+                    if ((epos1 >= ipos1 && epos1 <= ipos2) ||
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
                             (epos1 <= ipos1 && epos2 >= ipos2)) {
+                        deb_printf("adding packet %p to down side of %p\n", item, comp);
+                        deb_printf("Down Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
+
                         deb_printf("added\n");
                         comp->down = item;
                         if (item->prev == 0 && item->next == 0) {
@@ -268,16 +269,17 @@ void CommImage::match_recv_list(patch_packet *start) {
                         }
                     }
                 } else if (((int) comp->up) == 1 && item->addr == UP_SIDE) {
-                    deb_printf("adding packet %p to up side of %p\n", item, comp);
                     uint16_t ipos1 = comp->rect_x;
                     uint16_t ipos2 = comp->rect_x + comp->rect_width;
                     uint16_t epos1 = item->rect_x;
                     uint16_t epos2 = item->rect_x + item->rect_width;
-                    deb_printf("UP Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
 
-                    if (    (epos1 >= ipos1 && epos1 <= ipos2) ||
+                    if ((epos1 >= ipos1 && epos1 <= ipos2) ||
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
                             (epos1 <= ipos1 && epos2 >= ipos2)) {
+                        deb_printf("adding packet %p to up side of %p\n", item, comp);
+                        deb_printf("UP Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
+
                         deb_printf("added\n");
                         comp->up = item;
                         if (item->prev == 0 && item->next == 0) {
@@ -295,16 +297,17 @@ void CommImage::match_recv_list(patch_packet *start) {
                         }
                     }
                 } else if (((int) comp->left) == 1 && item->addr == LEFT_SIDE) {
-                    deb_printf("adding packet %p to left side of %p\n", item, comp);
                     uint16_t ipos1 = comp->rect_y;
                     uint16_t ipos2 = comp->rect_y + comp->rect_height;
                     uint16_t epos1 = item->rect_y;
                     uint16_t epos2 = item->rect_y + item->rect_height;
-                    deb_printf("Left Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
 
-                    if (    (epos1 >= ipos1 && epos1 <= ipos2) ||
+                    if ((epos1 >= ipos1 && epos1 <= ipos2) ||
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
                             (epos1 <= ipos1 && epos2 >= ipos2)) {
+                        deb_printf("adding packet %p to left side of %p\n", item, comp);
+                        deb_printf("Left Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
+
                         deb_printf("added\n");
                         comp->left = item;
                         if (item->prev == 0 && item->next == 0) {
@@ -322,16 +325,17 @@ void CommImage::match_recv_list(patch_packet *start) {
                         }
                     }
                 } else if (((int) comp->right) == 1 && item->addr == RIGHT_SIDE) {
-                    deb_printf("adding packet %p to right side of %p\n", item, comp);
                     uint16_t ipos1 = comp->rect_y;
                     uint16_t ipos2 = comp->rect_y + comp->rect_height;
                     uint16_t epos1 = item->rect_y;
                     uint16_t epos2 = item->rect_y + item->rect_height;
-                    deb_printf("Right Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
 
-                    if (    (epos1 >= ipos1 && epos1 <= ipos2) ||
+                    if ((epos1 >= ipos1 && epos1 <= ipos2) ||
                             (epos2 >= ipos1 && epos2 <= ipos2) ||
                             (epos1 <= ipos1 && epos2 >= ipos2)) {
+                        deb_printf("adding packet %p to right side of %p\n", item, comp);
+                        deb_printf("Right Position: %d %d %d %d\n", ipos1, ipos2, epos1, epos1);
+
                         deb_printf("added\n");
                         comp->right = item;
                         if (item->prev == 0 && item->next == 0) {
