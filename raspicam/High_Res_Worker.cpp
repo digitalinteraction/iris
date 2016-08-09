@@ -96,11 +96,11 @@ void High_Res_Worker::run(){
         patch_packet *item = first;
         while (item != 0) {
             int32_t res = -1;
-            if (item->state != 1) {
-                deb_printf("identifying object %p\n", item);
+            //if (item->state != 1) {
+                //deb_printf("identifying object %p\n", item);
                 res = identify_object(item);
-                deb_printf("end identifying %d\n", res);
-            }
+                //deb_printf("end identifying %d\n", res);
+            //}
             if (res != -1) {
                 if (item->prev == 0 && item->next == 0) {
                     first = 0;
