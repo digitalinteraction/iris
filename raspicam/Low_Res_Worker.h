@@ -67,7 +67,7 @@ public:
     void run();
     int processing;
     int counter;
-    
+    uint32_t running;
     int new_low_buffer;
     pthread_mutex_t buffer_lock;
     RASPITEX_PATCH low_patch;

@@ -57,6 +57,7 @@ Low_Res_Worker::Low_Res_Worker(Packetbuffer *out, NetworkControl *nc, Buffer *im
     this->last = 0;
     cnt_size = 0;
     this->class_in = class_in;
+    running = 0;
     //pMOG2 = cv::bgsegm::createBackgroundSubtractorGMG();
 
 }
@@ -86,7 +87,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     if (img.empty() == 0) {
         deb_printf("cleaning up list\n");
         cleanup_list();
-       
+        running = 1;
         Mat hsv, rgb;
         cvtColor(img, rgb, COLOR_RGBA2RGB);
         cvtColor(rgb, hsv, COLOR_RGB2HSV);
@@ -100,7 +101,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         Mat cleaned;
         morphologyEx(mask, cleaned, MORPH_OPEN, kernel);
         /////////////////////////////////////////////////////
-
+        running = 2;
         //GET SHAPE//////////////////////////////////////////
         vector<vector<Point> > *contours = new vector<vector < Point>>;
         RNG rng(12345);
@@ -122,6 +123,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             }
             item = item->next;
         }
+        running = 3;
         for (int i = 0; i < contours_list.size(); i++) {
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(img, contours_list, i, color, 2);
@@ -156,7 +158,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             }
             item = item->next;
         }
-        
+        running = 4;
         deb_printf("sending request for high res image\n");
         send_high_requests();
 
@@ -171,7 +173,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             }
         }
         next_send++;
-
+        running = 5;
     } else {
         printf("Failed to convert camera image to Mat\n");
     }
