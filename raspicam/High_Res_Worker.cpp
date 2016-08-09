@@ -311,10 +311,10 @@ Mat High_Res_Worker::convert(RASPITEX_PATCH *patch) {
 int32_t High_Res_Worker::identify_object(patch_packet *item) {
     if (((int) item->left) != 1 && ((int) item->right) != 1 && ((int) item->up) != 1 && ((int) item->down) != 1) {
         //get all feature vector and classify
-        for (int i = 0; i < item->feature->contour->size(); i++) {
+        /*for (int i = 0; i < item->feature->contour->size(); i++) {
             Point2i pt = item->feature->contour->at(i);
             deb_printf("original Contour Point: %d %d\n", pt.x, pt.y);
-        }
+        }*/
         
         if(item->left != 0 && item->mac > item->left->mac)
             return 0;
