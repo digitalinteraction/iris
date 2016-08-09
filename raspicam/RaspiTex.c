@@ -221,7 +221,7 @@ static void raspitex_do_capture(RASPITEX_STATE *state) {
     if (state->patch_size > 0) {
         int i;
         for (i = 0; i < state->patch_size; i++) {
-            //printf("Patch %d %p\n", i, state->patches[i]);
+            printf("Patch %d %p\n", i, state->patches[i]);
             if (state->patches[i]) {
                 state->patches[i]->active = 1;
                 ret += state->ops.capture(state, state->patches[i]);
