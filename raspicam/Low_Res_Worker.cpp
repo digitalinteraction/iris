@@ -68,12 +68,15 @@ Low_Res_Worker::~Low_Res_Worker() {
 
 void Low_Res_Worker::run() {
     while (processing) {
+        running = 11;
         RASPITEX_PATCH *patch;
         uint8_t group;
         if (images_in->get(&patch, &group) == 0) {
+            running = 12;
             counter++;
             process_image(patch->buffer, patch->size);
             nr_img++;
+            running = 13;
             free(patch->buffer);
             free(patch);
         }
@@ -85,6 +88,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
     //Mat is in format BGRA
     Mat img = convert(image, image_size);
     if (img.empty() == 0) {
+        running = 10;
         deb_printf("cleaning up list\n");
         cleanup_list();
         running = 1;
