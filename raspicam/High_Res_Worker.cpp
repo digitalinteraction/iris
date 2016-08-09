@@ -74,23 +74,23 @@ void High_Res_Worker::run(){
             if(group != prev_group){
                 cnt = 0;
             }
-            //printf("%d %d got patch %d %d %d\n", patch->width, patch->height, patch->size, group, cnt);
+            printf("%d %d got patch %d %d %d\n", patch->width, patch->height, patch->size, group, cnt);
 
-            //deb_printf("find features\n");
+            deb_printf("find features\n");
             find_features(patch, group);
-            //deb_printf("finished finding features\n");
+            deb_printf("finished finding features\n");
             free(patch->buffer);
             free(patch);
-            //deb_printf("found features and freed patch\n");
+            deb_printf("found features and freed patch\n");
             cnt++;
             prev_group = group;
             
         }
-        //deb_printf("check_recv_buffer\n");
+        deb_printf("check_recv_buffer\n");
         comm->check_recv_buffer(first);
-        //deb_printf("match_recv_list\n");
+        deb_printf("match_recv_list\n");
         comm->match_recv_list(first);
-        //deb_printf("check objects\n");
+        deb_printf("check objects\n");
         check_objects(first);
         
         patch_packet *item = first;
