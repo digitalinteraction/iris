@@ -173,8 +173,11 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
         Mat gray;
         cvtColor(img, gray, COLOR_BGR2GRAY);
         if (next_send % 2 == 0) {
+            
 #ifdef COLOR
-            send_to_server(&img, 3, pos);
+            Mat send_img;
+            cvtColor(img, send_img, COLOR_BGR2RGB);
+            send_to_server(&send_img, 3, pos);
 #else
             send_to_server(&gray, 1, pos);
 #endif
@@ -210,7 +213,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
                 printf("inet_aton() failed\n");
             }
 
-            uint32_t new_size = img->total() * img->elemSize() * mode;
+            uint32_t new_size = img->total() * img->elemSize();
 
             size_t part_size = new_size / 8;
             //int ret = 0;
