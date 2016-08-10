@@ -1,6 +1,0 @@
-/home/tobias/gitcode/cutting_board/zlib/zlib-1.2.8/CMakeFiles/example.dir
-/home/tobias/gitcode/cutting_board/zlib/zlib-1.2.8/CMakeFiles/example64.dir
-/home/tobias/gitcode/cutting_board/zlib/zlib-1.2.8/CMakeFiles/minigzip.dir
-/home/tobias/gitcode/cutting_board/zlib/zlib-1.2.8/CMakeFiles/minigzip64.dir
-/home/tobias/gitcode/cutting_board/zlib/zlib-1.2.8/CMakeFiles/zlib.dir
-/home/tobias/gitcode/cutting_board/zlib/zlib-1.2.8/CMakeFiles/zlibstatic.dir
