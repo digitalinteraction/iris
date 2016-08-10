@@ -44,6 +44,15 @@
 // constants
 const glm::vec2 SCREEN_SIZE(800, 600);
 
+#define COLOR 0
+#if COLOR
+    #define MULTI 3
+    #define GL_DEF_COL GL_RGB
+#else
+    #define MULTI 1
+    #define GL_DEF_COL GL_RED
+#endif
+
 // globals
 GLFWwindow* gWindow = NULL;
 tdogl::Texture* gTexture = NULL;
@@ -139,11 +148,11 @@ void LoadTexture() {
     //printf("test\n");
     glTexImage2D(GL_TEXTURE_2D,
                  0, 
-                 GL_RED, //GL_RGB
+                 GL_DEF_COL, //GL_RGB
                  WIDTH*1 + (1*2*20),
                  HEIGHT*1 + (1*2*20),
                  0, 
-                 GL_RED, //GL_RGB
+                 GL_DEF_COL, //GL_RGB
                  GL_UNSIGNED_BYTE, 
                  myimage);
     //printf("test2\n");
@@ -230,7 +239,7 @@ void updateBuffer() {
                     printf("changing framebuffer to %d %d %d %d\n", HEIGHT*posx, WIDTH*posy, posx, posy);
                     free(myimage);
                     //size_t size = WIDTH * HEIGHT * 1 * sizeof (unsigned char)*posx*posy + posy*posx*2*20;
-                    size_t size = (WIDTH*posx + (posx*2*20))*(HEIGHT*posy + (posy*2*20));
+                    size_t size = MULTI*(WIDTH*posx + (posx*2*20))*(HEIGHT*posy + (posy*2*20));
                     myimage = (unsigned char *) malloc(size);
                     memset(myimage, 20, size);
                     glDeleteTextures(1, &mytexture);
@@ -242,11 +251,11 @@ void updateBuffer() {
                     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
                     glTexImage2D(GL_TEXTURE_2D,
                             0,
-                            GL_RED, //GL_RGB
+                            GL_DEF_COL, //GL_RGB
                             WIDTH*posx + (posx*2*20),
                             HEIGHT*posy + (posy*2*20),
                             0,
-                            GL_RED, //GL_RGB
+                            GL_DEF_COL, //GL_RGB
                             GL_UNSIGNED_BYTE,
                             myimage);
                         //glClearColor(0.1, 0.1, 0.1, 1); // black
@@ -333,7 +342,7 @@ void updateBuffer() {
                                     offsety,
                                     WIDTH,
                                     HEIGHT/DIVISION,
-                                    GL_RED, //GL_RGB
+                                    GL_DEF_COL, //GL_RGB
                                     GL_UNSIGNED_BYTE,
                                     image_part);
                             //free(temp_buf);
@@ -405,6 +414,8 @@ void windowResizeCallback(GLFWwindow* window, int width, int height)
 }
 // the program starts here
 void AppMain() {
+    
+    printf("Mode %d\n", MULTI);
     // initialise GLFW
     glfwSetErrorCallback(OnError);
     if(!glfwInit())
