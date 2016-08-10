@@ -638,6 +638,15 @@ bool High_Res_Worker::comparator(DMatch a,DMatch b)
         return a.distance<b.distance;
 }
 void High_Res_Worker::calc_angle_dist(Point2f pt1, Point2f pt2, Point2f pt3, double *angle, double *dist) {
+    if(((fabs(pt1.x - pt2.x) < EPSILON) && 
+            (fabs(pt1.y - pt2.y) < EPSILON)) ||
+            ((fabs(pt1.x - pt3.x) < EPSILON) &&
+            (fabs(pt1.y - pt3.y) < EPSILON)) ||
+            ((fabs(pt2.x - pt3.x) < EPSILON) &&
+            (fabs(pt2.y - pt3.y) < EPSILON))){
+        return;
+    }
+    
     deb_printf("Points:: %f %f, %f %f, %f %f\n", pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y);
     double dist1 = sqrt((pt1.x - pt2.x) * (pt1.x - pt2.x) + (pt1.y - pt2.y) * (pt1.y - pt2.y));
     double dist2 = sqrt((pt1.x - pt3.x) * (pt1.x - pt3.x) + (pt1.y - pt3.y) * (pt1.y - pt3.y));
