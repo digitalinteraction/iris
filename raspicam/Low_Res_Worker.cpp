@@ -216,7 +216,7 @@ void Low_Res_Worker::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
             //int ret = 0;
             //for (int i = 0; i < 10; i++) {
             //ret = 0;
-
+            printf("sending packet with size %d %d\n", new_size, part_size);
             uint32_t size = part_size + sizeof (struct low_res_header);
             struct low_res_header * header = (struct low_res_header *) malloc(size);
             memcpy((((unsigned char *) header) + sizeof (struct low_res_header)), (void*) (img->data + pos * part_size), part_size);

@@ -44,7 +44,7 @@
 // constants
 const glm::vec2 SCREEN_SIZE(800, 600);
 
-#define COLOR 0
+#define COLOR 1
 #if COLOR
     #define MULTI 3
     #define GL_DEF_COL GL_RGB
