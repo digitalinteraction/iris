@@ -85,7 +85,11 @@ double weight[4];
 static void LoadShaders() {
     std::vector<tdogl::Shader> shaders;
     shaders.push_back(tdogl::Shader::shaderFromFile("../resources/vertex-shader.txt", GL_VERTEX_SHADER));
-    shaders.push_back(tdogl::Shader::shaderFromFile("../resources/fragment-shader.txt", GL_FRAGMENT_SHADER));
+#if COLOR
+    shaders.push_back(tdogl::Shader::shaderFromFile("../resources/fragment-shader_colour.txt", GL_FRAGMENT_SHADER));
+#else
+    shaders.push_back(tdogl::Shader::shaderFromFile("../resources/fragment-shader_grey.txt", GL_FRAGMENT_SHADER));
+#endif    
     gProgram = new tdogl::Program(shaders);
 }
 
@@ -131,7 +135,7 @@ void LoadTexture() {
     //printf("%d %d %d\n", bmp.format(), bmp.height(), bmp.width());
     //bmp.flipVertically();
     //gTexture = new tdogl::Texture(bmp);
-    size_t size = (WIDTH + (2*20))*(HEIGHT + (2*20));
+    size_t size = (WIDTH + (2*20))*(HEIGHT + (2*20))*MULTI;
 
     myimage = (unsigned char *) malloc(size);
     //for(int i = 0; i < (WIDTH*HEIGHT*3); i++){

@@ -176,7 +176,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
             
 #ifdef COLOR
             Mat send_img;
-            cvtColor(img, send_img, COLOR_BGR2RGB);
+            cvtColor(img, send_img, COLOR_BRGA2RGB);
             send_to_server(&send_img, 3, pos);
 #else
             send_to_server(&gray, 1, pos);

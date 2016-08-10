@@ -1,0 +1,12 @@
+#version 150
+
+uniform sampler2D tex;
+
+in vec2 fragTexCoord;
+
+out vec4 finalColor;
+
+void main() {
+    vec4 color = texture2D(tex, fragTexCoord);
+    finalColor = vec4(color.r, color.g, color.b, 1.0);
+}
