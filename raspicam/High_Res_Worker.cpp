@@ -573,7 +573,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
                 std::sort(matches.begin(), matches.end(), comparator);
                 if (!matches.empty()) {
                     int ceil = std::min(10, (int) matches.size());
-                    deb_printf("matching %d feature points\n", ceil);
+                    //deb_printf("matching %d feature points\n", ceil);
                     for (int i = 0; i < ceil; i++) {
                         for (int j = i; j < ceil; j++) {
                             for (int q = j; q < ceil; q++) {
@@ -588,7 +588,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
                                 Point2f new3 = kp[matches[q].trainIdx].pt;
                                 double angle2 = 0, dist2 = 0;
                                 calc_angle_dist(new1, new2, new3, &angle2, &dist2);
-                                printf("angles: %f %f\n", angle1, angle2);
+                                //printf("angles: %f %f\n", angle1, angle2);
                                 if (isnormal(angle1) && isnormal(angle2)) {
                                     total_count += 1.0;
                                     if (fabs(angle1 - angle2) < 10.0) {
@@ -647,7 +647,7 @@ void High_Res_Worker::calc_angle_dist(Point2f pt1, Point2f pt2, Point2f pt3, dou
         return;
     }
     
-    deb_printf("Points:: %f %f, %f %f, %f %f\n", pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y);
+    //deb_printf("Points:: %f %f, %f %f, %f %f\n", pt1.x, pt1.y, pt2.x, pt2.y, pt3.x, pt3.y);
     double dist1 = sqrt((pt1.x - pt2.x) * (pt1.x - pt2.x) + (pt1.y - pt2.y) * (pt1.y - pt2.y));
     double dist2 = sqrt((pt1.x - pt3.x) * (pt1.x - pt3.x) + (pt1.y - pt3.y) * (pt1.y - pt3.y));
     double dist3 = sqrt((pt2.x - pt3.x) * (pt2.x - pt3.x) + (pt2.y - pt3.y) * (pt2.y - pt3.y));
