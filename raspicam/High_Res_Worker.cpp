@@ -79,7 +79,11 @@ void High_Res_Worker::run(){
             //printf("%d %d got patch %d %d %d\n", patch->width, patch->height, patch->size, group, cnt);
 
             deb_printf("find features\n");
+            clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "before find_features" << time1.tv_sec << ":" time1.tv_nsec << endl;
             find_features(patch, group);
+            clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "after find_features" << time1.tv_sec << ":" time1.tv_nsec << endl;
             deb_printf("finished finding features\n");
             free(patch->buffer);
             free(patch);
@@ -89,7 +93,8 @@ void High_Res_Worker::run(){
             
         }
         running = 2;
-
+        clock_gettime(CLOCK_REALTIME, &time1);
+        cout << "before recv_buffer " << time1.tv_sec << ":" time1.tv_nsec << endl;
         //deb_printf("check_recv_buffer\n");
         comm->check_recv_buffer(first);
         running = 3;
@@ -99,6 +104,8 @@ void High_Res_Worker::run(){
         running = 4;
         //deb_printf("check objects\n");
         check_objects(first);
+        clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "after check_objects" << time1.tv_sec << ":" time1.tv_nsec << endl;
         running = 5;
         
         patch_packet *item = first;
@@ -106,14 +113,12 @@ void High_Res_Worker::run(){
             int32_t res = -1;
             //if (item->state != 1) {
                 //deb_printf("identifying object %p\n", item);
-                struct timespec time1;
+
                 clock_gettime(CLOCK_REALTIME, &time1);
+                cout << "before identify_object" << time1.tv_sec << ":" time1.tv_nsec << endl;
                 res = identify_object(item);
-                struct timespec time2;
-                clock_gettime(CLOCK_REALTIME, &time2);
-                if(diff(time1,time2).tv_nsec > 0){
-                cout<<"identify object: " << diff(time1,time2).tv_sec<<":"<<diff(time1,time2).tv_nsec<<endl;
-                }
+                clock_gettime(CLOCK_REALTIME, &time1);
+                cout << "after identify_object" << time1.tv_sec << ":" time1.tv_nsec << endl;
                 running = 6;
                 //deb_printf("end identifying %d\n", res);
             //}
