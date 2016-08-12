@@ -106,7 +106,12 @@ void High_Res_Worker::run(){
             int32_t res = -1;
             //if (item->state != 1) {
                 //deb_printf("identifying object %p\n", item);
+                struct timespec time1;
+                clock_gettime(CLOCK_REALTIME, &time1);
                 res = identify_object(item);
+                struct timespec time2;
+                clock_gettime(CLOCK_REALTIME, &time2);
+                cout<<"identify object: " << diff(time1,time2).tv_sec<<":"<<diff(time1,time2).tv_nsec<<endl;
                 running = 6;
                 //deb_printf("end identifying %d\n", res);
             //}
