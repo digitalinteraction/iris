@@ -85,6 +85,7 @@ private:
     void cleanup_list();
     void send_high_requests();
     void update_contours();
+    timespec diff(timespec start, timespec end);
     //void ask_neighbours(struct objects *item);
     //int send_to_neighbour(uint16_t pos1, uint16_t pos2, uint8_t addr, uint16_t id);
     //void check_list();

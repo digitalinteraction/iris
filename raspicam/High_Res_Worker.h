@@ -49,6 +49,7 @@ private:
     void match_surf_features(Mat *mask, Mat *img, float angle, uint16_t id);
     static bool comparator(DMatch a,DMatch b);
     void calc_angle_dist(Point2f pt1, Point2f pt2, Point2f pt3, double *angle, double *dist);
+    timespec diff(timespec start, timespec end);
     Packetbuffer *out;
     Packetbuffer *in;
     NetworkControl *nc;
