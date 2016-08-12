@@ -177,7 +177,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
     //printf("Image:: %p %d %d\n", patch->buffer, patch->size, img.empty());
     if (img.empty() == 0) {
         
-
+        clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "1 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         //////////////////////////////////////////////////////////
         //Mat hsv, mask;
         //cvtColor(img, hsv, COLOR_BGR2HSV);
@@ -195,7 +196,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Mat channel[3];
         split(hsv, channel);
         comm->save_to_file_image(&rgb);
-
+clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "2 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         
         Size img_size = img.size();
         deb_printf("error code: %d %d\n", patch->active, patch->select);
@@ -218,6 +220,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
                 winner = i;
             }
         }
+        clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "3 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         //0.0035
         double epsilon = 0.002 * arcLength(contours[winner], true);
         vector<Point> *contour = new vector<Point>;
@@ -228,7 +232,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
         drawContours(cont_img, vector<vector<Point> >(1,*contour), -1, color, 1, 8);
         imwrite("cont_img.png", cont_img);
-        
+        clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "4 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         Mat rg(rgb.size(), rgb.type());
 
         for (int i = 0; i < rgb.rows; i++) {
@@ -262,7 +267,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         calcHist(&rg_hist_sp[0], 1, 0, thres, h_hist, 1, &buck, &histRange, true, true);
         calcHist(&rg_hist_sp[1], 1, 0, thres, s_hist, 1, &buck, &histRange, true, true);
         calcHist(&rg_hist_sp[2], 1, 0, thres, v_hist, 1, &buck, &histRange, true, true);
-
+clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "5 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         
         //cout << "Histogram H: " << h_hist<< endl;
         //cout << "Histogram S: " << s_hist<< endl;
@@ -293,7 +299,8 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         /*for(int i = 0; i<HISTOGRAM_SIZE; i++){
             printf("HISTO: %f %f %f\n", item->feature->hist_h[i], item->feature->hist_s[i],item->feature->hist_v[i]);
         }*/
-
+clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "6 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         Rect enclosing = boundingRect(*item->feature->contour);
         item->rect_x = (uint16_t)enclosing.x;
         item->rect_y = (uint16_t)enclosing.y;
@@ -315,8 +322,11 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         item->prev = 0;
         deb_printf("size of item: %d %d\n", sizeof(patch_packet), sizeof(feature_vector));
         deb_printf("item %p\n", item);
+        clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "7 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         comm->ask_neighbours(item);
-        
+        clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "8 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         //fill item with data from RASPIPATCH
         deb_printf("saving it in list\n");
         if (first == 0) {
@@ -335,8 +345,11 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         deb_printf("increased file counter\n");
 
         RotatedRect boundRect = minAreaRect(*contour);
-        
+        clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "9 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         match_surf_features(&thres, &rgb, boundRect.angle, patch->id);
+        clock_gettime(CLOCK_REALTIME, &time1);
+            cout << "10 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
     }
     //img.release();
 
