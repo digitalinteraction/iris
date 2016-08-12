@@ -102,6 +102,7 @@ timespec Low_Res_Worker::diff(timespec start, timespec end)
 		temp.tv_sec = end.tv_sec-start.tv_sec;
 		temp.tv_nsec = end.tv_nsec-start.tv_nsec;
 	}
+        temp.tv_nsec = temp.tv_nsec/1000000;
 	return temp;
 }
 
