@@ -500,7 +500,7 @@ int raspitexutil_capture_bgra(RASPITEX_STATE *state, RASPITEX_PATCH * patch) {
         //printf("LOW RES: %d %d\n", patch->token, patch->fb);
 
     }else if(patch->select == 1){
-        printf("capturing frame buffer %d\n", patch->fb);
+        //printf("capturing frame buffer %d\n", patch->fb);
         if(patch->fb >= FRAMEBUFFER_CNT){
             patch->fb = 0;
         }
