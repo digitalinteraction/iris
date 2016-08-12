@@ -81,7 +81,7 @@ void Low_Res_Worker::run() {
             process_image(patch->buffer, patch->size);
             struct timespec time2;
             clock_gettime(CLOCK_REALTIME, &time2);
-            cout<<"process_image:" <<diff(time1,time2).tv_sec<<":"<<diff(time1,time2).tv_nsec<<endl;
+            //cout<<"process_image:" <<diff(time1,time2).tv_sec<<":"<<diff(time1,time2).tv_nsec<<endl;
             nr_img++;
             running = 13;
             free(patch->buffer);
