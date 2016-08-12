@@ -94,7 +94,6 @@ void High_Res_Worker::run(){
         }
         running = 2;
         clock_gettime(CLOCK_REALTIME, &time1);
-        cout << "before recv_buffer " << time1.tv_sec << ":" << time1.tv_nsec << endl;
         //deb_printf("check_recv_buffer\n");
         comm->check_recv_buffer(first);
         running = 3;
@@ -105,7 +104,6 @@ void High_Res_Worker::run(){
         //deb_printf("check objects\n");
         check_objects(first);
         clock_gettime(CLOCK_REALTIME, &time1);
-            cout << "after check_objects" << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         running = 5;
         
         patch_packet *item = first;
