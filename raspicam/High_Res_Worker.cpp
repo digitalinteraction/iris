@@ -76,7 +76,7 @@ void High_Res_Worker::run(){
             if(group != prev_group){
                 cnt = 0;
             }
-            printf("%d %d got patch %d %d %d\n", patch->width, patch->height, patch->size, group, cnt);
+            //printf("%d %d got patch %d %d %d\n", patch->width, patch->height, patch->size, group, cnt);
 
             deb_printf("find features\n");
             find_features(patch, group);
@@ -422,8 +422,8 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
             features.at<float>(0, i) = final_vector[i];
             //printf("%f\n", item->final_vector[i]);
         }
-        cout << features << endl;
-        cout << features.size() << endl;
+        //cout << features << endl;
+        //cout << features.size() << endl;
         float result = 0;
         if(classifier != 0){
             result = classifier->predict(features);
@@ -431,8 +431,8 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
             printf("classifier not initialized!!!!\n");
         }
         int object = (int)floor(result+0.5);
-        printf("Nummeric Result: %f %d\n", result, object);
-        printf("Result of classifier: %s\n", object_names[object]);
+        //printf("Nummeric Result: %f %d\n", result, object);
+        //printf("Result of classifier: %s\n", object_names[object]);
         
         struct classification_result *class_item = (struct classification_result*) malloc(sizeof(struct classification_result));
         class_item->id = item->id;
@@ -564,8 +564,8 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     surf->detect(*img, kp, *mask);
     Mat desc;
     surf->compute(*img, kp, desc);
-    cout << "Descriptor" << desc.size() << endl;
-    cout << "Keypoints" << kp.size() << endl;
+    //cout << "Descriptor" << desc.size() << endl;
+    //cout << "Keypoints" << kp.size() << endl;
 
     if (kp.size() > 0) {
         Mat img_keypoints;
@@ -628,9 +628,9 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
                 }
             }
         }
-        printf("min angle count %f min total count %f\n", min_angle_count, min_total_count);
+        //printf("min angle count %f min total count %f\n", min_angle_count, min_total_count);
         float confidence = (min_angle_count / min_total_count)*100;
-        printf("confidence: %f in cat %d\n", confidence, min_angle_index);
+        //printf("confidence: %f in cat %d\n", confidence, min_angle_index);
 
         struct classification_result *item = (struct classification_result*) malloc(sizeof (struct classification_result));
 
