@@ -111,7 +111,9 @@ void High_Res_Worker::run(){
                 res = identify_object(item);
                 struct timespec time2;
                 clock_gettime(CLOCK_REALTIME, &time2);
+                if(diff(time1,time2).tv_nsec > 0){
                 cout<<"identify object: " << diff(time1,time2).tv_sec<<":"<<diff(time1,time2).tv_nsec<<endl;
+                }
                 running = 6;
                 //deb_printf("end identifying %d\n", res);
             //}
