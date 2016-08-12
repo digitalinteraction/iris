@@ -133,7 +133,7 @@ void NetworkControl::run(){
 #ifdef CLIENT_SIDE
         if(currenttime > nextprint){
             struct mallinfo mi = mallinfo();
-            printf("Hosts alive: %d %d %d %d\n", topo->isalive(0), topo->isalive(1), topo->isalive(2),topo->isalive(3));
+            //printf("Hosts alive: %d %d %d %d\n", topo->isalive(0), topo->isalive(1), topo->isalive(2),topo->isalive(3));
             topo->sendlist();
             nextprint = currenttime + PRINT_TIME;
         }

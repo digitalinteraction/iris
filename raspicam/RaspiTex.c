@@ -206,7 +206,7 @@ static void update_fps()
       frame_count = 0;
       time_start = time_now;
       vcos_log_info("%3.2f FPS", fps);
-      printf("Driver::Frames per second %3.2f\n", fps);
+      //printf("Driver::Frames per second %3.2f\n", fps);
    }
 }
 

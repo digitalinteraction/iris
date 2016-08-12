@@ -62,9 +62,6 @@ void CommImage::save_to_file_image(Mat *pic){
 }
 
 void CommImage::save_to_file_features(feature_vector* item, uint16_t file_id){
-#ifdef DEBUG_COMM_IMAGE
-    printf("save_to_file_features: id %d\n", file_id);
-#endif
     char buf_fea[100];
     snprintf(buf_fea, 100, "features/%lx_%d.feature", nc->topo->mac, file_id);
     FILE * fp = fopen(buf_fea, "w");
@@ -74,9 +71,6 @@ void CommImage::save_to_file_features(feature_vector* item, uint16_t file_id){
 }
 
 void CommImage::send_to_server(Mat *img, uint8_t mode, uint8_t pos) {
-#ifdef DEBUG_COMM_IMAGE
-    printf("send_to_server: %d %d\n", mode, pos);
-#endif
     if (nc->unrel->send_buf->getCnt() < 70) {
 
         if ((img->total() * img->elemSize()) != 0) {
