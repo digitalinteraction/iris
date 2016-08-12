@@ -434,7 +434,7 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         }
         int object = (int)floor(result+0.5);
         //printf("Nummeric Result: %f %d\n", result, object);
-        //printf("Result of classifier: %s\n", object_names[object]);
+        printf("Result of classifier: %s\n", object_names[object]);
         
         struct classification_result *class_item = (struct classification_result*) malloc(sizeof(struct classification_result));
         class_item->id = item->id;
