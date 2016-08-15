@@ -20,7 +20,7 @@
 #include <arpa/inet.h>
 //#include "Buffer.h"
 
-//#define COLOR
+#define COLOR
 
 #ifdef DEBUG_LOW_RES
 #define deb_printf(fmt, args...) fprintf(stderr, "LOW_RES_WORKER: %d:%s(): " fmt, __LINE__, __func__, ##args)
