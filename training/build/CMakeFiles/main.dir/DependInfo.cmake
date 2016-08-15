@@ -4,7 +4,7 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/tobias/gitcode/cutting_board/training/training/main.cpp" "/home/tobias/gitcode/cutting_board/training/training/build/CMakeFiles/main.dir/main.cpp.o"
+  "/home/tobias/gitcode/cutting_board/training/main.cpp" "/home/tobias/gitcode/cutting_board/training/build/CMakeFiles/main.dir/main.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -14,9 +14,9 @@ SET(CMAKE_TARGET_LINKED_INFO_FILES
 
 # The include file search paths:
 SET(CMAKE_C_TARGET_INCLUDE_PATH
-  "../../../network"
-  "../../../network/crc"
-  "../../../raspicam"
+  "../../network"
+  "../../network/crc"
+  "../../raspicam"
   "/usr/local/include"
   "/usr/local/include/opencv"
   )

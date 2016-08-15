@@ -1,1 +1,1 @@
-/home/tobias/gitcode/cutting_board/training/training/build/CMakeFiles/main.dir
+/home/tobias/gitcode/cutting_board/training/build/CMakeFiles/main.dir

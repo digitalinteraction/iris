@@ -26,13 +26,15 @@ using namespace cv::ml;
 
 Mat src; Mat src_gray;
 char *pic_name = 0;
-int thresh = 45;
+int thresh = 47;
 int max_thresh = 255;
 RNG rng(12345);
 
 FILE *save_features;
+FILE *load_test;
 
 #define PICTURE_DIR "../pictures/"
+#define TEST_DIR "../test/"
 
 struct feature{
     float *final_vector;
@@ -44,27 +46,122 @@ struct feature{
 
 struct feature *first = 0;
 struct feature *last = 0;
+struct feature *first_test = 0;
+struct feature *last_test = 0;
 uint16_t count_list = 0;
+Ptr<RTrees> rtrees;
+int var_arg = 0;
 
-void extract_features(char *name);
-void load_features();
-void save_in_file(float *final_vector, float res);
-uint8_t search_list(uint64_t mac, uint16_t id);
+void extract_features(char *name, uint8_t mode);
+void load_features(uint8_t mode);
+void save_in_file(float *final_vector, float res, uint64_t mac, uint16_t id, uint8_t mode);
+struct feature * search_list(uint64_t mac, uint16_t id, uint8_t mode);
+void trainClassifier();
+void checkClassifier();
 
-int main() {
+int main(int argc, char **argv) {
     
-    printf("Please classify the pictures by pressing following keys:\n");
-    printf("0: Nothing\n");
-    printf("1: Carrot\n");
-    printf("2: Peach\n");
-    printf("3: Apple\n");
-    
-    const char * dir_pictures = PICTURE_DIR;
-    
+    sscanf(argv[1], "%d", &var_arg);
+    //printf("Please classify the pictures by pressing following keys:\n");
+    //printf("0: Nothing\n");
+    //printf("1: Carrot\n");
+    //printf("2: Peach\n");
+    //printf("3: Apple\n");
     save_features = fopen("output.txt", "a+");
+    load_test = fopen("output_test.txt", "a+");
     
-    load_features();
-    printf("Count list %d\n", count_list);
+    load_features(0);
+    //printf("Count list %d\n", count_list);
+
+    trainClassifier();
+    
+    /*for(int i = 0; i < features.rows; i++){
+        float result = rtrees->predict(features.row(i));
+        if(result != classification.at<int>(i)){
+            printf("%d Result: %f in class %d\n", i, result, classification.at<int>(i));
+        }
+    }*/
+    load_features(1);
+    checkClassifier();
+    
+    rtrees->save("classifier.xml");
+
+    //build mat file out of features
+    //run classifier
+
+
+    return 0;
+}
+
+void checkClassifier(){
+    const char * dir_train = TEST_DIR;
+
+    DIR *dp;
+    struct dirent *ep;
+    dp = opendir(dir_train);
+    if (dp != NULL) {
+        while (ep = readdir(dp)) {
+            size_t string_size = strlen(ep->d_name) + strlen(dir_train);
+            char * name = (char *) malloc(string_size);
+            strcpy(name, dir_train);
+            strcpy(name + strlen(dir_train), ep->d_name);
+            pic_name = ep->d_name;
+            extract_features(name, 1);
+        }
+        (void) closedir(dp);
+    } else
+        perror("Couldn't open the directory train");
+
+    fclose(load_test);
+
+    struct feature *item = first_test;
+    int cnt = 0;
+    while (item != 0) {
+        cnt++;
+        item = item->next;
+    }
+    //printf("Train Feature Count %d\n", cnt);
+
+    Mat features(cnt, 7 + 5 + 3 * HISTOGRAM_SIZE, CV_32FC1);
+    Mat classification(cnt, 1, CV_32S);
+    item = first_test;
+    cnt = 0;
+    while (item != 0) {
+        //printf("START::");
+        for (int i = 0; i < 7 + 5 + 2 * HISTOGRAM_SIZE; i++) {
+            features.at<float>(cnt, i) = item->final_vector[i];
+            //printf("%f\n", item->final_vector[i]);
+        }
+        //printf("class %d\n", (int) item->result);
+        classification.at<int>(cnt) = (int) item->result;
+        cnt++;
+        item = item->next;
+    }
+    
+    //printf("Features rows %d\n", features.rows);
+    //printf("Classification rows %d\n", classification.rows);
+    float total = 0;
+    float success = 0;
+    
+    
+    for (int i = 0; i < features.rows; i++) {
+        float result = rtrees->predict(features.row(i));
+        //printf("Classification result %f\n", result);
+        if (result != classification.at<int>(i)) {
+            //printf(" ERROR: Result: %f in class %d\n", result, classification.at<int>(i));
+        }else{
+            success += 1.0;
+            //printf("Result: %f in class %d\n", result, classification.at<int>(i));
+        }
+        total += 1.0;
+
+    }
+    
+    printf("%d success %f\n", var_arg, (success/total)*100);
+}
+
+void trainClassifier() {
+    const char * dir_pictures = PICTURE_DIR;
 
     DIR *dp;
     struct dirent *ep;
@@ -76,42 +173,41 @@ int main() {
             strcpy(name, dir_pictures);
             strcpy(name + strlen(dir_pictures), ep->d_name);
             pic_name = ep->d_name;
-            extract_features(name);
-            
+            extract_features(name, 0);
         }
         (void) closedir(dp);
     } else
         perror("Couldn't open the directory pictures");
-    
+
     fclose(save_features);
-    
+
     struct feature *item = first;
     int cnt = 0;
-    while(item != 0){
+    while (item != 0) {
         cnt++;
         item = item->next;
     }
-    printf("Feature Count %d\n", cnt);
-    
-    Mat features(cnt, 7+5+3*HISTOGRAM_SIZE, CV_32FC1);
+    //printf("Feature Count %d\n", cnt);
+
+    Mat features(cnt, 7 + 5 + 3 * HISTOGRAM_SIZE, CV_32FC1);
     Mat classification(cnt, 1, CV_32S);
     item = first;
     cnt = 0;
-    while(item != 0){
+    while (item != 0) {
         //printf("START::");
-        for(int i = 0; i < 7+5+2*HISTOGRAM_SIZE; i++){
+        for (int i = 0; i < 7 + 5 + 2 * HISTOGRAM_SIZE; i++) {
             features.at<float>(cnt, i) = item->final_vector[i];
             //printf("%f\n", item->final_vector[i]);
         }
-        printf("class %d\n", (int)item->result);
-        classification.at<int>(cnt) = (int)item->result;
+        //printf("class %d\n", (int) item->result);
+        classification.at<int>(cnt) = (int) item->result;
         cnt++;
         item = item->next;
     }
-    
-    
-    Ptr<RTrees> rtrees = RTrees::create();
-    rtrees->setMaxDepth(50);
+
+
+    rtrees = RTrees::create();
+    rtrees->setMaxDepth(var_arg);
     rtrees->setMinSampleCount(5);
     rtrees->setRegressionAccuracy(0);
     rtrees->setUseSurrogates(false);
@@ -120,44 +216,29 @@ int main() {
     rtrees->setCalculateVarImportance(false);
     rtrees->setActiveVarCount(4);
     rtrees->setTermCriteria(TermCriteria(CV_TERMCRIT_EPS, 2000, 0.001));
-    printf("training classifier\n");
+    //printf("training classifier\n");
     rtrees->train(features, ROW_SAMPLE, classification);
-    for(int i = 0; i < features.rows; i++){
-        cout << "ROW::" << features.row(i) << endl;
+    for (int i = 0; i < features.rows; i++) {
+        //cout << "ROW::" << features.row(i) << endl;
     }
-    
-    cout << "Classification::" << classification << endl;
-    
-    for(int i = 0; i < features.rows; i++){
-        float result = rtrees->predict(features.row(i));
-        if(result != classification.at<int>(i)){
-            printf("%d Result: %f in class %d\n", i, result, classification.at<int>(i));
-        }
-    }
-    
-    rtrees->save("classifier.xml");
 
-    //build mat file out of features
-    //run classifier
-
-
-    return 0;
+    //cout << "Classification::" << classification << endl;
 }
 
-void extract_features(char *name) {
+void extract_features(char *name, uint8_t mode) {
     uint64_t mac;
     uint16_t id;
     sscanf(pic_name, "%lx_%d.png", &mac, &id);
-    printf("pic: %s\n", pic_name);
-    if (search_list(mac, id) == 0) {
-        printf("name: %s\n", name);
+    //printf("pic: %s\n", pic_name);
+    //printf("pic2: %lx, %d\n", mac, id);
+    //if (search_list(mac, id) == 0) {
+        //printf("name: %s\n", name);
         src = imread(name, CV_LOAD_IMAGE_COLOR);
         if (src.empty() == 0) {
             cvtColor(src, src_gray, CV_BGRA2GRAY);
             blur(src_gray, src_gray, Size(3, 3));
             char *source_window = "Source";
-            namedWindow(source_window, CV_WINDOW_AUTOSIZE);
-
+            
 
             ///////////////////////////////////////
             Mat mask;
@@ -177,7 +258,6 @@ void extract_features(char *name) {
             //imshow("Mask", mask);
             findContours(mask, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(0, 0));
 
-            //http://answers.opencv.org/question/54727/convert-rgb-brg-to-rg-chromaticity/
             
             Mat rg(rgb.size(), rgb.type());
 
@@ -205,52 +285,13 @@ void extract_features(char *name) {
             int buck = HISTOGRAM_SIZE;
             Mat r_hist, g_hist, b_hist;
             Mat rg_hist_sp[3];
-            //cout << "Image" << rg << endl;
-            imshow("MASK", mask);
+            
+            
             split(rg, rg_hist_sp);
             calcHist(&rg_hist_sp[0], 1, 0, mask, r_hist, 1, &buck, &histRange, true, true);
             calcHist(&rg_hist_sp[1], 1, 0, mask, g_hist, 1, &buck, &histRange, true, true);
             calcHist(&rg_hist_sp[2], 1, 0, mask, b_hist, 1, &buck, &histRange, true, true);
 
-            
-            //imshow("RG chromatic", rg);
-            //cout << "R_Channel: " << rg_hist_sp[0] << endl;
-            //cout << "G_Channel: " << rg_hist_sp[1] << endl;
-            //cout << "B_Channel: " << rg_hist_sp[2] << endl;
-            //cout << "CHROMATIC " << rg_hist << endl;
-
-            //calcHist(&rg, 1, 0, mask, g_hist, 1, &buck, &histRange, true, true);
-            
-            //cout << "hist r " << r_hist << endl;
-            //cout << "hist g " << g_hist << endl;
-            //cout << "hist b " << b_hist << endl;
-            /*float range[] = {0, 256};
-            const float *histRange = {range};
-            int buck = HISTOGRAM_SIZE;
-            Mat h_hist, l_hist, s_hist;
-            Ptr<CLAHE> clahe = cv::createCLAHE();
-            clahe->setClipLimit(4);
-            Mat lum_channel;
-            clahe->apply(channel[2], lum_channel);
-            calcHist(&channel[0], 1, 0, mask, h_hist, 1, &buck, &histRange, true, true);
-            calcHist(&channel[1], 1, 0, mask, l_hist, 1, &buck, &histRange, true, true);
-            calcHist(&lum_channel, 1, 0, mask, s_hist, 1, &buck, &histRange, true, true);
-            //normalize(h_hist, h_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
-            //normalize(l_hist, l_hist, 0, 1.0, NORM_MINMAX, -1, Mat());
-            //normalize(s_hist, s_hist, 0, 255.0, NORM_MINMAX, -1, Mat());*/
-            /*Mat rgb_chan[3];
-            split(rgb, rgb_chan);
-            float range[] = {0, 255};
-            const float *histRange = {range};
-            int buck = HISTOGRAM_SIZE;
-            Mat r_hist, g_hist, b_hist;
-            calcHist(&rgb_chan[0], 1, 0, mask, r_hist, 1, &buck, &histRange, true, true);
-            calcHist(&rgb_chan[1], 1, 0, mask, g_hist, 1, &buck, &histRange, true, true);
-            calcHist(&rgb_chan[2], 1, 0, mask, b_hist, 1, &buck, &histRange, true, true);*/
-
-            
-            
-            
             int winner = 0;
             int largest = 0;
             for (int i = 0; i < contours.size(); i++) {
@@ -306,8 +347,17 @@ void extract_features(char *name) {
                 hist_g[i] =  g_hist.at<float>(i);
                 hist_b[i] =  b_hist.at<float>(i);
             }
-
-            float *final_vector = (float*) malloc(sizeof (float)*(7 + 5 + 3 * HISTOGRAM_SIZE));
+            
+            struct feature *item_found = search_list(mac, id, mode);
+            //printf("item found %p\n", item_found);
+            float *final_vector = 0;
+            
+            if(item_found == 0){
+                final_vector = (float*) malloc(sizeof (float)*(7 + 5 + 3 * HISTOGRAM_SIZE));
+            }else{
+                final_vector = item_found->final_vector;
+            }
+            
             for (int i = 0; i < 7; i++) {
                 final_vector[i] = (1000 * hu[i]);
             }
@@ -323,6 +373,10 @@ void extract_features(char *name) {
             //Mat features(1, 7 + 5 + 3 * HISTOGRAM_SIZE, CV_32SC1, (void*) final_vector);
 
             //printf("Contour Points: %ld\n", contours[winner].size());
+            if(item_found == 0){
+                namedWindow(source_window, CV_WINDOW_AUTOSIZE);
+
+                imshow("MASK", mask);
             Mat drawing = Mat::zeros(mask.size(), CV_8UC3);
             Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
             drawContours(drawing, new_cont, 0, color, 2, 8, hierarchy, 0, Point());
@@ -334,66 +388,105 @@ void extract_features(char *name) {
             imshow("Contours", drawing);
             resize(src, src, Size(640, 480));
             imshow(source_window, src);
-            float res = (float)waitKey(0);
-            res -= 1048624.0;
-            printf("key pressed: %f\n\n", res);
+            }
+            float res = 0;
+            if(item_found == 0){
+                res = (float)waitKey(0);
+                res -= 1048624.0;
+            }
+            
+            //printf("key pressed on mac %lx: %f\n\n", mac, res);
 
+        if (item_found == 0) {
             struct feature *item = (struct feature *) calloc(1, sizeof (struct feature));
             item->final_vector = final_vector;
             item->mac = mac;
             item->id = id;
             item->result = res;
-            if (first == 0) {
-                first = item;
-                last = item;
+            if (mode == 0) {
+                if (first == 0) {
+                    first = item;
+                    last = item;
+                } else {
+                    last->next = item;
+                    last = item;
+                }
+                count_list++;
             } else {
-                last->next = item;
-                last = item;
+                if (first_test == 0) {
+                    first_test = item;
+                    last_test = item;
+                } else {
+                    last_test->next = item;
+                    last_test = item;
+                }
             }
-            count_list++;
+        }
 
             ////////////////////////////////////////////////////////
-            save_in_file(final_vector, res);
+            if(item_found == 0){
+            save_in_file(final_vector, res, mac, id, mode);
+            }
         }
-    }
+    //}
 }
 
-void save_in_file(float *final_vector, float res) {
+void save_in_file(float *final_vector, float res, uint64_t mac, uint16_t id, uint8_t mode) {
+    
+    
+    
     char * str = " %f";
     char buffer[20];
     snprintf(buffer, 20, str, res);
+    if(mode == 0){
     fputs(buffer, save_features);
-    
-    uint64_t mac;
-    uint16_t id;
-    sscanf(pic_name, "%lx_%d.png", &mac, &id);
+    }else{
+        fputs(buffer, load_test);
+    }
+    //printf("adding line with mac %lx and id %d\n", mac, id);
+    //uint64_t mac;
+    //uint16_t id;
+    //sscanf(pic_name, "%lx_%d.png", &mac, &id);
     memset(buffer, 0, 20);
     snprintf(buffer, 20, " %lx %d", mac, id);
+    if(mode == 0){
     fputs(buffer, save_features);
-    for (int i = 0; i < (7 + 5 + 3 * HISTOGRAM_SIZE); i++) {
+    }else{
+        fputs(buffer, load_test);
+    }
+    /*for (int i = 0; i < (7 + 5 + 3 * HISTOGRAM_SIZE); i++) {
         memset(buffer, 0, 20);
         snprintf(buffer, 20, str, final_vector[i]);
         fputs(buffer, save_features);
-    }
+    }*/
     char *end = "\n\0";
+    if(mode == 0){
     fputs(end, save_features);
+    }else{
+        fputs(end, load_test);
+    }
     
     
     //add features to linked list
 }
 
-void load_features() {
+void load_features(uint8_t mode) {
     char buffer[2000];
 
-
-    while (feof(save_features) == 0) {
-        printf("Reading line %d\n", count_list);
+    FILE *file;
+    if(mode == 0){
+        file = save_features;
+    }else{
+        file = load_test;
+    }
+    while (feof(file) == 0) {
+        //printf("Reading line %d\n", count_list);
         memset(buffer, 0, 2000);
         struct feature *item = (struct feature *) calloc(1, sizeof (struct feature));
         item->final_vector = (float*) malloc(sizeof (float)*(7 + 5 + 3 * HISTOGRAM_SIZE));
         int i = 0;
 
-        char *str = fgets(buffer, 2000, save_features);
+        char *str = fgets(buffer, 2000, file);
         if(str != NULL){
         char *token;
         token = strtok(buffer, " ");
@@ -422,8 +515,10 @@ void load_features() {
         }
         count_list++;
 
-        printf("feature from %lx %d loaded\n", item->mac, item->id);
-
+        //printf("feature from %lx %d loaded\n", item->mac, item->id);
+        
+        
+        if(mode == 0){
         if (first == 0) {
             first = item;
             last = item;
@@ -431,16 +526,30 @@ void load_features() {
             last->next = item;
             last = item;
         }
-        printf("finished reading line\n");
+        }else{
+            if (first_test == 0) {
+            first_test = item;
+            last_test = item;
+        } else {
+            last_test->next = item;
+            last_test = item;
+        }
+        }
+        //printf("finished reading line\n");
         }
     }
 }
 
-uint8_t search_list(uint64_t mac, uint16_t id){
-    struct feature *item = first;
+struct feature * search_list(uint64_t mac, uint16_t id, uint8_t mode){
+    struct feature *item;
+    if(mode == 0){
+        item = first;
+    }else{
+        item = first_test;
+    }
     while(item != 0){
         if(item->mac == mac && item->id == id){
-            return 1;
+            return item;
         }
         item = item->next;
     }
