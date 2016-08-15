@@ -113,10 +113,10 @@ void High_Res_Worker::run(){
                 //deb_printf("identifying object %p\n", item);
 
                 clock_gettime(CLOCK_REALTIME, &time1);
-                cout << "before identify_object" << time1.tv_sec << ":" <<time1.tv_nsec << endl;
+                //cout << "before identify_object" << time1.tv_sec << ":" <<time1.tv_nsec << endl;
                 res = identify_object(item);
                 clock_gettime(CLOCK_REALTIME, &time1);
-                cout << "after identify_object" << time1.tv_sec << ":" <<time1.tv_nsec << endl;
+                //cout << "after identify_object" << time1.tv_sec << ":" <<time1.tv_nsec << endl;
                 running = 6;
                 //deb_printf("end identifying %d\n", res);
             //}
