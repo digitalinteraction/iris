@@ -208,7 +208,7 @@ clock_gettime(CLOCK_REALTIME, &time1);
         Mat gray, thres;
         cvtColor(rgb, gray, CV_RGB2GRAY);
         
-        threshold(channel[1], thres, 50, 255, THRESH_BINARY);
+        threshold(channel[1], thres, 45, 255, THRESH_BINARY);
         imwrite("mask.png", thres);
         
         vector<Vec4i> hierarchy;
