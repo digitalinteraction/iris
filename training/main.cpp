@@ -26,7 +26,7 @@ using namespace cv::ml;
 
 Mat src; Mat src_gray;
 char *pic_name = 0;
-int thresh = 47;
+int thresh = 45;
 int max_thresh = 255;
 RNG rng(12345);
 
@@ -51,6 +51,7 @@ struct feature *last_test = 0;
 uint16_t count_list = 0;
 Ptr<RTrees> rtrees;
 int var_arg = 0;
+double var_arg2 = 0;
 
 void extract_features(char *name, uint8_t mode);
 void load_features(uint8_t mode);
@@ -61,7 +62,9 @@ void checkClassifier();
 
 int main(int argc, char **argv) {
     
-    sscanf(argv[1], "%d", &var_arg);
+    //sscanf(argv[1], "%d", &var_arg);
+    //var_arg2 = var_arg/1000.0;
+    //thresh = var_arg;
     //printf("Please classify the pictures by pressing following keys:\n");
     //printf("0: Nothing\n");
     //printf("1: Carrot\n");
@@ -207,15 +210,15 @@ void trainClassifier() {
 
 
     rtrees = RTrees::create();
-    rtrees->setMaxDepth(var_arg);
-    rtrees->setMinSampleCount(5);
+    rtrees->setMaxDepth(8);
+    rtrees->setMinSampleCount(61);
     rtrees->setRegressionAccuracy(0);
     rtrees->setUseSurrogates(false);
-    rtrees->setMaxCategories(12);
+    rtrees->setMaxCategories(2);
     rtrees->setPriors(Mat());
     rtrees->setCalculateVarImportance(false);
-    rtrees->setActiveVarCount(4);
-    rtrees->setTermCriteria(TermCriteria(CV_TERMCRIT_EPS, 2000, 0.001));
+    rtrees->setActiveVarCount(38);
+    rtrees->setTermCriteria(TermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 50, 0.001)); //0.001
     //printf("training classifier\n");
     rtrees->train(features, ROW_SAMPLE, classification);
     for (int i = 0; i < features.rows; i++) {

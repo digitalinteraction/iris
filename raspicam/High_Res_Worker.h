@@ -63,6 +63,7 @@ private:
     Buffer *class_out;
     
     struct timespec time1;
+    struct timespec time2;
 
     Ptr<cv::xfeatures2d::SURF> surf;
     Ptr<cv::ml::RTrees> classifier;

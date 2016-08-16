@@ -32,7 +32,7 @@ CommImage *CommImage::static_call = 0;
 
 #define EPSILON 1.0
 
-const char * const object_names[] = {"NOTHING", "CARROT", "PEACH", "APPLE"};
+const char * const object_names[] = {"CARROT", "PEACH", "APPLE", "MANDARIN", "ONION"};
 
 using namespace std;
 
@@ -80,10 +80,11 @@ void High_Res_Worker::run(){
 
             deb_printf("find features\n");
             clock_gettime(CLOCK_REALTIME, &time1);
-            cout << "before find_features" << time1.tv_sec << ":" <<time1.tv_nsec << endl;
+            //cout << "before find_features" << time1.tv_sec << ":" <<time1.tv_nsec << endl;
             find_features(patch, group);
-            clock_gettime(CLOCK_REALTIME, &time1);
-            cout << "after find_features" << time1.tv_sec << ":" <<time1.tv_nsec << endl;
+            clock_gettime(CLOCK_REALTIME, &time2);
+            
+            cout << "after find_features" << diff(time1, time2).tv_sec << ":" << diff(time1, time2).tv_nsec << endl;
             deb_printf("finished finding features\n");
             free(patch->buffer);
             free(patch);
@@ -115,7 +116,8 @@ void High_Res_Worker::run(){
                 clock_gettime(CLOCK_REALTIME, &time1);
                 //cout << "before identify_object" << time1.tv_sec << ":" <<time1.tv_nsec << endl;
                 res = identify_object(item);
-                clock_gettime(CLOCK_REALTIME, &time1);
+                
+
                 //cout << "after identify_object" << time1.tv_sec << ":" <<time1.tv_nsec << endl;
                 running = 6;
                 //deb_printf("end identifying %d\n", res);
@@ -457,6 +459,9 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         class_item->classification = object;
         class_item->object = -1;
         class_out->add((RASPITEX_PATCH*) class_item, 0);
+        
+        clock_gettime(CLOCK_REALTIME, &time2);
+        cout << "after identify" << diff(time1, time2).tv_sec << ":" << diff(time1, time2).tv_nsec << endl;
         
         return object;
     }
