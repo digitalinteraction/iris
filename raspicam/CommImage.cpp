@@ -36,7 +36,7 @@ CommImage::CommImage(NetworkControl *nc) {
     
     recv_first = 0;
     recv_last = 0;
-    file_cnt = 200;
+    file_cnt = 300;
     
     first_res = 0;
     last_res = 0;
