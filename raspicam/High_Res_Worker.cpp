@@ -703,7 +703,7 @@ void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
         //printf("confidence: %f in cat %d\n", confidence, min_angle_index);
 
         struct classification_result *item = (struct classification_result*) malloc(sizeof (struct classification_result));
-
+        printf("Confidence %f in class %f\n", confidence, min_angle_index);
         //percent of angles right
         if (isnormal(confidence) == 0 || confidence < 15.0) {
             surf_saved_desc.push_back(desc);
