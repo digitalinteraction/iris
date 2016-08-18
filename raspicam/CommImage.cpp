@@ -514,12 +514,8 @@ void CommImage::cleanup_packet_send(){
 
 void CommImage::broadcast_surf(struct surf_packet* packet){
     packet->packet_type = 2;
-    for(int i = 0; i < 4; i++){
-        if(nc->topo->isalive(i) == 1){
-            int32_t res = image_out->add(sizeof(struct surf_packet), i, (void *) packet, 1);
-            add_packet_send((uint32_t)res, DOWN_SIDE, 0);
-        }
-    }
+    int32_t res = image_out->add(sizeof(struct surf_packet), 0, (void *) packet, 1);
+    add_packet_send((uint32_t)res, DOWN_SIDE, 0);
     
 
 }
