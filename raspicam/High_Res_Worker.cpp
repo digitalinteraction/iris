@@ -643,7 +643,7 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
 void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
     printf("match surf features called with\n");
     for(int i = 0; i < kp.size(); i++){
-        cout << "KP: " << kp[i] << endl;
+        cout << "KP: " << kp[i].response << endl;
     }
     cout << "Descriptor:  " << desc << endl;
     if (kp.size() > 0) {
