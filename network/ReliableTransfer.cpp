@@ -60,7 +60,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
         uint8_t success = 0;
         
         if(header->broadcast == 1 && header->id == last_broadcast && header->mac == last_mac){
-            printf(" bc "); fflush(stdout);
+            //printf(" bc "); fflush(stdout);
             success = 1;
         }
         //printf(" while "); fflush(stdout);
@@ -103,7 +103,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
         }
         list_lock.unlock();
         if(success == 0){
-            printf("Error Reliable Transfer:: Packet which does not exist acknowledged %d (maybe duplicate)\n", header->id);
+            //printf("Error Reliable Transfer:: Packet which does not exist acknowledged %d (maybe duplicate)\n", header->id);
         }
         
     } else {
@@ -121,9 +121,9 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
         free(cp_ack);
 
         if (header->broadcast == 1) {
-            printf("got broadcast packet %d %d %llx %llx\n", header->id, last_broadcast, header->mac, last_mac);
+            //printf("got broadcast packet %d %d %llx %llx\n", header->id, last_broadcast, header->mac, last_mac);
             if (header->id != last_broadcast || header->mac != last_mac) {
-                printf("resending broadcast packet\n");
+                //printf("resending broadcast packet\n");
                 last_broadcast = header->id;
                 last_mac = header->mac;
                 (*unrel)->send(buffer, size, 2, (addr + 1) % 4);
@@ -218,6 +218,8 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     if(broadcast == 0){
         (*unrel)->send(buf, total_size, 2, addr);
     } else if (broadcast == 1) {
+        last_broadcast = header->id;
+        last_mac = header->mac;
         for (int i = 0; i < 4; i++) {
             if (topo->isalive(i) == 1) {
                 (*unrel)->send(buf, total_size, 2, i);
