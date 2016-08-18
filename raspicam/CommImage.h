@@ -52,10 +52,10 @@ public:
 
     uint16_t file_cnt;
     static CommImage* static_call;
-
-private:
     Packetbuffer *image_out;
     Packetbuffer *image_in;
+private:
+
     Packetbuffer *unrel_out;
     Packetbuffer *unrel_in;
     //void match_answers(patch_packet *start);

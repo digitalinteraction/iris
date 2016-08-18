@@ -601,8 +601,8 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
             packet->desc[i][j] = desc.at<float>(i,j);
         }
     }
-    packet->type = 2;
-    int32_t res = image_out->add(sizeof(struct surf_packet), DOWN_SIDE, (void *) packet, 1);
+    packet->packet_type = 2;
+    int32_t res = comm->image_out->add(sizeof(struct surf_packet), DOWN_SIDE, (void *) packet, 1);
 }
 
 
