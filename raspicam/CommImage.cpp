@@ -130,7 +130,7 @@ void CommImage::ask_neighbours(patch_packet* item) {
                 array[1] = temp.y;
             }
         }
-        item->packet_type = 1;
+        send_packet->packet_type = 1;
         if (((int) item->down) == 1 && nc->topo->isalive(DOWN_SIDE) == 1) {
             int32_t res = image_out->add(size, DOWN_SIDE, (void *) send_packet);
             add_packet_send((uint32_t)res, DOWN_SIDE, item);
@@ -190,9 +190,9 @@ void CommImage::check_recv_buffer(patch_packet *start) {
     lock.lock();
     struct packet *pack;
     while (image_in->get(&pack) == 0) {
-        
         deb_printf("GOT PACKET with size %d from addr %d pointer %p\n", pack->size, pack->addr, pack->buffer);
         patch_packet *item = (patch_packet*)pack->buffer;
+        if(item->packet_type == 1){
         if (item->feature != 0) {
             deb_printf("item attributes: MAC %llx ID %d\n", item->mac, item->id);
             deb_printf("features found, old address %p\n", item->feature);
@@ -223,6 +223,11 @@ void CommImage::check_recv_buffer(patch_packet *start) {
             recv_last = item;
         }
         deb_printf("done adding item to asked item\n");
+        }else if(item->packet_type == 2){
+            printf("received a surf broadcast packet\n");
+        }else{
+            printf("received unknown packet %d\n", item->packet_type);
+        }
     }
     lock.unlock();
 }
@@ -505,4 +510,16 @@ void CommImage::cleanup_packet_send(){
         }
     }
     lock.unlock();
+}
+
+void CommImage::broadcast_surf(struct surf_packet* packet){
+    packet->packet_type = 2;
+    for(int i = 0; i < 4; i++){
+        if(nc->topo->isalive(i) == 1){
+            int32_t res = image_out->add(sizeof(struct surf_packet), i, (void *) packet, 1);
+            add_packet_send((uint32_t)res, DOWN_SIDE, 0);
+        }
+    }
+    
+
 }

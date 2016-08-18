@@ -49,7 +49,7 @@ public:
     //patch_packet *search_list(patch_packet* start, patch_packet *search);
     void match_recv_list(patch_packet *start);
     static void callback_rel(uint32_t id, size_t size, uint8_t reason);
-
+    void broadcast_surf(struct surf_packet* packet);
     uint16_t file_cnt;
     static CommImage* static_call;
     Packetbuffer *image_out;
