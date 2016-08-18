@@ -186,7 +186,7 @@ patch_packet * CommImage::search_list(patch_packet* start, patch_packet *search)
 }
  * */
 
-void CommImage::check_recv_buffer(patch_packet *start) {
+void CommImage::check_recv_buffer(patch_packet *start, vector<vector<KeyPoint> > *kp, vector<Mat> *desc) {
     lock.lock();
     struct packet *pack;
     while (image_in->get(&pack) == 0) {
@@ -226,6 +226,12 @@ void CommImage::check_recv_buffer(patch_packet *start) {
         deb_printf("done adding item to asked item\n");
         }else if(item->packet_type == 2){
             printf("received a surf broadcast packet\n");
+            struct surf_packet *surfitem = (struct surf_packet *)pack->buffer;
+            vector<KeyPoint> keyp;
+            for(int i = 0; i < 10; i++){
+                keyp.push_back(surfitem->kp[i]);
+            }
+            Mat desc = Mat(10, 64, CV_32F, surfitem->desc);
         }else{
             printf("received unknown packet %d\n", item->packet_type);
         }
