@@ -586,8 +586,8 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
     surf->detect(*img, kp, *mask);
     std::sort(kp.begin(), kp.end(), sort_keypoint);
     int kp_size = std::min(10, (int) kp.size());
-    for (int i = 0; i < kp_size; i++) {
-        printf("KeyPoints found %d %d with response %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
+    for (int i = 0; i < kp.size(); i++) {
+        printf("KeyPoints found %f %f with response %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
     }
     Mat desc;
     surf->compute(*img, kp, desc);
