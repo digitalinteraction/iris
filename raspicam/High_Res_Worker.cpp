@@ -641,11 +641,7 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
 
 
 void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
-    printf("match surf features called with\n");
-    for(int i = 0; i < kp.size(); i++){
-        cout << "KP: " << kp[i].response << endl;
-    }
-    cout << "Descriptor:  " << desc << endl;
+    
     if (kp.size() > 0) {
         BFMatcher matcher(NORM_L2, false);
         float min_angle_count = 0;
@@ -703,12 +699,19 @@ void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
         //printf("confidence: %f in cat %d\n", confidence, min_angle_index);
 
         struct classification_result *item = (struct classification_result*) malloc(sizeof (struct classification_result));
-        printf("Confidence %f in class %f\n", confidence, min_angle_index);
+        printf("Confidence %f in class %d\n", confidence, min_angle_index);
         //percent of angles right
         if (isnormal(confidence) == 0 || confidence < 15.0) {
             surf_saved_desc.push_back(desc);
             surf_saved_key.push_back(kp);
-            //surf_broadcast_features(kp, desc);
+            struct surf_packet* packet = (struct surf_packet *) calloc(1, sizeof (struct surf_packet));
+            for (int i = 0; i < kp_size; i++) {
+                packet->kp[i] = kp2[i];
+                for (int j = 0; j < desc.cols; j++) {
+                    packet->desc[i][j] = desc.at<float>(i, j);
+                }
+            }
+            comm->broadcast_surf(packet);
         }
 
         if (isnormal(confidence) == 1 && confidence >= 15.0) {
