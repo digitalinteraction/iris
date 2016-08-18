@@ -52,7 +52,7 @@ struct classification_result{
 
 struct surf_packet{
     uint8_t packet_type;
-    KeyPoint kp[10];
+    cv::KeyPoint kp[10];
     float desc[10][64];
 };
 
