@@ -24,7 +24,10 @@
 
 using namespace cv;
 
-
+struct surf_packet{
+    KeyPoint kp[10];
+    float desc[10][64];
+};
 
 class Buffer;
 

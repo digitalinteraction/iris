@@ -592,9 +592,16 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
         kp2.push_back(kp[i]);
     }
     Mat desc;
-    
     surf->compute(*img, kp2, desc);
-    printf("Matrix: %d %dx%d \n", desc.type(), desc.cols, desc.rows );
+    
+    struct surf_packet* packet = (struct surf_packet *)calloc(1, sizeof(struct surf_packet));
+    for(int i = 0; i < kp_size; i++){
+        packet->kp[i] = kp2[i];
+        for(int j = 0; j < desc.cols; j++){
+            packet->desc[i][j] = desc.at<float>(i,j);
+        }
+    }
+    printf("Size of packet: %d\n", sizeof(struct surf_packet));
 }
 
 
