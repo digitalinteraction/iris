@@ -336,10 +336,10 @@ int SerialCon::init_serial(int nr) {
     temp->c_cc[VTIME] = 5;
     tty = open(name, O_RDWR | O_NONBLOCK | O_NOCTTY);
     free(name);
-    cfsetospeed(temp, B38400); // 115200 baud
-    cfsetispeed(temp, B38400); // 115200 baud
-    //cfsetospeed(temp, B1000000); // 115200 baud
-    //cfsetispeed(temp, B1000000); // 115200 baud
+    //cfsetospeed(temp, B38400); // 115200 baud
+    //cfsetispeed(temp, B38400); // 115200 baud
+    cfsetospeed(temp, B115200); // 115200 baud
+    cfsetispeed(temp, B115200); // 115200 baud
     tcsetattr(tty, TCSANOW, temp);
     //sleep(2); //required to make flush work, for some reason
     //sleep(2);
