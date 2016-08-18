@@ -209,6 +209,10 @@ void CommImage::check_recv_buffer(patch_packet *start) {
                 item->feature->contour->push_back(point);
             }
         }
+        
+        for(int i = 0; i<10;i++){
+            printf("KeyPoints found %f %f with response %f\n", item->kp[i].pt.x, item->kp[i].pt.y, item->kp[i].response);
+        }
         deb_printf("adding item to asked item\n");
         item->addr = pack->addr;
         if (recv_first == 0) {

@@ -269,19 +269,29 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         calcHist(&rg_hist_sp[0], 1, 0, thres, h_hist, 1, &buck, &histRange, true, true);
         calcHist(&rg_hist_sp[1], 1, 0, thres, s_hist, 1, &buck, &histRange, true, true);
         calcHist(&rg_hist_sp[2], 1, 0, thres, v_hist, 1, &buck, &histRange, true, true);
-//clock_gettime(CLOCK_REALTIME, &time1);
-            //cout << "5 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
         
-        //cout << "Histogram H: " << h_hist<< endl;
-        //cout << "Histogram S: " << s_hist<< endl;
-        //cout << "Histogram V: " << v_hist<< endl;
+        vector<KeyPoint> kp;
+        surf->detect(img, kp, mask);
+        std::sort(kp.begin(), kp.end(), sort_keypoint);
+        int kp_size = std::min(10, (int) kp.size());
+        vector<KeyPoint> kp2;
+        for (int i = 0; i < kp_size; i++) {
+            printf("KeyPoints found %f %f with response %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
+            kp2.push_back(kp[i]);
+        }
+        Mat desc;
+        surf->compute(*img, kp2, desc);
 
-        //normalize(r_hist, r_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
-        //normalize(g_hist, g_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
-        //normalize(b_hist, b_hist, 0, 255.0, NORM_MINMAX, -1, Mat());
-        
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
+        
+        for (int i = 0; i < kp_size; i++) {
+            item->kp[i] = kp2[i];
+            for (int j = 0; j < desc.cols; j++) {
+                item->desc[i][j] = desc.at<float>(i, j);
+            }
+        }
+        
         for(int i = 0; i < contour->size(); i++){
             Point2i pt = contour->at(i);
             pt.x = pt.x + patch->x;
@@ -349,7 +359,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         RotatedRect boundRect = minAreaRect(*contour);
         //clock_gettime(CLOCK_REALTIME, &time1);
             //cout << "9 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
-        calc_surf_features(&thres, &rgb, boundRect.angle, patch->id);
+        //calc_surf_features(&thres, &rgb, boundRect.angle, patch->id);
         //clock_gettime(CLOCK_REALTIME, &time1);
             //cout << "10 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
     }

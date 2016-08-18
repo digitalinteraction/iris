@@ -241,7 +241,7 @@ int ReliableTransfer::check_timeouts(){
     list_lock.lock();
     while (first != 0 && first->timeout.tv_sec <= current.tv_sec) {
         if (first->resent_time < 5) {
-            printf("ReliableTransfer: retransmitting packet\n");
+            //printf("ReliableTransfer: retransmitting packet\n");
             // struct reliable_packet* send_temp = (struct reliable_packet*)malloc(first->size);
             // memcpy(send_temp, first->packet, first->size);
             //(*unrel)->send(send_temp, first->size, 2, first->addr);

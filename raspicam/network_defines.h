@@ -86,6 +86,8 @@ typedef struct high_res_packet{
     uint16_t rect_height;
     uint16_t center_x;
     uint16_t center_y;
+    cv::KeyPoint kp[10];
+    float desc[10][64];
     feature_vector *feature;
     struct high_res_packet *up;
     struct high_res_packet *down;
