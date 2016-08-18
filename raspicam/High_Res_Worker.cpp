@@ -498,6 +498,16 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
                 }
                 p++;
             } else {
+                switch (dir) {
+                    case LEFT_SIDE:
+                        src->kp[q].pt.x = src->kp[q].pt.x + HIGH_OUTPUT_X; break;
+                    case RIGHT_SIDE:
+                        src->kp[q].pt.x = src->kp[q].pt.x - HIGH_OUTPUT_X; break;
+                    case UP_SIDE:
+                        src->kp[q].pt.y = src->kp[q].pt.y + HIGH_OUTPUT_Y; break;
+                    case DOWN_SIDE:
+                        src->kp[q].pt.y = src->kp[q].pt.y - HIGH_OUTPUT_Y; break;
+                }
                 keyp.push_back(src->kp[q]);
                 for (int j = 0; j < 64; j++) {
                     dest->desc[i][j] = src->desc[q][j];
