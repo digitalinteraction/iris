@@ -470,8 +470,12 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         class_item->object = -1;
         class_out->add((RASPITEX_PATCH*) class_item, 0);
         
-        clock_gettime(CLOCK_REALTIME, &time2);
-        cout << "after identify" << diff(time1, time2).tv_sec << ":" << diff(time1, time2).tv_nsec << endl;
+        vector<KeyPoint> kp;
+        for(int i = 0; i < 10; i++){
+            kp.push_back(item->kp[i]);
+        }
+        Mat desc = Mat(10, 64, CV_32F, item->desc);
+        match_surf_features(kp, desc);
         
         return object;
     }
@@ -483,9 +487,26 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
     
     if (src != 0 && src->feature != 0 && dir < 4) {
         deb_printf("Combining Objects %llx %llx from side %d\n", dest->mac, src->mac, dir);
-        for(int i = 0; i<10; i++){
-            printf("DEST KeyPoints found %f %f with response %f\n", dest->kp[i].pt.x, dest->kp[i].pt.y, dest->kp[i].response);
-            printf("SRC  KeyPoints found %f %f with response %f\n", src->kp[i].pt.x, src->kp[i].pt.y, src->kp[i].response);
+        vector<KeyPoint> keyp;
+
+        int p = 0, q = 0;
+        for (int i = 0; i < 10; i++) {
+            if (dest->kp[p].response > src->kp[q].response) {
+                keyp.push_back(dest->kp[p]);
+                for (int j = 0; j < 64; j++) {
+                    dest->desc[i][j] = dest->desc[p][j];
+                }
+                p++;
+            } else {
+                keyp.push_back(src->kp[q]);
+                for (int j = 0; j < 64; j++) {
+                    dest->desc[i][j] = src->desc[q][j];
+                }
+                q++;
+            }
+        }
+        for (int i = 0; i < 10; i++) {
+            dest->kp[i] = keyp[i];
         }
 
         for (int i = 0; i < HISTOGRAM_SIZE; i++) {
@@ -619,33 +640,8 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
 }
 
 
-void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint16_t id){
-
-    vector<KeyPoint> kp;
-    surf->detect(*img, kp, *mask);
-    Mat desc;
-    surf->compute(*img, kp, desc);
-    //cout << "Descriptor" << desc.size() << endl;
-    //cout << "Keypoints" << kp.size() << endl;
-    //new part to share SURF features
-    //insert keypoints and descriptors as single struct in list and sort both based on keypoints
-    std::sort(kp.begin(), kp.end(), sort_keypoint);
-    int kp_size = std::min(10, (int) kp.size());
-    for(int i = 0; i < kp_size; i++){
-        //printf("KeyPoints found %d %d\n", kp[i].pt.x, kp[i].pt.y);
-    }
-    //get first 10 keypoints and descriptors, which occupies 
-
+void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
     if (kp.size() > 0) {
-        Mat img_keypoints;
-        /*cout << "Keypoints: ";
-        for(int i = 0; i < kp.size(); i++){
-           cout << kp[i].pt.x << " " << kp[i].pt.y << endl; 
-        }*/
-        drawKeypoints(*img, kp, img_keypoints, Scalar::all(-1), DrawMatchesFlags::DEFAULT);
-        imwrite("surf_match.png", img_keypoints);
-
-
         BFMatcher matcher(NORM_L2, false);
         float min_angle_count = 0;
         int min_angle_index = 0;
