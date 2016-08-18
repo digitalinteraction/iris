@@ -50,6 +50,12 @@ struct classification_result{
     int16_t object;
 };
 
+struct surf_packet{
+    uint8_t packet_type;
+    KeyPoint kp[10];
+    float desc[10][64];
+};
+
 struct low_res_header{
     uint8_t port;
     uint8_t pos;
