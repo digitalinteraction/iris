@@ -484,11 +484,17 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
 
 void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir) {
 
-    
     if (src != 0 && src->feature != 0 && dir < 4) {
         deb_printf("Combining Objects %llx %llx from side %d\n", dest->mac, src->mac, dir);
         vector<KeyPoint> keyp;
 
+        for(int i = 0; i < 10; i++){
+            printf("DEST Keypoint %f %f %f\n", dest->kp[i].pt.x, dest->kp[i].pt.y, dest->kp[i].response);
+        }
+        for(int i = 0; i < 10; i++){
+            printf("SRC  Keypoint %f %f %f\n", src->kp[i].pt.x, src->kp[i].pt.y, src->kp[i].response);
+        }
+        
         int p = 0, q = 0;
         for (int i = 0; i < 10; i++) {
             if (dest->kp[p].response > src->kp[q].response) {
@@ -651,7 +657,9 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
 
 
 void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
-    
+    for(int i = 0; i < kp.size(); i++){
+        printf("FINA Keypoint %f %f %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
+    }
     if (kp.size() > 0) {
         BFMatcher matcher(NORM_L2, false);
         float min_angle_count = 0;

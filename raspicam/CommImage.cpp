@@ -230,6 +230,7 @@ void CommImage::check_recv_buffer(patch_packet *start, vector<vector<KeyPoint> >
             vector<KeyPoint> keyp;
             for(int i = 0; i < 10; i++){
                 keyp.push_back(surfitem->kp[i]);
+                printf("RECV Keypoint %f %f %f\n", surfitem->kp[i].pt.x, surfitem->kp[i].pt.y, surfitem->kp[i].response);
             }
             Mat descitem = Mat(10, 64, CV_32F, surfitem->desc);
             kp->push_back(keyp);
