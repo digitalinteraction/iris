@@ -602,7 +602,7 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
     int kp_size = std::min(10, (int) kp.size());
     vector<KeyPoint> kp2;
     for (int i = 0; i < kp_size; i++) {
-        printf("KeyPoints found %f %f with response %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
+        //printf("KeyPoints found %f %f with response %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
         kp2.push_back(kp[i]);
     }
     Mat desc;
@@ -632,7 +632,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     std::sort(kp.begin(), kp.end(), sort_keypoint);
     int kp_size = std::min(10, (int) kp.size());
     for(int i = 0; i < kp_size; i++){
-        printf("KeyPoints found %d %d\n", kp[i].pt.x, kp[i].pt.y);
+        //printf("KeyPoints found %d %d\n", kp[i].pt.x, kp[i].pt.y);
     }
     //get first 10 keypoints and descriptors, which occupies 
 
