@@ -594,7 +594,7 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
     Mat desc;
     
     surf->compute(*img, kp2, desc);
-    cout << "DESC:  " << desc << endl;
+    cout << "DESC:  " << desc.size() << endl;
 }
 
 
