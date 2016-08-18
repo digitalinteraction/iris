@@ -231,7 +231,9 @@ void CommImage::check_recv_buffer(patch_packet *start, vector<vector<KeyPoint> >
             for(int i = 0; i < 10; i++){
                 keyp.push_back(surfitem->kp[i]);
             }
-            Mat desc = Mat(10, 64, CV_32F, surfitem->desc);
+            Mat descitem = Mat(10, 64, CV_32F, surfitem->desc);
+            kp->push_back(keyp);
+            desc->push_back(descitem);
         }else{
             printf("received unknown packet %d\n", item->packet_type);
         }

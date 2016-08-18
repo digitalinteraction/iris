@@ -96,7 +96,7 @@ void High_Res_Worker::run(){
         running = 2;
         //clock_gettime(CLOCK_REALTIME, &time1);
         //deb_printf("check_recv_buffer\n");
-        comm->check_recv_buffer(first, surf_saved_key, surf_saved_desc);
+        comm->check_recv_buffer(first, &surf_saved_key, &surf_saved_desc);
         running = 3;
 
         //deb_printf("match_recv_list\n");
