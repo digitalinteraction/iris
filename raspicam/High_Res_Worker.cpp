@@ -703,7 +703,7 @@ bool High_Res_Worker::comparator(DMatch a,DMatch b)
 }
 
 bool High_Res_Worker::sort_keypoint(KeyPoint k1, KeyPoint k2){
-    return k1.response<k2.response;
+    return k1.response>k2.response;
 }
 void High_Res_Worker::calc_angle_dist(Point2f pt1, Point2f pt2, Point2f pt3, double *angle, double *dist) {
     if(((fabs(pt1.x - pt2.x) < EPSILON) && 
