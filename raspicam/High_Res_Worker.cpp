@@ -581,6 +581,19 @@ void High_Res_Worker::save_contour_in_file(vector<Point> *contour){
     imwrite("combined_image.png", img);
 }
 
+void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint16_t id) {
+    vector<KeyPoint> kp;
+    surf->detect(*img, kp, *mask);
+    std::sort(kp.begin(), kp.end(), sort_keypoint);
+    int kp_size = std::min(10, (int) kp.size());
+    for (int i = 0; i < kp_size; i++) {
+        printf("KeyPoints found %d %d with response %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
+    }
+    Mat desc;
+    surf->compute(*img, kp, desc)
+}
+
+
 void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint16_t id){
 
     vector<KeyPoint> kp;
@@ -589,6 +602,14 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
     surf->compute(*img, kp, desc);
     //cout << "Descriptor" << desc.size() << endl;
     //cout << "Keypoints" << kp.size() << endl;
+    //new part to share SURF features
+    //insert keypoints and descriptors as single struct in list and sort both based on keypoints
+    std::sort(kp.begin(), kp.end(), sort_keypoint);
+    int kp_size = std::min(10, (int) kp.size());
+    for(int i = 0; i < kp_size; i++){
+        printf("KeyPoints found %d %d\n", kp[i].pt.x, kp[i].pt.y);
+    }
+    //get first 10 keypoints and descriptors, which occupies 
 
     if (kp.size() > 0) {
         Mat img_keypoints;
@@ -661,6 +682,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
         if (isnormal(confidence) == 0 || confidence < 15.0) {
             surf_saved_desc.push_back(desc);
             surf_saved_key.push_back(kp);
+            surf_broadcast_features(kp, desc);
         }
 
         if (isnormal(confidence) == 1 && confidence >= 15.0) {
@@ -678,6 +700,10 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
 bool High_Res_Worker::comparator(DMatch a,DMatch b)
 {
         return a.distance<b.distance;
+}
+
+bool High_Res_Worker::sort_keypoint(KeyPoint k1, KeyPoint k2){
+    return k1.response<k2.response;
 }
 void High_Res_Worker::calc_angle_dist(Point2f pt1, Point2f pt2, Point2f pt3, double *angle, double *dist) {
     if(((fabs(pt1.x - pt2.x) < EPSILON) && 
