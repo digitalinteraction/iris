@@ -647,7 +647,7 @@ void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
         float min_angle_count = 0;
         int min_angle_index = 0;
         float min_total_count = 0;
-
+//ignore kp with 0 value
         for (int p = 0; p < surf_saved_desc.size(); p++) {
             vector<DMatch> matches;
             double sel_dist = 0;
@@ -705,8 +705,8 @@ void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
             surf_saved_desc.push_back(desc);
             surf_saved_key.push_back(kp);
             struct surf_packet* packet = (struct surf_packet *) calloc(1, sizeof (struct surf_packet));
-            for (int i = 0; i < kp_size; i++) {
-                packet->kp[i] = kp2[i];
+            for (int i = 0; i < 10; i++) {
+                packet->kp[i] = kp[i];
                 for (int j = 0; j < desc.cols; j++) {
                     packet->desc[i][j] = desc.at<float>(i, j);
                 }
