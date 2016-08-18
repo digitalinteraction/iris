@@ -73,6 +73,44 @@ int32_t Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer) {
     return packet_id;
 }
 
+int32_t Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer, uint8_t broadcast) {
+    lock.lock();
+    if(size <= 0 || buffer == 0 || cnt > 100){
+        //printf("Error Packetbuffer add: size %d, addr %d, buffer %p, cnt %d, id %d\n", size, addr, buffer, cnt, id);
+        lock.unlock();
+        return -1;
+    }
+    
+    struct packet * pack = (struct packet *) malloc(sizeof (struct packet));
+    pack->broadcast = broadcast;
+    pack->addr = addr;
+    pack->size = size;
+    pack->buffer = (void*) malloc(pack->size);
+    pack->next = 0;
+    pack->id = packet_id;
+    memcpy(pack->buffer, buffer, pack->size);
+
+    if (first == 0) {
+        first = pack;
+        last = pack;
+    } else {
+        last->next = pack;
+        last = pack;
+    }
+    cnt++;
+    packet_id++;
+    if(packet_id < 0){
+        packet_id = 0;
+    }
+    
+    uint64_t u = 1;
+
+    write(signalfd, &u, sizeof (uint64_t));
+    lock.unlock();
+
+    return packet_id;
+}
+
 int Packetbuffer::get(struct packet** pack) {
     lock.lock();
     if (first == 0) {

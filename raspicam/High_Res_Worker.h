@@ -25,6 +25,7 @@
 using namespace cv;
 
 struct surf_packet{
+    uint8_t packet_type;
     KeyPoint kp[10];
     float desc[10][64];
 };

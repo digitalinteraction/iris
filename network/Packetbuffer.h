@@ -25,6 +25,8 @@ public:
     Packetbuffer(uint8_t id);
     virtual ~Packetbuffer();
     int32_t add(uint32_t size, uint32_t addr, void *buffer);
+    int32_t add(uint32_t size, uint32_t addr, void *buffer, uint8_t broadcast);
+
     int get(struct packet ** pack);
     int signalfd;
     uint16_t getCnt();

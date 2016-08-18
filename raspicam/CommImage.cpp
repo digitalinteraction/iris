@@ -130,6 +130,7 @@ void CommImage::ask_neighbours(patch_packet* item) {
                 array[1] = temp.y;
             }
         }
+        item->packet_type = 1;
         if (((int) item->down) == 1 && nc->topo->isalive(DOWN_SIDE) == 1) {
             int32_t res = image_out->add(size, DOWN_SIDE, (void *) send_packet);
             add_packet_send((uint32_t)res, DOWN_SIDE, item);
