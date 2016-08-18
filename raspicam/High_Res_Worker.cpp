@@ -641,6 +641,9 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
 
 
 void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
+    printf("match surf features called with\n");
+    cout << "Keypoints: " << kp << endl;
+    cout << "Descriptor:  " << desc << endl;
     if (kp.size() > 0) {
         BFMatcher matcher(NORM_L2, false);
         float min_angle_count = 0;
