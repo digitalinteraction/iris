@@ -590,7 +590,7 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
         printf("KeyPoints found %d %d with response %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
     }
     Mat desc;
-    surf->compute(*img, kp, desc)
+    surf->compute(*img, kp, desc);
 }
 
 
