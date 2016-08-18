@@ -349,7 +349,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         RotatedRect boundRect = minAreaRect(*contour);
         //clock_gettime(CLOCK_REALTIME, &time1);
             //cout << "9 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
-        match_surf_features(&thres, &rgb, boundRect.angle, patch->id);
+        calc_surf_features(&thres, &rgb, boundRect.angle, patch->id);
         //clock_gettime(CLOCK_REALTIME, &time1);
             //cout << "10 " << time1.tv_sec << ":" <<time1.tv_nsec << endl;
     }
@@ -682,7 +682,7 @@ void High_Res_Worker::match_surf_features(Mat* mask, Mat* img, float angle, uint
         if (isnormal(confidence) == 0 || confidence < 15.0) {
             surf_saved_desc.push_back(desc);
             surf_saved_key.push_back(kp);
-            surf_broadcast_features(kp, desc);
+            //surf_broadcast_features(kp, desc);
         }
 
         if (isnormal(confidence) == 1 && confidence >= 15.0) {
