@@ -483,6 +483,10 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
     
     if (src != 0 && src->feature != 0 && dir < 4) {
         deb_printf("Combining Objects %llx %llx from side %d\n", dest->mac, src->mac, dir);
+        for(int i = 0; i<10; i++){
+            printf("DEST KeyPoints found %f %f with response %f\n", dest->kp[i].pt.x, dest->kp[i].pt.y, dest->kp[i].response);
+            printf("SRC  KeyPoints found %f %f with response %f\n", src->kp[i].pt.x, src->kp[i].pt.y, src->kp[i].response);
+        }
 
         for (int i = 0; i < HISTOGRAM_SIZE; i++) {
             dest->feature->hist_h[i] += src->feature->hist_h[i];
