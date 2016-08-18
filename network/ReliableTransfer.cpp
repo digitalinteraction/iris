@@ -121,7 +121,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
         free(cp_ack);
 
         if (header->broadcast == 1) {
-            printf("got broadcast packet %d %d %lx %lx\n", header->id, last_broadcast, header->mac, last_mac);
+            printf("got broadcast packet %d %d %llx %llx\n", header->id, last_broadcast, header->mac, last_mac);
             if (header->id != last_broadcast) {
                 printf("resending broadcast packet\n");
                 last_broadcast = header->id;
