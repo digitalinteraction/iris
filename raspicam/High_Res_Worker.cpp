@@ -594,7 +594,8 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
     Mat desc;
     
     surf->compute(*img, kp2, desc);
-    cout << "DESC:  " << desc.size() << endl;
+    string ty =  type2str( desc.type() );
+    printf("Matrix: %s %dx%d \n", ty.c_str(), desc.cols, desc.rows );
 }
 
 
