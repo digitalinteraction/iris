@@ -280,7 +280,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
             kp2.push_back(kp[i]);
         }
         Mat desc;
-        surf->compute(*img, kp2, desc);
+        surf->compute(img, kp2, desc);
 
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
