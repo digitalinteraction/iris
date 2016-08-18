@@ -59,7 +59,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
         uint8_t success = 0;
         
         if(header->broadcast == 1 && header->id == last_broadcast){
-            //printf(" bc "); fflush(stdout);
+            printf(" bc "); fflush(stdout);
             success = 1;
         }
         //printf(" while "); fflush(stdout);
@@ -120,13 +120,14 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
         free(cp_ack);
 
         if (header->broadcast == 1) {
+            printf("got broadcast packet\n");
             if (header->id != last_broadcast) {
+                printf("resending broadcast packet\n");
                 last_broadcast = header->id;
                 (*unrel)->send(buffer, size, 2, (addr + 1) % 4);
                 (*unrel)->send(buffer, size, 2, (addr + 2) % 4);
                 (*unrel)->send(buffer, size, 2, (addr + 3) % 4);
                 out->add(new_size, addr, buf);
-            } else {
             }
         } else {
             out->add(new_size, addr, buf);
@@ -137,7 +138,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
 }
 
 uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_t broadcast, uint32_t id){
-    //printf("%p %ld %d %d %d %d\n", buffer, size, addr, broadcast, list_cnt, topo->isalive(addr));
+    printf("%p %ld %d %d %d %d\n", buffer, size, addr, broadcast, list_cnt, topo->isalive(addr));
     if(buffer == 0 || size <= 0){
         printf("Error Reliable Transfer: buffer or size is wrong\n");
         if(callback != 0){
