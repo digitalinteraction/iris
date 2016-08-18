@@ -31,6 +31,7 @@ ReliableTransfer::ReliableTransfer(UnreliableTransfer **unrel, Packetbuffer *out
     ack.id = 0;
     list_cnt = 0;
     last_broadcast = 0;
+    last_mac = 0;
     this->topo = topo;
     list_lock.unlock();
     this->out = out;
@@ -58,7 +59,7 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
         struct linked_header *list_item = first;
         uint8_t success = 0;
         
-        if(header->broadcast == 1 && header->id == last_broadcast){
+        if(header->broadcast == 1 && header->id == last_broadcast && header->mac == last_mac){
             printf(" bc "); fflush(stdout);
             success = 1;
         }
@@ -120,10 +121,11 @@ int ReliableTransfer::recv(void* buffer, size_t size, uint32_t addr) {
         free(cp_ack);
 
         if (header->broadcast == 1) {
-            printf("got broadcast packet %d %d\n", header->id, last_broadcast);
+            printf("got broadcast packet %d %d %lx %lx\n", header->id, last_broadcast, header->mac, last_mac);
             if (header->id != last_broadcast) {
                 printf("resending broadcast packet\n");
                 last_broadcast = header->id;
+                last_mac = header->mac;
                 (*unrel)->send(buffer, size, 2, (addr + 1) % 4);
                 (*unrel)->send(buffer, size, 2, (addr + 2) % 4);
                 (*unrel)->send(buffer, size, 2, (addr + 3) % 4);
@@ -184,6 +186,7 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     header->id = seq++;
     header->broadcast = broadcast;
     header->id = id;
+    header->mac = topo->mac;
     
     memcpy((unsigned char*)cpy_buffer, (unsigned char*)buf, total_size);
 
@@ -214,11 +217,12 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     list_lock.unlock();
     if(broadcast == 0){
         (*unrel)->send(buf, total_size, 2, addr);
-    }else if(broadcast == 1){
-        (*unrel)->send(buf, total_size, 2, 0);
-        (*unrel)->send(buf, total_size, 2, 1);
-        (*unrel)->send(buf, total_size, 2, 2);
-        (*unrel)->send(buf, total_size, 2, 3);
+    } else if (broadcast == 1) {
+        for (int i = 0; i < 4; i++) {
+            if (topo->isalive(i) == 1) {
+                (*unrel)->send(buf, total_size, 2, i);
+            }
+        }
     }
     free(buf);
     //printf("end reliable trasnfer\n");
@@ -242,14 +246,14 @@ int ReliableTransfer::check_timeouts(){
             if(first->packet == 0){
                 printf("Retransmit: empty payload\n"); fflush(stdout);
             }
-            if(first->broadcast == 0){
+            if (first->broadcast == 0) {
                 (*unrel)->send(first->packet, first->size, 2, first->addr);
-            }else if(first->broadcast == 1){
-                (*unrel)->send(first->packet, first->size, 2, 0);
-                (*unrel)->send(first->packet, first->size, 2, 1);
-                (*unrel)->send(first->packet, first->size, 2, 2);
-                (*unrel)->send(first->packet, first->size, 2, 3);
-
+            } else if (first->broadcast == 1) {
+                for (int i = 0; i < 4; i++) {
+                    if (topo->isalive(i) == 1) {
+                        (*unrel)->send(first->packet, first->size, 2, i);
+                    }
+                }
             }
 
             first->timeout.tv_sec = current.tv_sec + TIMEOUT;

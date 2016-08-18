@@ -23,6 +23,7 @@
 
 struct reliable_packet{
     uint32_t id;
+    uint64_t mac;
     uint8_t broadcast;
     uint8_t ack;
     uint16_t filler;
@@ -60,6 +61,7 @@ private:
     struct linked_header*last;
     uint16_t seq;
     uint32_t last_broadcast;
+    uint64_t last_mac;
     struct reliable_packet ack;
     int timer;
     std::mutex list_lock;
