@@ -32,6 +32,7 @@ struct linked_header{
     struct reliable_packet* packet;
     struct timespec timeout;
     uint32_t addr;
+    uint8_t broadcast;
     struct linked_header* next;
     struct linked_header* prev;
     size_t size;

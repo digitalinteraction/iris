@@ -195,6 +195,7 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     packet->packet = (struct reliable_packet*)cpy_buffer;
     packet->size = total_size;
     packet->resent_time = 0;
+    packet->broadcast = broadcast;
     
     struct timespec current;
     clock_gettime(CLOCK_REALTIME, &current);
@@ -211,8 +212,14 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
     }
     list_cnt++;
     list_lock.unlock();
- 
-    (*unrel)->send(buf, total_size, 2, addr);
+    if(broadcast == 0){
+        (*unrel)->send(buf, total_size, 2, addr);
+    }else if(broadcast == 1){
+        (*unrel)->send(buf, total_size, 2, 0);
+        (*unrel)->send(buf, total_size, 2, 1);
+        (*unrel)->send(buf, total_size, 2, 2);
+        (*unrel)->send(buf, total_size, 2, 3);
+    }
     free(buf);
     //printf("end reliable trasnfer\n");
     return 0;
@@ -235,7 +242,15 @@ int ReliableTransfer::check_timeouts(){
             if(first->packet == 0){
                 printf("Retransmit: empty payload\n"); fflush(stdout);
             }
-            (*unrel)->send(first->packet, first->size, 2, first->addr);
+            if(first->broadcast == 0){
+                (*unrel)->send(first->packet, first->size, 2, first->addr);
+            }else if(first->broadcast == 1){
+                (*unrel)->send(first->packet, first->size, 2, 0);
+                (*unrel)->send(first->packet, first->size, 2, 1);
+                (*unrel)->send(first->packet, first->size, 2, 2);
+                (*unrel)->send(first->packet, first->size, 2, 3);
+
+            }
 
             first->timeout.tv_sec = current.tv_sec + TIMEOUT;
             //first->timeout.tv_nsec = current.tv_nsec;
