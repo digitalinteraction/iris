@@ -27,7 +27,7 @@ Packetbuffer::Packetbuffer(uint8_t id) {
     cnt = 0;
     lock.unlock();
     this->id = id;
-    packet_id = 0;
+    packet_id = 1;
 #ifdef DEBUG
     printf("Packetbuffer:: startup completed\n");
 #endif
@@ -61,8 +61,8 @@ int32_t Packetbuffer::add(uint32_t size, uint32_t addr, void* buffer) {
     }
     cnt++;
     packet_id++;
-    if(packet_id < 0){
-        packet_id = 0;
+    if(packet_id < 1){
+        packet_id = 1;
     }
     
     uint64_t u = 1;
