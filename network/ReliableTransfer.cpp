@@ -155,7 +155,7 @@ uint32_t ReliableTransfer::send(void *buffer, size_t size, uint32_t addr, uint8_
         }
         return -1;
     }
-    if(topo->isalive(addr) == 0){
+    if(topo->isalive(addr) == 0 && broadcast == 0){
         //printf("Error Reliable Transfer: destination is not alive\n");
         if(callback != 0){
                 callback(id, size, REL_ERROR_DEAD);
