@@ -271,7 +271,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         calcHist(&rg_hist_sp[2], 1, 0, thres, v_hist, 1, &buck, &histRange, true, true);
         
         vector<KeyPoint> kp;
-        surf->detect(img, kp, mask);
+        surf->detect(rgb, kp, thres);
         std::sort(kp.begin(), kp.end(), sort_keypoint);
         int kp_size = std::min(10, (int) kp.size());
         vector<KeyPoint> kp2;
@@ -280,7 +280,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
             kp2.push_back(kp[i]);
         }
         Mat desc;
-        surf->compute(img, kp2, desc);
+        surf->compute(rgb, kp2, desc);
 
         patch_packet *item = (patch_packet *) calloc(1, sizeof (patch_packet));
         item->feature = (feature_vector*) calloc(1, sizeof(feature_vector));
