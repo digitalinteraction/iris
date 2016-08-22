@@ -175,6 +175,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     }else{
                         snprintf(text, 20, "Object %d", item->object);
                     }
+                    printf("Writing %s\n", text);
                     Point2f middle = item->centroid;
                     int baseline = 0;
                     Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
