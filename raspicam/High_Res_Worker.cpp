@@ -743,6 +743,7 @@ void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
         }
         item->id = id;
         item->classification = -1;
+        printf("Sending surf result to low res values %d %f %d %d %d\n", isnormal(confidence), confidence, item->object, item->id, item->classification);
 
         class_out->add((RASPITEX_PATCH *) item, 0);
     }
