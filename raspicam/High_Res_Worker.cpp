@@ -475,7 +475,7 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
             kp.push_back(item->kp[i]);
         }
         Mat desc = Mat(SURF_CUTOFF, 64, CV_32F, item->desc);
-        match_surf_features(kp, desc);
+        match_surf_features(kp, desc, item->id);
         
         return object;
     }
@@ -656,7 +656,7 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
 }
 
 
-void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
+void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc, uint16_t low_id){
     for(int i = 0; i < kp.size(); i++){
         printf("FINA Keypoint %f %f %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
     }
@@ -741,7 +741,7 @@ void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
         } else {
             item->object = -2;
         }
-        item->id = id;
+        item->id = low_id;
         item->classification = -1;
         printf("Sending surf result to low res values %d %f %d %d %d\n", isnormal(confidence), confidence, item->object, item->id, item->classification);
 

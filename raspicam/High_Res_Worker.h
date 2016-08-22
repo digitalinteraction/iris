@@ -44,7 +44,7 @@ private:
     void combine_objects(patch_packet* dest, patch_packet* src, uint8_t dir);
     void check_objects(patch_packet *start);
     void save_contour_in_file(vector<Point> *contour);
-    void match_surf_features(vector<KeyPoint> kp, Mat desc);
+    void match_surf_features(vector<KeyPoint> kp, Mat desc, uint16_t low_id);
     static bool comparator(DMatch a,DMatch b);
     static bool sort_keypoint(KeyPoint k1, KeyPoint k2);
     void calc_angle_dist(Point2f pt1, Point2f pt2, Point2f pt3, double *angle, double *dist);
