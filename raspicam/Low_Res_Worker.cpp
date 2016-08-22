@@ -544,6 +544,7 @@ void Low_Res_Worker::update_contours() {
         if (class_item != 0) {
             struct objects *item = first;
             while (item != 0) {
+                printf("matching with %d %d\n", class_item->id, item->id);
                 if (class_item->id == item->id) {
                     if(class_item->classification != -1){
                         item->classification = class_item->classification;
