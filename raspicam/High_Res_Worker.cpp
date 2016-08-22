@@ -720,7 +720,6 @@ void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
         float confidence = (min_angle_count / min_total_count)*100;
         //printf("confidence: %f in cat %d\n", confidence, min_angle_index);
 
-        struct classification_result *item = (struct classification_result*) malloc(sizeof (struct classification_result));
         printf("Confidence %f in class %d\n", confidence, min_angle_index);
         //percent of angles right
         if (isnormal(confidence) == 0 || confidence < 15.0) {
@@ -735,8 +734,9 @@ void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
             }
             comm->broadcast_surf(packet);
         }
-
-        if (isnormal(confidence) == 1 && confidence >= 15.0) {
+        
+        struct classification_result *item = (struct classification_result*) malloc(sizeof (struct classification_result));
+        if (isnormal(confidence) >= 1 && confidence >= 15.0) {
             item->object = min_angle_index;
         } else {
             item->object = -2;

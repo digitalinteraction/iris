@@ -228,11 +228,11 @@ void CommImage::check_recv_buffer(patch_packet *start, vector<vector<KeyPoint> >
             printf("received a surf broadcast packet\n");
             struct surf_packet *surfitem = (struct surf_packet *)pack->buffer;
             vector<KeyPoint> keyp;
-            for(int i = 0; i < 10; i++){
+            for(int i = 0; i < SURF_CUTOFF; i++){
                 keyp.push_back(surfitem->kp[i]);
                 printf("RECV Keypoint %f %f %f\n", surfitem->kp[i].pt.x, surfitem->kp[i].pt.y, surfitem->kp[i].response);
             }
-            Mat descitem = Mat(10, 64, CV_32F, surfitem->desc);
+            Mat descitem = Mat(SURF_CUTOFF, 64, CV_32F, surfitem->desc);
             kp->push_back(keyp);
             desc->push_back(descitem);
         }else{
