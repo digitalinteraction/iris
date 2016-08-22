@@ -61,7 +61,7 @@ High_Res_Worker::High_Res_Worker(Buffer *buffer, Packetbuffer *out_buf, Packetbu
         printf("classifier loaded\n");
     }
     
-    surf = xfeatures2d::SURF::create( 100 );
+    surf = xfeatures2d::SURF::create( 50 );
 }
 
 High_Res_Worker::~High_Res_Worker() {
