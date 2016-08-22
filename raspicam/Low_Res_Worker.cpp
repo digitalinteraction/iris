@@ -175,7 +175,7 @@ void Low_Res_Worker::process_image(uint8_t *image, size_t image_size) {
                     }else{
                         snprintf(text, 20, "Object %d", item->object);
                     }
-                    printf("Writing %s\n", text);
+                    //printf("Writing %s\n", text);
                     Point2f middle = item->centroid;
                     int baseline = 0;
                     Size textSize = getTextSize(text, fontFace, fontScale, fontThickness, &baseline);
@@ -544,7 +544,7 @@ void Low_Res_Worker::update_contours() {
         if (class_item != 0) {
             struct objects *item = first;
             while (item != 0) {
-                printf("matching with %d %d\n", class_item->id, item->id);
+                //printf("matching with %d %d\n", class_item->id, item->id);
                 if (class_item->id == item->id) {
                     if(class_item->classification != -1){
                         item->classification = class_item->classification;
