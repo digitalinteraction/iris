@@ -720,7 +720,7 @@ void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc, uint16_
         float confidence = (min_angle_count / min_total_count)*100;
         //printf("confidence: %f in cat %d\n", confidence, min_angle_index);
 
-        printf("Confidence %f in class %d\n", confidence, min_angle_index);
+        printf("Confidence %f (%f %f) in class %d\n", confidence, min_angle_index, min_angle_count, min_total_count);
         //percent of angles right
         if (isnormal(confidence) == 0 || confidence < 15.0) {
             surf_saved_desc.push_back(desc);
