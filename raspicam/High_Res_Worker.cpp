@@ -273,7 +273,7 @@ void High_Res_Worker::find_features(RASPITEX_PATCH *patch, uint8_t group) {
         vector<KeyPoint> kp;
         surf->detect(rgb, kp, thres);
         std::sort(kp.begin(), kp.end(), sort_keypoint);
-        int kp_size = std::min(10, (int) kp.size());
+        int kp_size = std::min(SURF_CUTOFF, (int) kp.size());
         vector<KeyPoint> kp2;
         for (int i = 0; i < kp_size; i++) {
             printf("KeyPoints found %f %f with response %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
@@ -471,10 +471,10 @@ int32_t High_Res_Worker::identify_object(patch_packet *item) {
         class_out->add((RASPITEX_PATCH*) class_item, 0);
         
         vector<KeyPoint> kp;
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < SURF_CUTOFF; i++){
             kp.push_back(item->kp[i]);
         }
-        Mat desc = Mat(10, 64, CV_32F, item->desc);
+        Mat desc = Mat(SURF_CUTOFF, 64, CV_32F, item->desc);
         match_surf_features(kp, desc);
         
         return object;
@@ -488,15 +488,15 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
         deb_printf("Combining Objects %llx %llx from side %d\n", dest->mac, src->mac, dir);
         vector<KeyPoint> keyp;
 
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < SURF_CUTOFF; i++){
             printf("DEST Keypoint %f %f %f\n", dest->kp[i].pt.x, dest->kp[i].pt.y, dest->kp[i].response);
         }
-        for(int i = 0; i < 10; i++){
+        for(int i = 0; i < SURF_CUTOFF; i++){
             printf("SRC  Keypoint %f %f %f\n", src->kp[i].pt.x, src->kp[i].pt.y, src->kp[i].response);
         }
         
         int p = 0, q = 0;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < SURF_CUTOFF; i++) {
             if (dest->kp[p].response > src->kp[q].response) {
                 keyp.push_back(dest->kp[p]);
                 for (int j = 0; j < 64; j++) {
@@ -521,7 +521,7 @@ void High_Res_Worker::combine_objects(patch_packet* dest, patch_packet* src, uin
                 q++;
             }
         }
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < SURF_CUTOFF; i++) {
             dest->kp[i] = keyp[i];
         }
 
@@ -636,7 +636,7 @@ void High_Res_Worker::calc_surf_features(Mat* mask, Mat* img, float angle, uint1
     vector<KeyPoint> kp;
     surf->detect(*img, kp, *mask);
     std::sort(kp.begin(), kp.end(), sort_keypoint);
-    int kp_size = std::min(10, (int) kp.size());
+    int kp_size = std::min(SURF_CUTOFF, (int) kp.size());
     vector<KeyPoint> kp2;
     for (int i = 0; i < kp_size; i++) {
         //printf("KeyPoints found %f %f with response %f\n", kp[i].pt.x, kp[i].pt.y, kp[i].response);
@@ -680,27 +680,31 @@ void High_Res_Worker::match_surf_features(vector<KeyPoint> kp, Mat desc){
                     for (int i = 0; i < ceil; i++) {
                         for (int j = i; j < ceil; j++) {
                             for (int q = j; q < ceil; q++) {
+                                
                                 Point2f orig1 = surf_saved_key[p][matches[i].queryIdx].pt;
                                 Point2f orig2 = surf_saved_key[p][matches[j].queryIdx].pt;
                                 Point2f orig3 = surf_saved_key[p][matches[q].queryIdx].pt;
-                                double angle1 = 0, dist1 = 0;
-                                calc_angle_dist(orig1, orig2, orig3, &angle1, &dist1);
+                                if (orig1.x != 0 && orig1.y != 0 && orig2.x != 0 && orig2.y != 0 && orig3.x != 0 && orig3.y != 0) {
+                                    double angle1 = 0, dist1 = 0;
+                                    calc_angle_dist(orig1, orig2, orig3, &angle1, &dist1);
 
-                                Point2f new1 = kp[matches[i].trainIdx].pt;
-                                Point2f new2 = kp[matches[j].trainIdx].pt;
-                                Point2f new3 = kp[matches[q].trainIdx].pt;
-                                double angle2 = 0, dist2 = 0;
-                                calc_angle_dist(new1, new2, new3, &angle2, &dist2);
-                                //printf("angles: %f %f\n", angle1, angle2);
-                                if (isnormal(angle1) && isnormal(angle2)) {
-                                    total_count += 1.0;
-                                    if (fabs(angle1 - angle2) < 10.0) {
-                                        matching_angle += 1.0;
+                                    Point2f new1 = kp[matches[i].trainIdx].pt;
+                                    Point2f new2 = kp[matches[j].trainIdx].pt;
+                                    Point2f new3 = kp[matches[q].trainIdx].pt;
+                                    double angle2 = 0, dist2 = 0;
+                                    calc_angle_dist(new1, new2, new3, &angle2, &dist2);
+                                    //printf("angles: %f %f\n", angle1, angle2);
+                                    if (isnormal(angle1) && isnormal(angle2)) {
+                                        total_count += 1.0;
+                                        if (fabs(angle1 - angle2) < 10.0) {
+                                            matching_angle += 1.0;
+                                        }
+                                    }
+                                    if (isnormal(dist1) && isnormal(dist2)) {
+                                        sel_dist += fabs(dist1 - dist2);
                                     }
                                 }
-                                if (isnormal(dist1) && isnormal(dist2)) {
-                                    sel_dist += fabs(dist1 - dist2);
-                                }
+
                             }
                         }
                     }

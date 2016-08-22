@@ -24,6 +24,8 @@
 #define CONTROL_PACKET 3
 #define MAX_PACKET_SIZE 60000
 #define BORDER_HIGH_RES 30
+#define SURF_CUTOFF 50
+
 
 #define HISTOGRAM_SIZE 32
 
@@ -52,8 +54,8 @@ struct classification_result{
 
 struct surf_packet{
     uint8_t packet_type;
-    cv::KeyPoint kp[10];
-    float desc[10][64];
+    cv::KeyPoint kp[SURF_CUTOFF];
+    float desc[SURF_CUTOFF][64];
 };
 
 struct low_res_header{
@@ -86,8 +88,8 @@ typedef struct high_res_packet{
     uint16_t rect_height;
     uint16_t center_x;
     uint16_t center_y;
-    cv::KeyPoint kp[10];
-    float desc[10][64];
+    cv::KeyPoint kp[SURF_CUTOFF];
+    float desc[SURF_CUTOFF][64];
     feature_vector *feature;
     struct high_res_packet *up;
     struct high_res_packet *down;
